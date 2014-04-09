@@ -19,6 +19,15 @@ int main (void)
 	Clock__init();
 	Modes__init();
 
+	setOutput(TEST_LED_DDR, TEST_LED_PIN);
+
+	setInput(BUTTON_MODE_DDR, BUTTON_MODE_PIN);
+	setHigh(BUTTON_MODE_PORT, BUTTON_MODE_PIN);
+	setInput(BUTTON_FUNC1_DDR, BUTTON_FUNC1_PIN);
+	setHigh(BUTTON_FUNC1_PORT, BUTTON_FUNC1_PIN);
+	setInput(BUTTON_FUNC2_DDR, BUTTON_FUNC2_PIN);
+	setHigh(BUTTON_FUNC2_PORT, BUTTON_FUNC2_PIN);
+
 	while (1)
 	{
 		if (uC__isTaskTrigger_x10())

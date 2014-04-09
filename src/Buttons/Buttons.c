@@ -72,9 +72,9 @@ void Buttons__x10 (void)
 #if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_HC165)
 	HC165__readByte(&buttonWired);
 #else
-	buttonWired = (		(isHigh(BUTTON_MODE_PORT, BUTTON_MODE_PIN) << BITPOS_BUTTON_MODE)
-					| 	(isHigh(BUTTON_FUNC1_PORT, BUTTON_MODE_PIN) << BITPOS_BUTTON_FUNC1)
-					| 	(isHigh(BUTTON_FUNC2_PORT, BUTTON_MODE_PIN) << BITPOS_BUTTON_FUNC2)
+	buttonWired = (		(isLow(BUTTON_MODE_PORT, BUTTON_MODE_PIN) << BITPOS_BUTTON_MODE)
+					| 	(isLow(BUTTON_FUNC1_PORT, BUTTON_FUNC1_PIN) << BITPOS_BUTTON_FUNC1)
+					| 	(isLow(BUTTON_FUNC2_PORT, BUTTON_FUNC2_PIN) << BITPOS_BUTTON_FUNC2)
 					);
 #endif
 
@@ -101,6 +101,15 @@ void Buttons__x10 (void)
 	Buttons__updateState_USART(buttonUSART, &buttonRight);
 	Buttons__updateState_USART(buttonUSART, &buttonUp);
 	Buttons__updateState_USART(buttonUSART, &buttonDown);
+
+	if (buttonWired != 0)
+	{
+		setHigh(TEST_LED_PORT, TEST_LED_PIN);
+	}
+	else
+	{
+		setLow(TEST_LED_PORT, TEST_LED_PIN);
+	}
 }
 
 
