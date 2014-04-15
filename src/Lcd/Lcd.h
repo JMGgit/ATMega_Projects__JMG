@@ -9,5 +9,13 @@
 #define LCD_H_
 
 
+#include "../Main/Main_Types.h"
+#include "../Main/Main_Config.h"
+#include "../Drivers/Drivers.h"
+
+void Lcd__init (void);
+void Lcd__writeLine (uint8_t *data, uint8_t line);
+void Lcd__x10 (void);
+
 
 #endif /* LCD_H_ */

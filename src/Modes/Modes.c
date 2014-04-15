@@ -30,18 +30,6 @@ static void Modes__setNextMode (void)
 }
 
 
-static void Modes__updateMatrix (void)
-{
-	switch (currentMode)
-	{
-		default:
-		{
-			break;
-		}
-	}
-}
-
-
 void Modes__eepromStorage (void)
 {
 }
@@ -60,6 +48,4 @@ void Modes__x10 (void)
 	{
 		Modes__setNextMode();
 	}
-
-	Modes__updateMatrix();
 }

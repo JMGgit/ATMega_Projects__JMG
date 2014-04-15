@@ -21,8 +21,9 @@
 void SPLC780D1__init (void);
 void SPLC780D1__sendCommand (uint8_t data);
 void SPLC780D1__sendData (uint8_t data);
+void SPLC780D1__sendLine (uint8_t data, uint8_t line);
 void SPLC780D1__sendTable (uint8_t *data);
-void SPLC780D1__x10 (void);
+void SPLC780D1__setCursor (uint8_t position);
 
 
 #endif /* SPLC780D1_H_ */

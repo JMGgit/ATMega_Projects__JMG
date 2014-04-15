@@ -10,19 +10,8 @@
 
 
 /* size of the LED matrix */
-#define LED_MATRIX_SIZE_LIN				10
-#define LED_MATRIX_SIZE_COL				11
-
-/* dot correction for LEDs (white color) */
-#define WHITE_COLOR_PERCENT_RED			100
-#define WHITE_COLOR_PERCENT_GREEN		100
-#define WHITE_COLOR_PERCENT_BLUE		100
-
-/* language */
-#define QLOCKTWO_LANG_DE				1
-#define QLOCKTWO_LANG_DE_SUED			2
-#define QLOCKTWO_LANG_FR				3
-#define QLOCKTWO_LANG					QLOCKTWO_LANG_DE_SUED
+#define LCD_MATRIX_SIZE_LIN				4
+#define LCD_MATRIX_SIZE_COL				20
 
 /* clock sync */
 #define CLOCK_SYNC_OFF					1

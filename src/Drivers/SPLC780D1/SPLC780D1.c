@@ -11,6 +11,7 @@
 #define DELAY_POWER_ON_MS		15
 #define DELAY_INIT_1_MS			5
 #define DELAY_INIT_2_MS			2
+#define DELAY_WRITE_US			500
 
 #define CMD_CLEAR_DISPLAY		0x01
 #define CMD_RETURN_HOME			0x02
@@ -37,6 +38,8 @@
 #define SET_FONT_BIG			0x04
 #define SET_FONT_SMALL			0x00
 
+#define CMD_SET_DDRAM_DATA		0x80
+
 
 void SPLC780D1__init (void)
 {
@@ -50,20 +53,11 @@ void SPLC780D1__init (void)
 	_delay_ms(DELAY_INIT_1_MS);
 	SPLC780D1__sendCommand(CMD_FUNCTION_SET | SET_DL_8_BIT);
 	 _delay_us(200);
-	 SPLC780D1__sendCommand(CMD_FUNCTION_SET | SET_DL_8_BIT | SET_DISP_2_LINES | SET_FONT_BIG);
-	_delay_ms(DELAY_INIT_2_MS);
+	SPLC780D1__sendCommand(CMD_FUNCTION_SET | SET_DL_8_BIT | SET_DISP_2_LINES | SET_FONT_BIG);
 	SPLC780D1__sendCommand(CMD_DISPLAY_SET | SET_BLINKING_OFF | SET_CURSOR_OFF | SET_DISPLAY_ON);
 	SPLC780D1__sendCommand(CMD_CLEAR_DISPLAY);
-	_delay_ms(DELAY_INIT_2_MS);
 	SPLC780D1__sendCommand(CMD_ENTRY_MODE_SET | SET_CURSOR_INCREMENT | SET_SCROLL_OFF);
-	_delay_ms(DELAY_INIT_2_MS);
 	SPLC780D1__sendCommand(CMD_RETURN_HOME);
-	_delay_ms(DELAY_INIT_2_MS);
-
-	char testBuffer[81];
-	strcpy(testBuffer, "Salut Schissi, je   crois que ca marche pas trop mal le LCD! Pouet A++          ");
-
-	SPLC780D1__sendTable(testBuffer);
 }
 
 
@@ -83,7 +77,7 @@ static void SPLC780D1__write (uint8_t data, uint8_t RS)
 	LCD_DB_PORT = data;
 	setLow(LCD_E_PORT, LCD_E_PIN);
 	setHigh(LCD_RW_PORT, LCD_RW_PIN);
-	_delay_ms(DELAY_INIT_2_MS);
+	_delay_us(DELAY_WRITE_US);
 }
 
 
@@ -91,17 +85,17 @@ void SPLC780D1__sendTable (uint8_t *data)
 {
 	uint8_t i;
 
-	for (i = 0; i < 80; i++)
+	for (i = 0; i < (LCD_MATRIX_SIZE_COL * LCD_MATRIX_SIZE_LIN); i++)
 	{
-		if (i < 20)
+		if (i < LCD_MATRIX_SIZE_COL)
 		{
 			SPLC780D1__sendData(data[i]);
 		}
-		else if (i < 40)
+		else if (i < (2 * LCD_MATRIX_SIZE_COL))
 		{
 			SPLC780D1__sendData(data[i + 20]);
 		}
-		else if (i < 60)
+		else if (i < (3* LCD_MATRIX_SIZE_COL))
 		{
 			SPLC780D1__sendData(data[i - 20]);
 		}
@@ -111,6 +105,7 @@ void SPLC780D1__sendTable (uint8_t *data)
 		}
 	}
 }
+
 
 void SPLC780D1__sendData (uint8_t data)
 {
@@ -124,7 +119,32 @@ void SPLC780D1__sendCommand (uint8_t data)
 }
 
 
-void SPLC780D1__x10 (void)
+void SPLC780D1__sendLine (uint8_t data, uint8_t line)
 {
+	uint8_t cursorPos = 0;
 
+	if (line == 1)
+	{
+		cursorPos = 0;
+	}
+	else if (line == 2)
+	{
+		cursorPos = 2 * LCD_MATRIX_SIZE_COL;
+	}
+	else if (line == 3)
+	{
+		cursorPos = LCD_MATRIX_SIZE_COL;
+	}
+	else if (line == 4)
+	{
+		cursorPos = 3 * LCD_MATRIX_SIZE_COL;
+	}
+
+	SPLC780D1__setCursor(cursorPos);
+	SPLC780D1__sendData(data);
+}
+
+void SPLC780D1__setCursor (uint8_t position)
+{
+	SPLC780D1__sendCommand(CMD_SET_DDRAM_DATA | position);
 }

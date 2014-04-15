@@ -18,6 +18,7 @@ int main (void)
 	Drivers__init();
 	Clock__init();
 	Modes__init();
+	Lcd__init();
 
 	setOutput(TEST_LED_DDR, TEST_LED_PIN);
 
@@ -33,6 +34,7 @@ int main (void)
 		if (uC__isTaskTrigger_x10())
 		{
 			Drivers__x10();
+			Lcd__x10();
 			Clock__x10();
 			Buttons__x10();
 			Modes__x10();

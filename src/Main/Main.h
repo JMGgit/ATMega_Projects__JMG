@@ -15,5 +15,6 @@
 #include "../Buttons/Buttons.h"
 #include "../Clock/Clock.h"
 #include "../Modes/Modes.h"
+#include "../Lcd/Lcd.h"
 
 #endif /* MAIN_H_ */
