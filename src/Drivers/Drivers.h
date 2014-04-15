@@ -29,6 +29,7 @@ INLINE void Drivers__init (void)
 #endif
 	USART__init();
 	ADC__init();
+	SPLC780D1__init();
 }
 
 

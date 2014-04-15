@@ -46,4 +46,28 @@
 #define USART_DATA_LENGTH_MAX		4
 
 
+/*********** LCD **********/
+#define LCD_RS_DDR					DDRB
+#define LCD_RS_PORT					PORTB
+#define LCD_RS_PIN					PB0
+
+#define LCD_RW_DDR					DDRB
+#define LCD_RW_PORT					PORTB
+#define LCD_RW_PIN					PB1
+
+#define LCD_E_DDR					DDRB
+#define LCD_E_PORT					PORTB
+#define LCD_E_PIN					PB2
+
+#define LCD_DB_DDR					DDRA
+#define LCD_DB_PORT					PORTA
+#define LCD_DB0_PIN					PA0
+#define LCD_DB1_PIN					PA1
+#define LCD_DB2_PIN					PA2
+#define LCD_DB3_PIN					PA3
+#define LCD_DB4_PIN					PA4
+#define LCD_DB5_PIN					PA5
+#define LCD_DB6_PIN					PA6
+#define LCD_DB7_PIN					PA7
+
 #endif /* DRIVERS_CONFIG_H_ */
