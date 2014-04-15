@@ -42,4 +42,7 @@ uint8_t Clock__getYear (void);
 void Clock__incHours (void);
 void Clock__incMinutes (void);
 
+void CLock__getTimeString  (char* buffer);
+void CLock__getDateString (char* buffer);
+
 #endif /* CLOCK_H_ */

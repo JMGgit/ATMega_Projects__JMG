@@ -19,11 +19,14 @@
 
 
 void SPLC780D1__init (void);
-void SPLC780D1__sendCommand (uint8_t data);
-void SPLC780D1__sendData (uint8_t data);
-void SPLC780D1__sendLine (uint8_t data, uint8_t line);
-void SPLC780D1__sendTable (uint8_t *data);
+void SPLC780D1__sendCommand (char data);
+void SPLC780D1__sendData (char data);
+void SPLC780D1__sendLine (char data, uint8_t line);
+void SPLC780D1__sendTable (char *data);
+void SPLC780D1__enableCursor (void);
+void SPLC780D1__disableCursor (void);
 void SPLC780D1__setCursor (uint8_t position);
+void SPLC780D1__setCursorToLineCol (uint8_t line, uint8_t col);
 
 
 #endif /* SPLC780D1_H_ */

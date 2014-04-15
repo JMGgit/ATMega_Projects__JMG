@@ -10,16 +10,20 @@
 
 #include "../Main/Main_Types.h"
 #include "../Main/Main_Config.h"
-#include "../Buttons/Buttons.h"
+#include "Mode_Measurement.h"
+#include "Mode_MeasurementStart.h"
+#include "Mode_MeasurementStats.h"
+#include "Mode_Setup.h"
+#include "Mode_Standby.h"
 
 
 typedef enum
 {
-	MODE__STARTUP = 0,
-	MODE__TIME_SETUP,
-	MODE__QLOCKTWO,
-	MODE__SECONDS,
-	MODE_NB
+	MODE__STANDBY = 0,
+	MODE__SETUP,
+	MODE__MEASUREMENT_START,
+	MODE__MEASUREMENT,
+	MODE__MEASUREMENT_STATS,
 } Mode_t;
 
 

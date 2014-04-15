@@ -280,3 +280,91 @@ uint8_t Clock__getDay (void)			{return currentTime.day;}
 uint8_t Clock__getDate (void)			{return currentTime.date;}
 uint8_t Clock__getMonth (void)			{return currentTime.month;}
 uint8_t Clock__getYear (void)			{return currentTime.year;}
+
+
+void CLock__getTimeString (char* buffer)
+{
+	uint8_t hours, minutes, seconds;
+
+	hours = Clock__getHours();
+	minutes = Clock__getMinutes();
+	seconds = Clock__getSeconds();
+
+	if (hours >= 10)
+	{
+		itoa(hours, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(hours, &buffer[1], 10);
+	}
+
+	if (minutes >= 10)
+	{
+		itoa(minutes, &buffer[3], 10);
+	}
+	else
+	{
+		buffer[3] = '0';
+		itoa(minutes, &buffer[4], 10);
+	}
+
+	if (seconds >= 10)
+	{
+		itoa(seconds, &buffer[6], 10);
+	}
+	else
+	{
+		buffer[6] = '0';
+		itoa(seconds, &buffer[7], 10);
+	}
+
+	buffer[2] = ':';
+	buffer[5] = ':';
+	buffer[8] = ' ';
+}
+
+
+void CLock__getDateString (char* buffer)
+{
+	uint8_t date, month, year;
+
+	date = Clock__getDate();
+	month = Clock__getMonth();
+	year = Clock__getYear();
+
+	if (date >= 10)
+	{
+		itoa(date, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(date, &buffer[1], 10);
+	}
+
+	if (month >= 10)
+	{
+		itoa(month, &buffer[3], 10);
+	}
+	else
+	{
+		buffer[3] = '0';
+		itoa(month, &buffer[4], 10);
+	}
+
+	if (year >= 10)
+	{
+		itoa(year, &buffer[6], 10);
+	}
+	else
+	{
+		buffer[6] = '0';
+		itoa(year, &buffer[7], 10);
+	}
+
+	buffer[2] = '/';
+	buffer[5] = '/';
+	buffer[8] = ' ';
+}

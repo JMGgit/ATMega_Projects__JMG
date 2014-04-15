@@ -61,7 +61,7 @@ void SPLC780D1__init (void)
 }
 
 
-static void SPLC780D1__write (uint8_t data, uint8_t RS)
+static void SPLC780D1__write (char data, uint8_t RS)
 {
 	if (RS == TRUE)
 	{
@@ -81,7 +81,7 @@ static void SPLC780D1__write (uint8_t data, uint8_t RS)
 }
 
 
-void SPLC780D1__sendTable (uint8_t *data)
+void SPLC780D1__sendTable (char *data)
 {
 	uint8_t i;
 
@@ -107,19 +107,19 @@ void SPLC780D1__sendTable (uint8_t *data)
 }
 
 
-void SPLC780D1__sendData (uint8_t data)
+void SPLC780D1__sendData (char data)
 {
 	SPLC780D1__write(data, TRUE);
 }
 
 
-void SPLC780D1__sendCommand (uint8_t data)
+void SPLC780D1__sendCommand (char data)
 {
 	SPLC780D1__write(data, FALSE);
 }
 
 
-void SPLC780D1__sendLine (uint8_t data, uint8_t line)
+void SPLC780D1__sendLine (char data, uint8_t line)
 {
 	uint8_t cursorPos = 0;
 
@@ -144,7 +144,44 @@ void SPLC780D1__sendLine (uint8_t data, uint8_t line)
 	SPLC780D1__sendData(data);
 }
 
+void SPLC780D1__enableCursor (void)
+{
+	SPLC780D1__sendCommand(CMD_DISPLAY_SET | SET_BLINKING_ON | SET_CURSOR_OFF | SET_DISPLAY_ON);
+}
+
+
+void SPLC780D1__disableCursor (void)
+{
+	SPLC780D1__sendCommand(CMD_DISPLAY_SET | SET_BLINKING_OFF | SET_CURSOR_OFF | SET_DISPLAY_ON);
+}
+
+
 void SPLC780D1__setCursor (uint8_t position)
 {
 	SPLC780D1__sendCommand(CMD_SET_DDRAM_DATA | position);
+}
+
+
+void SPLC780D1__setCursorToLineCol (uint8_t line, uint8_t col)
+{
+	uint8_t cursorPos = 0;
+
+	if (line == 1)
+	{
+		cursorPos = col - 1;
+	}
+	else if (line == 2)
+	{
+		cursorPos = 64 + (col - 1);
+	}
+	else if (line == 3)
+	{
+		cursorPos = LCD_MATRIX_SIZE_COL + col - 1;
+	}
+	else if (line == 4)
+	{
+		cursorPos = 64 + LCD_MATRIX_SIZE_COL + col - 1;
+	}
+
+	SPLC780D1__setCursor(cursorPos);
 }
