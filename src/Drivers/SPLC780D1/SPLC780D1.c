@@ -129,7 +129,7 @@ void SPLC780D1__sendLine (char data, uint8_t line)
 	}
 	else if (line == 2)
 	{
-		cursorPos = 2 * LCD_MATRIX_SIZE_COL;
+		cursorPos = 64;
 	}
 	else if (line == 3)
 	{
@@ -137,7 +137,7 @@ void SPLC780D1__sendLine (char data, uint8_t line)
 	}
 	else if (line == 4)
 	{
-		cursorPos = 3 * LCD_MATRIX_SIZE_COL;
+		cursorPos = 64 + LCD_MATRIX_SIZE_COL;
 	}
 
 	SPLC780D1__setCursor(cursorPos);

@@ -9,7 +9,7 @@
 #include "Modes.h"
 
 
-static Mode_t currentMode;
+static Mode_t currentMode, previousMode;
 
 
 void Modes__setMode (Mode_t mode)
@@ -33,6 +33,12 @@ void Modes__init (void)
 
 void Modes__x10 (void)
 {
+	if (previousMode != currentMode)
+	{
+		Lcd__requestRefreh();
+		previousMode = currentMode;
+	}
+
 	switch (currentMode)
 	{
 		case MODE__STANDBY:

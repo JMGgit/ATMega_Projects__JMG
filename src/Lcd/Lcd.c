@@ -11,7 +11,7 @@
 
 
 static char LcdBuffer[LCD_MATRIX_SIZE_COL * LCD_MATRIX_SIZE_LIN];
-static uint8_t cursorLine, cursorCol;
+static uint8_t cursorLine, cursorCol, refreshRequested;
 
 
 void Lcd__init (void)
@@ -57,19 +57,26 @@ void Lcd__setCursor (uint8_t line, uint8_t col)
 }
 
 
+void Lcd__requestRefreh (void)
+{
+	refreshRequested = TRUE;
+}
+
+
 void Lcd__x10 (void)
 {
 	static uint8_t updateCounter = 0;
 
-	if (updateCounter < 20)
-	{
-		updateCounter++;
-	}
-	else
+	if ((refreshRequested == TRUE) || (updateCounter == 200))
 	{
 		SPLC780D1__setCursor(0);
 		SPLC780D1__sendTable(LcdBuffer);
 		updateCounter = 0;
+		refreshRequested = FALSE;
 		SPLC780D1__setCursorToLineCol(cursorLine, cursorCol);
+	}
+	else
+	{
+		updateCounter++;
 	}
 }

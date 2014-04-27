@@ -12,7 +12,7 @@
 #define	SEL_MEASUREMENT		1
 #define SEL_BACK			2
 
-static uint8_t selectState = SEL_CLOCK;
+static uint8_t currentSelectedState, previousSelectedState;
 
 
 void Mode_Setup__init (void)
@@ -45,13 +45,20 @@ void Mode_Setup__init (void)
 	Lcd__writeLine(lcdLine_4, 4);
 
 	Lcd__enableCursor();
-	selectState = SEL_CLOCK;
+	currentSelectedState = SEL_CLOCK;
+	previousSelectedState = 0xFF;
 }
 
 
 void Mode_Setup__x10 (void)
 {
-	switch (selectState)
+	if (previousSelectedState != currentSelectedState)
+	{
+		Lcd__requestRefreh();
+		previousSelectedState = currentSelectedState;
+	}
+
+	switch (currentSelectedState)
 	{
 		case SEL_CLOCK:
 		{
@@ -59,12 +66,12 @@ void Mode_Setup__x10 (void)
 
 			if (Buttons__isPressedOnce(&buttonFunc2))
 			{
-				selectState = SEL_MEASUREMENT;
+				currentSelectedState = SEL_MEASUREMENT;
 			}
 
 			if (Buttons__isPressedOnce(&buttonFunc1))
 			{
-				selectState = SEL_BACK;
+				currentSelectedState = SEL_BACK;
 			}
 
 			break;
@@ -76,12 +83,12 @@ void Mode_Setup__x10 (void)
 
 			if (Buttons__isPressedOnce(&buttonFunc2))
 			{
-				selectState = SEL_BACK;
+				currentSelectedState = SEL_BACK;
 			}
 
 			if (Buttons__isPressedOnce(&buttonFunc1))
 			{
-				selectState = SEL_CLOCK;
+				currentSelectedState = SEL_CLOCK;
 			}
 
 			break;
@@ -93,12 +100,12 @@ void Mode_Setup__x10 (void)
 
 			if (Buttons__isPressedOnce(&buttonFunc2))
 			{
-				selectState = SEL_CLOCK;
+				currentSelectedState = SEL_CLOCK;
 			}
 
 			if (Buttons__isPressedOnce(&buttonFunc1))
 			{
-				selectState = SEL_MEASUREMENT;
+				currentSelectedState = SEL_MEASUREMENT;
 			}
 
 			break;
@@ -109,5 +116,5 @@ void Mode_Setup__x10 (void)
 
 uint8_t Modes__setupToStandby (void)
 {
-	return ((selectState == SEL_BACK) && (Buttons__isPressedOnce(&buttonMode)));
+	return ((currentSelectedState == SEL_BACK) && (Buttons__isPressedOnce(&buttonMode)));
 }
