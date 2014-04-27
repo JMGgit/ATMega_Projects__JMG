@@ -24,4 +24,7 @@
 #define BUTTONS_MULTIPLEX_HC165			2
 #define BUTTONS_MULTIPLEX				BUTTONS_MULTIPLEX_OFF
 
+/* measurement */
+#define MAX_MEASUREMENT_POINTS			2000
+
 #endif /* MAIN_CONFIG_H_ */

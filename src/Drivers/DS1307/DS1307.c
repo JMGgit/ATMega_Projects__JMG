@@ -44,7 +44,7 @@ void DS1307__sendTimeToRTC (void)
 	data[2] = (((currentTime.minutes / 10) << 4) & (0x70)) | ((currentTime.minutes % 10) & 0x0F);
 	data[3] = (((currentTime.hours / 10) << 4) & (0x30)) | ((currentTime.hours % 10) & 0x0F); /* bit 6 is not set -> 24-hour mode */
 	data[4] = (currentTime.day % 10) & 0x07;
-	data[5] = (((currentTime.date / 10) << 4) & (0xC0)) | ((currentTime.date % 10) & 0x0F);
+	data[5] = (((currentTime.date / 10) << 4) & (0x30)) | ((currentTime.date % 10) & 0x0F);
 	data[6] = (((currentTime.month / 10) << 4) & (0x10)) | ((currentTime.month % 10) & 0x0F);
 	data[7] = (((currentTime.year / 10) << 4) & (0xF0)) | ((currentTime.year % 10) & 0x0F);
 

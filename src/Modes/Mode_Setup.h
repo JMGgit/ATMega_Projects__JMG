@@ -19,6 +19,8 @@ void Mode_Setup__init (void);
 void Mode_Setup__x10 (void);
 
 uint8_t Modes__setupToStandby (void);
+uint8_t Modes__setupToSetupTime (void);
+uint8_t Modes__setupToSetupMeasurement (void);
 
 
 #endif /* MODE_SETUP_H_ */

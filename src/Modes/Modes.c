@@ -69,6 +69,44 @@ void Modes__x10 (void)
 				Mode_Standby__init();
 			}
 
+			if (Modes__setupToSetupTime())
+			{
+				Modes__setMode(MODE__SETUP_TIME);
+				Mode_SetupTime__init();
+			}
+
+			if (Modes__setupToSetupMeasurement())
+			{
+				Modes__setMode(MODE__SETUP_MEASUREMENT);
+				Mode_SetupMeasurement__init();
+			}
+
+			break;
+		}
+
+		case MODE__SETUP_TIME:
+		{
+			Mode_SetupTime__x10();
+
+			if (Modes__setupTimeToSetup())
+			{
+				Modes__setMode(MODE__SETUP);
+				Mode_Setup__init();
+			}
+
+			break;
+		}
+
+		case MODE__SETUP_MEASUREMENT:
+		{
+			Mode_SetupMeasurement__x10();
+
+			if (Modes__setupMeasurementToSetup())
+			{
+				Modes__setMode(MODE__SETUP);
+				Mode_Setup__init();
+			}
+
 			break;
 		}
 

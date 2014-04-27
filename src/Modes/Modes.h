@@ -14,6 +14,8 @@
 #include "Mode_MeasurementStart.h"
 #include "Mode_MeasurementStats.h"
 #include "Mode_Setup.h"
+#include "Mode_Setup_Time.h"
+#include "Mode_Setup_Measurement.h"
 #include "Mode_Standby.h"
 
 
@@ -21,6 +23,8 @@ typedef enum
 {
 	MODE__STANDBY = 0,
 	MODE__SETUP,
+	MODE__SETUP_TIME,
+	MODE__SETUP_MEASUREMENT,
 	MODE__MEASUREMENT_START,
 	MODE__MEASUREMENT,
 	MODE__MEASUREMENT_STATS,

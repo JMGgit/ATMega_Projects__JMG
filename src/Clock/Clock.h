@@ -39,10 +39,21 @@ uint8_t Clock__getDate (void);
 uint8_t Clock__getMonth (void);
 uint8_t Clock__getYear (void);
 
+
+void Clock__incDate (void);
+void Clock__incMonth (void);
+void Clock__incYear (void);
 void Clock__incHours (void);
 void Clock__incMinutes (void);
 
+void CLock__getHourString  (char* buffer);
+void CLock__getMinutesString  (char* buffer);
 void CLock__getTimeString  (char* buffer);
-void CLock__getDateString (char* buffer);
+void CLock__getTimeWithSecondsString  (char* buffer);
+void CLock__getDateString  (char* buffer);
+void CLock__getMonthString  (char* buffer);
+void CLock__getYearString  (char* buffer);
+void CLock__getCompleteDateString (char* buffer);
+void CLock__getCompleteDateWithYearString (char* buffer);
 
 #endif /* CLOCK_H_ */

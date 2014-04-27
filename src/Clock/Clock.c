@@ -161,6 +161,48 @@ static void Clock__sendLastSyncTimeToRTC (void)
 }
 
 
+void Clock__incDate (void)
+{
+	if (DS1307__getDate() < 31)
+	{
+		DS1307__setDate(DS1307__getDate() + 1);
+	}
+	else
+	{
+		DS1307__setDate(0);
+	}
+	DS1307__sendTimeToRTC();
+}
+
+
+void Clock__incMonth (void)
+{
+	if (DS1307__getMonth() < 12)
+	{
+		DS1307__setMonth(DS1307__getMonth() + 1);
+	}
+	else
+	{
+		DS1307__setMonth(0);
+	}
+	DS1307__sendTimeToRTC();
+}
+
+
+void Clock__incYear (void)
+{
+	if (DS1307__getYear() < 99)
+	{
+		DS1307__setYear(DS1307__getYear() + 1);
+	}
+	else
+	{
+		DS1307__setYear(0);
+	}
+	DS1307__sendTimeToRTC();
+}
+
+
 void Clock__incHours (void)
 {
 	if (DS1307__getHours() < 24)
@@ -282,7 +324,80 @@ uint8_t Clock__getMonth (void)			{return currentTime.month;}
 uint8_t Clock__getYear (void)			{return currentTime.year;}
 
 
+void CLock__getHourString (char* buffer)
+{
+	uint8_t hours;
+
+	hours = Clock__getHours();
+
+	if (hours >= 10)
+	{
+		itoa(hours, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(hours, &buffer[1], 10);
+	}
+
+	buffer[2] = ' ';
+}
+
+
+void CLock__getMinutesString (char* buffer)
+{
+	uint8_t minutes;
+
+	minutes = Clock__getMinutes();
+
+	if (minutes >= 10)
+	{
+		itoa(minutes, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(minutes, &buffer[1], 10);
+	}
+
+	buffer[2] = ' ';
+}
+
+
 void CLock__getTimeString (char* buffer)
+{
+	uint8_t hours, minutes;
+
+	hours = Clock__getHours();
+	minutes = Clock__getMinutes();
+
+	if (hours >= 10)
+	{
+		itoa(hours, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(hours, &buffer[1], 10);
+	}
+
+	if (minutes >= 10)
+	{
+		itoa(minutes, &buffer[3], 10);
+	}
+	else
+	{
+		buffer[3] = '0';
+		itoa(minutes, &buffer[4], 10);
+	}
+
+
+	buffer[2] = ':';
+	buffer[5] = ' ';
+}
+
+
+void CLock__getTimeWithSecondsString (char* buffer)
 {
 	uint8_t hours, minutes, seconds;
 
@@ -327,6 +442,97 @@ void CLock__getTimeString (char* buffer)
 
 
 void CLock__getDateString (char* buffer)
+{
+	uint8_t date;
+
+	date = Clock__getDate();
+
+	if (date >= 10)
+	{
+		itoa(date, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(date, &buffer[1], 10);
+	}
+
+	buffer[2] = ' ';
+}
+
+
+void CLock__getMonthString (char* buffer)
+{
+	uint8_t month;
+
+	month = Clock__getMonth();
+
+	if (month >= 10)
+	{
+		itoa(month, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(month, &buffer[1], 10);
+	}
+
+	buffer[2] = ' ';
+}
+
+
+void CLock__getYearString (char* buffer)
+{
+	uint8_t year;
+	year = Clock__getYear();
+
+	if (year >= 10)
+	{
+		itoa(year, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(year, &buffer[1], 10);
+	}
+
+	buffer[2] = ' ';
+}
+
+
+void CLock__getCompleteDateString (char* buffer)
+{
+	uint8_t date, month;
+
+	date = Clock__getDate();
+	month = Clock__getMonth();
+
+	if (date >= 10)
+	{
+		itoa(date, &buffer[0], 10);
+	}
+	else
+	{
+		buffer[0] = '0';
+		itoa(date, &buffer[1], 10);
+	}
+
+	if (month >= 10)
+	{
+		itoa(month, &buffer[3], 10);
+	}
+	else
+	{
+		buffer[3] = '0';
+		itoa(month, &buffer[4], 10);
+	}
+
+	buffer[2] = '/';
+	buffer[5] = ' ';
+}
+
+
+void CLock__getCompleteDateWithYearString (char* buffer)
 {
 	uint8_t date, month, year;
 

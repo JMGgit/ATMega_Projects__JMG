@@ -7,6 +7,7 @@
 
 
 #include "Mode_Setup.h"
+#include "Modes.h"
 
 #define SEL_CLOCK			0
 #define	SEL_MEASUREMENT		1
@@ -117,4 +118,16 @@ void Mode_Setup__x10 (void)
 uint8_t Modes__setupToStandby (void)
 {
 	return ((currentSelectedState == SEL_BACK) && (Buttons__isPressedOnce(&buttonMode)));
+}
+
+
+uint8_t Modes__setupToSetupTime (void)
+{
+	return ((currentSelectedState == SEL_CLOCK) && (Buttons__isPressedOnce(&buttonMode)));
+}
+
+
+uint8_t Modes__setupToSetupMeasurement (void)
+{
+	return ((currentSelectedState == SEL_MEASUREMENT) && (Buttons__isPressedOnce(&buttonMode)));
 }
