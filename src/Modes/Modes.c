@@ -18,12 +18,6 @@ void Modes__setMode (Mode_t mode)
 }
 
 
-void Modes__eepromStorage (void)
-{
-
-}
-
-
 void Modes__init (void)
 {
 	Modes__setMode(0xFF);

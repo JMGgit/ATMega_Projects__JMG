@@ -19,6 +19,19 @@ Button_t buttonUp    = {BITMSK_BUTTON_UP,		0, FALSE, FALSE};
 Button_t buttonDown  = {BITMSK_BUTTON_DOWN,		0, FALSE, FALSE};
 
 
+void Buttons__init (void)
+{
+#if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_OFF)
+	setInput(BUTTON_MODE_DDR, BUTTON_MODE_PIN);
+	setHigh(BUTTON_MODE_PORT, BUTTON_MODE_PIN);
+	setInput(BUTTON_FUNC1_DDR, BUTTON_FUNC1_PIN);
+	setHigh(BUTTON_FUNC1_PORT, BUTTON_FUNC1_PIN);
+	setInput(BUTTON_FUNC2_DDR, BUTTON_FUNC2_PIN);
+	setHigh(BUTTON_FUNC2_PORT, BUTTON_FUNC2_PIN);
+#endif
+}
+
+
 static void Buttons__updateState (uint8_t receiveBuffer, Button_t *button)
 {
 	if (receiveBuffer & (button->bitMask))

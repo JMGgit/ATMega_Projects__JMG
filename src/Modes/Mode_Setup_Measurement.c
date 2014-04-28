@@ -18,6 +18,8 @@
 
 static uint8_t currentSelectedState, previousSelectedState, refresh, unit;
 static uint16_t interval;
+static uint16_t interval_EEPROM EEMEM = 0;
+static uint8_t unit_EEPROM EEMEM = 0;
 
 
 void Mode_SetupMeasurement__init (void)
@@ -25,6 +27,8 @@ void Mode_SetupMeasurement__init (void)
 	Lcd__enableCursor();
 	currentSelectedState = SEL_INTERVAL;
 	previousSelectedState = 0xFF;
+	interval = eeprom_read_word(&interval_EEPROM);
+	unit = eeprom_read_byte(&unit_EEPROM);
 }
 
 
@@ -154,6 +158,13 @@ static void Mode_SetupMeasurement__getMeasurementTimeString (char* buffer)
 }
 
 
+static void Mode_SetupMeasurement__eepromStorage (void)
+{
+	eeprom_update_word(&interval_EEPROM, interval);
+	eeprom_update_byte(&unit_EEPROM, unit);
+}
+
+
 void Mode_SetupMeasurement__x10 (void)
 {
 	char lcdLine_1[LCD_MATRIX_SIZE_COL + 1];
@@ -204,7 +215,7 @@ void Mode_SetupMeasurement__x10 (void)
 				}
 				else
 				{
-					interval = 0;
+					interval = 1;
 				}
 
 				refresh = TRUE;
@@ -289,6 +300,14 @@ void Mode_SetupMeasurement__x10 (void)
 
 uint8_t Modes__setupMeasurementToSetup (void)
 {
-	return ((currentSelectedState == SEL_BACK) && (Buttons__isPressedOnce(&buttonMode)));
+	uint8_t retVal = FALSE;
+
+	if ((currentSelectedState == SEL_BACK) && (Buttons__isPressedOnce(&buttonMode)))
+	{
+		Mode_SetupMeasurement__eepromStorage();
+		retVal = TRUE;
+	}
+
+	return retVal;
 }
 

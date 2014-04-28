@@ -62,6 +62,7 @@ extern Button_t buttonRight;
 extern Button_t buttonUp;
 extern Button_t buttonDown;
 
+void Buttons__init (void);
 void Buttons__x10 (void);
 
 uint8_t Buttons__isPressed (Button_t *button);

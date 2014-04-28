@@ -35,7 +35,6 @@ typedef enum
 void Modes__init (void);
 void Modes__x10 (void);
 void Modes__setMode (uint8_t mode);
-void Modes__eepromStorage (void);
 
 
 #endif /* MODES_H_ */
