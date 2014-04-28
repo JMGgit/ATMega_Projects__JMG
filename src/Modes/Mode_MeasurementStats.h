@@ -16,6 +16,7 @@
 
 void Mode_MeasurementStats__x10 (void);
 
+void Mode_MeasurementStats__init (void);
 uint8_t Modes__measurementStatsToMeasurement (void);
 
 

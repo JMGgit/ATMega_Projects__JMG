@@ -9,6 +9,12 @@
 #include "Mode_Measurement.h"
 
 
+void Mode_Measurement__init (void)
+{
+
+}
+
+
 void Mode_Measurement__x10 (void)
 {
 

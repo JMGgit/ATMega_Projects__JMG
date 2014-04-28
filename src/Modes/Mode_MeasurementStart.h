@@ -15,6 +15,7 @@
 #include "../Clock/Clock.h"
 
 
+void Mode_MeasurementStart__init (void);
 void Mode_MeasurementStart__x10 (void);
 
 uint8_t Modes__measurementStartToMeasurement (void);

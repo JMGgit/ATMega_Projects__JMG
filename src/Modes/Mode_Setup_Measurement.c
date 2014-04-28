@@ -16,9 +16,8 @@
 #define UNIT_HOUR		2
 #define UNIT_DAY		3
 
-static uint8_t currentSelectedState, previousSelectedState, refresh, unit;
-static uint16_t interval;
-static uint16_t interval_EEPROM EEMEM = 0;
+static uint8_t currentSelectedState, previousSelectedState, refresh, interval, unit;
+static uint8_t interval_EEPROM EEMEM = 0;
 static uint8_t unit_EEPROM EEMEM = 0;
 
 
@@ -27,12 +26,30 @@ void Mode_SetupMeasurement__init (void)
 	Lcd__enableCursor();
 	currentSelectedState = SEL_INTERVAL;
 	previousSelectedState = 0xFF;
-	interval = eeprom_read_word(&interval_EEPROM);
+	Mode_SetupMeasurement__eepromInit();
+}
+
+
+void Mode_SetupMeasurement__eepromInit(void)
+{
+	interval = eeprom_read_byte(&interval_EEPROM);
 	unit = eeprom_read_byte(&unit_EEPROM);
 }
 
 
-static void Mode_SetupMeasurement__getIntervalString (char* buffer)
+uint8_t Mode_SetupMeasurement__getInterval (void)
+{
+	return interval;
+}
+
+
+uint8_t Mode_SetupMeasurement__getUnit (void)
+{
+	return unit;
+}
+
+
+void Mode_SetupMeasurement__getIntervalString (char* buffer)
 {
 	uint8_t idxBuffer = 0;
 
@@ -46,7 +63,7 @@ static void Mode_SetupMeasurement__getIntervalString (char* buffer)
 }
 
 
-static void Mode_SetupMeasurement__getUnitString (char* buffer)
+void Mode_SetupMeasurement__getUnitString (char* buffer)
 {
 	if (unit == UNIT_SECOND)
 	{
@@ -69,7 +86,7 @@ static void Mode_SetupMeasurement__getUnitString (char* buffer)
 }
 
 
-static void Mode_SetupMeasurement__getMeasurementTimeString (char* buffer)
+void Mode_SetupMeasurement__getMeasurementTimeString (char* buffer)
 {
 	uint16_t days, hours, minutes;
 	uint8_t idxBuffer = 0;
@@ -92,7 +109,7 @@ static void Mode_SetupMeasurement__getMeasurementTimeString (char* buffer)
 		hours = (MAX_MEASUREMENT_POINTS * interval) - (days * 24);
 		minutes = 0;
 	}
-	else if (unit == UNIT_DAY)
+	else
 	{
 		days = MAX_MEASUREMENT_POINTS * interval;
 		hours = 0;
@@ -160,7 +177,7 @@ static void Mode_SetupMeasurement__getMeasurementTimeString (char* buffer)
 
 static void Mode_SetupMeasurement__eepromStorage (void)
 {
-	eeprom_update_word(&interval_EEPROM, interval);
+	eeprom_update_byte(&interval_EEPROM, interval);
 	eeprom_update_byte(&unit_EEPROM, unit);
 }
 

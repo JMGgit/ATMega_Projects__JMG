@@ -9,6 +9,12 @@
 #include "Mode_MeasurementStats.h"
 
 
+void Mode_MeasurementStats__init (void)
+{
+
+}
+
+
 void Mode_MeasurementStats__x10 (void)
 {
 

@@ -16,7 +16,14 @@
 
 
 void Mode_SetupMeasurement__init (void);
+void Mode_SetupMeasurement__eepromInit(void);
 void Mode_SetupMeasurement__x10 (void);
+
+uint8_t Mode_SetupMeasurement__getInterval (void);
+uint8_t Mode_SetupMeasurement__getUnit (void);
+void Mode_SetupMeasurement__getIntervalString (char* buffer);
+void Mode_SetupMeasurement__getUnitString (char* buffer);
+void Mode_SetupMeasurement__getMeasurementTimeString (char* buffer);
 
 uint8_t Modes__setupMeasurementToSetup (void);
 

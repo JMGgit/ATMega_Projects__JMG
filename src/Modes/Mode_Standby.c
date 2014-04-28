@@ -12,12 +12,14 @@
 #define SEL_SETUP		0
 #define	SEL_START		1
 
-static uint8_t selectState = SEL_SETUP;
+static uint8_t currentSelectedState, previousSelectedState, refresh;
 
 
 void Mode_Standby__init (void)
 {
 	Lcd__enableCursor();
+	currentSelectedState = SEL_SETUP;
+	previousSelectedState = 0xFF;
 }
 
 void Mode_Standby__x10 (void)
@@ -47,7 +49,13 @@ void Mode_Standby__x10 (void)
 	Lcd__writeLine(lcdLine_3, 3);
 	Lcd__writeLine(lcdLine_4, 4);
 
-	switch (selectState)
+	if (refresh == TRUE)
+	{
+		Lcd__requestRefresh();
+		refresh = FALSE;
+	}
+
+	switch (currentSelectedState)
 	{
 		case SEL_SETUP:
 		{
@@ -57,7 +65,7 @@ void Mode_Standby__x10 (void)
 				||	(Buttons__isPressedOnce(&buttonFunc2))
 			)
 			{
-				selectState = SEL_START;
+				currentSelectedState = SEL_START;
 			}
 
 			break;
@@ -71,11 +79,17 @@ void Mode_Standby__x10 (void)
 				||	(Buttons__isPressedOnce(&buttonFunc1))
 			)
 			{
-				selectState = SEL_SETUP;
+				currentSelectedState = SEL_SETUP;
 			}
 
 			break;
 		}
+	}
+
+	if (previousSelectedState != currentSelectedState)
+	{
+		refresh = TRUE;
+		previousSelectedState = currentSelectedState;
 	}
 
 }
@@ -83,11 +97,11 @@ void Mode_Standby__x10 (void)
 
 uint8_t Modes__standbyToSetup (void)
 {
-	return ((selectState == SEL_SETUP) && (Buttons__isPressedOnce(&buttonMode)));
+	return ((currentSelectedState == SEL_SETUP) && (Buttons__isPressedOnce(&buttonMode)));
 }
 
 
 uint8_t Modes__standbyToMeasurementStart (void)
 {
-	return ((selectState == SEL_START) && (Buttons__isPressedOnce(&buttonMode)));
+	return ((currentSelectedState == SEL_START) && (Buttons__isPressedOnce(&buttonMode)));
 }

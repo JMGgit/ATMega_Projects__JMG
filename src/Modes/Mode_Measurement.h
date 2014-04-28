@@ -17,6 +17,7 @@
 
 void Mode_Measurement__x10 (void);
 
+void Mode_Measurement__init (void);
 uint8_t Modes__measurementToMeasurementStats (void);
 uint8_t Modes__measurementToStandby (void);
 

@@ -21,6 +21,7 @@ void Modes__setMode (Mode_t mode)
 void Modes__init (void)
 {
 	Modes__setMode(0xFF);
+	Mode_SetupMeasurement__eepromInit();
 }
 
 
@@ -47,6 +48,7 @@ void Modes__x10 (void)
 			if (Modes__standbyToMeasurementStart())
 			{
 				Modes__setMode(MODE__MEASUREMENT_START);
+				Mode_MeasurementStart__init();
 			}
 
 			break;
@@ -110,11 +112,13 @@ void Modes__x10 (void)
 			if (Modes__measurementStartToMeasurement())
 			{
 				Modes__setMode(MODE__MEASUREMENT);
+				Mode_Measurement__init();
 			}
 
 			if (Modes__measurementStartToStandby())
 			{
 				Modes__setMode(MODE__STANDBY);
+				Mode_Standby__init();
 			}
 
 			break;
@@ -127,11 +131,13 @@ void Modes__x10 (void)
 			if (Modes__measurementToMeasurementStats())
 			{
 				Modes__setMode(MODE__MEASUREMENT_STATS);
+				Mode_MeasurementStats__init();
 			}
 
 			if (Modes__measurementToStandby())
 			{
 				Modes__setMode(MODE__STANDBY);
+				Mode_Standby__init();
 			}
 
 			break;
@@ -144,6 +150,7 @@ void Modes__x10 (void)
 			if (Modes__measurementStatsToMeasurement())
 			{
 				Modes__setMode(MODE__MEASUREMENT);
+				Mode_Measurement__init();
 			}
 
 			break;
