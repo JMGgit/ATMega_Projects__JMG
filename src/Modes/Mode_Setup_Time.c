@@ -63,7 +63,7 @@ void Mode_SetupTime__x10 (void)
 
 	if (refresh == TRUE)
 	{
-		Lcd__requestRefreh();
+		Lcd__requestRefresh();
 		refresh = FALSE;
 	}
 

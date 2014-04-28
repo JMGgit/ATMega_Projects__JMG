@@ -55,7 +55,7 @@ void Mode_Setup__x10 (void)
 {
 	if (previousSelectedState != currentSelectedState)
 	{
-		Lcd__requestRefreh();
+		Lcd__requestRefresh();
 		previousSelectedState = currentSelectedState;
 	}
 

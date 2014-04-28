@@ -25,6 +25,6 @@
 #define BUTTONS_MULTIPLEX				BUTTONS_MULTIPLEX_OFF
 
 /* measurement */
-#define MAX_MEASUREMENT_POINTS			2000
+#define MAX_MEASUREMENT_POINTS			(2040 * 2 / 3)
 
 #endif /* MAIN_CONFIG_H_ */

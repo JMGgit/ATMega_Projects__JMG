@@ -26,8 +26,7 @@ void Modes__eepromStorage (void)
 
 void Modes__init (void)
 {
-	Modes__setMode(MODE__STANDBY);
-	Mode_Standby__init();
+	Modes__setMode(0xFF);
 }
 
 
@@ -35,7 +34,7 @@ void Modes__x10 (void)
 {
 	if (previousMode != currentMode)
 	{
-		Lcd__requestRefreh();
+		Lcd__requestRefresh();
 		previousMode = currentMode;
 	}
 
@@ -154,6 +153,12 @@ void Modes__x10 (void)
 			}
 
 			break;
+		}
+
+		default:
+		{
+			Modes__setMode(MODE__STANDBY);
+			Mode_Standby__init();
 		}
 	}
 

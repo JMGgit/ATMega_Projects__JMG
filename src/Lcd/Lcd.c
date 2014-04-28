@@ -57,7 +57,7 @@ void Lcd__setCursor (uint8_t line, uint8_t col)
 }
 
 
-void Lcd__requestRefreh (void)
+void Lcd__requestRefresh (void)
 {
 	refreshRequested = TRUE;
 }

@@ -30,17 +30,15 @@ void Mode_SetupMeasurement__init (void)
 
 static void Mode_SetupMeasurement__getIntervalString (char* buffer)
 {
+	uint8_t idxBuffer = 0;
+
+	itoa(interval, &buffer[idxBuffer++], 10);
 	if (interval >= 10)
 	{
-		itoa(interval, &buffer[0], 10);
-	}
-	else
-	{
-		buffer[0] = '0';
-		itoa(interval, &buffer[1], 10);
+		idxBuffer++;
 	}
 
-	buffer[2] = ' ';
+	buffer[idxBuffer] = ' ';
 }
 
 
@@ -188,7 +186,7 @@ void Mode_SetupMeasurement__x10 (void)
 
 	if (refresh == TRUE)
 	{
-		Lcd__requestRefreh();
+		Lcd__requestRefresh();
 		refresh = FALSE;
 	}
 

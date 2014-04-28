@@ -20,6 +20,6 @@ void Lcd__enableCursor (void);
 void Lcd__disableCursor (void);
 void Lcd__setCursor (uint8_t line, uint8_t col);
 void Lcd__x10 (void);
-void Lcd__requestRefreh (void);
+void Lcd__requestRefresh (void);
 
 #endif /* LCD_H_ */
