@@ -9,6 +9,8 @@
 #include "DS1307.h"
 
 
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+
 static DS1307_time currentTime;
 
 
@@ -87,3 +89,5 @@ void DS1307__setDay (uint8_t day)			{currentTime.day = day;}
 void DS1307__setDate (uint8_t date)			{currentTime.date = date;}
 void DS1307__setMonth (uint8_t month)		{currentTime.month = month;}
 void DS1307__setYear (uint8_t year)			{currentTime.year = year;}
+
+#endif

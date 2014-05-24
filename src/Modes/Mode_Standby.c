@@ -39,7 +39,8 @@ void Mode_Standby__x10 (void)
 	CLock__getTimeString(&lcdLine_1[15]);
 
 	/* line 2 */
-	strcpy(lcdLine_2, "Temp act:      22'06");
+	strcpy(lcdLine_2, "Temp act:      ");
+	Temperature__getCurrentValueString(&lcdLine_2[15]);
 
 	/* line 4 */
 	strcpy(&lcdLine_4[0], "  <SETUP>  <START>  ");

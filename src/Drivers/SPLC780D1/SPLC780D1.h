@@ -18,6 +18,8 @@
 #include "../AtMega/AtMega.h"
 
 
+#if (LCD_CONTROLLER == LCD_CONTROLLER_SPLC780D1)
+
 void SPLC780D1__init (void);
 void SPLC780D1__sendCommand (char data);
 void SPLC780D1__sendData (char data);
@@ -28,5 +30,6 @@ void SPLC780D1__disableCursor (void);
 void SPLC780D1__setCursor (uint8_t position);
 void SPLC780D1__setCursorToLineCol (uint8_t line, uint8_t col);
 
+#endif
 
 #endif /* SPLC780D1_H_ */

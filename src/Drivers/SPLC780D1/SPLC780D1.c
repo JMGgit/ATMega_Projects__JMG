@@ -8,6 +8,9 @@
 
 #include "SPLC780D1.h"
 
+
+#if (LCD_CONTROLLER == LCD_CONTROLLER_SPLC780D1)
+
 #define DELAY_POWER_ON_MS		15
 #define DELAY_INIT_1_MS			5
 #define DELAY_INIT_2_MS			2
@@ -185,3 +188,5 @@ void SPLC780D1__setCursorToLineCol (uint8_t line, uint8_t col)
 
 	SPLC780D1__setCursor(cursorPos);
 }
+
+#endif

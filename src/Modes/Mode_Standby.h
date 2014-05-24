@@ -13,6 +13,7 @@
 #include "../Buttons/Buttons.h"
 #include "../Lcd/Lcd.h"
 #include "../Clock/Clock.h"
+#include "../Temperature/Temperature.h"
 
 
 void Mode_Standby__init (void);

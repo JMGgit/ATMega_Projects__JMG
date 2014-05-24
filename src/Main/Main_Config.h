@@ -13,6 +13,11 @@
 #define LCD_MATRIX_SIZE_LIN				4
 #define LCD_MATRIX_SIZE_COL				20
 
+/* clock */
+#define CLOCK_TYPE_OFF					1
+#define CLOCK_TYPE_DS1307				2
+#define CLOCK_TYPE						CLOCK_TYPE_DS1307
+
 /* clock sync */
 #define CLOCK_SYNC_OFF					1
 #define CLOCK_SYNC_DCF77				2
@@ -23,6 +28,16 @@
 #define BUTTONS_MULTIPLEX_OFF			1
 #define BUTTONS_MULTIPLEX_HC165			2
 #define BUTTONS_MULTIPLEX				BUTTONS_MULTIPLEX_OFF
+
+/* lcd */
+#define LCD_CONTROLLER_OFF				1
+#define LCD_CONTROLLER_SPLC780D1		2
+#define LCD_CONTROLLER					LCD_CONTROLLER_SPLC780D1
+
+/* temperature sensor */
+#define TEMPERATURE_SENSOR_OFF			1
+#define TEMPERATURE_SENSOR_DS18B20		2
+#define TEMPERATURE_SENSOR				TEMPERATURE_SENSOR_DS18B20
 
 /* measurement */
 #define MAX_MEASUREMENT_POINTS			(2040 * 2 / 3)

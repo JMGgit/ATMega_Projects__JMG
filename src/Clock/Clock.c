@@ -33,6 +33,8 @@ uint8_t Clock__getSyncYear()		{return currentSyncTime.year;}
 
 static void Clock__updateTimeFromRTC (void)
 {
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+
 	DS1307__updateTimeFromRTC();
 
 	currentTime.seconds = DS1307__getSeconds();
@@ -42,6 +44,8 @@ static void Clock__updateTimeFromRTC (void)
 	currentTime.date    = DS1307__getDate();
 	currentTime.month   = DS1307__getMonth();
 	currentTime.year    = DS1307__getYear();
+
+#endif
 }
 
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
@@ -157,12 +161,17 @@ static void Clock__sendLastSyncTimeToRTC (void)
 	DS1307__setMonth(Clock__getSyncMonth());
 	DS1307__setYear(Clock__getSyncYear());
 #endif
+
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 	DS1307__sendTimeToRTC();
+#endif
 }
 
 
 void Clock__incDate (void)
 {
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+
 	if (DS1307__getDate() < 31)
 	{
 		DS1307__setDate(DS1307__getDate() + 1);
@@ -172,11 +181,15 @@ void Clock__incDate (void)
 		DS1307__setDate(0);
 	}
 	DS1307__sendTimeToRTC();
+
+#endif
 }
 
 
 void Clock__incMonth (void)
 {
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+
 	if (DS1307__getMonth() < 12)
 	{
 		DS1307__setMonth(DS1307__getMonth() + 1);
@@ -186,11 +199,15 @@ void Clock__incMonth (void)
 		DS1307__setMonth(0);
 	}
 	DS1307__sendTimeToRTC();
+
+#endif
 }
 
 
 void Clock__incYear (void)
 {
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+
 	if (DS1307__getYear() < 99)
 	{
 		DS1307__setYear(DS1307__getYear() + 1);
@@ -200,11 +217,15 @@ void Clock__incYear (void)
 		DS1307__setYear(0);
 	}
 	DS1307__sendTimeToRTC();
+
+#endif
 }
 
 
 void Clock__incHours (void)
 {
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+
 	if (DS1307__getHours() < 24)
 	{
 		DS1307__setHours(DS1307__getHours() + 1);
@@ -214,11 +235,14 @@ void Clock__incHours (void)
 		DS1307__setHours(0);
 	}
 	DS1307__sendTimeToRTC();
+
+#endif
 }
 
 
 void Clock__incMinutes (void)
 {
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 	if (DS1307__getMinutes() < 59)
 	{
 		DS1307__setMinutes(DS1307__getMinutes() +  1);
@@ -228,6 +252,8 @@ void Clock__incMinutes (void)
 		DS1307__setMinutes(0);
 	}
 	DS1307__sendTimeToRTC();
+
+#endif
 }
 
 

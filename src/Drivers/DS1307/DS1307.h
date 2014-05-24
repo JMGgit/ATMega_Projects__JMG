@@ -13,6 +13,7 @@
 #include "../Drivers_Config.h"
 #include "../AtMega/AtMega.h"
 
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 
 typedef struct
 {
@@ -50,6 +51,6 @@ void DS1307__setYear (uint8_t year);
 
 #define DS1307_ADDRESS		0x68
 
-
+#endif
 
 #endif /* DS1307_H_ */

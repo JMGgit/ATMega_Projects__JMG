@@ -39,14 +39,18 @@ void Lcd__newLine (char* line)
 
 void Lcd__enableCursor (void)
 {
+#if (LCD_CONTROLLER == LCD_CONTROLLER_SPLC780D1)
 	SPLC780D1__enableCursor();
+#endif
 	Lcd__setCursor(0, 0);
 }
 
 
 void Lcd__disableCursor (void)
 {
+#if (LCD_CONTROLLER == LCD_CONTROLLER_SPLC780D1)
 	SPLC780D1__disableCursor();
+#endif
 }
 
 
@@ -69,11 +73,15 @@ void Lcd__x10 (void)
 
 	if ((refreshRequested == TRUE) || (updateCounter == 200))
 	{
+#if (LCD_CONTROLLER == LCD_CONTROLLER_SPLC780D1)
 		SPLC780D1__setCursor(0);
 		SPLC780D1__sendTable(LcdBuffer);
+#endif
 		updateCounter = 0;
 		refreshRequested = FALSE;
+#if (LCD_CONTROLLER == LCD_CONTROLLER_SPLC780D1)
 		SPLC780D1__setCursorToLineCol(cursorLine, cursorCol);
+#endif
 	}
 	else
 	{
