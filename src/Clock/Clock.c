@@ -142,6 +142,7 @@ static void Clock__resetSyncTime (void)
 #endif
 
 
+#if (CLOCK_SYNC != CLOCK_SYNC_OFF)
 static void Clock__sendLastSyncTimeToRTC (void)
 {
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
@@ -166,7 +167,7 @@ static void Clock__sendLastSyncTimeToRTC (void)
 	DS1307__sendTimeToRTC();
 #endif
 }
-
+#endif
 
 void Clock__incDate (void)
 {
@@ -353,79 +354,87 @@ uint8_t Clock__getYear (void)			{return currentTime.year;}
 void CLock__getHourString (char* buffer)
 {
 	uint8_t hours;
+	uint8_t idxBuffer = 0;
 
 	hours = Clock__getHours();
 
 	if (hours >= 10)
 	{
-		itoa(hours, &buffer[0], 10);
+		itoa(hours, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(hours, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(hours, &buffer[idxBuffer++], 10);
 	}
 
-	buffer[2] = ' ';
+	buffer[idxBuffer++] = ' ';
 }
 
 
 void CLock__getMinutesString (char* buffer)
 {
 	uint8_t minutes;
+	uint8_t idxBuffer = 0;
 
 	minutes = Clock__getMinutes();
 
 	if (minutes >= 10)
 	{
-		itoa(minutes, &buffer[0], 10);
+		itoa(minutes, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(minutes, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(minutes, &buffer[idxBuffer++], 10);
 	}
 
-	buffer[2] = ' ';
+	buffer[idxBuffer++] = ' ';
 }
 
 
 void CLock__getTimeString (char* buffer)
 {
 	uint8_t hours, minutes;
+	uint8_t idxBuffer = 0;
 
 	hours = Clock__getHours();
 	minutes = Clock__getMinutes();
 
 	if (hours >= 10)
 	{
-		itoa(hours, &buffer[0], 10);
+		itoa(hours, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(hours, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(hours, &buffer[idxBuffer++], 10);
 	}
+
+	buffer[idxBuffer++] = ':';
 
 	if (minutes >= 10)
 	{
-		itoa(minutes, &buffer[3], 10);
+		itoa(minutes, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[3] = '0';
-		itoa(minutes, &buffer[4], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(minutes, &buffer[idxBuffer++], 10);
 	}
 
-
-	buffer[2] = ':';
-	buffer[5] = ' ';
+	buffer[idxBuffer++] = ' ';
 }
 
 
 void CLock__getTimeWithSecondsString (char* buffer)
 {
 	uint8_t hours, minutes, seconds;
+	uint8_t idxBuffer = 0;
 
 	hours = Clock__getHours();
 	minutes = Clock__getMinutes();
@@ -433,134 +442,151 @@ void CLock__getTimeWithSecondsString (char* buffer)
 
 	if (hours >= 10)
 	{
-		itoa(hours, &buffer[0], 10);
+		itoa(hours, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(hours, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(hours, &buffer[idxBuffer++], 10);
 	}
+
+	buffer[idxBuffer++] = ':';
 
 	if (minutes >= 10)
 	{
-		itoa(minutes, &buffer[3], 10);
+		itoa(minutes, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[3] = '0';
-		itoa(minutes, &buffer[4], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(minutes, &buffer[idxBuffer++], 10);
 	}
+
+	buffer[idxBuffer++] = ':';
 
 	if (seconds >= 10)
 	{
-		itoa(seconds, &buffer[6], 10);
+		itoa(seconds, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[6] = '0';
-		itoa(seconds, &buffer[7], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(seconds, &buffer[idxBuffer++], 10);
 	}
 
-	buffer[2] = ':';
-	buffer[5] = ':';
-	buffer[8] = ' ';
+	buffer[idxBuffer++] = ' ';
 }
 
 
 void CLock__getDateString (char* buffer)
 {
 	uint8_t date;
+	uint8_t idxBuffer = 0;
 
 	date = Clock__getDate();
 
 	if (date >= 10)
 	{
-		itoa(date, &buffer[0], 10);
+		itoa(date, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(date, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(date, &buffer[idxBuffer++], 10);
 	}
 
-	buffer[2] = ' ';
+	buffer[idxBuffer++] = ' ';
 }
 
 
 void CLock__getMonthString (char* buffer)
 {
 	uint8_t month;
+	uint8_t idxBuffer = 0;
 
 	month = Clock__getMonth();
 
 	if (month >= 10)
 	{
-		itoa(month, &buffer[0], 10);
+		itoa(month, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(month, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(month, &buffer[idxBuffer++], 10);
 	}
 
-	buffer[2] = ' ';
+	buffer[idxBuffer++] = ' ';
 }
 
 
 void CLock__getYearString (char* buffer)
 {
 	uint8_t year;
+	uint8_t idxBuffer = 0;
+
 	year = Clock__getYear();
 
 	if (year >= 10)
 	{
-		itoa(year, &buffer[0], 10);
+		itoa(year, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(year, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(year, &buffer[idxBuffer++], 10);
 	}
 
-	buffer[2] = ' ';
+	buffer[idxBuffer++] = ' ';
 }
 
 
 void CLock__getCompleteDateString (char* buffer)
 {
 	uint8_t date, month;
+	uint8_t idxBuffer = 0;
 
 	date = Clock__getDate();
 	month = Clock__getMonth();
 
 	if (date >= 10)
 	{
-		itoa(date, &buffer[0], 10);
+		itoa(date, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(date, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(date, &buffer[idxBuffer++], 10);
 	}
+
+	buffer[idxBuffer++] = '/';
 
 	if (month >= 10)
 	{
-		itoa(month, &buffer[3], 10);
+		itoa(month, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[3] = '0';
-		itoa(month, &buffer[4], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(month, &buffer[idxBuffer++], 10);
 	}
 
-	buffer[2] = '/';
-	buffer[5] = ' ';
+	buffer[idxBuffer++] = ' ';
 }
 
 
 void CLock__getCompleteDateWithYearString (char* buffer)
 {
 	uint8_t date, month, year;
+	uint8_t idxBuffer = 0;
 
 	date = Clock__getDate();
 	month = Clock__getMonth();
@@ -568,35 +594,40 @@ void CLock__getCompleteDateWithYearString (char* buffer)
 
 	if (date >= 10)
 	{
-		itoa(date, &buffer[0], 10);
+		itoa(date, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[0] = '0';
-		itoa(date, &buffer[1], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(date, &buffer[idxBuffer++], 10);
 	}
+
+	buffer[idxBuffer++] = '/';
 
 	if (month >= 10)
 	{
-		itoa(month, &buffer[3], 10);
+		itoa(month, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[3] = '0';
-		itoa(month, &buffer[4], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(month, &buffer[idxBuffer++], 10);
 	}
+
+	buffer[idxBuffer++] = '/';
 
 	if (year >= 10)
 	{
-		itoa(year, &buffer[6], 10);
+		itoa(year, &buffer[idxBuffer++], 10);
+		idxBuffer++;
 	}
 	else
 	{
-		buffer[6] = '0';
-		itoa(year, &buffer[7], 10);
+		buffer[idxBuffer++] = '0';
+		itoa(year, &buffer[idxBuffer++], 10);
 	}
 
-	buffer[2] = '/';
-	buffer[5] = '/';
-	buffer[8] = ' ';
+	buffer[idxBuffer++] = ' ';
 }

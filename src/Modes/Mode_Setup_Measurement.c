@@ -11,10 +11,10 @@
 #define	SEL_UNIT		1
 #define SEL_BACK		2
 
-#define UNIT_SECOND		0
-#define UNIT_MINUTE	1
-#define UNIT_HOUR		2
-#define UNIT_DAY		3
+#define MEASUREMENT_UNIT_SECOND		0
+#define MEASUREMENT_UNIT_MINUTE		1
+#define MEASUREMENT_UNIT_HOUR		2
+#define MEASUREMENT_UNIT_DAY		3
 
 static uint8_t currentSelectedState, previousSelectedState, refresh, interval, unit;
 static uint8_t interval_EEPROM EEMEM = 0;
@@ -65,19 +65,19 @@ void Mode_SetupMeasurement__getIntervalString (char* buffer)
 
 void Mode_SetupMeasurement__getUnitString (char* buffer)
 {
-	if (unit == UNIT_SECOND)
+	if (unit == MEASUREMENT_UNIT_SECOND)
 	{
 		strcpy(&buffer[0], "secs ");
 	}
-	else if (unit == UNIT_MINUTE)
+	else if (unit == MEASUREMENT_UNIT_MINUTE)
 	{
 		strcpy(&buffer[0], "mins ");
 	}
-	else if (unit == UNIT_HOUR)
+	else if (unit == MEASUREMENT_UNIT_HOUR)
 	{
 		strcpy(&buffer[0], "heure");
 	}
-	else if (unit == UNIT_DAY)
+	else if (unit == MEASUREMENT_UNIT_DAY)
 	{
 		strcpy(&buffer[0], "jours");
 	}
@@ -91,19 +91,19 @@ void Mode_SetupMeasurement__getMeasurementTimeString (char* buffer)
 	uint16_t days, hours, minutes;
 	uint8_t idxBuffer = 0;
 
-	if (unit == UNIT_SECOND)
+	if (unit == MEASUREMENT_UNIT_SECOND)
 	{
 		days = (MAX_MEASUREMENT_POINTS * interval) / 86400;
-		hours = (MAX_MEASUREMENT_POINTS * interval)/3600; // (MAX_MEASUREMENT_POINTS * interval) / 3600;// - (days * 86400);
+		hours = (MAX_MEASUREMENT_POINTS * interval)/3600;
 		minutes = ((MAX_MEASUREMENT_POINTS * interval) - (days * 86400) - (hours * 3600)) / 60;
 	}
-	else if (unit == UNIT_MINUTE)
+	else if (unit == MEASUREMENT_UNIT_MINUTE)
 	{
 		days = (MAX_MEASUREMENT_POINTS * interval) / 1440;
 		hours = (MAX_MEASUREMENT_POINTS * interval) / 60 - (days * 24);
 		minutes = (MAX_MEASUREMENT_POINTS * interval) - (days * 1440) - (hours * 60);
 	}
-	else if (unit == UNIT_HOUR)
+	else if (unit == MEASUREMENT_UNIT_HOUR)
 	{
 		days = (MAX_MEASUREMENT_POINTS * interval) / 24;
 		hours = (MAX_MEASUREMENT_POINTS * interval) - (days * 24);
@@ -257,21 +257,21 @@ void Mode_SetupMeasurement__x10 (void)
 
 			if (Buttons__isPressedOnce(&buttonMode))
 			{
-				if (unit == UNIT_SECOND)
+				if (unit == MEASUREMENT_UNIT_SECOND)
 				{
-					unit = UNIT_MINUTE;
+					unit = MEASUREMENT_UNIT_MINUTE;
 				}
-				else if (unit == UNIT_MINUTE)
+				else if (unit == MEASUREMENT_UNIT_MINUTE)
 				{
-					unit = UNIT_HOUR;
+					unit = MEASUREMENT_UNIT_HOUR;
 				}
-				else if (unit == UNIT_HOUR)
+				else if (unit == MEASUREMENT_UNIT_HOUR)
 				{
-					unit = UNIT_DAY;
+					unit = MEASUREMENT_UNIT_DAY;
 				}
 				else
 				{
-					unit = UNIT_SECOND;
+					unit = MEASUREMENT_UNIT_SECOND;
 				}
 
 				refresh = TRUE;

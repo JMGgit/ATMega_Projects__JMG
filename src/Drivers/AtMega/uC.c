@@ -9,7 +9,7 @@
 #include "uC.h"
 
 
-static volatile uint8_t update10ms;
+static uint8_t update10ms;
 
 
 void uC__init (void)

@@ -88,7 +88,7 @@ typedef struct
 #define DCF77_STATUS_PENDING		1
 #define DCF77_STATUS_FAILED			2
 
-#define DCF77_MODE_MAX_TIME			288000	/* 1h */
+#define DCF77_MODE_MAX_TIME			36000	/* 1h */
 /* 16 Mhz -> 28800 */
 /* 20 Mhz -> 36000 */
 

@@ -16,10 +16,9 @@ void DS18B20__init (void)
 }
 
 
-void DS18B20__getCurrentValues (uint8_t *t_int, uint8_t *t_frac)
+uint16_t DS18B20__getCurrentRawValue (void)
 {
-	*t_int = 27;
-	*t_frac = 13;
+	return 0xFFF8;
 }
 
 #endif

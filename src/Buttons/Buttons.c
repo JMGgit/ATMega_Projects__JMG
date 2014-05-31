@@ -114,15 +114,6 @@ void Buttons__x10 (void)
 	Buttons__updateState_USART(buttonUSART, &buttonRight);
 	Buttons__updateState_USART(buttonUSART, &buttonUp);
 	Buttons__updateState_USART(buttonUSART, &buttonDown);
-
-	if (buttonWired != 0)
-	{
-		setHigh(TEST_LED_PORT, TEST_LED_PIN);
-	}
-	else
-	{
-		setLow(TEST_LED_PORT, TEST_LED_PIN);
-	}
 }
 
 

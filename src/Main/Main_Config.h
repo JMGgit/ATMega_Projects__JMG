@@ -40,6 +40,7 @@
 #define TEMPERATURE_SENSOR				TEMPERATURE_SENSOR_DS18B20
 
 /* measurement */
-#define MAX_MEASUREMENT_POINTS			(2040 * 2 / 3)
+/* TODO: configure resolution */
+#define MAX_MEASUREMENT_POINTS			(2040 /2)
 
 #endif /* MAIN_CONFIG_H_ */

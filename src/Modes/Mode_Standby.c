@@ -39,11 +39,11 @@ void Mode_Standby__x10 (void)
 	CLock__getTimeString(&lcdLine_1[15]);
 
 	/* line 2 */
-	strcpy(lcdLine_2, "Temp act:      ");
-	Temperature__getCurrentValueString(&lcdLine_2[15]);
+	strcpy(lcdLine_2, "Temp act:     ");
+	Temperature__getCurrentValueString(&lcdLine_2[14]);
 
 	/* line 4 */
-	strcpy(&lcdLine_4[0], "  <SETUP>  <START>  ");
+	strcpy(&lcdLine_4[0], " <SETUP>   <START>  ");
 
 	Lcd__writeLine(lcdLine_1, 1);
 	Lcd__writeLine(lcdLine_2, 2);
@@ -60,7 +60,7 @@ void Mode_Standby__x10 (void)
 	{
 		case SEL_SETUP:
 		{
-			Lcd__setCursor(4, 4);
+			Lcd__setCursor(4, 3);
 
 			if (	(Buttons__isPressedOnce(&buttonFunc1))
 				||	(Buttons__isPressedOnce(&buttonFunc2))
@@ -74,7 +74,7 @@ void Mode_Standby__x10 (void)
 
 		case SEL_START:
 		{
-			Lcd__setCursor(4, 13);
+			Lcd__setCursor(4, 14);
 
 			if (	(Buttons__isPressedOnce(&buttonFunc2))
 				||	(Buttons__isPressedOnce(&buttonFunc1))
@@ -92,7 +92,6 @@ void Mode_Standby__x10 (void)
 		refresh = TRUE;
 		previousSelectedState = currentSelectedState;
 	}
-
 }
 
 

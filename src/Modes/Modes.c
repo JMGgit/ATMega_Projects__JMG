@@ -22,6 +22,7 @@ void Modes__init (void)
 {
 	Modes__setMode(0xFF);
 	Mode_SetupMeasurement__eepromInit();
+	Mode_Measurement__eepromInit();
 }
 
 
