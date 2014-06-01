@@ -7,12 +7,38 @@
 
 
 #include "Temperature.h"
-
+#include "../Clock/Clock.h" /* TEST */
 
 uint16_t Temperature__getCurrentRawValue (void)
 {
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
-	return DS18B20__getCurrentRawValue();
+	//return DS18B20__getCurrentRawValue();
+	uint16_t test;
+
+	test = 0;
+
+	if ((Clock__getSeconds() / 50) > 0)
+	{
+		test |= 0x08;
+	}
+
+	if (((Clock__getSeconds() % 50) / 25) > 0)
+	{
+		test |= 0x04;
+	}
+
+	if ((((Clock__getSeconds() % 50) % 25) / 12) > 0)
+	{
+		test |= 0x02;
+	}
+
+	if (((((Clock__getSeconds() % 50) % 25) % 12) / 6) > 0)
+	{
+		test |= 0x01;
+	}
+
+	test |= Clock__getMinutes() << 4;
+	return test;
 #else
 	return 0;
 #endif

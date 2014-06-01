@@ -11,14 +11,11 @@
 
 
 #define SEL_STOP		0
-#define	SEL_STATS		1
+#define SEL_PAUSE		1
+#define	SEL_STATS		2
 
-static uint8_t trigger;
-static uint8_t dateCount;
-static uint8_t hourCount;
-static uint8_t minuteCount;
-static uint8_t secondCount;
-static uint8_t currentSelectedState, previousSelectedState, refresh;
+static uint8_t trigger, dateStart, hourStart, minuteStart, secondStart, timeCount, timePrev, currentSelectedState, previousSelectedState, refresh, pause;
+
 
 void Mode_Measurement__eepromInit (void)
 {
@@ -28,66 +25,103 @@ void Mode_Measurement__eepromInit (void)
 void Mode_Measurement__init (void)
 {
 	DataLogger__startMeasure(&Temperature__getCurrentRawValue, &Mode_Measurement__getTrigger);
-	dateCount = Clock__getDate();
-	hourCount = Clock__getHours();
-	minuteCount = Clock__getMinutes();
-	secondCount = Clock__getSeconds();
-	trigger = TRUE;
+
+	dateStart = Clock__getDate();
+	hourStart = Clock__getHours();
+	minuteStart = Clock__getMinutes();
+	secondStart = Clock__getSeconds();
+
+	timeCount = Mode_SetupMeasurement__getInterval();
+
+	if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
+	{
+		timePrev = Clock__getDate();
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
+	{
+		timePrev = Clock__getHours();
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
+	{
+		timePrev = Clock__getMinutes();
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
+	{
+		timePrev = Clock__getSeconds();
+	}
+
+	currentSelectedState = SEL_STATS;
+}
+
+
+static void Mode_Measurement__resume (void)
+{
+	DataLogger__resumeMeasure();
+
+	if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
+	{
+		timePrev = Clock__getDate();
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
+	{
+		timePrev = Clock__getHours();
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
+	{
+		timePrev = Clock__getMinutes();
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
+	{
+		timePrev = Clock__getSeconds();
+	}
+
+	currentSelectedState = SEL_STATS;
 }
 
 
 static void Mode_Measurement__checkTriggers (void)
 {
-	if (		(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
-			&&	(Clock__getDate() != dateCount)
-			&& 	(Clock__getHours() == hourCount)
-			&&	(Clock__getMinutes() == minuteCount)
-			&& (Clock__getSeconds() == secondCount)
-			&&	(		((Clock__getDate() > dateCount) &&  (Clock__getDate() == (dateCount + Mode_SetupMeasurement__getInterval())))
-					||	((Clock__getDate() < dateCount) &&  (((Clock__getDate() + 60) == (dateCount + Mode_SetupMeasurement__getInterval()))))
-			)
-	)
+	if (pause == FALSE)
 	{
-		trigger = TRUE;
-		dateCount = Clock__getDate();
+		if (timeCount == Mode_SetupMeasurement__getInterval())
+		{
+			trigger = TRUE;
+			timeCount = 0;
+		}
+		else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY) && (Clock__getDate() != timePrev)
+				&& 	(Clock__getHours() == hourStart)
+				&&	(Clock__getMinutes() == minuteStart)
+				&& 	(Clock__getSeconds() == secondStart)
+		)
+		{
+			timePrev = Clock__getDate();
+			timeCount++;
+		}
+		else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR) && (Clock__getHours() != timePrev)
+				&&	(Clock__getMinutes() == minuteStart)
+				&& 	(Clock__getSeconds() == secondStart)
+		)
+		{
+			timePrev = Clock__getHours();
+			timeCount++;
+		}
+		else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE) && (Clock__getMinutes() != timePrev)
+				&& 	(Clock__getSeconds() == secondStart)
+		)
+		{
+			timePrev = Clock__getMinutes();
+			timeCount++;
+		}
+		else if ((Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND) && (Clock__getSeconds() != timePrev))
+		{
+			timePrev = Clock__getSeconds();
+			timeCount++;
+		}
 	}
-
-	if (		(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
-			&&	(Clock__getHours() != hourCount)
-			&&	(Clock__getMinutes() == minuteCount)
-			&&	(Clock__getSeconds() == secondCount)
-			&&	(		((Clock__getHours() > hourCount) &&  (Clock__getHours() == (hourCount + Mode_SetupMeasurement__getInterval())))
-					||	((Clock__getHours() < hourCount) &&  (((Clock__getHours() + 60) == (hourCount + Mode_SetupMeasurement__getInterval()))))
-			)
-	)
+	else
 	{
-		trigger = TRUE;
-		hourCount = Clock__getHours();
+		trigger = FALSE;
 	}
-
-	if (		(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
-			&&	(Clock__getMinutes() != minuteCount)
-			&&	(Clock__getSeconds() == secondCount)
-			&&	(		((Clock__getMinutes() > minuteCount) &&  (Clock__getMinutes() == (minuteCount + Mode_SetupMeasurement__getInterval())))
-					||	((Clock__getMinutes() < minuteCount) &&  (((Clock__getMinutes() + 60) == (minuteCount + Mode_SetupMeasurement__getInterval()))))
-			)
-	)
-	{
-		trigger = TRUE;
-		minuteCount = Clock__getMinutes();
-	}
-
-	if (		(Clock__getSeconds() != secondCount)
-			&&	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
-			&&	(		((Clock__getSeconds() > secondCount) &&  (Clock__getSeconds() == (secondCount + Mode_SetupMeasurement__getInterval())))
-					||	((Clock__getSeconds() < secondCount) &&  (((Clock__getSeconds() + 60) == (secondCount + Mode_SetupMeasurement__getInterval()))))
-			)
-	)
-	{
-		trigger = TRUE;
-		secondCount = Clock__getSeconds();
-	}
-
 }
 
 void Mode_Measurement__x10 (void)
@@ -115,10 +149,18 @@ void Mode_Measurement__x10 (void)
 	/* line 3 */
 	CLock__getCompleteDateString(&lcdLine_3[0]);
 	CLock__getTimeWithSecondsString(&lcdLine_3[6]);
-	Temperature__getValueStringFromRaw(DataLogger__getStoredValue(DataLogger__getNumberOfStoredValues() - 1), &lcdLine_3[14]);
+	Temperature__getValueStringFromRaw(DataLogger__getStoredValue(DataLogger__getNumberOfStoredValues()), &lcdLine_3[14]);
 
-	/* line 4 */
-	strcpy(&lcdLine_4[0], " <STOP>     <STATS> ");
+	if (pause == FALSE)
+	{
+		/* line 4 */
+		strcpy(&lcdLine_4[0], "<STOP> <PAUS> <STAT>");
+	}
+	else
+	{
+		/* line 4 */
+		strcpy(&lcdLine_4[0], "       <REPRENDRE> ");
+	}
 
 	Lcd__writeLine(lcdLine_1, 1);
 	Lcd__writeLine(lcdLine_2, 2);
@@ -131,41 +173,80 @@ void Mode_Measurement__x10 (void)
 		refresh = FALSE;
 	}
 
-	switch (currentSelectedState)
+	if (pause == FALSE)
 	{
-		case SEL_STOP:
+		switch (currentSelectedState)
 		{
-			Lcd__setCursor(4, 3);
-
-			if (	(Buttons__isPressedOnce(&buttonFunc1))
-				||	(Buttons__isPressedOnce(&buttonFunc2))
-			)
+			case SEL_STOP:
 			{
-				currentSelectedState = SEL_STATS;
+				Lcd__setCursor(4, 2);
+
+				if (Buttons__isPressedOnce(&buttonFunc1))
+				{
+					currentSelectedState = SEL_STATS;
+				}
+				else if (Buttons__isPressedOnce(&buttonFunc2))
+				{
+					currentSelectedState = SEL_PAUSE;
+				}
+
+				break;
 			}
 
-			break;
+			case SEL_PAUSE:
+			{
+				Lcd__setCursor(4, 9);
+
+				if (Buttons__isPressedOnce(&buttonFunc1))
+				{
+					currentSelectedState = SEL_STOP;
+				}
+				else if (Buttons__isPressedOnce(&buttonFunc2))
+				{
+					currentSelectedState = SEL_STATS;
+				}
+				else if (Buttons__isPressedOnce(&buttonMode))
+				{
+					pause = TRUE;
+					DataLogger__pauseMeasure();
+				}
+
+				break;
+			}
+
+			case SEL_STATS:
+			{
+				Lcd__setCursor(4, 16);
+
+				if (Buttons__isPressedOnce(&buttonFunc1))
+				{
+					currentSelectedState = SEL_PAUSE;
+				}
+				else if (Buttons__isPressedOnce(&buttonFunc2))
+				{
+					currentSelectedState = SEL_STOP;
+				}
+
+				break;
+			}
 		}
 
-		case SEL_STATS:
+		if (previousSelectedState != currentSelectedState)
 		{
-			Lcd__setCursor(4, 14);
-
-			if (	(Buttons__isPressedOnce(&buttonFunc2))
-				||	(Buttons__isPressedOnce(&buttonFunc1))
-			)
-			{
-				currentSelectedState = SEL_STOP;
-			}
-
-			break;
+			refresh = TRUE;
+			previousSelectedState = currentSelectedState;
 		}
 	}
-
-	if (previousSelectedState != currentSelectedState)
+	else
 	{
-		refresh = TRUE;
-		previousSelectedState = currentSelectedState;
+		Lcd__setCursor(4, 9);
+
+		if (Buttons__isPressedOnce(&buttonMode))
+		{
+			pause = FALSE;
+			Mode_Measurement__resume();
+		}
+
 	}
 }
 

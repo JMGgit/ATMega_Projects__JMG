@@ -12,7 +12,7 @@
 
 #define DL_MODE__IDLE				1
 #define DL_MODE__MEASUREMENT		2
-#define DL_MODE__STOPPED	3
+#define DL_MODE__PAUSE	3
 
 static uint16_t dataLog[MAX_MEASUREMENT_POINTS];
 
@@ -47,7 +47,7 @@ void DataLogger__x10 (void)
 
 				if (dataLogIt >= MAX_MEASUREMENT_POINTS)
 				{
-					mode = DL_MODE__STOPPED;
+					mode = DL_MODE__PAUSE;
 				}
 
 				dataLogIt++;
@@ -58,7 +58,7 @@ void DataLogger__x10 (void)
 			break;
 		}
 
-		case DL_MODE__STOPPED:
+		case DL_MODE__PAUSE:
 		{
 			/* nothing to do */
 			break;
@@ -69,7 +69,7 @@ void DataLogger__x10 (void)
 
 void DataLogger__startMeasure (uint16_t (*getValue)(), uint8_t (*trigger)())
 {
-	if ((mode == DL_MODE__IDLE) || (mode == DL_MODE__STOPPED))
+	if ((mode == DL_MODE__IDLE) || (mode == DL_MODE__PAUSE))
 	{
 		mode = DL_MODE__MEASUREMENT;
 
@@ -84,14 +84,23 @@ void DataLogger__stopMeasure (void)
 {
 	if (mode == DL_MODE__MEASUREMENT)
 	{
-		mode = DL_MODE__STOPPED;
+		mode = DL_MODE__PAUSE;
+	}
+}
+
+
+void DataLogger__pauseMeasure (void)
+{
+	if (mode == DL_MODE__MEASUREMENT)
+	{
+		mode = DL_MODE__PAUSE;
 	}
 }
 
 
 void DataLogger__resumeMeasure (void)
 {
-	if (mode == DL_MODE__STOPPED)
+	if (mode == DL_MODE__PAUSE)
 	{
 		mode = DL_MODE__MEASUREMENT;
 	}
@@ -106,5 +115,6 @@ uint16_t DataLogger__getNumberOfStoredValues (void)
 
 uint16_t DataLogger__getStoredValue (uint16_t index)
 {
-	return (dataLog[index]);
+	/* index: [1 .. DataLogger__getNumberOfStoredValues] */
+	return (dataLog[index - 1]);
 }

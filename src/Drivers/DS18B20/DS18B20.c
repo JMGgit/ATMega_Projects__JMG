@@ -18,7 +18,7 @@ void DS18B20__init (void)
 
 uint16_t DS18B20__getCurrentRawValue (void)
 {
-	return 0xFFF8;
+	return 0x191;
 }
 
 #endif
