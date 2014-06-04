@@ -15,10 +15,10 @@
 #include "../Clock/Clock.h"
 
 
-#define MEASUREMENT_UNIT_SECOND		0
-#define MEASUREMENT_UNIT_MINUTE		1
-#define MEASUREMENT_UNIT_HOUR		2
-#define MEASUREMENT_UNIT_DAY		3
+#define MEASUREMENT_UNIT_SECOND		1
+#define MEASUREMENT_UNIT_MINUTE		2
+#define MEASUREMENT_UNIT_HOUR		3
+#define MEASUREMENT_UNIT_DAY		4
 
 
 void Mode_SetupMeasurement__init (void);

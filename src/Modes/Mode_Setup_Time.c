@@ -8,12 +8,12 @@
 #include "Mode_Setup_Time.h"
 #include "Modes.h"
 
-#define SEL_DAY				0
-#define SEL_MONTH			1
-#define SEL_YEAR			2
-#define SEL_HOUR			3
-#define SEL_MIN				4
-#define SEL_BACK			5
+#define SEL_DAY				1
+#define SEL_MONTH			2
+#define SEL_YEAR			3
+#define SEL_HOUR			4
+#define SEL_MIN				5
+#define SEL_BACK			6
 
 static uint8_t currentSelectedState, previousSelectedState, refresh;
 

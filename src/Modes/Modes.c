@@ -9,20 +9,83 @@
 #include "Modes.h"
 
 
-static Mode_t currentMode, previousMode;
+static uint8_t currentMode;
+static uint8_t previousMode;
+uint8_t mode_EEPROM EEMEM;
 
 
-void Modes__setMode (Mode_t mode)
+void Modes__setMode (uint8_t mode)
 {
 	currentMode = mode;
+}
+
+static void Modes__eepromInit (void)
+{
+	currentMode = eeprom_read_byte(&mode_EEPROM);
+	Mode_SetupMeasurement__eepromInit();
+	Mode_Measurement__eepromInit();
+
+	if (currentMode == 0xFF)
+	{
+		currentMode = MODE__STANDBY;
+	}
 }
 
 
 void Modes__init (void)
 {
-	Modes__setMode(0xFF);
-	Mode_SetupMeasurement__eepromInit();
-	Mode_Measurement__eepromInit();
+	Modes__eepromInit();
+
+	switch (currentMode)
+	{
+		case MODE__STANDBY:
+		{
+			Mode_Standby__init();
+			break;
+		}
+
+		case MODE__SETUP:
+		{
+			Mode_Setup__init();
+			break;
+		}
+
+		case MODE__SETUP_TIME:
+		{
+			Mode_SetupTime__init();
+			break;
+		}
+
+		case MODE__SETUP_MEASUREMENT:
+		{
+			Mode_SetupMeasurement__init();
+			break;
+		}
+
+		case MODE__MEASUREMENT_START:
+		{
+			Mode_MeasurementStart__init();
+			break;
+		}
+
+		case MODE__MEASUREMENT:
+		{
+			Lcd__enableCursor();
+			break;
+		}
+
+		case MODE__MEASUREMENT_STATS:
+		{
+			Mode_MeasurementStats__init();
+			break;
+		}
+	}
+}
+
+
+static void Mode__eepromStorage (void)
+{
+	eeprom_update_byte(&mode_EEPROM, currentMode);
 }
 
 
@@ -164,4 +227,5 @@ void Modes__x10 (void)
 		}
 	}
 
+	Mode__eepromStorage();
 }

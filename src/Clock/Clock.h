@@ -49,10 +49,12 @@ void Clock__incMinutes (void);
 void CLock__getHourString  (char* buffer);
 void CLock__getMinutesString  (char* buffer);
 void CLock__getTimeString  (char* buffer);
+void CLock__convertTimeWithSecondsToString (uint8_t hours, uint8_t minutes, uint8_t seconds, char* buffer);
 void CLock__getTimeWithSecondsString  (char* buffer);
 void CLock__getDateString  (char* buffer);
 void CLock__getMonthString  (char* buffer);
 void CLock__getYearString  (char* buffer);
+void CLock__convertDateToString (uint8_t date, uint8_t month, char *buffer);
 void CLock__getCompleteDateString (char* buffer);
 void CLock__getCompleteDateWithYearString (char* buffer);
 

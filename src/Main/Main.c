@@ -14,8 +14,8 @@ int main (void)
 	Drivers__init();
 	Buttons__init();
 	Clock__init();
-	Modes__init();
 	Lcd__init();
+	Modes__init();
 
 	setOutput(TEST_LED_DDR, TEST_LED_PIN);
 

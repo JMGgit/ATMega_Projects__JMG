@@ -431,14 +431,9 @@ void CLock__getTimeString (char* buffer)
 }
 
 
-void CLock__getTimeWithSecondsString (char* buffer)
+void CLock__convertTimeWithSecondsToString (uint8_t hours, uint8_t minutes, uint8_t seconds, char* buffer)
 {
-	uint8_t hours, minutes, seconds;
 	uint8_t idxBuffer = 0;
-
-	hours = Clock__getHours();
-	minutes = Clock__getMinutes();
-	seconds = Clock__getSeconds();
 
 	if (hours >= 10)
 	{
@@ -478,6 +473,12 @@ void CLock__getTimeWithSecondsString (char* buffer)
 	}
 
 	buffer[idxBuffer++] = ' ';
+}
+
+
+void CLock__getTimeWithSecondsString (char* buffer)
+{
+	CLock__convertTimeWithSecondsToString(Clock__getHours(), Clock__getMinutes(), Clock__getSeconds(), buffer);
 }
 
 
@@ -547,13 +548,9 @@ void CLock__getYearString (char* buffer)
 }
 
 
-void CLock__getCompleteDateString (char* buffer)
+void CLock__convertDateToString (uint8_t date, uint8_t month, char *buffer)
 {
-	uint8_t date, month;
 	uint8_t idxBuffer = 0;
-
-	date = Clock__getDate();
-	month = Clock__getMonth();
 
 	if (date >= 10)
 	{
@@ -580,6 +577,12 @@ void CLock__getCompleteDateString (char* buffer)
 	}
 
 	buffer[idxBuffer++] = ' ';
+}
+
+
+void CLock__getCompleteDateString (char* buffer)
+{
+	CLock__convertDateToString(Clock__getDate(), Clock__getMonth(), buffer);
 }
 
 

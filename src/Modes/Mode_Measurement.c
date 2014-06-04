@@ -10,22 +10,67 @@
 #include "Mode_Setup_Measurement.h"
 
 
-#define SEL_STOP		0
-#define SEL_PAUSE		1
-#define	SEL_STATS		2
+#define SEL_STOP		1
+#define SEL_PAUSE		2
+#define	SEL_STATS		3
 
-static uint8_t trigger, dateStart, hourStart, minuteStart, secondStart, timeCount, timePrev, currentSelectedState, previousSelectedState, refresh, pause;
+static uint8_t trigger;
+static uint8_t monthStart;
+static uint8_t dateStart;
+static uint8_t hourStart;
+static uint8_t minuteStart;
+static uint8_t secondStart;
+static uint8_t timeCount;
+static uint8_t timePrev;
+static uint8_t currentSelectedState;
+static uint8_t previousSelectedState;
+static uint8_t refresh;
+static uint8_t mesPause;
+uint8_t monthStart_EEPROM EEMEM;
+uint8_t dateStart_EEPROM EEMEM;
+uint8_t hourStart_EEPROM EEMEM;
+uint8_t minuteStart_EEPROM EEMEM;
+uint8_t secondStart_EEPROM EEMEM;
+uint8_t timeCount_EEPROM EEMEM;
+uint8_t mesPause_EEPROM EEMEM;
 
 
 void Mode_Measurement__eepromInit (void)
 {
 	DataLogger__eepromInit();
+
+	monthStart = eeprom_read_byte(&monthStart_EEPROM);
+	dateStart = eeprom_read_byte(&dateStart_EEPROM);
+	hourStart = eeprom_read_byte(&hourStart_EEPROM);
+	minuteStart = eeprom_read_byte(&minuteStart_EEPROM);
+	secondStart = eeprom_read_byte(&secondStart_EEPROM);
+	timeCount = eeprom_read_byte(&timeCount_EEPROM);
+	mesPause = eeprom_read_byte(&mesPause_EEPROM);
+
+	if (mesPause == 0xFF)
+	{
+		mesPause = 0;
+	}
 }
+
+
+static void Mode_Measurement__eepromStorage (void)
+{
+	eeprom_update_byte(&monthStart_EEPROM, monthStart);
+	eeprom_update_byte(&dateStart_EEPROM, dateStart);
+	eeprom_update_byte(&hourStart_EEPROM, hourStart);
+	eeprom_update_byte(&minuteStart_EEPROM, minuteStart);
+	eeprom_update_byte(&secondStart_EEPROM, secondStart);
+	eeprom_update_byte(&timeCount_EEPROM, timeCount);
+	eeprom_update_byte(&mesPause_EEPROM, mesPause);
+}
+
 
 void Mode_Measurement__init (void)
 {
 	DataLogger__startMeasure(&Temperature__getCurrentRawValue, &Mode_Measurement__getTrigger);
 
+	monthStart = Clock__getMonth();
 	dateStart = Clock__getDate();
 	hourStart = Clock__getHours();
 	minuteStart = Clock__getMinutes();
@@ -50,6 +95,7 @@ void Mode_Measurement__init (void)
 		timePrev = Clock__getSeconds();
 	}
 
+	Lcd__enableCursor();
 	currentSelectedState = SEL_STATS;
 }
 
@@ -75,13 +121,14 @@ static void Mode_Measurement__resume (void)
 		timePrev = Clock__getSeconds();
 	}
 
-	currentSelectedState = SEL_STATS;
+	trigger = TRUE;
+	refresh = TRUE;
 }
 
 
 static void Mode_Measurement__checkTriggers (void)
 {
-	if (pause == FALSE)
+	if (mesPause == FALSE)
 	{
 		if (timeCount == Mode_SetupMeasurement__getInterval())
 		{
@@ -126,6 +173,8 @@ static void Mode_Measurement__checkTriggers (void)
 
 void Mode_Measurement__x10 (void)
 {
+	uint8_t lastMesDate = 0, lastMesMonth = 0, lastMesHour = 0, lastMesMin = 0, lastMesSec = 0;
+
 	Mode_Measurement__checkTriggers();
 	DataLogger__x10();
 
@@ -147,11 +196,44 @@ void Mode_Measurement__x10 (void)
 	strcpy(lcdLine_2, "Mesure precedente:   ");
 
 	/* line 3 */
-	CLock__getCompleteDateString(&lcdLine_3[0]);
-	CLock__getTimeWithSecondsString(&lcdLine_3[6]);
+	if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
+	{
+		lastMesMonth = (monthStart + (dateStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 30) % 12;
+		lastMesDate = (dateStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) % 30;
+		lastMesHour = hourStart;
+		lastMesMin = minuteStart;
+		lastMesSec = secondStart;
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
+	{
+		lastMesMonth = (monthStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
+		lastMesDate = (dateStart + (hourStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 24) % 30;
+		lastMesHour = (hourStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) % 24;
+		lastMesMin = minuteStart;
+		lastMesSec = secondStart;
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
+	{
+		lastMesMonth = (monthStart + (minuteStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 43200) % 60;
+		lastMesDate = (dateStart + (minuteStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 1440) % 30;
+		lastMesHour = (hourStart + (minuteStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 60) % 24;
+		lastMesMin = (minuteStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) % 60;
+		lastMesSec = secondStart;
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
+	{
+		lastMesMonth = (monthStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
+		lastMesDate = (dateStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 86400) % 30;
+		lastMesHour = (hourStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 3600) % 24;
+		lastMesMin = (minuteStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 60) % 60;
+		lastMesSec = (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) % 60;
+	}
+
+	CLock__convertDateToString(lastMesDate, lastMesMonth, &lcdLine_3[0]);
+	CLock__convertTimeWithSecondsToString(lastMesHour, lastMesMin, lastMesSec, &lcdLine_3[6]);
 	Temperature__getValueStringFromRaw(DataLogger__getStoredValue(DataLogger__getNumberOfStoredValues()), &lcdLine_3[14]);
 
-	if (pause == FALSE)
+	if (mesPause == FALSE)
 	{
 		/* line 4 */
 		strcpy(&lcdLine_4[0], "<STOP> <PAUS> <STAT>");
@@ -159,7 +241,7 @@ void Mode_Measurement__x10 (void)
 	else
 	{
 		/* line 4 */
-		strcpy(&lcdLine_4[0], "       <REPRENDRE> ");
+		strcpy(&lcdLine_4[0], "       <REPRENDRE>  ");
 	}
 
 	Lcd__writeLine(lcdLine_1, 1);
@@ -173,7 +255,7 @@ void Mode_Measurement__x10 (void)
 		refresh = FALSE;
 	}
 
-	if (pause == FALSE)
+	if (mesPause == FALSE)
 	{
 		switch (currentSelectedState)
 		{
@@ -189,7 +271,10 @@ void Mode_Measurement__x10 (void)
 				{
 					currentSelectedState = SEL_PAUSE;
 				}
-
+				else if (Buttons__isPressedOnce(&buttonMode))
+				{
+					DataLogger__stopMeasure();
+				}
 				break;
 			}
 
@@ -207,7 +292,8 @@ void Mode_Measurement__x10 (void)
 				}
 				else if (Buttons__isPressedOnce(&buttonMode))
 				{
-					pause = TRUE;
+					mesPause = TRUE;
+					refresh = TRUE;
 					DataLogger__pauseMeasure();
 				}
 
@@ -243,11 +329,12 @@ void Mode_Measurement__x10 (void)
 
 		if (Buttons__isPressedOnce(&buttonMode))
 		{
-			pause = FALSE;
+			mesPause = FALSE;
 			Mode_Measurement__resume();
 		}
-
 	}
+
+	Mode_Measurement__eepromStorage();
 }
 
 

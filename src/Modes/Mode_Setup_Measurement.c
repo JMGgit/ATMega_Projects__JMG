@@ -7,18 +7,31 @@
 
 #include "Mode_Setup_Measurement.h"
 
-#define SEL_INTERVAL	0
-#define	SEL_UNIT		1
-#define SEL_BACK		2
+#define SEL_INTERVAL	1
+#define	SEL_UNIT		2
+#define SEL_BACK		3
 
-#define MEASUREMENT_UNIT_SECOND		0
-#define MEASUREMENT_UNIT_MINUTE		1
-#define MEASUREMENT_UNIT_HOUR		2
-#define MEASUREMENT_UNIT_DAY		3
 
 static uint8_t currentSelectedState, previousSelectedState, refresh, interval, unit;
-static uint8_t interval_EEPROM EEMEM = 0;
-static uint8_t unit_EEPROM EEMEM = 0;
+uint8_t interval_EEPROM EEMEM;
+uint8_t unit_EEPROM EEMEM;
+
+
+void Mode_SetupMeasurement__eepromInit(void)
+{
+	interval = eeprom_read_byte(&interval_EEPROM);
+	unit = eeprom_read_byte(&unit_EEPROM);
+
+	if (interval == 0xFF)
+	{
+		interval = 1;
+	}
+
+	if (unit == 0xFF)
+	{
+		unit = MEASUREMENT_UNIT_SECOND;
+	}
+}
 
 
 void Mode_SetupMeasurement__init (void)
@@ -26,14 +39,6 @@ void Mode_SetupMeasurement__init (void)
 	Lcd__enableCursor();
 	currentSelectedState = SEL_INTERVAL;
 	previousSelectedState = 0xFF;
-	Mode_SetupMeasurement__eepromInit();
-}
-
-
-void Mode_SetupMeasurement__eepromInit(void)
-{
-	interval = eeprom_read_byte(&interval_EEPROM);
-	unit = eeprom_read_byte(&unit_EEPROM);
 }
 
 
@@ -313,6 +318,8 @@ void Mode_SetupMeasurement__x10 (void)
 		refresh = TRUE;
 		previousSelectedState = currentSelectedState;
 	}
+
+	Mode_SetupMeasurement__eepromStorage();
 }
 
 uint8_t Modes__setupMeasurementToSetup (void)
@@ -321,7 +328,6 @@ uint8_t Modes__setupMeasurementToSetup (void)
 
 	if ((currentSelectedState == SEL_BACK) && (Buttons__isPressedOnce(&buttonMode)))
 	{
-		Mode_SetupMeasurement__eepromStorage();
 		retVal = TRUE;
 	}
 

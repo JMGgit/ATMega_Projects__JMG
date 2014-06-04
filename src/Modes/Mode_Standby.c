@@ -9,8 +9,8 @@
 #include "Mode_Standby.h"
 
 
-#define SEL_SETUP		0
-#define	SEL_START		1
+#define SEL_SETUP		1
+#define	SEL_START		2
 
 static uint8_t currentSelectedState, previousSelectedState, refresh;
 
@@ -74,7 +74,7 @@ void Mode_Standby__x10 (void)
 
 		case SEL_START:
 		{
-			Lcd__setCursor(4, 14);
+			Lcd__setCursor(4, 13);
 
 			if (	(Buttons__isPressedOnce(&buttonFunc2))
 				||	(Buttons__isPressedOnce(&buttonFunc1))

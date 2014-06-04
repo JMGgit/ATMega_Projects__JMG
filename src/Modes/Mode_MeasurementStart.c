@@ -10,8 +10,8 @@
 #include "Mode_Setup_Measurement.h"
 
 
-#define SEL_BACK			0
-#define SEL_START			1
+#define SEL_BACK			1
+#define SEL_START			2
 
 static uint8_t currentSelectedState, previousSelectedState, refresh;
 

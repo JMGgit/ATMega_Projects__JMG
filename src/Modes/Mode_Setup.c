@@ -9,9 +9,9 @@
 #include "Mode_Setup.h"
 #include "Modes.h"
 
-#define SEL_CLOCK			0
-#define	SEL_MEASUREMENT		1
-#define SEL_BACK			2
+#define SEL_CLOCK			1
+#define	SEL_MEASUREMENT		2
+#define SEL_BACK			3
 
 static uint8_t currentSelectedState, previousSelectedState;
 

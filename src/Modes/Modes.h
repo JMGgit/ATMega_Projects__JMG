@@ -17,18 +17,16 @@
 #include "Mode_Setup_Time.h"
 #include "Mode_Setup_Measurement.h"
 #include "Mode_Standby.h"
+#include "../Lcd/Lcd.h"
 
 
-typedef enum
-{
-	MODE__STANDBY = 0,
-	MODE__SETUP,
-	MODE__SETUP_TIME,
-	MODE__SETUP_MEASUREMENT,
-	MODE__MEASUREMENT_START,
-	MODE__MEASUREMENT,
-	MODE__MEASUREMENT_STATS,
-} Mode_t;
+#define	MODE__STANDBY				1
+#define MODE__SETUP					2
+#define	MODE__SETUP_TIME			3
+#define	MODE__SETUP_MEASUREMENT		4
+#define	MODE__MEASUREMENT_START		5
+#define	MODE__MEASUREMENT			6
+#define	MODE__MEASUREMENT_STATS		7
 
 
 /* public functions */
