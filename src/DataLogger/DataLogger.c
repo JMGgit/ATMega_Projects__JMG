@@ -7,24 +7,28 @@
 
 
 #include "DataLogger.h"
-#include "../Modes/Mode_Measurement.h"
+#include "../Modes/Mode_Setup_Measurement.h"
 
 
 #define DL_MODE__IDLE				1
 #define DL_MODE__MEASUREMENT		2
 
 
+static uint8_t timeCount;
+static uint8_t timePrev;
+static measurementInfos_t dataLogMeasurementInfos[DATA_LOGGER_MEASURES_NB];
 static uint16_t dataLog[MAX_MEASUREMENT_POINTS];
-uint16_t dataLog_EEPROM[MAX_MEASUREMENT_POINTS] EEMEM;
 static uint8_t mode;
 static uint16_t (*getCurrentData)();
-static uint8_t (*getTrigger)();
 static uint16_t dataLogIt;
 static uint16_t dataLogIndexTable[DATA_LOGGER_MEASURES_NB];
 static uint8_t mesIndex;
-uint16_t dataLogIt_EEPROM EEMEM;
+
 uint8_t mesIndex_EEPROM EEMEM;
+uint16_t dataLogIt_EEPROM EEMEM;
+measurementInfos_t dataLogMeasurementInfos_EEPROM[DATA_LOGGER_MEASURES_NB] EEMEM;
 uint16_t dataLogIndexTable_EEPROM[DATA_LOGGER_MEASURES_NB] EEMEM;
+uint16_t dataLog_EEPROM[MAX_MEASUREMENT_POINTS] EEMEM;
 
 
 void DataLogger__eepromInit (void)
@@ -37,6 +41,7 @@ void DataLogger__eepromInit (void)
 	{
 		eeprom_read_block(dataLog, &dataLog_EEPROM, 2 * dataLogIt);
 		eeprom_read_block(dataLogIndexTable, &dataLogIndexTable_EEPROM, 2 * DATA_LOGGER_MEASURES_NB);
+		eeprom_read_block(dataLogMeasurementInfos, &dataLogMeasurementInfos_EEPROM, sizeof(measurementInfos_t) * DATA_LOGGER_MEASURES_NB);
 	}
 	else
 	{
@@ -52,6 +57,50 @@ static void DataLogger__eepromStorage (void)
 	eeprom_update_block(dataLog, &dataLog_EEPROM, 2 * dataLogIt);
 	eeprom_update_byte(&mesIndex_EEPROM, mesIndex);
 	eeprom_update_block(dataLogIndexTable, &dataLogIndexTable_EEPROM, 2 * DATA_LOGGER_MEASURES_NB);
+	eeprom_update_block(dataLogMeasurementInfos, &dataLogMeasurementInfos_EEPROM, sizeof(measurementInfos_t) * DATA_LOGGER_MEASURES_NB);
+}
+
+
+static uint8_t DataLogger__getTrigger (void)
+{
+	uint8_t trigger = FALSE;
+
+	if (timeCount == Mode_SetupMeasurement__getInterval())
+	{
+		trigger = TRUE;
+		timeCount = 0;
+	}
+	else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY) && (Clock__getDate() != timePrev)
+			&& 	(Clock__getHours() == dataLogMeasurementInfos[mesIndex - 1].hourStart)
+			&&	(Clock__getMinutes() == dataLogMeasurementInfos[mesIndex - 1].minuteStart)
+			&& 	(Clock__getSeconds() == dataLogMeasurementInfos[mesIndex - 1].secondStart)
+	)
+	{
+		timePrev = Clock__getDate();
+		timeCount++;
+	}
+	else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR) && (Clock__getHours() != timePrev)
+			&&	(Clock__getMinutes() == dataLogMeasurementInfos[mesIndex - 1].minuteStart)
+			&& 	(Clock__getSeconds() == dataLogMeasurementInfos[mesIndex - 1].secondStart)
+	)
+	{
+		timePrev = Clock__getHours();
+		timeCount++;
+	}
+	else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE) && (Clock__getMinutes() != timePrev)
+			&& 	(Clock__getSeconds() == dataLogMeasurementInfos[mesIndex - 1].secondStart)
+	)
+	{
+		timePrev = Clock__getMinutes();
+		timeCount++;
+	}
+	else if ((Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND) && (Clock__getSeconds() != timePrev))
+	{
+		timePrev = Clock__getSeconds();
+		timeCount++;
+	}
+
+	return trigger;
 }
 
 
@@ -67,11 +116,11 @@ void DataLogger__x10 (void)
 
 		case DL_MODE__MEASUREMENT:
 		{
-			if (getTrigger() == TRUE)
+			if (DataLogger__getTrigger() == TRUE)
 			{
 				dataLog[dataLogIt] = getCurrentData();
 
-				if (dataLogIt >= MAX_MEASUREMENT_POINTS)
+				if ((dataLogIt >= MAX_MEASUREMENT_POINTS) || (mesIndex >= DATA_LOGGER_MEASURES_NB))
 				{
 					mode = DL_MODE__IDLE;
 				}
@@ -89,15 +138,39 @@ void DataLogger__x10 (void)
 }
 
 
-void DataLogger__startMeasure (uint16_t (*getValue)(), uint8_t (*trigger)())
+void DataLogger__startMeasure (uint16_t (*getValue)())
 {
 	if (mesIndex < DATA_LOGGER_MEASURES_NB)
 	{
 		mode = DL_MODE__MEASUREMENT;
 		getCurrentData = getValue;
-		getTrigger = trigger;
+
 		dataLogIndexTable[mesIndex] = dataLogIt;
+		dataLogMeasurementInfos[mesIndex].monthStart = Clock__getMonth();
+		dataLogMeasurementInfos[mesIndex].dateStart = Clock__getDate();
+		dataLogMeasurementInfos[mesIndex].hourStart = Clock__getHours();
+		dataLogMeasurementInfos[mesIndex].minuteStart = Clock__getMinutes();
+		dataLogMeasurementInfos[mesIndex].secondStart = Clock__getSeconds();
 		mesIndex++;
+
+		timeCount = Mode_SetupMeasurement__getInterval();
+
+		if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
+		{
+			timePrev = Clock__getDate();
+		}
+		else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
+		{
+			timePrev = Clock__getHours();
+		}
+		else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
+		{
+			timePrev = Clock__getMinutes();
+		}
+		else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
+		{
+			timePrev = Clock__getSeconds();
+		}
 	}
 }
 
@@ -131,4 +204,43 @@ uint16_t DataLogger__getStoredValue (uint16_t index)
 {
 	/* index: [1 .. DataLogger__getNumberOfStoredValues] */
 	return (dataLog[index - 1]);
+}
+
+
+void DataLogger__getLastValueWithTime (uint8_t *lastMesMonth, uint8_t *lastMesDate, uint8_t *lastMesHour, uint8_t *lastMesMin, uint8_t *lastMesSec, uint16_t *lastData)
+{
+	if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
+	{
+		*lastMesMonth = (dataLogMeasurementInfos[mesIndex - 1].monthStart + (dataLogMeasurementInfos[mesIndex - 1].dateStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 30) % 12;
+		*lastMesDate = (dataLogMeasurementInfos[mesIndex - 1].dateStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) % 30;
+		*lastMesHour = dataLogMeasurementInfos[mesIndex - 1].hourStart;
+		*lastMesMin = dataLogMeasurementInfos[mesIndex - 1].minuteStart;
+		*lastMesSec = dataLogMeasurementInfos[mesIndex - 1].secondStart;
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
+	{
+		*lastMesMonth = (dataLogMeasurementInfos[mesIndex - 1].monthStart + (dataLogMeasurementInfos[mesIndex - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
+		*lastMesDate = (dataLogMeasurementInfos[mesIndex - 1].dateStart + (dataLogMeasurementInfos[mesIndex - 1].hourStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 24) % 30;
+		*lastMesHour = (dataLogMeasurementInfos[mesIndex - 1].hourStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) % 24;
+		*lastMesMin = dataLogMeasurementInfos[mesIndex - 1].minuteStart;
+		*lastMesSec = dataLogMeasurementInfos[mesIndex - 1].secondStart;
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
+	{
+		*lastMesMonth = (dataLogMeasurementInfos[mesIndex - 1].monthStart + (dataLogMeasurementInfos[mesIndex - 1].minuteStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 43200) % 60;
+		*lastMesDate = (dataLogMeasurementInfos[mesIndex - 1].dateStart + (dataLogMeasurementInfos[mesIndex - 1].minuteStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 1440) % 30;
+		*lastMesHour = (dataLogMeasurementInfos[mesIndex - 1].hourStart + (dataLogMeasurementInfos[mesIndex - 1].minuteStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 60) % 24;
+		*lastMesMin = (dataLogMeasurementInfos[mesIndex - 1].minuteStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) % 60;
+		*lastMesSec = dataLogMeasurementInfos[mesIndex - 1].secondStart;
+	}
+	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
+	{
+		*lastMesMonth = (dataLogMeasurementInfos[mesIndex - 1].monthStart + (dataLogMeasurementInfos[mesIndex - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
+		*lastMesDate = (dataLogMeasurementInfos[mesIndex - 1].dateStart + (dataLogMeasurementInfos[mesIndex - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 86400) % 30;
+		*lastMesHour = (dataLogMeasurementInfos[mesIndex - 1].hourStart + (dataLogMeasurementInfos[mesIndex - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 3600) % 24;
+		*lastMesMin = (dataLogMeasurementInfos[mesIndex - 1].minuteStart + (dataLogMeasurementInfos[mesIndex - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 60) % 60;
+		*lastMesSec = (dataLogMeasurementInfos[mesIndex - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(mesIndex - 1) - 1) * Mode_SetupMeasurement__getInterval())) % 60;
+	}
+
+	*lastData = DataLogger__getStoredValue(DataLogger__getNumberOfStoredValues());
 }
