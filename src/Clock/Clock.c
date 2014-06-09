@@ -290,6 +290,7 @@ static uint8_t Clock__updateSyncSignal (void)
 void Clock__init (void)
 {
 	setOutput(CLOCK_LED_DDR, CLOCK_LED_PIN);
+	Clock__x10(); /* update time */
 }
 
 

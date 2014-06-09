@@ -41,6 +41,6 @@
 
 /* measurement */
 /* TODO: configure resolution */
-#define MAX_MEASUREMENT_POINTS			(2000 /2)
+#define MAX_MEASUREMENT_POINTS			(1950 /2)
 
 #endif /* MAIN_CONFIG_H_ */

@@ -70,7 +70,7 @@ void Modes__init (void)
 
 		case MODE__MEASUREMENT:
 		{
-			Lcd__enableCursor();
+			Mode_Measurement__init();
 			break;
 		}
 

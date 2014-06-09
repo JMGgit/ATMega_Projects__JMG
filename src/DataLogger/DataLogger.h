@@ -14,13 +14,16 @@
 #include "../Drivers/Drivers.h"
 
 
+#define DATA_LOGGER_MEASURES_NB		10
+
 void DataLogger__eepromInit (void);
 void DataLogger__x10 (void);
 void DataLogger__startMeasure (uint16_t (*getValue)(), uint8_t (*trigger)());
 void DataLogger__stopMeasure (void);
-void DataLogger__pauseMeasure (void);
-void DataLogger__resumeMeasure (void);
 uint16_t DataLogger__getNumberOfStoredValues (void);
 uint16_t DataLogger__getStoredValue (uint16_t index);
+uint16_t DataLogger__getNumberOfStoredValuesOfMeasure (uint8_t measureNumber);
+uint16_t DataLogger__getStoredValueOfMeasure (uint8_t measureNumber, uint16_t index);
+
 
 #endif /* DATALOGGER_H_ */

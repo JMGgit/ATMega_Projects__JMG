@@ -11,58 +11,48 @@
 
 
 #define SEL_STOP		1
-#define SEL_PAUSE		2
-#define	SEL_STATS		3
+#define	SEL_STATS		2
 
+#define MEASUREMENT_NB	10
+
+typedef struct
+{
+	uint8_t monthStart;
+	uint8_t dateStart;
+	uint8_t hourStart;
+	uint8_t minuteStart;
+	uint8_t secondStart;
+} measurementInfos_t;
+
+static measurementInfos_t measurementInfos[MEASUREMENT_NB];
 static uint8_t trigger;
-static uint8_t monthStart;
-static uint8_t dateStart;
-static uint8_t hourStart;
-static uint8_t minuteStart;
-static uint8_t secondStart;
 static uint8_t timeCount;
 static uint8_t timePrev;
 static uint8_t currentSelectedState;
 static uint8_t previousSelectedState;
 static uint8_t refresh;
-static uint8_t mesPause;
-uint8_t monthStart_EEPROM EEMEM;
-uint8_t dateStart_EEPROM EEMEM;
-uint8_t hourStart_EEPROM EEMEM;
-uint8_t minuteStart_EEPROM EEMEM;
-uint8_t secondStart_EEPROM EEMEM;
-uint8_t timeCount_EEPROM EEMEM;
-uint8_t mesPause_EEPROM EEMEM;
+static uint8_t currentMesNb;
+measurementInfos_t measurementInfos_EEPROM[MEASUREMENT_NB] EEMEM;
+uint8_t currentMesNb_EEPROM EEMEM;
 
 
 void Mode_Measurement__eepromInit (void)
 {
 	DataLogger__eepromInit();
+	eeprom_read_block(measurementInfos, &measurementInfos_EEPROM, MEASUREMENT_NB * sizeof(measurementInfos_t));
+	currentMesNb = eeprom_read_byte(&currentMesNb_EEPROM);
 
-	monthStart = eeprom_read_byte(&monthStart_EEPROM);
-	dateStart = eeprom_read_byte(&dateStart_EEPROM);
-	hourStart = eeprom_read_byte(&hourStart_EEPROM);
-	minuteStart = eeprom_read_byte(&minuteStart_EEPROM);
-	secondStart = eeprom_read_byte(&secondStart_EEPROM);
-	timeCount = eeprom_read_byte(&timeCount_EEPROM);
-	mesPause = eeprom_read_byte(&mesPause_EEPROM);
-
-	if (mesPause == 0xFF)
+	if (currentMesNb == 0xFF)
 	{
-		mesPause = 0;
+		currentMesNb = 0;
 	}
 }
 
 
 static void Mode_Measurement__eepromStorage (void)
 {
-	eeprom_update_byte(&monthStart_EEPROM, monthStart);
-	eeprom_update_byte(&dateStart_EEPROM, dateStart);
-	eeprom_update_byte(&hourStart_EEPROM, hourStart);
-	eeprom_update_byte(&minuteStart_EEPROM, minuteStart);
-	eeprom_update_byte(&secondStart_EEPROM, secondStart);
-	eeprom_update_byte(&timeCount_EEPROM, timeCount);
-	eeprom_update_byte(&mesPause_EEPROM, mesPause);
+	eeprom_update_block(measurementInfos, &measurementInfos_EEPROM, MEASUREMENT_NB * sizeof(measurementInfos_t));
+	eeprom_update_byte(&currentMesNb_EEPROM, currentMesNb);
 }
 
 
@@ -70,13 +60,14 @@ void Mode_Measurement__init (void)
 {
 	DataLogger__startMeasure(&Temperature__getCurrentRawValue, &Mode_Measurement__getTrigger);
 
-	monthStart = Clock__getMonth();
-	dateStart = Clock__getDate();
-	hourStart = Clock__getHours();
-	minuteStart = Clock__getMinutes();
-	secondStart = Clock__getSeconds();
+	measurementInfos[currentMesNb].monthStart = Clock__getMonth();
+	measurementInfos[currentMesNb].dateStart = Clock__getDate();
+	measurementInfos[currentMesNb].hourStart = Clock__getHours();
+	measurementInfos[currentMesNb].minuteStart = Clock__getMinutes();
+	measurementInfos[currentMesNb].secondStart = Clock__getSeconds();
 
 	timeCount = Mode_SetupMeasurement__getInterval();
+	currentMesNb++;
 
 	if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
 	{
@@ -100,74 +91,41 @@ void Mode_Measurement__init (void)
 }
 
 
-static void Mode_Measurement__resume (void)
-{
-	DataLogger__resumeMeasure();
-
-	if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
-	{
-		timePrev = Clock__getDate();
-	}
-	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
-	{
-		timePrev = Clock__getHours();
-	}
-	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
-	{
-		timePrev = Clock__getMinutes();
-	}
-	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
-	{
-		timePrev = Clock__getSeconds();
-	}
-
-	trigger = TRUE;
-	refresh = TRUE;
-}
-
-
 static void Mode_Measurement__checkTriggers (void)
 {
-	if (mesPause == FALSE)
+	if (timeCount == Mode_SetupMeasurement__getInterval())
 	{
-		if (timeCount == Mode_SetupMeasurement__getInterval())
-		{
-			trigger = TRUE;
-			timeCount = 0;
-		}
-		else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY) && (Clock__getDate() != timePrev)
-				&& 	(Clock__getHours() == hourStart)
-				&&	(Clock__getMinutes() == minuteStart)
-				&& 	(Clock__getSeconds() == secondStart)
-		)
-		{
-			timePrev = Clock__getDate();
-			timeCount++;
-		}
-		else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR) && (Clock__getHours() != timePrev)
-				&&	(Clock__getMinutes() == minuteStart)
-				&& 	(Clock__getSeconds() == secondStart)
-		)
-		{
-			timePrev = Clock__getHours();
-			timeCount++;
-		}
-		else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE) && (Clock__getMinutes() != timePrev)
-				&& 	(Clock__getSeconds() == secondStart)
-		)
-		{
-			timePrev = Clock__getMinutes();
-			timeCount++;
-		}
-		else if ((Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND) && (Clock__getSeconds() != timePrev))
-		{
-			timePrev = Clock__getSeconds();
-			timeCount++;
-		}
+		trigger = TRUE;
+		timeCount = 0;
 	}
-	else
+	else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY) && (Clock__getDate() != timePrev)
+			&& 	(Clock__getHours() == measurementInfos[currentMesNb - 1].hourStart)
+			&&	(Clock__getMinutes() == measurementInfos[currentMesNb - 1].minuteStart)
+			&& 	(Clock__getSeconds() == measurementInfos[currentMesNb - 1].secondStart)
+	)
 	{
-		trigger = FALSE;
+		timePrev = Clock__getDate();
+		timeCount++;
+	}
+	else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR) && (Clock__getHours() != timePrev)
+			&&	(Clock__getMinutes() == measurementInfos[currentMesNb - 1].minuteStart)
+			&& 	(Clock__getSeconds() == measurementInfos[currentMesNb - 1].secondStart)
+	)
+	{
+		timePrev = Clock__getHours();
+		timeCount++;
+	}
+	else if (	(Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE) && (Clock__getMinutes() != timePrev)
+			&& 	(Clock__getSeconds() == measurementInfos[currentMesNb - 1].secondStart)
+	)
+	{
+		timePrev = Clock__getMinutes();
+		timeCount++;
+	}
+	else if ((Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND) && (Clock__getSeconds() != timePrev))
+	{
+		timePrev = Clock__getSeconds();
+		timeCount++;
 	}
 }
 
@@ -198,51 +156,43 @@ void Mode_Measurement__x10 (void)
 	/* line 3 */
 	if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
 	{
-		lastMesMonth = (monthStart + (dateStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 30) % 12;
-		lastMesDate = (dateStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) % 30;
-		lastMesHour = hourStart;
-		lastMesMin = minuteStart;
-		lastMesSec = secondStart;
+		lastMesMonth = (measurementInfos[currentMesNb - 1].monthStart + (measurementInfos[currentMesNb - 1].dateStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 30) % 12;
+		lastMesDate = (measurementInfos[currentMesNb - 1].dateStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) % 30;
+		lastMesHour = measurementInfos[currentMesNb - 1].hourStart;
+		lastMesMin = measurementInfos[currentMesNb - 1].minuteStart;
+		lastMesSec = measurementInfos[currentMesNb - 1].secondStart;
 	}
 	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
 	{
-		lastMesMonth = (monthStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
-		lastMesDate = (dateStart + (hourStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 24) % 30;
-		lastMesHour = (hourStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) % 24;
-		lastMesMin = minuteStart;
-		lastMesSec = secondStart;
+		lastMesMonth = (measurementInfos[currentMesNb - 1].monthStart + (measurementInfos[currentMesNb - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
+		lastMesDate = (measurementInfos[currentMesNb - 1].dateStart + (measurementInfos[currentMesNb - 1].hourStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 24) % 30;
+		lastMesHour = (measurementInfos[currentMesNb - 1].hourStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) % 24;
+		lastMesMin = measurementInfos[currentMesNb - 1].minuteStart;
+		lastMesSec = measurementInfos[currentMesNb - 1].secondStart;
 	}
 	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
 	{
-		lastMesMonth = (monthStart + (minuteStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 43200) % 60;
-		lastMesDate = (dateStart + (minuteStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 1440) % 30;
-		lastMesHour = (hourStart + (minuteStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 60) % 24;
-		lastMesMin = (minuteStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) % 60;
-		lastMesSec = secondStart;
+		lastMesMonth = (measurementInfos[currentMesNb - 1].monthStart + (measurementInfos[currentMesNb - 1].minuteStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 43200) % 60;
+		lastMesDate = (measurementInfos[currentMesNb - 1].dateStart + (measurementInfos[currentMesNb - 1].minuteStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 1440) % 30;
+		lastMesHour = (measurementInfos[currentMesNb - 1].hourStart + (measurementInfos[currentMesNb - 1].minuteStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 60) % 24;
+		lastMesMin = (measurementInfos[currentMesNb - 1].minuteStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) % 60;
+		lastMesSec = measurementInfos[currentMesNb - 1].secondStart;
 	}
 	else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
 	{
-		lastMesMonth = (monthStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
-		lastMesDate = (dateStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 86400) % 30;
-		lastMesHour = (hourStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 3600) % 24;
-		lastMesMin = (minuteStart + (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) / 60) % 60;
-		lastMesSec = (secondStart + ((DataLogger__getNumberOfStoredValues() - 1) * Mode_SetupMeasurement__getInterval())) % 60;
+		lastMesMonth = (measurementInfos[currentMesNb - 1].monthStart + (measurementInfos[currentMesNb - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
+		lastMesDate = (measurementInfos[currentMesNb - 1].dateStart + (measurementInfos[currentMesNb - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 86400) % 30;
+		lastMesHour = (measurementInfos[currentMesNb - 1].hourStart + (measurementInfos[currentMesNb - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 3600) % 24;
+		lastMesMin = (measurementInfos[currentMesNb - 1].minuteStart + (measurementInfos[currentMesNb - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) / 60) % 60;
+		lastMesSec = (measurementInfos[currentMesNb - 1].secondStart + ((DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1) - 1) * Mode_SetupMeasurement__getInterval())) % 60;
 	}
 
 	CLock__convertDateToString(lastMesDate, lastMesMonth, &lcdLine_3[0]);
 	CLock__convertTimeWithSecondsToString(lastMesHour, lastMesMin, lastMesSec, &lcdLine_3[6]);
-	Temperature__getValueStringFromRaw(DataLogger__getStoredValue(DataLogger__getNumberOfStoredValues()), &lcdLine_3[14]);
+	Temperature__getValueStringFromRaw(DataLogger__getStoredValueOfMeasure(currentMesNb - 1, DataLogger__getNumberOfStoredValuesOfMeasure(currentMesNb - 1)), &lcdLine_3[14]);
 
-	if (mesPause == FALSE)
-	{
-		/* line 4 */
-		strcpy(&lcdLine_4[0], "<STOP> <PAUS> <STAT>");
-	}
-	else
-	{
-		/* line 4 */
-		strcpy(&lcdLine_4[0], "       <REPRENDRE>  ");
-	}
+	/* line 4 */
+	strcpy(&lcdLine_4[0], "<STOP>       <STATS>");
 
 	Lcd__writeLine(lcdLine_1, 1);
 	Lcd__writeLine(lcdLine_2, 2);
@@ -255,83 +205,39 @@ void Mode_Measurement__x10 (void)
 		refresh = FALSE;
 	}
 
-	if (mesPause == FALSE)
+	switch (currentSelectedState)
 	{
-		switch (currentSelectedState)
+		case SEL_STOP:
 		{
-			case SEL_STOP:
+			Lcd__setCursor(4, 2);
+
+			if ((Buttons__isPressedOnce(&buttonFunc1)) || (Buttons__isPressedOnce(&buttonFunc2)))
 			{
-				Lcd__setCursor(4, 2);
-
-				if (Buttons__isPressedOnce(&buttonFunc1))
-				{
-					currentSelectedState = SEL_STATS;
-				}
-				else if (Buttons__isPressedOnce(&buttonFunc2))
-				{
-					currentSelectedState = SEL_PAUSE;
-				}
-				else if (Buttons__isPressedOnce(&buttonMode))
-				{
-					DataLogger__stopMeasure();
-				}
-				break;
+				currentSelectedState = SEL_STATS;
 			}
-
-			case SEL_PAUSE:
+			else if (Buttons__isPressedOnce(&buttonMode))
 			{
-				Lcd__setCursor(4, 9);
-
-				if (Buttons__isPressedOnce(&buttonFunc1))
-				{
-					currentSelectedState = SEL_STOP;
-				}
-				else if (Buttons__isPressedOnce(&buttonFunc2))
-				{
-					currentSelectedState = SEL_STATS;
-				}
-				else if (Buttons__isPressedOnce(&buttonMode))
-				{
-					mesPause = TRUE;
-					refresh = TRUE;
-					DataLogger__pauseMeasure();
-				}
-
-				break;
+				DataLogger__stopMeasure();
 			}
-
-			case SEL_STATS:
-			{
-				Lcd__setCursor(4, 16);
-
-				if (Buttons__isPressedOnce(&buttonFunc1))
-				{
-					currentSelectedState = SEL_PAUSE;
-				}
-				else if (Buttons__isPressedOnce(&buttonFunc2))
-				{
-					currentSelectedState = SEL_STOP;
-				}
-
-				break;
-			}
+			break;
 		}
 
-		if (previousSelectedState != currentSelectedState)
+		case SEL_STATS:
 		{
-			refresh = TRUE;
-			previousSelectedState = currentSelectedState;
+			Lcd__setCursor(4, 15);
+
+			if ((Buttons__isPressedOnce(&buttonFunc1)) || (Buttons__isPressedOnce(&buttonFunc2)))
+			{
+				currentSelectedState = SEL_STOP;
+			}
+			break;
 		}
 	}
-	else
-	{
-		Lcd__setCursor(4, 9);
 
-		if (Buttons__isPressedOnce(&buttonMode))
-		{
-			mesPause = FALSE;
-			Mode_Measurement__resume();
-		}
+	if (previousSelectedState != currentSelectedState)
+	{
+		refresh = TRUE;
+		previousSelectedState = currentSelectedState;
 	}
 
 	Mode_Measurement__eepromStorage();
