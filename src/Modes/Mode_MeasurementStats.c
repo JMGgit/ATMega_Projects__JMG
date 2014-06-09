@@ -10,23 +10,26 @@
 #include "Mode_Measurement.h"
 
 
-#define SEL_STOP		1
-#define	SEL_STATS		2
+#define SEL_BACK		1
+#define SEL_NEXT		2
+#define SEL_PREV		3
 
 
 static uint8_t currentSelectedState;
 static uint8_t previousSelectedState;
+static uint8_t selectedMeasure;
 static uint8_t refresh;
 
 
 void Mode_MeasurementStats__init (void)
 {
-	Mode_Measurement__init();
+
 }
 
 
 void Mode_MeasurementStats__x10 (void)
 {
+	uint8_t month, date, hour, min, sec;
 	char lcdLine_1[LCD_MATRIX_SIZE_COL + 1];
 	char lcdLine_2[LCD_MATRIX_SIZE_COL + 1];
 	char lcdLine_3[LCD_MATRIX_SIZE_COL + 1];
@@ -38,13 +41,35 @@ void Mode_MeasurementStats__x10 (void)
 	Lcd__newLine(lcdLine_4);
 
 	/* line 1 */
-	//strcpy(lcdLine_1, "Temp act:     ");
-	//Temperature__getCurrentValueString(&lcdLine_1[14]);
+	strcpy(lcdLine_1, "<1>                 ");
+	DataLogger__getStartTimeOfMeasure (1, &month, &date, &hour, &min, &sec);
+
+	if ((month != 0) && (date != 0))
+	{
+		CLock__convertDateToString(date, month, &lcdLine_1[4]);
+		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_1[10]);
+	}
 
 	/* line 2 */
-	//strcpy(lcdLine_2, "Mesure precedente:   ");
+	strcpy(lcdLine_2, "<2>                 ");
+
+	DataLogger__getStartTimeOfMeasure (2, &month, &date, &hour, &min, &sec);
+
+	if ((month != 0) && (date != 0))
+	{
+		CLock__convertDateToString(date, month, &lcdLine_2[4]);
+		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_2[10]);
+	}
 
 	/* line 3 */
+	strcpy(lcdLine_3, "<3>                 ");
+	DataLogger__getStartTimeOfMeasure (3, &month, &date, &hour, &min, &sec);
+
+	if ((month != 0) && (date != 0))
+	{
+		CLock__convertDateToString(date, month, &lcdLine_3[4]);
+		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_3[10]);
+	}
 
 	/* line 4 */
 	strcpy(&lcdLine_4[0], "<RET>  <PREC> <SUIV>");
@@ -62,31 +87,7 @@ void Mode_MeasurementStats__x10 (void)
 
 	switch (currentSelectedState)
 	{
-		case SEL_STOP:
-		{
-			Lcd__setCursor(4, 2);
 
-			if ((Buttons__isPressedOnce(&buttonFunc1)) || (Buttons__isPressedOnce(&buttonFunc2)))
-			{
-				currentSelectedState = SEL_STATS;
-			}
-			else if (Buttons__isPressedOnce(&buttonMode))
-			{
-				DataLogger__stopMeasure();
-			}
-			break;
-		}
-
-		case SEL_STATS:
-		{
-			Lcd__setCursor(4, 15);
-
-			if ((Buttons__isPressedOnce(&buttonFunc1)) || (Buttons__isPressedOnce(&buttonFunc2)))
-			{
-				currentSelectedState = SEL_STOP;
-			}
-			break;
-		}
 	}
 
 	if (previousSelectedState != currentSelectedState)

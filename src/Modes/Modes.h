@@ -17,6 +17,7 @@
 #include "Mode_Setup_Time.h"
 #include "Mode_Setup_Measurement.h"
 #include "Mode_Standby.h"
+#include "Mode_Stats.h"
 #include "../Lcd/Lcd.h"
 
 
@@ -27,6 +28,7 @@
 #define	MODE__MEASUREMENT_START		5
 #define	MODE__MEASUREMENT			6
 #define	MODE__MEASUREMENT_STATS		7
+#define MODE__STATS					8
 
 
 /* public functions */

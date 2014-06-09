@@ -79,6 +79,11 @@ void Modes__init (void)
 			Mode_MeasurementStats__init();
 			break;
 		}
+
+		case MODE__STATS:
+		{
+			Mode_Stats__init();
+		}
 	}
 }
 
@@ -114,6 +119,13 @@ void Modes__x10 (void)
 				Modes__setMode(MODE__MEASUREMENT_START);
 				Mode_MeasurementStart__init();
 			}
+
+			if (Modes__standbyToStats())
+			{
+				Modes__setMode(MODE__STATS);
+				Mode_Stats__init();
+			}
+
 
 			break;
 		}
@@ -215,6 +227,19 @@ void Modes__x10 (void)
 			{
 				Modes__setMode(MODE__MEASUREMENT);
 				Mode_Measurement__init();
+			}
+
+			break;
+		}
+
+		case MODE__STATS:
+		{
+			Mode_Stats__x10();
+
+			if (Modes__statsToStandby())
+			{
+				Modes__setMode(MODE__STANDBY);
+				Mode_Standby__init();
 			}
 
 			break;

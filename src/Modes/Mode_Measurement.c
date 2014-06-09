@@ -55,7 +55,7 @@ void Mode_Measurement__x10 (void)
 	Temperature__getCurrentValueString(&lcdLine_1[14]);
 
 	/* line 2 */
-	strcpy(lcdLine_2, "Mesure precedente:   ");
+	strcpy(lcdLine_2, "Derniere mesure:     ");
 
 	/* line 3 */
 	DataLogger__getLastValueWithTime(&lastMesMonth, &lastMesDate, &lastMesHour, &lastMesMin, &lastMesSec, &lastTempValue);
