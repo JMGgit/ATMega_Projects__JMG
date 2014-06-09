@@ -32,7 +32,7 @@ uint16_t Temperature__getCurrentRawValue (void)
 		test |= 0x02;
 	}
 
-	if (((((Clock__getSeconds() % 50) % 25) % 12) / 6) > 0)
+	if ((((((Clock__getSeconds() % 50) % 25) % 12) / 6) > 0) || (((Clock__getSeconds() % 50) % 25) / 12) == 2)
 	{
 		test |= 0x01;
 	}
