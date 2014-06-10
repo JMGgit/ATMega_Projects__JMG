@@ -76,13 +76,22 @@ void Modes__init (void)
 
 		case MODE__MEASUREMENT_STATS:
 		{
-			Mode_MeasurementStats__init();
+			currentMode = MODE__MEASUREMENT;
+			Mode_Measurement__init();
 			break;
 		}
 
 		case MODE__STATS:
 		{
 			Mode_Stats__init();
+			break;
+		}
+
+		case MODE__STATS_MESURE:
+		{
+			currentMode = MODE__STATS;
+			Mode_Stats__init();
+			break;
 		}
 	}
 }

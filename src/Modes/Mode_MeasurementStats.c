@@ -23,6 +23,7 @@ static uint16_t screen;
 
 void Mode_MeasurementStats__init (void)
 {
+	Lcd__enableCursor();
 	currentSelectedState = SEL_BACK;
 	screen = 0;
 }

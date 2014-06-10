@@ -18,11 +18,12 @@ static uint8_t currentSelectedState;
 static uint8_t previousSelectedState;
 static uint8_t refresh;
 static uint16_t screen;
-static measureNumber;
+static uint8_t measureNumber;
 
 
 void Mode_StatsMeasure__init (uint8_t measure)
 {
+	Lcd__enableCursor();
 	currentSelectedState = SEL_BACK;
 	screen = 0;
 	measureNumber = measure;

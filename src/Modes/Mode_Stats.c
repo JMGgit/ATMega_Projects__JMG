@@ -26,6 +26,8 @@ static uint8_t refresh;
 
 void Mode_Stats__init (void)
 {
+	Lcd__enableCursor();
+
 	if (DataLogger__getNumberOfMeasures() != 0)
 	{
 		currentSelectedState = SEL_MEASURE_1;
