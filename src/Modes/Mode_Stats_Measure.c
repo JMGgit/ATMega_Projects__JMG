@@ -1,13 +1,12 @@
 /*
- * Mode_MeasurementStats.c
+ * Mode_Stats_Measure.c
  *
- *  Created on: 15.04.2014
+ *  Created on: 10.06.2014
  *      Author: Jean-Martin George
  */
 
 
-#include "Mode_MeasurementStats.h"
-#include "Mode_Measurement.h"
+#include "Mode_Stats_Measure.h"
 
 
 #define SEL_BACK		1
@@ -19,16 +18,18 @@ static uint8_t currentSelectedState;
 static uint8_t previousSelectedState;
 static uint8_t refresh;
 static uint16_t screen;
+static measureNumber;
 
 
-void Mode_MeasurementStats__init (void)
+void Mode_StatsMeasure__init (uint8_t measure)
 {
 	currentSelectedState = SEL_BACK;
 	screen = 0;
+	measureNumber = measure;
 }
 
 
-void Mode_MeasurementStats__x10 (void)
+void Mode_StatsMeasure__x10 (void)
 {
 	uint8_t month, date, hour, min, sec;
 	uint16_t tempValue;
@@ -43,7 +44,7 @@ void Mode_MeasurementStats__x10 (void)
 	Lcd__newLine(lcdLine_4);
 
 	/* line 1 */
-	DataLogger__getValueWithTime(DataLogger__getNumberOfMeasures(), screen * 3, &month, &date, &hour, &min, &sec, &tempValue);
+	DataLogger__getValueWithTime(measureNumber, screen * 3, &month, &date, &hour, &min, &sec, &tempValue);
 
 	if ((month != 0) && (date != 0))
 	{
@@ -53,7 +54,7 @@ void Mode_MeasurementStats__x10 (void)
 	}
 
 	/* line 2 */
-	DataLogger__getValueWithTime(DataLogger__getNumberOfMeasures(), (screen * 3) + 1, &month, &date, &hour, &min, &sec, &tempValue);
+	DataLogger__getValueWithTime(measureNumber, (screen * 3) + 1, &month, &date, &hour, &min, &sec, &tempValue);
 
 	if ((month != 0) && (date != 0))
 	{
@@ -63,7 +64,7 @@ void Mode_MeasurementStats__x10 (void)
 	}
 
 	/* line 3 */
-	DataLogger__getValueWithTime(DataLogger__getNumberOfMeasures(), (screen * 3) + 2, &month, &date, &hour, &min, &sec, &tempValue);
+	DataLogger__getValueWithTime(measureNumber, (screen * 3) + 2, &month, &date, &hour, &min, &sec, &tempValue);
 
 	if ((month != 0) && (date != 0))
 	{
@@ -138,7 +139,7 @@ void Mode_MeasurementStats__x10 (void)
 			{
 				currentSelectedState = SEL_BACK;
 			}
-			else if (	(screen < (((DataLogger__getNumberOfStoredValuesOfMeasure(DataLogger__getNumberOfMeasures())  - 1) / 3)))
+			else if (	(screen < (((DataLogger__getNumberOfStoredValuesOfMeasure(measureNumber)  - 1) / 3)))
 					&& 	(Buttons__isPressedOnce(&buttonMode))
 			)
 			{
@@ -158,7 +159,7 @@ void Mode_MeasurementStats__x10 (void)
 }
 
 
-uint8_t Modes__measurementStatsToMeasurement (void)
+uint8_t Modes__statsMeasureToStats (void)
 {
 	return ((currentSelectedState == SEL_BACK) && (Buttons__isPressedOnce(&buttonMode)));
 }

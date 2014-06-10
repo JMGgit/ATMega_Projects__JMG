@@ -264,3 +264,38 @@ uint8_t Modes__statsToStandby (void)
 {
 	return ((currentSelectedState == SEL_BACK) && (Buttons__isPressedOnce(&buttonMode)));
 }
+
+
+uint8_t Modes__statsToStatsMeasure (uint8_t *measure)
+{
+	uint8_t retVal;
+
+	if (Buttons__isPressedOnce(&buttonMode))
+	{
+		if (currentSelectedState == SEL_MEASURE_1)
+		{
+			*measure = (3 * screen) + 1;
+			retVal = TRUE;
+		}
+		else if (currentSelectedState == SEL_MEASURE_2)
+		{
+			*measure = (3 * screen) + 2;
+			retVal = TRUE;
+		}
+		else if (currentSelectedState == SEL_MEASURE_3)
+		{
+			*measure = (3 * screen) + 3;
+			retVal = TRUE;
+		}
+		else
+		{
+			retVal = FALSE;
+		}
+	}
+	else
+	{
+		retVal = FALSE;
+	}
+
+	return retVal;
+}

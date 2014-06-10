@@ -221,12 +221,13 @@ void Modes__x10 (void)
 
 		case MODE__MEASUREMENT_STATS:
 		{
+			Mode_Measurement__x10();
 			Mode_MeasurementStats__x10();
 
 			if (Modes__measurementStatsToMeasurement())
 			{
 				Modes__setMode(MODE__MEASUREMENT);
-				Mode_Measurement__init();
+				/* no reinit */
 			}
 
 			break;
@@ -234,12 +235,33 @@ void Modes__x10 (void)
 
 		case MODE__STATS:
 		{
+			uint8_t measure;
+
 			Mode_Stats__x10();
 
 			if (Modes__statsToStandby())
 			{
 				Modes__setMode(MODE__STANDBY);
 				Mode_Standby__init();
+			}
+
+			if (Modes__statsToStatsMeasure(&measure))
+			{
+				Modes__setMode(MODE__STATS_MESURE);
+				Mode_StatsMeasure__init(measure);
+			}
+
+			break;
+		}
+
+		case MODE__STATS_MESURE:
+		{
+			Mode_StatsMeasure__x10();
+
+			if (Modes__statsMeasureToStats())
+			{
+				Modes__setMode(MODE__STATS);
+				Mode_Stats__init();
 			}
 
 			break;
