@@ -93,6 +93,13 @@ void Modes__init (void)
 			Mode_Stats__init();
 			break;
 		}
+
+		case MODE__TRANSFER:
+		{
+			currentMode = MODE__STANDBY;
+			Mode_Standby__init();
+			break;
+		}
 	}
 }
 
@@ -133,6 +140,12 @@ void Modes__x10 (void)
 			{
 				Modes__setMode(MODE__STATS);
 				Mode_Stats__init();
+			}
+
+			if (Modes__standbyToTransfer())
+			{
+				Modes__setMode(MODE__TRANSFER);
+				Mode_Transfer__init();
 			}
 
 
@@ -275,6 +288,20 @@ void Modes__x10 (void)
 
 			break;
 		}
+
+		case MODE__TRANSFER:
+		{
+			Mode_Transfer__x10();
+
+			if (Modes__transferToStandby())
+			{
+				Modes__setMode(MODE__STANDBY);
+				Mode_Standby__init();
+			}
+
+			break;
+		}
+
 
 		default:
 		{

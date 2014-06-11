@@ -19,6 +19,7 @@
 #include "Mode_Standby.h"
 #include "Mode_Stats.h"
 #include "Mode_Stats_Measure.h"
+#include "Mode_Transfer.h"
 #include "../Lcd/Lcd.h"
 
 
@@ -31,6 +32,7 @@
 #define	MODE__MEASUREMENT_STATS		7
 #define MODE__STATS					8
 #define MODE__STATS_MESURE			9
+#define MODE__TRANSFER				10
 
 
 /* public functions */

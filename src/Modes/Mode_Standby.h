@@ -22,6 +22,7 @@ void Mode_Standby__x10 (void);
 uint8_t Modes__standbyToSetup (void);
 uint8_t Modes__standbyToMeasurementStart (void);
 uint8_t Modes__standbyToStats (void);
+uint8_t Modes__standbyToTransfer (void);
 
 
 #endif /* MODE_STANDBY_H_ */

@@ -69,6 +69,12 @@ uint8_t USART__readDataBytes (uint8_t *data, uint8_t dataLength, uint8_t request
 	/* TODO: add defines */
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
+		/****** TEST ******/
+		if (USART_data[0] != 0)
+		{
+			toggle(TEST_LED_PORT, TEST_LED_PIN);
+		}
+
 		if ((requester & (USART_data[0] & 0xF0)) == requester)
 		{
 			dataSize = USART_data[0] & 0x0F;

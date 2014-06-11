@@ -37,6 +37,8 @@ void Mode_Stats__init (void)
 		currentSelectedState = SEL_BACK;
 	}
 
+	previousSelectedState = 0xFF;
+
 	screen = 0;
 }
 

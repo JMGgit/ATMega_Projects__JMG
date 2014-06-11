@@ -18,7 +18,6 @@
 
 
 void USART__init (void);
-uint8_t USART__newDataAvailable (void);
 uint8_t USART__readDataBytes (uint8_t *data, uint8_t dataLength, uint8_t requester);
 void USART__transmitDataBytes (uint8_t *data, uint8_t dataLength);
 

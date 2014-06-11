@@ -23,7 +23,6 @@ void Mode_SetupTime__init (void)
 	Lcd__enableCursor();
 	currentSelectedState = SEL_DAY;
 	previousSelectedState = 0xFF;
-	refresh = TRUE;
 }
 
 

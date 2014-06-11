@@ -25,6 +25,7 @@ void Mode_StatsMeasure__init (uint8_t measure)
 {
 	Lcd__enableCursor();
 	currentSelectedState = SEL_BACK;
+	previousSelectedState = 0xFF;
 	screen = 0;
 	measureNumber = measure;
 }

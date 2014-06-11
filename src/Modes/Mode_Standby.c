@@ -12,6 +12,7 @@
 #define SEL_SETUP		1
 #define	SEL_START		2
 #define SEL_STATS		3
+#define SEL_TRANSFER	4
 
 static uint8_t currentSelectedState, previousSelectedState, refresh;
 
@@ -43,8 +44,11 @@ void Mode_Standby__x10 (void)
 	strcpy(lcdLine_2, "Temp act:     ");
 	Temperature__getCurrentValueString(&lcdLine_2[14]);
 
+	/* line 3 */
+	strcpy(lcdLine_3, "<TRANSFER>  < STATS>");
+
 	/* line 4 */
-	strcpy(&lcdLine_4[0], "<SETUP> <STAT> <MES>");
+	strcpy(&lcdLine_4[0], "<OPTIONS >  <MESURE>");
 
 	Lcd__writeLine(lcdLine_1, 1);
 	Lcd__writeLine(lcdLine_2, 2);
@@ -65,11 +69,11 @@ void Mode_Standby__x10 (void)
 
 			if (Buttons__isPressedOnce(&buttonFunc1))
 			{
-				currentSelectedState = SEL_START;
+				currentSelectedState = SEL_STATS;
 			}
 			else if (Buttons__isPressedOnce(&buttonFunc2))
 			{
-				currentSelectedState = SEL_STATS;
+				currentSelectedState = SEL_START;
 			}
 
 			break;
@@ -77,15 +81,15 @@ void Mode_Standby__x10 (void)
 
 		case SEL_STATS:
 		{
-			Lcd__setCursor(4, 10);
+			Lcd__setCursor(3, 15);
 
 			if (Buttons__isPressedOnce(&buttonFunc1))
 			{
-				currentSelectedState = SEL_SETUP;
+				currentSelectedState = SEL_TRANSFER;
 			}
 			else if (Buttons__isPressedOnce(&buttonFunc2))
 			{
-				currentSelectedState = SEL_START;
+				currentSelectedState = SEL_SETUP;
 			}
 
 			break;
@@ -93,15 +97,31 @@ void Mode_Standby__x10 (void)
 
 		case SEL_START:
 		{
-			Lcd__setCursor(4, 17);
+			Lcd__setCursor(4, 14);
 
 			if (Buttons__isPressedOnce(&buttonFunc1))
 			{
-				currentSelectedState = SEL_STATS;
+				currentSelectedState = SEL_SETUP;
 			}
 			else if (Buttons__isPressedOnce(&buttonFunc2))
 			{
-				currentSelectedState = SEL_SETUP;
+				currentSelectedState = SEL_TRANSFER;
+			}
+
+			break;
+		}
+
+		case SEL_TRANSFER:
+		{
+			Lcd__setCursor(3, 2);
+
+			if (Buttons__isPressedOnce(&buttonFunc1))
+			{
+				currentSelectedState = SEL_START;
+			}
+			else if (Buttons__isPressedOnce(&buttonFunc2))
+			{
+				currentSelectedState = SEL_STATS;
 			}
 
 			break;
@@ -131,4 +151,9 @@ uint8_t Modes__standbyToMeasurementStart (void)
 uint8_t Modes__standbyToStats (void)
 {
 	return ((currentSelectedState == SEL_STATS) && (Buttons__isPressedOnce(&buttonMode)));
+}
+
+uint8_t Modes__standbyToTransfer (void)
+{
+	return ((currentSelectedState == SEL_TRANSFER) && (Buttons__isPressedOnce(&buttonMode)));
 }

@@ -79,7 +79,9 @@ static void Buttons__updateState_USART (uint8_t receiveBuffer, Button_t *button)
 void Buttons__x10 (void)
 {
 	uint8_t buttonWired = 0;
+#if (BUTTONS_USART == BUTTONS_USART_ON)
 	uint8_t USARTBuffer[USART_DATA_LENGTH_BUTTON];
+#endif
 	uint8_t buttonUSART = 0;
 
 #if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_HC165)
@@ -91,10 +93,12 @@ void Buttons__x10 (void)
 					);
 #endif
 
+#if (BUTTONS_USART == BUTTONS_USART_ON)
 	if (E_OK == (USART__readDataBytes(USARTBuffer, USART_DATA_LENGTH_BUTTON, USART_REQESTER_BUTTON)))
 	{
 		buttonUSART = USARTBuffer[1];
 	}
+#endif
 
 	/* update buttons states */
 	Buttons__updateState(buttonWired | buttonUSART, &buttonMode);

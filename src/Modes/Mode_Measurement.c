@@ -30,6 +30,7 @@ void Mode_Measurement__init (void)
 	DataLogger__startMeasure(&Temperature__getCurrentRawValue);
 	Lcd__enableCursor();
 	currentSelectedState = SEL_STATS;
+	previousSelectedState = 0xFF;
 }
 
 

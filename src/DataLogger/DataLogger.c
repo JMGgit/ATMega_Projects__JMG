@@ -126,9 +126,6 @@ void DataLogger__x10 (void)
 				{
 					dataLog[dataLogIt] = getCurrentData();
 					dataLogIt++;
-
-					/* test */
-					toggle(TEST_LED_PORT, TEST_LED_PIN);
 				}
 			}
 			break;

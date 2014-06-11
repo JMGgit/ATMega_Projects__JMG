@@ -53,12 +53,6 @@ void Mode_Setup__init (void)
 
 void Mode_Setup__x10 (void)
 {
-	if (previousSelectedState != currentSelectedState)
-	{
-		Lcd__requestRefresh();
-		previousSelectedState = currentSelectedState;
-	}
-
 	switch (currentSelectedState)
 	{
 		case SEL_CLOCK:
@@ -111,6 +105,12 @@ void Mode_Setup__x10 (void)
 
 			break;
 		}
+	}
+
+	if (previousSelectedState != currentSelectedState)
+	{
+		Lcd__requestRefresh();
+		previousSelectedState = currentSelectedState;
 	}
 }
 
