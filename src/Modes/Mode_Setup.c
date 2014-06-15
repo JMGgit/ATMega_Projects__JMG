@@ -13,7 +13,7 @@
 #define	SEL_MEASUREMENT		2
 #define SEL_BACK			3
 
-static uint8_t currentSelectedState, previousSelectedState;
+static uint8_t currentSelectedState, previousSelectedState, refresh;
 
 
 void Mode_Setup__init (void)
@@ -53,6 +53,12 @@ void Mode_Setup__init (void)
 
 void Mode_Setup__x10 (void)
 {
+	if (refresh == TRUE)
+	{
+		Lcd__requestRefresh();
+		refresh = FALSE;
+	}
+
 	switch (currentSelectedState)
 	{
 		case SEL_CLOCK:
@@ -109,7 +115,7 @@ void Mode_Setup__x10 (void)
 
 	if (previousSelectedState != currentSelectedState)
 	{
-		Lcd__requestRefresh();
+		refresh = TRUE;
 		previousSelectedState = currentSelectedState;
 	}
 }

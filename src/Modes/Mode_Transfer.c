@@ -10,7 +10,6 @@
 
 
 #define SEL_BACK		1
-#define SEL_TRANSFER	2
 
 
 static uint8_t currentSelectedState;
@@ -45,7 +44,7 @@ void Mode_Transfer__x10 (void)
 	strcpy(&lcdLine_1[0], "Transfert de donnees");
 
 	/* line 4 */
-	strcpy(&lcdLine_4[0], " <RETOUR>  <START>  ");
+	strcpy(&lcdLine_4[0], "<RETOUR>            ");
 
 	Lcd__writeLine(lcdLine_1, 1);
 	Lcd__writeLine(lcdLine_2, 2);
@@ -63,27 +62,6 @@ void Mode_Transfer__x10 (void)
 		case SEL_BACK:
 		{
 			Lcd__setCursor(4, 3);
-
-			if (	(Buttons__isPressedOnce(&buttonFunc1))
-				||	(Buttons__isPressedOnce(&buttonFunc2))
-			)
-			{
-				currentSelectedState = SEL_TRANSFER;
-			}
-
-			break;
-		}
-
-		case SEL_TRANSFER:
-		{
-			Lcd__setCursor(4, 13);
-
-			if (	(Buttons__isPressedOnce(&buttonFunc2))
-				||	(Buttons__isPressedOnce(&buttonFunc1))
-			)
-			{
-				currentSelectedState = SEL_BACK;
-			}
 
 			break;
 		}
