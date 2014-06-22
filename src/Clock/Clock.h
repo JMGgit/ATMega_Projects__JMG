@@ -45,6 +45,13 @@ void Clock__incMonth (void);
 void Clock__incYear (void);
 void Clock__incHours (void);
 void Clock__incMinutes (void);
+void Clock__incSeconds (void);
+void Clock__decDate (void);
+void Clock__decMonth (void);
+void Clock__decYear (void);
+void Clock__decHours (void);
+void Clock__decMinutes (void);
+void Clock__decSeconds (void);
 
 void CLock__getHourString  (char* buffer);
 void CLock__getMinutesString  (char* buffer);

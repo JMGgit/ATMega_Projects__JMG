@@ -208,7 +208,6 @@ void Clock__incMonth (void)
 void Clock__incYear (void)
 {
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
-
 	if (DS1307__getYear() < 99)
 	{
 		DS1307__setYear(DS1307__getYear() + 1);
@@ -218,7 +217,6 @@ void Clock__incYear (void)
 		DS1307__setYear(0);
 	}
 	DS1307__sendTimeToRTC();
-
 #endif
 }
 
@@ -226,8 +224,7 @@ void Clock__incYear (void)
 void Clock__incHours (void)
 {
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
-
-	if (DS1307__getHours() < 24)
+	if (DS1307__getHours() < 23)
 	{
 		DS1307__setHours(DS1307__getHours() + 1);
 	}
@@ -236,7 +233,6 @@ void Clock__incHours (void)
 		DS1307__setHours(0);
 	}
 	DS1307__sendTimeToRTC();
-
 #endif
 }
 
@@ -253,7 +249,118 @@ void Clock__incMinutes (void)
 		DS1307__setMinutes(0);
 	}
 	DS1307__sendTimeToRTC();
+#endif
+}
 
+
+void Clock__incSeconds (void)
+{
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+	if (DS1307__getSeconds() < 59)
+	{
+		DS1307__setSeconds(DS1307__getSeconds() +  1);
+	}
+	else
+	{
+		DS1307__setSeconds(0);
+	}
+	DS1307__sendTimeToRTC();
+#endif
+}
+
+
+void Clock__decDate (void)
+{
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+	if (DS1307__getDate() > 0)
+	{
+		DS1307__setDate(DS1307__getDate() - 1);
+	}
+	else
+	{
+		DS1307__setDate(31);
+	}
+	DS1307__sendTimeToRTC();
+#endif
+}
+
+
+void Clock__decMonth (void)
+{
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+	if (DS1307__getMonth() > 0)
+	{
+		DS1307__setMonth(DS1307__getMonth() - 1);
+	}
+	else
+	{
+		DS1307__setMonth(12);
+	}
+	DS1307__sendTimeToRTC();
+#endif
+}
+
+
+void Clock__decYear (void)
+{
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+	if (DS1307__getYear() > 0)
+	{
+		DS1307__setYear(DS1307__getYear() - 1);
+	}
+	else
+	{
+		DS1307__setYear(99);
+	}
+	DS1307__sendTimeToRTC();
+#endif
+}
+
+
+void Clock__decHours (void)
+{
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+	if (DS1307__getHours() > 0)
+	{
+		DS1307__setHours(DS1307__getHours() - 1);
+	}
+	else
+	{
+		DS1307__setHours(23);
+	}
+	DS1307__sendTimeToRTC();
+#endif
+}
+
+
+void Clock__decMinutes (void)
+{
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+	if (DS1307__getMinutes() > 0)
+	{
+		DS1307__setMinutes(DS1307__getMinutes() -  1);
+	}
+	else
+	{
+		DS1307__setMinutes(59);
+	}
+	DS1307__sendTimeToRTC();
+#endif
+}
+
+
+void Clock__decSeconds (void)
+{
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+	if (DS1307__getSeconds() > 0)
+	{
+		DS1307__setSeconds(DS1307__getSeconds() -  1);
+	}
+	else
+	{
+		DS1307__setSeconds(59);
+	}
+	DS1307__sendTimeToRTC();
 #endif
 }
 
