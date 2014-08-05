@@ -45,6 +45,7 @@ void Mode_Stats__init (void)
 
 void Mode_Stats__x10 (void)
 {
+	uint16_t year;
 	uint8_t month, date, hour, min, sec;
 	char lcdLine_1[LCD_MATRIX_SIZE_COL + 1];
 	char lcdLine_2[LCD_MATRIX_SIZE_COL + 1];
@@ -61,7 +62,7 @@ void Mode_Stats__x10 (void)
 	itoa((screen * 3) + 1, &lcdLine_1[1], 10);
 	strcpy(&lcdLine_1[2], ">                 ");
 
-	DataLogger__getStartTimeOfMeasure ((screen * 3) + 1, &month, &date, &hour, &min, &sec);
+	DataLogger__getStartTimeOfMeasure ((screen * 3) + 1, &year, &month, &date, &hour, &min, &sec);
 
 	if ((month != 0) && (date != 0))
 	{
@@ -74,7 +75,7 @@ void Mode_Stats__x10 (void)
 	itoa((screen * 3) + 2, &lcdLine_2[1], 10);
 	strcpy(&lcdLine_2[2], ">                 ");
 
-	DataLogger__getStartTimeOfMeasure ((screen * 3) + 2, &month, &date, &hour, &min, &sec);
+	DataLogger__getStartTimeOfMeasure ((screen * 3) + 2, &year, &month, &date, &hour, &min, &sec);
 
 	if ((month != 0) && (date != 0))
 	{
@@ -86,7 +87,7 @@ void Mode_Stats__x10 (void)
 	strcpy(lcdLine_3, "<");
 	itoa((screen * 3) + 3, &lcdLine_3[1], 10);
 	strcpy(&lcdLine_3[2], ">                 ");
-	DataLogger__getStartTimeOfMeasure ((screen * 3) + 3, &month, &date, &hour, &min, &sec);
+	DataLogger__getStartTimeOfMeasure ((screen * 3) + 3, &year, &month, &date, &hour, &min, &sec);
 
 	if ((month != 0) && (date != 0))
 	{

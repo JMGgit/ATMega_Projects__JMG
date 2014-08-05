@@ -34,6 +34,7 @@ void Mode_StatsMeasure__init (uint8_t measure)
 void Mode_StatsMeasure__x10 (void)
 {
 	uint8_t month, date, hour, min, sec;
+	uint16_t year;
 	uint16_t tempValue;
 	char lcdLine_1[LCD_MATRIX_SIZE_COL + 1];
 	char lcdLine_2[LCD_MATRIX_SIZE_COL + 1];
@@ -46,7 +47,7 @@ void Mode_StatsMeasure__x10 (void)
 	Lcd__newLine(lcdLine_4);
 
 	/* line 1 */
-	DataLogger__getValueWithTime(measureNumber, screen * 3, &month, &date, &hour, &min, &sec, &tempValue);
+	DataLogger__getValueWithTime(measureNumber, screen * 3, &year, &month, &date, &hour, &min, &sec, &tempValue);
 
 	if ((month != 0) && (date != 0))
 	{
@@ -56,7 +57,7 @@ void Mode_StatsMeasure__x10 (void)
 	}
 
 	/* line 2 */
-	DataLogger__getValueWithTime(measureNumber, (screen * 3) + 1, &month, &date, &hour, &min, &sec, &tempValue);
+	DataLogger__getValueWithTime(measureNumber, (screen * 3) + 1, &year, &month, &date, &hour, &min, &sec, &tempValue);
 
 	if ((month != 0) && (date != 0))
 	{
@@ -66,7 +67,7 @@ void Mode_StatsMeasure__x10 (void)
 	}
 
 	/* line 3 */
-	DataLogger__getValueWithTime(measureNumber, (screen * 3) + 2, &month, &date, &hour, &min, &sec, &tempValue);
+	DataLogger__getValueWithTime(measureNumber, (screen * 3) + 2, &year, &month, &date, &hour, &min, &sec, &tempValue);
 
 	if ((month != 0) && (date != 0))
 	{

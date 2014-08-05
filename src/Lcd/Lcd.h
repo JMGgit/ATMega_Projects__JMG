@@ -13,6 +13,9 @@
 #include "../Main/Main_Config.h"
 #include "../Drivers/Drivers.h"
 
+
+#if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
+
 void Lcd__init (void);
 void Lcd__newLine (char* line);
 void Lcd__writeLine (char* data, uint8_t line);
@@ -21,5 +24,7 @@ void Lcd__disableCursor (void);
 void Lcd__setCursor (uint8_t line, uint8_t col);
 void Lcd__x10 (void);
 void Lcd__requestRefresh (void);
+
+#endif
 
 #endif /* LCD_H_ */

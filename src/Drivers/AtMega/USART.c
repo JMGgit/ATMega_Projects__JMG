@@ -17,7 +17,7 @@
   #error too high USART error rate!
 #endif
 
-static volatile uint8_t USART_data[USART_DATA_LENGTH_MAX];
+static volatile uint8_t USART_data[USART_DATA_LENGTH_READ_MAX];
 static volatile uint8_t USART_idxData = 0;
 static volatile uint8_t USART_currentDataSize = 0;
 

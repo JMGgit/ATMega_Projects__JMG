@@ -61,7 +61,7 @@ void Mode_Transfer__x10 (void)
 	{
 		case SEL_BACK:
 		{
-			Lcd__setCursor(4, 3);
+			Lcd__setCursor(4, 2);
 
 			break;
 		}

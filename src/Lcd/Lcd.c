@@ -10,6 +10,8 @@
 #include "../Clock/Clock.h"
 
 
+#if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
+
 static char LcdBuffer[LCD_MATRIX_SIZE_COL * LCD_MATRIX_SIZE_LIN];
 static uint8_t cursorLine, cursorCol, refreshRequested;
 
@@ -88,3 +90,5 @@ void Lcd__x10 (void)
 		updateCounter++;
 	}
 }
+
+#endif
