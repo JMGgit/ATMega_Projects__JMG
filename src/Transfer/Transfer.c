@@ -27,7 +27,7 @@ uint8_t usartWriteBuffer[USART_DATA_LENGTH_TRANSFER_WRITE];
 
 void Transfer__x10 (void)
 {
-	uint8_t idx = 0;
+	uint16_t idx = 0;
 	uint8_t mesIt, numberOfMes;
 	uint16_t mesPoints, mesPointsIt;
 	uint8_t month, date, hour, min, sec;
@@ -52,6 +52,12 @@ void Transfer__x10 (void)
 
 			for (mesIt = 1; mesIt <= numberOfMes; mesIt++)
 			{
+				if (idx + 2 >= USART_DATA_LENGTH_TRANSFER_WRITE)
+				{
+					USART__transmitDataBytes(usartWriteBuffer, idx);
+					idx = 0;
+				}
+
 				/* number of measurements points */
 				mesPoints = DataLogger__getNumberOfStoredValuesOfMeasure(mesIt);
 				usartWriteBuffer[idx++] = (uint8_t)((mesPoints & 0xFF00) >> 8);
@@ -59,6 +65,12 @@ void Transfer__x10 (void)
 
 				for (mesPointsIt = 0; mesPointsIt < mesPoints; mesPointsIt++)
 				{
+					if (idx + 10 >= USART_DATA_LENGTH_TRANSFER_WRITE)
+					{
+						USART__transmitDataBytes(usartWriteBuffer, idx);
+						idx = 0;
+					}
+
 					DataLogger__getValueWithTime(mesIt, mesPointsIt, &year, &month, &date, &hour, &min, &sec, &data);
 					Temperature__getValuesFromRaw(data, &negative, &t_int, &t_frac);
 					usartWriteBuffer[idx++] = (uint8_t)((year & 0xFF00) >> 8);
@@ -72,7 +84,6 @@ void Transfer__x10 (void)
 					usartWriteBuffer[idx++] = t_frac;
 				}
 			}
-
 
 			USART__transmitDataBytes(usartWriteBuffer, idx);
 			trMode = TRANSFER_MODE__IDLE;
