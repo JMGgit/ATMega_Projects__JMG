@@ -149,6 +149,8 @@ void DataLogger__startMeasure (uint16_t (*getValue)())
 		dataLogMeasurementInfos[mesIndex].hourStart = Clock__getHours();
 		dataLogMeasurementInfos[mesIndex].minuteStart = Clock__getMinutes();
 		dataLogMeasurementInfos[mesIndex].secondStart = Clock__getSeconds();
+		dataLogMeasurementInfos[mesIndex].interval = Mode_SetupMeasurement__getInterval();
+		dataLogMeasurementInfos[mesIndex].unit = Mode_SetupMeasurement__getUnit();
 		mesIndex++;
 
 		timeCount = Mode_SetupMeasurement__getInterval();
@@ -230,43 +232,47 @@ void DataLogger__getLastValueWithTime (uint16_t *lastMesYear, uint8_t *lastMesMo
 
 void DataLogger__getValueWithTime (uint8_t measureNumber, uint16_t index, uint16_t *mesYear, uint8_t *mesMonth, uint8_t *mesDate, uint8_t *mesHour, uint8_t *mesMin, uint8_t *mesSec, uint16_t *data)
 {
+	uint8_t interval, unit;
+
 	if ((measureNumber <= mesIndex) && (index < DataLogger__getNumberOfStoredValuesOfMeasure(measureNumber)))
 	{
-		if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_DAY)
+		DataLogger__getIntervalAndUnitOfMeasure(measureNumber, &interval, &unit);
+
+		if (unit == MEASUREMENT_UNIT_DAY)
 		{
 			*mesYear = 2014; /* TODO: year */;
-			*mesMonth = (dataLogMeasurementInfos[measureNumber - 1].monthStart + (dataLogMeasurementInfos[measureNumber - 1].dateStart + (index * Mode_SetupMeasurement__getInterval())) / 30) % 12;
-			*mesDate = (dataLogMeasurementInfos[measureNumber - 1].dateStart + (index * Mode_SetupMeasurement__getInterval())) % 30;
+			*mesMonth = (dataLogMeasurementInfos[measureNumber - 1].monthStart + (dataLogMeasurementInfos[measureNumber - 1].dateStart + (index * interval)) / 30) % 12;
+			*mesDate = (dataLogMeasurementInfos[measureNumber - 1].dateStart + (index * interval)) % 30;
 			*mesHour = dataLogMeasurementInfos[measureNumber - 1].hourStart;
 			*mesMin = dataLogMeasurementInfos[measureNumber - 1].minuteStart;
 			*mesSec = dataLogMeasurementInfos[measureNumber - 1].secondStart;
 		}
-		else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_HOUR)
+		else if (unit == MEASUREMENT_UNIT_HOUR)
 		{
 			*mesYear = 2014; /* TODO: year */;
-			*mesMonth = (dataLogMeasurementInfos[measureNumber - 1].monthStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
-			*mesDate = (dataLogMeasurementInfos[measureNumber - 1].dateStart + (dataLogMeasurementInfos[measureNumber - 1].hourStart + (index * Mode_SetupMeasurement__getInterval())) / 24) % 30;
-			*mesHour = (dataLogMeasurementInfos[measureNumber - 1].hourStart + (index * Mode_SetupMeasurement__getInterval())) % 24;
+			*mesMonth = (dataLogMeasurementInfos[measureNumber - 1].monthStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * interval)) / 2592000) % 60;
+			*mesDate = (dataLogMeasurementInfos[measureNumber - 1].dateStart + (dataLogMeasurementInfos[measureNumber - 1].hourStart + (index * interval)) / 24) % 30;
+			*mesHour = (dataLogMeasurementInfos[measureNumber - 1].hourStart + (index * interval)) % 24;
 			*mesMin = dataLogMeasurementInfos[measureNumber - 1].minuteStart;
 			*mesSec = dataLogMeasurementInfos[measureNumber - 1].secondStart;
 		}
-		else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_MINUTE)
+		else if (unit == MEASUREMENT_UNIT_MINUTE)
 		{
 			*mesYear = 2014; /* TODO: year */;
-			*mesMonth = (dataLogMeasurementInfos[measureNumber - 1].monthStart + (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (index * Mode_SetupMeasurement__getInterval())) / 43200) % 60;
-			*mesDate = (dataLogMeasurementInfos[measureNumber - 1].dateStart + (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (index * Mode_SetupMeasurement__getInterval())) / 1440) % 30;
-			*mesHour = (dataLogMeasurementInfos[measureNumber - 1].hourStart + (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (index * Mode_SetupMeasurement__getInterval())) / 60) % 24;
-			*mesMin = (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (index * Mode_SetupMeasurement__getInterval())) % 60;
+			*mesMonth = (dataLogMeasurementInfos[measureNumber - 1].monthStart + (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (index * interval)) / 43200) % 60;
+			*mesDate = (dataLogMeasurementInfos[measureNumber - 1].dateStart + (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (index * interval)) / 1440) % 30;
+			*mesHour = (dataLogMeasurementInfos[measureNumber - 1].hourStart + (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (index * interval)) / 60) % 24;
+			*mesMin = (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (index * interval)) % 60;
 			*mesSec = dataLogMeasurementInfos[measureNumber - 1].secondStart;
 		}
-		else if (Mode_SetupMeasurement__getUnit() == MEASUREMENT_UNIT_SECOND)
+		else if (unit == MEASUREMENT_UNIT_SECOND)
 		{
 			*mesYear = 2014; /* TODO: year */;
-			*mesMonth = (dataLogMeasurementInfos[measureNumber - 1].monthStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * Mode_SetupMeasurement__getInterval())) / 2592000) % 60;
-			*mesDate = (dataLogMeasurementInfos[measureNumber - 1].dateStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * Mode_SetupMeasurement__getInterval())) / 86400) % 30;
-			*mesHour = (dataLogMeasurementInfos[measureNumber - 1].hourStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * Mode_SetupMeasurement__getInterval())) / 3600) % 24;
-			*mesMin = (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * Mode_SetupMeasurement__getInterval())) / 60) % 60;
-			*mesSec = (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * Mode_SetupMeasurement__getInterval())) % 60;
+			*mesMonth = (dataLogMeasurementInfos[measureNumber - 1].monthStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * interval)) / 2592000) % 60;
+			*mesDate = (dataLogMeasurementInfos[measureNumber - 1].dateStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * interval)) / 86400) % 30;
+			*mesHour = (dataLogMeasurementInfos[measureNumber - 1].hourStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * interval)) / 3600) % 24;
+			*mesMin = (dataLogMeasurementInfos[measureNumber - 1].minuteStart + (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * interval)) / 60) % 60;
+			*mesSec = (dataLogMeasurementInfos[measureNumber - 1].secondStart + (index * interval)) % 60;
 		}
 	}
 	else
@@ -304,6 +310,22 @@ void DataLogger__getStartTimeOfMeasure (uint8_t measureNumber, uint16_t *mesYear
 		*mesSec = 0;
 	}
 }
+
+
+void DataLogger__getIntervalAndUnitOfMeasure (uint8_t measureNumber, uint8_t *interval, uint8_t *unit)
+{
+	if (measureNumber <= mesIndex)
+	{
+		*interval = dataLogMeasurementInfos[measureNumber - 1].interval;
+		*unit = dataLogMeasurementInfos[measureNumber - 1].unit;
+	}
+	else
+	{
+		*interval = 0;
+		*unit = 0;;
+	}
+}
+
 
 uint8_t DataLogger__getNumberOfMeasures (void)
 {
