@@ -36,8 +36,8 @@ void Mode_Measurement__init (void)
 
 void Mode_Measurement__x10 (void)
 {
-	uint8_t lastMesMonth = 0, lastMesDate = 0, lastMesHour = 0, lastMesMin = 0, lastMesSec = 0;
-	uint16_t lastMesYear = 0;
+	uint8_t lastMeasMonth = 0, lastMeasDate = 0, lastMeasHour = 0, lastMeasMin = 0, lastMeasSec = 0;
+	uint16_t lastMeasYear = 0;
 	uint16_t lastTempValue;
 
 	DataLogger__x10();
@@ -57,12 +57,12 @@ void Mode_Measurement__x10 (void)
 	Temperature__getCurrentValueString(&lcdLine_1[14]);
 
 	/* line 2 */
-	strcpy(lcdLine_2, "Derniere mesure:     ");
+	strcpy(lcdLine_2, "Derniere measure:     ");
 
 	/* line 3 */
-	DataLogger__getLastValueWithTime(&lastMesYear, &lastMesMonth, &lastMesDate, &lastMesHour, &lastMesMin, &lastMesSec, &lastTempValue);
-	CLock__convertDateToString(lastMesDate, lastMesMonth, &lcdLine_3[0]);
-	CLock__convertTimeWithSecondsToString(lastMesHour, lastMesMin, lastMesSec, &lcdLine_3[6]);
+	DataLogger__getLastValueWithTime(&lastMeasYear, &lastMeasMonth, &lastMeasDate, &lastMeasHour, &lastMeasMin, &lastMeasSec, &lastTempValue);
+	CLock__convertDateToString(lastMeasDate, lastMeasMonth, &lcdLine_3[0]);
+	CLock__convertTimeWithSecondsToString(lastMeasHour, lastMeasMin, lastMeasSec, &lcdLine_3[6]);
 	Temperature__getValueStringFromRaw(lastTempValue, &lcdLine_3[14]);
 
 	/* line 4 */

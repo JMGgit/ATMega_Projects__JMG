@@ -38,11 +38,13 @@ uint16_t DataLogger__getNumberOfStoredValues (void);
 uint16_t DataLogger__getStoredValue (uint16_t index);
 uint16_t DataLogger__getNumberOfStoredValuesOfMeasure (uint8_t measureNumber);
 uint16_t DataLogger__getStoredValueOfMeasure (uint8_t measureNumber, uint16_t index);
-void DataLogger__getLastValueWithTime (uint16_t *lastMesYear, uint8_t *lastMesMonth, uint8_t *lastMesDate, uint8_t *lastMesHour, uint8_t *lastMesMin, uint8_t *lastMesSec, uint16_t *lastData);
-void DataLogger__getValueWithTime (uint8_t measureNumber, uint16_t index, uint16_t *year, uint8_t *mesMonth, uint8_t *mesDate, uint8_t *mesHour, uint8_t *mesMin, uint8_t *mesSec, uint16_t *data);
-void DataLogger__getStartTimeOfMeasure (uint8_t measureNumber, uint16_t *mesYear, uint8_t *mesMonth, uint8_t *mesDate, uint8_t *mesHour, uint8_t *mesMin, uint8_t *mesSec);
+void DataLogger__getLastValueWithTime (uint16_t *lastMeasYear, uint8_t *lastMeasMonth, uint8_t *lastMeasDate, uint8_t *lastMeasHour, uint8_t *lastMeasMin, uint8_t *lastMeasSec, uint16_t *lastData);
+void DataLogger__getValueWithTime (uint8_t measureNumber, uint16_t index, uint16_t *year, uint8_t *measMonth, uint8_t *measDate, uint8_t *measHour, uint8_t *measMin, uint8_t *measSec, uint16_t *data);
+void DataLogger__getStartTimeOfMeasure (uint8_t measureNumber, uint16_t *measYear, uint8_t *measMonth, uint8_t *measDate, uint8_t *measHour, uint8_t *measMin, uint8_t *measSec);
 void DataLogger__getIntervalAndUnitOfMeasure (uint8_t measureNumber, uint8_t *interval, uint8_t *unit);
 uint8_t DataLogger__getNumberOfMeasures (void);
+void DataLogger__clearMeasure (uint8_t measureNumber); /* TODO: NOT TESTED!! */
+void DataLogger__clearAll (uint8_t measureNumber);
 
 
 #endif /* DATALOGGER_H_ */

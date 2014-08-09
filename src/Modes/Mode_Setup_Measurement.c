@@ -7,9 +7,11 @@
 
 #include "Mode_Setup_Measurement.h"
 
-#define SEL_INTERVAL	1
-#define	SEL_UNIT		2
-#define SEL_BACK		3
+#define SEL_INTERVAL				1
+#define	SEL_UNIT					2
+#define SEL_DELETE					3
+#define SEL_DELETE_CONFIRMATION		4
+#define SEL_BACK					5
 
 
 static uint8_t currentSelectedState, previousSelectedState, refresh, interval, unit;
@@ -208,6 +210,15 @@ void Mode_SetupMeasurement__x10 (void)
 	strcpy(&lcdLine_2[0], "Max: ");
 	Mode_SetupMeasurement__getMeasurementTimeString(&lcdLine_2[5]);
 
+	/* line 3 */
+	if (currentSelectedState != SEL_DELETE_CONFIRMATION)
+	{
+		strcpy(&lcdLine_3[0], "Supprimer tout <OUI> ");
+	}
+	else
+	{
+		strcpy(&lcdLine_3[0], "Supprimer tout <SUR?>");
+	}
 
 	/* line 4 */
 	strcpy(&lcdLine_4[0], " <RETOUR>           ");
@@ -284,12 +295,56 @@ void Mode_SetupMeasurement__x10 (void)
 
 			if (Buttons__isPressedOnce(&buttonFunc2))
 			{
-				currentSelectedState = SEL_BACK;
+				currentSelectedState = SEL_DELETE;
 			}
 
 			if (Buttons__isPressedOnce(&buttonFunc1))
 			{
 				currentSelectedState = SEL_INTERVAL;
+			}
+
+			break;
+		}
+
+		case SEL_DELETE:
+		{
+			Lcd__setCursor(3, 17);
+
+			if (Buttons__isPressedOnce(&buttonMode))
+			{
+				currentSelectedState = SEL_DELETE_CONFIRMATION;
+			}
+
+			if (Buttons__isPressedOnce(&buttonFunc2))
+			{
+				currentSelectedState = SEL_BACK;
+			}
+
+			if (Buttons__isPressedOnce(&buttonFunc1))
+			{
+				currentSelectedState = SEL_UNIT;
+			}
+
+			break;
+		}
+
+		case SEL_DELETE_CONFIRMATION:
+		{
+			Lcd__setCursor(3, 17);
+
+			if (Buttons__isPressedOnce(&buttonMode))
+			{
+				DataLogger__clearAll();
+			}
+
+			if (Buttons__isPressedOnce(&buttonFunc2))
+			{
+				currentSelectedState = SEL_BACK;
+			}
+
+			if (Buttons__isPressedOnce(&buttonFunc1))
+			{
+				currentSelectedState = SEL_UNIT;
 			}
 
 			break;
@@ -306,7 +361,7 @@ void Mode_SetupMeasurement__x10 (void)
 
 			if (Buttons__isPressedOnce(&buttonFunc1))
 			{
-				currentSelectedState = SEL_UNIT;
+				currentSelectedState = SEL_DELETE;
 			}
 
 			break;
