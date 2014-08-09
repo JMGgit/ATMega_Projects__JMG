@@ -198,6 +198,12 @@ uint16_t DataLogger__getNumberOfStoredValuesOfMeasure (uint8_t measureNumber)
 }
 
 
+uint16_t DataLogger__getFreeMeasurementPoints (void)
+{
+	return (MAX_MEASUREMENT_POINTS - dataLogIt); /* dataLogIt already incremented */
+}
+
+
 uint16_t DataLogger__getStoredValueOfMeasure (uint8_t measureNumber, uint16_t index)
 {
 	if ((measureNumber <= measIndex) && (index < DataLogger__getNumberOfStoredValuesOfMeasure(measureNumber)))
@@ -364,7 +370,7 @@ void DataLogger__clearMeasure (uint8_t measureNumber)
 }
 
 
-void DataLogger__clearAll (uint8_t measureNumber)
+void DataLogger__clearAll (void)
 {
 	measIndex = 0;
 	dataLogIt = 0;

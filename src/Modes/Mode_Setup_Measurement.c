@@ -100,25 +100,25 @@ void Mode_SetupMeasurement__getMeasurementTimeString (char* buffer)
 
 	if (unit == MEASUREMENT_UNIT_SECOND)
 	{
-		days = (MAX_MEASUREMENT_POINTS * interval) / 86400;
-		hours = (MAX_MEASUREMENT_POINTS * interval)/3600;
-		minutes = ((MAX_MEASUREMENT_POINTS * interval) - (days * 86400) - (hours * 3600)) / 60;
+		days = (DataLogger__getFreeMeasurementPoints() * interval) / 86400;
+		hours = (DataLogger__getFreeMeasurementPoints() * interval)/3600;
+		minutes = ((DataLogger__getFreeMeasurementPoints() * interval) - (days * 86400) - (hours * 3600)) / 60;
 	}
 	else if (unit == MEASUREMENT_UNIT_MINUTE)
 	{
-		days = (MAX_MEASUREMENT_POINTS * interval) / 1440;
-		hours = (MAX_MEASUREMENT_POINTS * interval) / 60 - (days * 24);
-		minutes = (MAX_MEASUREMENT_POINTS * interval) - (days * 1440) - (hours * 60);
+		days = (DataLogger__getFreeMeasurementPoints() * interval) / 1440;
+		hours = (DataLogger__getFreeMeasurementPoints() * interval) / 60 - (days * 24);
+		minutes = (DataLogger__getFreeMeasurementPoints() * interval) - (days * 1440) - (hours * 60);
 	}
 	else if (unit == MEASUREMENT_UNIT_HOUR)
 	{
-		days = (MAX_MEASUREMENT_POINTS * interval) / 24;
-		hours = (MAX_MEASUREMENT_POINTS * interval) - (days * 24);
+		days = (DataLogger__getFreeMeasurementPoints() * interval) / 24;
+		hours = (DataLogger__getFreeMeasurementPoints() * interval) - (days * 24);
 		minutes = 0;
 	}
 	else
 	{
-		days = MAX_MEASUREMENT_POINTS * interval;
+		days = DataLogger__getFreeMeasurementPoints() * interval;
 		hours = 0;
 		minutes = 0;
 	}
@@ -217,7 +217,7 @@ void Mode_SetupMeasurement__x10 (void)
 	}
 	else
 	{
-		strcpy(&lcdLine_3[0], "Supprimer tout <SUR?>");
+		strcpy(&lcdLine_3[0], "Supprimer tout <SUR>");
 	}
 
 	/* line 4 */
