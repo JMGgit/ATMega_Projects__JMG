@@ -32,6 +32,7 @@ uint16_t dataLog_EEPROM[MAX_MEASUREMENT_POINTS] EEMEM;
 static uint8_t daysInYear[13] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 static uint8_t daysInLeapYear[13] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
+
 void DataLogger__eepromInit (void)
 {
 	mode = DL_MODE__IDLE;
@@ -126,6 +127,17 @@ void DataLogger__x10 (void)
 				if (DataLogger__getTrigger() == TRUE)
 				{
 					dataLog[dataLogIt] = getCurrentData();
+
+					/* current min/max */
+					if (dataLog[dataLogIt] < dataLogMeasurementInfos[measIndex - 1].min)
+					{
+						dataLogMeasurementInfos[measIndex - 1].min = dataLog[dataLogIt];
+					}
+					else if (dataLog[dataLogIt] > dataLogMeasurementInfos[measIndex - 1].max)
+					{
+						dataLogMeasurementInfos[measIndex - 1].max = dataLog[dataLogIt];
+					}
+
 					dataLogIt++;
 				}
 			}
@@ -153,6 +165,8 @@ void DataLogger__startMeasure (uint16_t (*getValue)())
 		dataLogMeasurementInfos[measIndex].secondStart = Clock__getSeconds();
 		dataLogMeasurementInfos[measIndex].interval = Mode_SetupMeasurement__getInterval();
 		dataLogMeasurementInfos[measIndex].unit = Mode_SetupMeasurement__getUnit();
+		dataLogMeasurementInfos[measIndex].min = 0xFFFF;
+		dataLogMeasurementInfos[measIndex].max = 0;
 		measIndex++;
 
 		timeCount = Mode_SetupMeasurement__getInterval();
@@ -383,11 +397,41 @@ uint8_t DataLogger__getNumberOfMeasures (void)
 }
 
 
+void DataLogger__getMinValueString (uint8_t measureNumber, char *buffer)
+{
+	uint8_t negative, t_int, t_frac;
+
+	DataLogger__getMinValues (measureNumber, &negative, &t_int, &t_frac);
+	Temperature__getValueString(negative, t_int, t_frac, buffer);
+}
+
+
+void DataLogger__getMinValues (uint8_t measureNumber, uint8_t *negative, uint8_t *t_int, uint8_t *t_frac)
+{
+	Temperature__getValuesFromRaw(dataLogMeasurementInfos[measureNumber - 1].min, negative, t_int, t_frac);
+}
+
+
+void DataLogger__getMaxValueString (uint8_t measureNumber, char *buffer)
+{
+	uint8_t negative, t_int, t_frac;
+
+	DataLogger__getMaxValues (measureNumber, &negative, &t_int, &t_frac);
+	Temperature__getValueString(negative, t_int, t_frac, buffer);
+}
+
+
+void DataLogger__getMaxValues (uint8_t measureNumber, uint8_t *negative, uint8_t *t_int, uint8_t *t_frac)
+{
+	Temperature__getValuesFromRaw(dataLogMeasurementInfos[measureNumber - 1].max, negative, t_int, t_frac);
+}
+
+
 void DataLogger__getAverageValueString (uint8_t measureNumber, char *buffer)
 {
 	uint8_t negative_a, t_int_a, t_frac_a;
 
-	DataLogger__getAverageValues (measureNumber, &negative_a, &t_int_a, &t_frac_a);
+	DataLogger__getAverageValues(measureNumber, &negative_a, &t_int_a, &t_frac_a);
 	Temperature__getValueString(negative_a, t_int_a, t_frac_a, buffer);
 }
 

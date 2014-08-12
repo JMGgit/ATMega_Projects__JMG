@@ -59,7 +59,9 @@ void Mode_Measurement__x10 (void)
 	DataLogger__getAverageValueString(DataLogger__getNumberOfMeasures(), &lcdLine_1[14]);
 
 	/* line 2 */
-	strcpy(lcdLine_2, "Derniere:            ");
+	strcpy(lcdLine_2, "Min/Max: ");
+	DataLogger__getMinValueString(DataLogger__getNumberOfMeasures(), &lcdLine_2[8]);
+	DataLogger__getMaxValueString(DataLogger__getNumberOfMeasures(), &lcdLine_2[14]);
 
 	/* line 3 */
 	DataLogger__getLastValueWithTime(&lastMeasYear, &lastMeasMonth, &lastMeasDate, &lastMeasHour, &lastMeasMin, &lastMeasSec, &lastTempValue);

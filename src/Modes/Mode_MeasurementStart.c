@@ -46,7 +46,17 @@ void Mode_MeasurementStart__x10 (void)
 	strcpy(&lcdLine_2[0], "Max: ");
 	Mode_SetupMeasurement__getMeasurementTimeString(&lcdLine_2[5]);
 
+	/* line 3 */
+	if (DataLogger__getNumberOfMeasures() >= DATA_LOGGER_MEASURES_NB)
+	{
+		strcpy(&lcdLine_3[0], "!! MEMOIRE PLEINE !!");
+	}
 
+	else
+	{
+		strcpy(&lcdLine_3[0], "Mesures possibles:  ");
+		itoa(DATA_LOGGER_MEASURES_NB - DataLogger__getNumberOfMeasures(), &lcdLine_3[19], 10);
+	}
 	/* line 4 */
 	strcpy(&lcdLine_4[0], " <RETOUR>  <START>  ");
 

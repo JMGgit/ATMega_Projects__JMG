@@ -28,6 +28,8 @@ typedef struct
 	uint8_t secondStart;
 	uint8_t interval;
 	uint8_t unit;
+	uint16_t min;
+	uint16_t max;
 } measurementInfos_t;
 
 void DataLogger__eepromInit (void);
@@ -44,6 +46,10 @@ void DataLogger__getValueWithTime (uint8_t measureNumber, uint16_t index, uint16
 void DataLogger__getStartTimeOfMeasure (uint8_t measureNumber, uint16_t *measYear, uint8_t *measMonth, uint8_t *measDate, uint8_t *measHour, uint8_t *measMin, uint8_t *measSec);
 void DataLogger__getIntervalAndUnitOfMeasure (uint8_t measureNumber, uint8_t *interval, uint8_t *unit);
 uint8_t DataLogger__getNumberOfMeasures (void);
+void DataLogger__getMinValueString (uint8_t measureNumber, char *buffer);
+void DataLogger__getMinValues (uint8_t measureNumber, uint8_t *negative, uint8_t *t_int, uint8_t *t_frac);
+void DataLogger__getMaxValueString (uint8_t measureNumber, char *buffer);
+void DataLogger__getMaxValues (uint8_t measureNumber, uint8_t *negative, uint8_t *t_int, uint8_t *t_frac);
 void DataLogger__getAverageValueString (uint8_t measureNumber, char *buffer);
 void DataLogger__getAverageValues (uint8_t measureNumber, uint8_t *negative_a, uint8_t *t_int_a, uint8_t *t_frac_a);
 void DataLogger__clearMeasure (uint8_t measureNumber); /* TODO: NOT TESTED!! */
