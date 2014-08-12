@@ -29,8 +29,8 @@ measurementInfos_t dataLogMeasurementInfos_EEPROM[DATA_LOGGER_MEASURES_NB] EEMEM
 uint16_t dataLogIndexTable_EEPROM[DATA_LOGGER_MEASURES_NB] EEMEM;
 uint16_t dataLog_EEPROM[MAX_MEASUREMENT_POINTS] EEMEM;
 
-static uint8_t daysInYear[12] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-static uint8_t daysInLeapYear[12] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static uint8_t daysInYear[13] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static uint8_t daysInLeapYear[13] = {0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 void DataLogger__eepromInit (void)
 {
@@ -380,6 +380,65 @@ void DataLogger__getIntervalAndUnitOfMeasure (uint8_t measureNumber, uint8_t *in
 uint8_t DataLogger__getNumberOfMeasures (void)
 {
 	return measIndex;
+}
+
+
+void DataLogger__getAverageValueString (uint8_t measureNumber, char *buffer)
+{
+	uint8_t negative_a, t_int_a, t_frac_a;
+
+	DataLogger__getAverageValues (measureNumber, &negative_a, &t_int_a, &t_frac_a);
+	Temperature__getValueString(negative_a, t_int_a, t_frac_a, buffer);
+}
+
+
+void DataLogger__getAverageValues (uint8_t measureNumber, uint8_t *negative_a, uint8_t *t_int_a, uint8_t *t_frac_a)
+{
+	uint16_t it, storedValues;
+	int32_t t_int_tmp = 0;
+	int32_t t_frac_tmp = 0;;
+	uint8_t negative, t_int, t_frac;
+
+	if (measureNumber <= measIndex)
+	{
+		storedValues = DataLogger__getNumberOfStoredValuesOfMeasure(measureNumber);
+
+		for (it = 0; it < storedValues; it++)
+		{
+			Temperature__getValuesFromRaw(DataLogger__getStoredValueOfMeasure(measureNumber, it), &negative, &t_int, &t_frac);
+
+			if (negative == TRUE)
+			{
+				t_int_tmp -= t_int;
+			}
+			else
+			{
+				t_int_tmp += t_int;
+			}
+
+			t_frac_tmp += t_frac;
+		}
+
+		if (t_int_tmp < 0)
+		{
+			t_int_tmp = t_int_tmp * (-1);
+			*negative_a = TRUE;
+		}
+		else
+		{
+			*negative_a = FALSE;
+		}
+
+		t_frac_tmp = ((t_frac_tmp  + ((t_int_tmp % storedValues) * 100)) / storedValues);
+		*t_int_a = (uint8_t)((t_int_tmp / storedValues) + (t_frac_tmp / 1000));
+		*t_frac_a = (uint8_t)(t_frac_tmp % 1000);
+	}
+	else
+	{
+		*negative_a = FALSE;
+		*t_int_a = 0;
+		*t_frac_a = 0;
+	}
 }
 
 

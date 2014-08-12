@@ -78,12 +78,9 @@ void Temperature__getCurrentValueString (char *buffer)
 }
 
 
-void Temperature__getValueStringFromRaw (uint16_t rawValue, char *buffer)
+void Temperature__getValueString (uint8_t negative, uint8_t t_int, uint8_t t_frac, char *buffer)
 {
-	uint8_t negative, t_int, t_frac;
 	uint8_t idxBuffer = 0;
-
-	Temperature__getValuesFromRaw(rawValue, &negative, &t_int, &t_frac);
 
 	if (negative > 0)
 	{
@@ -130,4 +127,13 @@ void Temperature__getValueStringFromRaw (uint16_t rawValue, char *buffer)
 			itoa(t_frac, &buffer[idxBuffer++], 10);
 		}
 	}
+}
+
+
+void Temperature__getValueStringFromRaw (uint16_t rawValue, char *buffer)
+{
+	uint8_t negative, t_int, t_frac;
+
+	Temperature__getValuesFromRaw(rawValue, &negative, &t_int, &t_frac);
+	Temperature__getValueString(negative, t_int, t_frac, buffer);
 }
