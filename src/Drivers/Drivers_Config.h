@@ -66,4 +66,15 @@
 #define LCD_DB6_PIN					PA6
 #define LCD_DB7_PIN					PA7
 
+
+/*********** DS18B20 **********/
+#define DS18B20_DATA_DDR			DDRC
+#define DS18B20_DATA_PORT			PORTC
+#define DS18B20_DATA_PINR			PINC
+#define DS18B20_DATA_PIN			PC5
+
+#define DS18B20_ALARM_TLOW			0	/* not supported for now */
+#define DS18B20_ALARM_THIGH			0	/* not supported for now */
+
+
 #endif /* DRIVERS_CONFIG_H_ */

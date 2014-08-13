@@ -9,6 +9,7 @@
 #define DS18B20_H_
 
 #include <avr/io.h>
+#include <util/delay.h>
 #include <string.h>
 #include "../../Main/Main_Types.h"
 #include "../../Main/Main_Config.h"
@@ -18,6 +19,7 @@
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
 
 void DS18B20__init (void);
+void DS18B20__x10 (void);
 uint16_t DS18B20__getCurrentRawValue (void);
 
 #endif

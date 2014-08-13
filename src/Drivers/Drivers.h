@@ -43,6 +43,9 @@ INLINE void Drivers__init (void)
 
 INLINE void Drivers__x10 (void)
 {
+#if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
+	DS18B20__x10();
+#endif
 #ifdef WS2801_NB
 	WS2801__x10();
 #endif
