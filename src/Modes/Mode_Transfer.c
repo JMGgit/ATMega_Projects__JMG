@@ -43,6 +43,25 @@ void Mode_Transfer__x10 (void)
 	/* line 1 */
 	strcpy(&lcdLine_1[0], "Transfert de donnees");
 
+	if (Transfer__getProgress() > 0)
+	{
+		refresh = TRUE;
+
+		if (Transfer__getProgress() < 100)
+		{
+			/* line 2 */
+			strcpy(&lcdLine_2[0], "  ... en            ");
+
+			/* line 3 */
+			strcpy(&lcdLine_3[0], "           cours ...");
+		}
+		else
+		{
+			/* line 3 */
+			strcpy(&lcdLine_3[0], "           termine !");
+		}
+	}
+
 	/* line 4 */
 	strcpy(&lcdLine_4[0], "<RETOUR>            ");
 

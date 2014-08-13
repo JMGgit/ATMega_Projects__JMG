@@ -10,7 +10,9 @@
 
 
 #define TRANSFER_MODE__IDLE				1
-#define TRANSFER_MODE__BUSY				2
+#define TRANSFER_MODE__HEADER			2
+#define TRANSFER_MODE__MEAS_LENGTH		3
+#define TRANSFER_MODE__MEAS_VALUES		4
 
 static uint8_t trMode;
 static uint8_t progress;
@@ -19,6 +21,7 @@ static uint8_t progress;
 void Transfer__init(void)
 {
 	trMode = TRANSFER_MODE__IDLE;
+	progress = 0;
 }
 
 
@@ -27,66 +30,106 @@ uint8_t usartWriteBuffer[USART_DATA_LENGTH_TRANSFER_WRITE];
 
 void Transfer__x10 (void)
 {
-	uint16_t idx = 0;
-	uint8_t measIt, numberOfMeas;
-	uint16_t measPoints, measPointsIt;
+	uint16_t bufIdx = 0;
+	static uint8_t measIt;
+	uint8_t numberOfMeas;
+	static uint16_t measPoints;
+	static uint16_t measPointsIt;
+	uint32_t measPointsCycle = 0;
 	uint8_t month, date, hour, min, sec;
 	uint16_t year;
 	uint16_t data;
 	uint8_t negative, t_int, t_frac;
 
-	if (trMode == TRANSFER_MODE__IDLE)
+	numberOfMeas = DataLogger__getNumberOfMeasures();
+
+
+	switch (trMode)
 	{
-		if (E_OK == USART__readDataBytes(&usartReadBuffer[0], USART_DATA_LENGTH_TRANSFER_READ, USART_REQESTER_TRANSFER))
+		case TRANSFER_MODE__IDLE:
 		{
-			toggle(TEST_LED_PORT, TEST_LED_PIN);
-			trMode = TRANSFER_MODE__BUSY;
+			progress = 0;
+
+			if (E_OK == USART__readDataBytes(&usartReadBuffer[0], USART_DATA_LENGTH_TRANSFER_READ, USART_REQESTER_TRANSFER))
+			{
+				toggle(TEST_LED_PORT, TEST_LED_PIN);
+				progress = 10;
+				trMode = TRANSFER_MODE__HEADER;
+			}
+			break;
 		}
 
-		if (trMode == TRANSFER_MODE__BUSY)
+		case TRANSFER_MODE__HEADER:
 		{
-			numberOfMeas = DataLogger__getNumberOfMeasures();
-
 			/* Byte 1 : number of measurements */
-			usartWriteBuffer[idx++] = numberOfMeas;
+			usartWriteBuffer[bufIdx++] = numberOfMeas;
+			USART__transmitDataBytes(usartWriteBuffer, bufIdx);
+			bufIdx = 0;
+			measIt = 1;
+			progress = 20;
+			trMode = TRANSFER_MODE__MEAS_LENGTH;
+			break;
+		}
 
-			for (measIt = 1; measIt <= numberOfMeas; measIt++)
+		case TRANSFER_MODE__MEAS_LENGTH:
+		{
+			/* number of measurements points */
+			measPoints = DataLogger__getNumberOfStoredValuesOfMeasure(measIt);
+			usartWriteBuffer[bufIdx++] = (uint8_t)((measPoints & 0xFF00) >> 8);
+			usartWriteBuffer[bufIdx++] = measPoints & 0xFF;
+			USART__transmitDataBytes(usartWriteBuffer, bufIdx);
+			bufIdx = 0;
+			measPointsIt = 0;
+			measPointsCycle = 0;
+			progress = 30;
+			trMode = TRANSFER_MODE__MEAS_VALUES;
+			break;
+		}
+
+		case TRANSFER_MODE__MEAS_VALUES:
+		{
+			while ((measPointsIt < measPoints) && (measPointsCycle < 10))
 			{
-				if (idx + 2 >= USART_DATA_LENGTH_TRANSFER_WRITE)
+				DataLogger__getValueWithTime(measIt, measPointsIt, &year, &month, &date, &hour, &min, &sec, &data);
+				Temperature__getValuesFromRaw(data, &negative, &t_int, &t_frac);
+				usartWriteBuffer[bufIdx++] = (uint8_t)((year & 0xFF00) >> 8);
+				usartWriteBuffer[bufIdx++] = year & 0xFF;
+				usartWriteBuffer[bufIdx++] = month;
+				usartWriteBuffer[bufIdx++] = date;
+				usartWriteBuffer[bufIdx++] = hour;
+				usartWriteBuffer[bufIdx++] = min;
+				usartWriteBuffer[bufIdx++] = sec;
+				usartWriteBuffer[bufIdx++] = t_int;
+				usartWriteBuffer[bufIdx++] = t_frac;
+				USART__transmitDataBytes(usartWriteBuffer, bufIdx);
+				bufIdx = 0;
+				measPointsIt++;
+				measPointsCycle++;
+			}
+
+			if (measPointsIt >= measPoints)
+			{
+				measIt++;
+
+				if (measIt > numberOfMeas)
 				{
-					USART__transmitDataBytes(usartWriteBuffer, idx);
-					idx = 0;
+					trMode = TRANSFER_MODE__IDLE;
+					progress = 100;
 				}
-
-				/* number of measurements points */
-				measPoints = DataLogger__getNumberOfStoredValuesOfMeasure(measIt);
-				usartWriteBuffer[idx++] = (uint8_t)((measPoints & 0xFF00) >> 8);
-				usartWriteBuffer[idx++] = measPoints & 0xFF;
-
-				for (measPointsIt = 0; measPointsIt < measPoints; measPointsIt++)
+				else
 				{
-					if (idx + 10 >= USART_DATA_LENGTH_TRANSFER_WRITE)
-					{
-						USART__transmitDataBytes(usartWriteBuffer, idx);
-						idx = 0;
-					}
-
-					DataLogger__getValueWithTime(measIt, measPointsIt, &year, &month, &date, &hour, &min, &sec, &data);
-					Temperature__getValuesFromRaw(data, &negative, &t_int, &t_frac);
-					usartWriteBuffer[idx++] = (uint8_t)((year & 0xFF00) >> 8);
-					usartWriteBuffer[idx++] = year & 0xFF;
-					usartWriteBuffer[idx++] = month;
-					usartWriteBuffer[idx++] = date;
-					usartWriteBuffer[idx++] = hour;
-					usartWriteBuffer[idx++] = min;
-					usartWriteBuffer[idx++] = sec;
-					usartWriteBuffer[idx++] = t_int;
-					usartWriteBuffer[idx++] = t_frac;
+					trMode = TRANSFER_MODE__MEAS_LENGTH;
 				}
 			}
 
-			USART__transmitDataBytes(usartWriteBuffer, idx);
-			trMode = TRANSFER_MODE__IDLE;
+			progress = 60;
+
+			break;
+		}
+
+		default:
+		{
+			break;
 		}
 	}
 }
