@@ -12,7 +12,8 @@
 uint16_t Temperature__getCurrentRawValue (void)
 {
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
-	//return DS18B20__getCurrentRawValue();
+	return DS18B20__getCurrentRawValue();
+#elif (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_TEST)
 	uint16_t test;
 
 	test = 0;
@@ -47,15 +48,13 @@ uint16_t Temperature__getCurrentRawValue (void)
 
 void Temperature__getCurrentValues (uint8_t *negative, uint8_t *t_int, uint8_t *t_frac)
 {
-#if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
 	Temperature__getValuesFromRaw(Temperature__getCurrentRawValue(), negative, t_int, t_frac);
-#endif
 }
 
 
 void Temperature__getValuesFromRaw (uint16_t rawValue, uint8_t *negative,  uint8_t *t_int, uint8_t *t_frac)
 {
-#if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
+#if ((TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20) || (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_TEST))
 	if ((rawValue & 0xF800) > 0)
 	{
 		*negative = TRUE;
@@ -69,6 +68,160 @@ void Temperature__getValuesFromRaw (uint16_t rawValue, uint8_t *negative,  uint8
 	*t_int = (rawValue & 0x7F0) >> 4;
 	*t_frac = ((rawValue & 0x01) == 0x01) * 6 + ((rawValue & 0x02) == 0x02) * 12 + ((rawValue & 0x04) == 0x04) * 25 + ((rawValue & 0x08) == 0x08) * 50;
 #endif
+}
+
+
+uint16_t Temperature__getMinRawValue (uint16_t rawValue1, uint16_t rawValue2)
+{
+	uint8_t negative1, t_int1, t_frac1, negative2, t_int2, t_frac2;
+	uint16_t retVal;
+
+	Temperature__getValuesFromRaw(rawValue1, &negative1, &t_int1, &t_frac1);
+	Temperature__getValuesFromRaw(rawValue2, &negative2, &t_int2, &t_frac2);
+
+	if (negative2 == TRUE)
+	{
+		if (negative1 == FALSE)
+		{
+			retVal = rawValue2;
+		}
+		else
+		{
+			if (t_int2 > t_int1)
+			{
+				retVal = rawValue2;
+			}
+			else
+			{
+				if (t_int2 == t_int1)
+				{
+					if (t_frac2 > t_frac1)
+					{
+						retVal = rawValue2;
+					}
+					else
+					{
+						retVal = rawValue1;
+					}
+				}
+				else
+				{
+					retVal = rawValue1;
+				}
+			}
+		}
+	}
+	else
+	{
+		if (negative1 == TRUE)
+		{
+			retVal = rawValue1;
+		}
+		else
+		{
+			if (t_int1 > t_int2)
+			{
+				retVal = rawValue2;
+			}
+			else
+			{
+				if (t_int1 == t_int2)
+				{
+					if (t_frac1 > t_frac2)
+					{
+						retVal = rawValue2;
+					}
+					else
+					{
+						retVal = rawValue1;
+					}
+				}
+				else
+				{
+					retVal = rawValue1;
+				}
+			}
+		}
+	}
+
+	return retVal;
+}
+
+
+uint16_t Temperature__getMaxRawValue (uint16_t rawValue1, uint16_t rawValue2)
+{
+	uint8_t negative1, t_int1, t_frac1, negative2, t_int2, t_frac2;
+	uint16_t retVal;
+
+	Temperature__getValuesFromRaw(rawValue1, &negative1, &t_int1, &t_frac1);
+	Temperature__getValuesFromRaw(rawValue2, &negative2, &t_int2, &t_frac2);
+
+	if (negative2 == TRUE)
+	{
+		if (negative1 == FALSE)
+		{
+			retVal = rawValue1;
+		}
+		else
+		{
+			if (t_int2 > t_int1)
+			{
+				retVal = rawValue1;
+			}
+			else
+			{
+				if (t_int2 == t_int1)
+				{
+					if (t_frac2 > t_frac1)
+					{
+						retVal = rawValue1;
+					}
+					else
+					{
+						retVal = rawValue2;
+					}
+				}
+				else
+				{
+					retVal = rawValue2;
+				}
+			}
+		}
+	}
+	else
+	{
+		if (negative1 == TRUE)
+		{
+			retVal = rawValue2;
+		}
+		else
+		{
+			if (t_int1 > t_int2)
+			{
+				retVal = rawValue1;
+			}
+			else
+			{
+				if (t_int2 == t_int1)
+				{
+					if (t_frac1 > t_frac2)
+					{
+						retVal = rawValue1;
+					}
+					else
+					{
+						retVal = rawValue2;
+					}
+				}
+				else
+				{
+					retVal = rawValue2;
+				}
+			}
+		}
+	}
+
+	return retVal;
 }
 
 

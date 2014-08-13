@@ -112,7 +112,9 @@ void Mode_MeasurementStart__x10 (void)
 
 uint8_t Modes__measurementStartToMeasurement (void)
 {
-	return ((currentSelectedState == SEL_START) && (Buttons__isPressedOnce(&buttonMode)));
+	return (		(currentSelectedState == SEL_START) && (Buttons__isPressedOnce(&buttonMode))
+				&&	(DataLogger__getNumberOfMeasures() < DATA_LOGGER_MEASURES_NB)
+	);
 }
 
 

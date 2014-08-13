@@ -53,10 +53,10 @@ void Mode_Measurement__x10 (void)
 	Lcd__newLine(lcdLine_4);
 
 	/* line 1 */
-	strcpy(lcdLine_1, "Act/Moy: ");
+	strcpy(lcdLine_1, "Moy/Act: ");
 
-	Temperature__getCurrentValueString(&lcdLine_1[8]);
-	DataLogger__getAverageValueString(DataLogger__getNumberOfMeasures(), &lcdLine_1[14]);
+	DataLogger__getAverageValueString(DataLogger__getNumberOfMeasures(), &lcdLine_1[8]);
+	Temperature__getCurrentValueString(&lcdLine_1[14]);
 
 	/* line 2 */
 	strcpy(lcdLine_2, "Min/Max: ");

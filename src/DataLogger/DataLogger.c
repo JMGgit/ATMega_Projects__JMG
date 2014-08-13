@@ -127,17 +127,8 @@ void DataLogger__x10 (void)
 				if (DataLogger__getTrigger() == TRUE)
 				{
 					dataLog[dataLogIt] = getCurrentData();
-
-					/* current min/max */
-					if (dataLog[dataLogIt] < dataLogMeasurementInfos[measIndex - 1].min)
-					{
-						dataLogMeasurementInfos[measIndex - 1].min = dataLog[dataLogIt];
-					}
-					else if (dataLog[dataLogIt] > dataLogMeasurementInfos[measIndex - 1].max)
-					{
-						dataLogMeasurementInfos[measIndex - 1].max = dataLog[dataLogIt];
-					}
-
+					dataLogMeasurementInfos[measIndex - 1].min = Temperature__getMinRawValue(dataLog[dataLogIt], dataLogMeasurementInfos[measIndex - 1].min);
+					dataLogMeasurementInfos[measIndex - 1].max = Temperature__getMaxRawValue(dataLog[dataLogIt], dataLogMeasurementInfos[measIndex - 1].max);
 					dataLogIt++;
 				}
 			}
@@ -165,8 +156,8 @@ void DataLogger__startMeasure (uint16_t (*getValue)())
 		dataLogMeasurementInfos[measIndex].secondStart = Clock__getSeconds();
 		dataLogMeasurementInfos[measIndex].interval = Mode_SetupMeasurement__getInterval();
 		dataLogMeasurementInfos[measIndex].unit = Mode_SetupMeasurement__getUnit();
-		dataLogMeasurementInfos[measIndex].min = 0xFFFF;
-		dataLogMeasurementInfos[measIndex].max = 0;
+		dataLogMeasurementInfos[measIndex].min = 0x7D0;
+		dataLogMeasurementInfos[measIndex].max = 0xFC90;
 		measIndex++;
 
 		timeCount = Mode_SetupMeasurement__getInterval();
