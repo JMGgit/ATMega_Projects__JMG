@@ -114,8 +114,6 @@ void DS18B20__init (void)
 {
 	uint8_t dataBuffer[READ_BUFFER_SIZE];
 
-	DS18B20__sendCommand(CMD_MEM__CONVERT);
-
 	DS18B20__sendCommand(CMD_MEM__READ);
 	DS18B20__read(dataBuffer, READ_BUFFER_SIZE);
 
@@ -125,9 +123,9 @@ void DS18B20__init (void)
 		)
 	{
 		DS18B20__sendCommand(CMD_MEM__WRITE);
-		DS18B20__sendCommand(DS18B20_ALARM_THIGH);
-		DS18B20__sendCommand(DS18B20_ALARM_TLOW);
-		DS18B20__sendCommand(CONFIG__RES_12);
+		DS18B20__write(DS18B20_ALARM_THIGH);
+		DS18B20__write(DS18B20_ALARM_TLOW);
+		DS18B20__write(CONFIG__RES_12);
 		DS18B20__sendCommand(CMD_MEM__COPY);
 	}
 
@@ -139,8 +137,6 @@ void DS18B20__init (void)
 void DS18B20__x10 (void)
 {
 	uint8_t dataBuffer[READ_BUFFER_SIZE];
-
-	setInput(DS18B20_DATA_DDR, DS18B20_DATA_PIN);
 
 	/* bus idle */
 	if (isHigh(DS18B20_DATA_PINR, DS18B20_DATA_PIN))
