@@ -24,9 +24,9 @@
 #define CMD_MEM__POWER		0xB4
 
 #define CONFIG__RES_9		0x00
-#define CONFIG__RES_10		0x01
-#define CONFIG__RES_11		0x02
-#define CONFIG__RES_12		0x03
+#define CONFIG__RES_10		(1 << 5)
+#define CONFIG__RES_11		(1 << 6)
+#define CONFIG__RES_12		((1 << 6) | (1 << 5))
 
 #define READ_BUFFER_SIZE	9
 
