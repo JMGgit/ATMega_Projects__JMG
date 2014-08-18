@@ -43,6 +43,19 @@
 
 #define BUTTON_DEBOUNCE_TIME	7
 
+#define BUTTON_INVALID 			0x00
+
+#define Button__isLow(port, pin)	((pin != BUTTON_INVALID) && isLow(port, pin))
+
+#define Button__initButton(ddr, port, pin)	\
+{											\
+	if (pin != BUTTON_INVALID)				\
+	{										\
+		setInput(ddr, pin);					\
+		setHigh(port, pin);					\
+	}										\
+}
+
 
 typedef struct
 {
