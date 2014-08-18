@@ -21,13 +21,15 @@ void DS1307__init (void)
 	/* set clock register */
 	data[0] = 0x00;
 	TWI__transmitDataBytes(data, 1, DS1307_ADDRESS);
+
 	/* read first byte */
 	TWI__readDataBytes (&data[1], 1, DS1307_ADDRESS);
+
 	/* enable oscillator */
 	data[1] &= (~(1 << 7));
 	TWI__transmitDataBytes(data, 2, DS1307_ADDRESS);
 
-	/* enable SQW output - 1 Hz */
+	/* set control register and enable SQW output - 1 Hz */
 	data[0] = 0x07;
 	data[1] = (1 << 4);
 	TWI__transmitDataBytes(&data[0], 2, DS1307_ADDRESS);
