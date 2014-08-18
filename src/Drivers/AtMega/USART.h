@@ -18,7 +18,9 @@
 
 
 void USART__init (void);
+#if (USART_DATA_LENGTH_READ_MAX != 0)
 uint8_t USART__readDataBytes (uint8_t *data, uint8_t dataLength, uint8_t requester);
+#endif
 void USART__transmitDataBytes (uint8_t *data, uint8_t dataLength);
 
 

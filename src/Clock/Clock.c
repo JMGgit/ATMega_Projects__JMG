@@ -39,7 +39,7 @@ static void Clock__updateTimeFromRTC (void)
 
 	currentTime.seconds = DS1307__getSeconds();
 	currentTime.minutes = DS1307__getMinutes();
-	currentTime.hours   = DS1307__getHours() % 24;
+	currentTime.hours   = DS1307__getHours();
 	currentTime.day     = DS1307__getDay();
 	currentTime.date    = DS1307__getDate();
 	currentTime.month   = DS1307__getMonth();

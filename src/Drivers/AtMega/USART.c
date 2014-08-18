@@ -17,10 +17,12 @@
   #error too high USART error rate!
 #endif
 
+
+#if (USART_DATA_LENGTH_READ_MAX != 0)
 static volatile uint8_t USART_data[USART_DATA_LENGTH_READ_MAX];
 static volatile uint8_t USART_idxData = 0;
 static volatile uint8_t USART_currentDataSize = 0;
-
+#endif
 
 void USART__init (void)
 {
@@ -37,6 +39,7 @@ void USART__init (void)
 }
 
 
+#if (USART_DATA_LENGTH_READ_MAX != 0)
 /* interrupt receive routine */
 ISR(USART0_RX_vect)
 {
@@ -87,6 +90,8 @@ uint8_t USART__readDataBytes (uint8_t *data, uint8_t dataLength, uint8_t request
 	}
 	return (retVal);
 }
+
+#endif
 
 
 void USART__transmitDataBytes (uint8_t *data, uint8_t dataLength)

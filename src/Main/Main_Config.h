@@ -9,7 +9,7 @@
 #define MAIN_CONFIG_H_
 
 
-/* size of the LED matrix */
+/* size of the LCD matrix */
 #define LCD_MATRIX_SIZE_LIN				4
 #define LCD_MATRIX_SIZE_COL				20
 

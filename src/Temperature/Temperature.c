@@ -67,6 +67,10 @@ void Temperature__getValuesFromRaw (uint16_t rawValue, uint8_t *negative,  uint8
 
 	*t_int = (rawValue & 0x7F0) >> 4;
 	*t_frac = ((rawValue & 0x01) == 0x01) * 6 + ((rawValue & 0x02) == 0x02) * 12 + ((rawValue & 0x04) == 0x04) * 25 + ((rawValue & 0x08) == 0x08) * 50;
+#else
+	*negative = 0;
+	*t_int = 0;
+	*t_frac = 0;
 #endif
 }
 
