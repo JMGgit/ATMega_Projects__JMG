@@ -292,6 +292,12 @@ static void DataLogger__getTime1Plus2 (	uint16_t year_1, uint8_t month_1, uint8_
 	}
 
 	*date_res = date_1 + days;
+
+	if (*hour_res < hour_1)
+	{
+		(*date_res)++;
+	}
+
 	*month_res = currentMonth;
 	*year_res = currentYear;
 }
