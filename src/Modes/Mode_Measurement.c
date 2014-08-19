@@ -39,13 +39,12 @@ void Mode_Measurement__x10 (void)
 	uint8_t lastMeasMonth = 0, lastMeasDate = 0, lastMeasHour = 0, lastMeasMin = 0, lastMeasSec = 0;
 	uint16_t lastMeasYear = 0;
 	uint16_t lastTempValue;
-
-	DataLogger__x10();
-
 	char lcdLine_1[LCD_MATRIX_SIZE_COL + 1];
 	char lcdLine_2[LCD_MATRIX_SIZE_COL + 1];
 	char lcdLine_3[LCD_MATRIX_SIZE_COL + 1];
 	char lcdLine_4[LCD_MATRIX_SIZE_COL + 1];
+
+	DataLogger__x10();
 
 	Lcd__newLine(lcdLine_1);
 	Lcd__newLine(lcdLine_2);

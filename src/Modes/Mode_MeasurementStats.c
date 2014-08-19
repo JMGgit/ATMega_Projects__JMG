@@ -40,6 +40,8 @@ void Mode_MeasurementStats__x10 (void)
 	char lcdLine_3[LCD_MATRIX_SIZE_COL + 1];
 	char lcdLine_4[LCD_MATRIX_SIZE_COL + 1];
 
+	DataLogger__x10();
+
 	Lcd__newLine(lcdLine_1);
 	Lcd__newLine(lcdLine_2);
 	Lcd__newLine(lcdLine_3);

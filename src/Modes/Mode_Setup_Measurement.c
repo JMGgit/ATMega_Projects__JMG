@@ -335,6 +335,7 @@ void Mode_SetupMeasurement__x10 (void)
 			if (Buttons__isPressedOnce(&buttonMode))
 			{
 				DataLogger__clearAll();
+				currentSelectedState = SEL_BACK;
 			}
 
 			if (Buttons__isPressedOnce(&buttonFunc2))

@@ -243,7 +243,6 @@ void Modes__x10 (void)
 
 		case MODE__MEASUREMENT_STATS:
 		{
-			Mode_Measurement__x10();
 			Mode_MeasurementStats__x10();
 
 			if (Modes__measurementStatsToMeasurement())
