@@ -6,8 +6,8 @@
  */
 
 #include "Mode_Clock.h"
-#include "../RGBColorBlending/Mode_ColorBlending.h"
-#include "../../Buttons/Buttons.h"
+#include "Mode_ColorBlending.h"
+#include "../Buttons/Buttons.h"
 
 
 #define OFFSET_COL_NUM_1		4

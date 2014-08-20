@@ -8,9 +8,9 @@
 #ifndef MODE_STARTUP_H_
 #define MODE_STARTUP_H_
 
-#include "../../Main/Main_Types.h"
-#include "../../Main/Main_Config.h"
-#include "../../LEDMatrix/LEDMatrix.h"
+#include "../Main/Main_Types.h"
+#include "../Main/Main_Config.h"
+#include "../LEDMatrix/LEDMatrix.h"
 
 
 typedef enum

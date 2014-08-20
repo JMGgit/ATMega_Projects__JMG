@@ -6,7 +6,7 @@
  */
 
 #include "Mode_Qlocktwo.h"
-#include "../Modes.h"
+#include "Modes.h"
 
 
 #define OFF			0

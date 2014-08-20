@@ -10,8 +10,8 @@
 
 #include "../Main/Main_Types.h"
 #include "../Main/Main_Config.h"
-#include "Qlocktwo/Mode_Qlocktwo.h"
-#include "Startup/Mode_Startup.h"
+#include "Mode_Qlocktwo.h"
+#include "Mode_Startup.h"
 
 
 typedef enum

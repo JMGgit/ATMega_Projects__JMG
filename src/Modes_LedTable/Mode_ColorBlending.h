@@ -9,10 +9,10 @@
 #define MODE_COLORBLENDING_H_
 
 
-#include "../../Main/Main_Types.h"
-#include "../../Main/Main_Config.h"
-#include "../../LEDMatrix/LEDMatrix.h"
-#include "../../ColorTables/RGB_Tables.h"
+#include "../Main/Main_Types.h"
+#include "../Main/Main_Config.h"
+#include "../LEDMatrix/LEDMatrix.h"
+#include "../ColorTables/RGB_Tables.h"
 
 
 void ColorBlending__updateMatrix (void);

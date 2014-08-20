@@ -6,7 +6,7 @@
  */
 
 #include "Mode_ColorBlending.h"
-#include "../Modes.h"
+#include "Modes.h"
 
 #define LEFT_RIGHT	0
 #define RIGHT_LEFT	1

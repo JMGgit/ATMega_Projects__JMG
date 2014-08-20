@@ -10,10 +10,10 @@
 
 #include "../Main/Main_Types.h"
 #include "../Main/Main_Config.h"
-#include "AllOn/Mode_AllOn.h"
-#include "RGBColorBlending/Mode_ColorBlending.h"
-#include "Clock/Mode_Clock.h"
-#include "Snake/Mode_Snake.h"
+#include "Mode_AllOn.h"
+#include "Mode_ColorBlending.h"
+#include "Mode_Clock.h"
+#include "Mode_Snake.h"
 
 
 #define MODE__ALL_ON						1

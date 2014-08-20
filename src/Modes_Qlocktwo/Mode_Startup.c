@@ -7,7 +7,7 @@
 
 
 #include "Mode_Startup.h"
-#include "../Modes.h"
+#include "Modes.h"
 
 #define TEST_BRIGHTNESS	20
 
