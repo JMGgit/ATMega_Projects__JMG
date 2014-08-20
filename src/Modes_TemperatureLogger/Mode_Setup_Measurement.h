@@ -13,7 +13,7 @@
 #include "../Buttons/Buttons.h"
 #include "../Lcd/Lcd.h"
 #include "../Clock/Clock.h"
-#include "../DataLogger/DataLogger.h"
+#include "DataLogger/DataLogger.h"
 
 
 #define MEASUREMENT_UNIT_SECOND		1

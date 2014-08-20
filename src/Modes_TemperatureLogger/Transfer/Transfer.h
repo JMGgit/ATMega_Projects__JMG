@@ -9,9 +9,9 @@
 #define TRANSFER_H_
 
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Drivers/Drivers.h"
+#include "../../Main/Main_Types.h"
+#include "../../Main/Main_Config.h"
+#include "../../Drivers/Drivers.h"
 #include "../DataLogger/DataLogger.h"
 
 

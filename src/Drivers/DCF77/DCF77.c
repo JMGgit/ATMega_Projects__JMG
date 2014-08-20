@@ -6,7 +6,7 @@
  */
 
 #include "DCF77.h"
-#include "../../Modes/Modes.h"
+
 
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
 

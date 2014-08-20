@@ -14,7 +14,7 @@
 #include "../Drivers/Drivers.h"
 #include "../Buttons/Buttons.h"
 #include "../Clock/Clock.h"
-#include "../Modes/Modes.h"
+#include "Modes_All.h"
 #include "../Lcd/Lcd.h"
 
 #endif /* MAIN_H_ */

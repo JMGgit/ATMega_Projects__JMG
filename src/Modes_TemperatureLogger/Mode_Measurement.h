@@ -14,7 +14,7 @@
 #include "../Lcd/Lcd.h"
 #include "../Clock/Clock.h"
 #include "../Temperature/Temperature.h"
-#include "../DataLogger/DataLogger.h"
+#include "DataLogger/DataLogger.h"
 
 
 void Mode_Measurement__eepromInit (void);

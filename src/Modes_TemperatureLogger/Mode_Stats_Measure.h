@@ -12,7 +12,7 @@
 #include "../Main/Main_Types.h"
 #include "../Main/Main_Config.h"
 #include "../Buttons/Buttons.h"
-#include "../DataLogger/DataLogger.h"
+#include "DataLogger/DataLogger.h"
 #include "../Clock/Clock.h"
 #include "../Temperature/Temperature.h"
 #include "../Lcd/Lcd.h"

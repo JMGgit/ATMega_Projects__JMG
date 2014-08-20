@@ -10,6 +10,8 @@
 
 #include "../Main/Main_Config.h"
 
+#if (PROJECT == PROJECT__TEMPERATURE_LOGGER)
+
 /*********** CTL LED ***********/
 #define UC_LED_DDR		DDRD
 #define UC_LED_PORT		PORTD
@@ -91,5 +93,109 @@
 #define DS18B20_ALARM_TLOW			0	/* not supported for now */
 #define DS18B20_ALARM_THIGH			0	/* not supported for now */
 
+#endif
+
+
+#if (PROJECT == PROJECT__QLOCKTWO)
+
+/*********** WS2801 ***********/
+#define WS2801_NB		114
+#define RGB_LED_CONNECTION__RED_GREEN_BLUE	1
+#define RGB_LED_CONNECTION__BLUE_GREEN_RED	2
+#define RGB_LED_CONNECTION					RGB_LED_CONNECTION__RED_GREEN_BLUE
+
+/********** DCF77 ***************/
+#define DCF77_DATA_DDR	DDRB
+#define DCF77_DATA_PORT	PINB
+#define DCF77_DATA_PIN	PB0
+#define DCF77_TASK_TIME	100
+/* 16 Mhz -> 125 */
+/* 20 Mhz -> 100 */
+
+/*********** CTL LED ***********/
+#define UC_LED_DDR		DDRD
+#define UC_LED_PORT		PORTD
+#define UC_LED_PIN		PD4
+#define CLOCK_LED_DDR	DDRD
+#define CLOCK_LED_PORT	PORTD
+#define CLOCK_LED_PIN	PD5
+#define TEST_LED_DDR	DDRD
+#define TEST_LED_PORT	PORTD
+#define TEST_LED_PIN	PD6
+#define DCF77_LED_DDR	TEST_LED_DDR
+#define DCF77_LED_PORT	TEST_LED_PORT
+#define DCF77_LED_PIN	TEST_LED_PIN
+
+/********** USART *********/
+#define USART_DATA_LENGTH_READ_MAX	0
+
+/********* 74HC165 ********/
+#define HC165_CLK_DDR	DDRB
+#define HC165_CLK_PORT	PORTB
+#define HC165_CLK_PIN	PB3
+#define HC165_SL_DDR	DDRB
+#define HC165_SL_PORT	PORTB
+#define HC165_SL_PIN	PB2
+#define HC165_OUT_DDR	DDRB
+#define HC165_OUT_PORT	PINB
+#define HC165_OUT_PIN	PB1
+
+#endif
+
+
+#if (PROJECT == PROJECT__LED_TABLE)
+
+/*********** WS2801 ***********/
+#define WS2801_NB		(LED_MATRIX_SIZE_COL * LED_MATRIX_SIZE_LIN)
+#define RGB_LED_CONNECTION__RED_GREEN_BLUE	1
+#define RGB_LED_CONNECTION__BLUE_GREEN_RED	2
+#define RGB_LED_CONNECTION					RGB_LED_CONNECTION__BLUE_GREEN_RED
+
+/********** DCF77 ***************/
+#define DCF77_DATA_DDR	DDRB
+#define DCF77_DATA_PORT	PINB
+#define DCF77_DATA_PIN	PB0
+#define DCF77_TASK_TIME	125
+/* 16 Mhz -> 125 */
+/* 20 Mhz -> 100 */
+
+/*********** CTL LED ***********/
+#define UC_LED_DDR		DDRD
+#define UC_LED_PORT		PORTD
+#define UC_LED_PIN		PD4
+#define CLOCK_LED_DDR	DDRD
+#define CLOCK_LED_PORT	PORTD
+#define CLOCK_LED_PIN	PD5
+#define TEST_LED_DDR	DDRD
+#define TEST_LED_PORT	PORTD
+#define TEST_LED_PIN	PD7
+
+
+/********* 74HC165 ********/
+#define HC165_CLK_DDR	DDRB
+#define HC165_CLK_PORT	PORTB
+#define HC165_CLK_PIN	PB3
+#define HC165_SL_DDR	DDRB
+#define HC165_SL_PORT	PORTB
+#define HC165_SL_PIN	PB2
+#define HC165_OUT_DDR	DDRB
+#define HC165_OUT_PORT	PINB
+#define HC165_OUT_PIN	PB1
+
+
+/********** USART *********/
+
+#define USART_REQESTER_MODE			0x40
+#define USART_REQESTER_BUTTON		0x30
+#define USART_REQESTER_COLOR		0x10
+#define USART_REQESTER_CLOCK		0x80
+
+#define USART_DATA_LENGTH_MODE		1
+#define USART_DATA_LENGTH_BUTTON	2
+#define USART_DATA_LENGTH_COLOR		4
+#define USART_DATA_LENGTH_CLOCK		8
+#define USART_DATA_LENGTH_READ_MAX		4
+
+#endif
 
 #endif /* DRIVERS_CONFIG_H_ */

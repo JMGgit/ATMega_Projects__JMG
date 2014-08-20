@@ -13,7 +13,7 @@
 #include "../Main/Main_Config.h"
 #include "../Buttons/Buttons.h"
 #include "../Lcd/Lcd.h"
-#include "../Transfer/Transfer.h"
+#include "Transfer/Transfer.h"
 
 
 void Mode_Transfer__init (void);

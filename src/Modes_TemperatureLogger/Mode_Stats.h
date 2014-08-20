@@ -14,7 +14,7 @@
 #include "../Buttons/Buttons.h"
 #include "../Lcd/Lcd.h"
 #include "../Clock/Clock.h"
-#include "../DataLogger/DataLogger.h"
+#include "DataLogger/DataLogger.h"
 
 
 void Mode_Stats__init (void);
