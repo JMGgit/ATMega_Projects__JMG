@@ -242,7 +242,7 @@ void Mode_SetupMeasurement__x10 (void)
 
 			if (Buttons__isPressedOnce(&buttonMode))
 			{
-				if (interval < 20)
+				if (interval < 30)
 				{
 					interval++;
 				}

@@ -202,9 +202,12 @@
 		<configuration configurationName="Release">
 			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
 		</configuration>
+		<configuration configurationName="Project__Qlocktwo"/>
 		<configuration configurationName="Qlocktwo">
 			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
 		</configuration>
+		<configuration configurationName="Project__Led_Table"/>
+		<configuration configurationName="Project__Temperature_Logger"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
