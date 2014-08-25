@@ -110,6 +110,17 @@
 #define MODE_STARTUP_ON					2
 #define MODE_STARTUP					MODE_STARTUP_ON
 
+/* BUTTON FOR OFF MODE */
+#define OFF_BUTTON_MODE					1
+#define OFF_BUTTON_FUNC2				2
+#define OFF_BUTTON						OFF_BUTTON_MODE
+
+/* BRIGHTNESS */
+#define BRIGHTNESS_LEVEL_1				4
+#define BRIGHTNESS_LEVEL_2				10
+#define BRIGHTNESS_LEVEL_3				25
+#define BRIGHTNESS_LEVEL_4				90
+
 #endif
 
 

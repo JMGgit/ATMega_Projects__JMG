@@ -66,6 +66,14 @@ static void Modes__updateMatrix (void)
 		case MODE__OFF:
 		{
 			LEDMatrix__clearMatrix();
+
+#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
+			if (Buttons__isPressedOnce(&buttonFunc2))
+			{
+				Modes__setMode(MODE__QLOCKTWO);
+			}
+#endif
+
 			break;
 		}
 

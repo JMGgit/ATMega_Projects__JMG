@@ -64,13 +64,15 @@ static uint8_t colors[3 * QTWO_COLOR_NB] =
 
 static uint8_t brigthnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 {
-		{4,  10,  25, 80},
-		{4,  10,  25, 80},
-		{4,  10,  25, 80},
-		{4,  10,  25, 80},
-		{4,  10,  25, 80},
-		{4,  10,  25, 80},
-		{10,  15,  30, 90}
+		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
+		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
+		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
+		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
+		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
+		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
+		/* dark blue */
+		{(uint8_t)(2.50 * BRIGHTNESS_LEVEL_1), (uint8_t)(1.50 * BRIGHTNESS_LEVEL_2),
+		 (uint8_t)(1.25 * BRIGHTNESS_LEVEL_3), (uint8_t)(1.25 * BRIGHTNESS_LEVEL_4)}
 };
 
 
@@ -244,6 +246,13 @@ static void Qtwo__checkButtons (void)
 		/* store new color in EEPROM */
 		Qtwo__eepromStorage();
 	}
+
+#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
+	if (Buttons__isPressedOnce(&buttonFunc2))
+	{
+		Modes__setMode(MODE__OFF);
+	}
+#endif
 }
 
 
@@ -277,273 +286,311 @@ static void Qtwo__checkButtonsSeconds (void)
 }
 
 
-static void Qtwo__setBrightness (uint8_t setBrightness)
+static void Qtwo__setBrightness (uint8_t stateTransition)
 {
-	if (setBrightness)
+	adcOutput = ADC__readValue(0);
+
+	switch (stateLDR)
 	{
-		adcOutput = ADC__readValue(0);
+	case STATE_1:
+	{
+		brightnessCurr = 0;
 
-		switch (stateLDR)
+		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
 		{
-			case STATE_1:
+			stateLDR = STATE_1_TO_2;
+		}
+
+		QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
+				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+		break;
+	}
+
+	case STATE_1_TO_2:
+	{
+		if (stateTransition)
+		{
+			brightnessCurr = 0;
+			brightnessTar = 1;
+
+			if ((colors[currentColor * 3]) != 0)
 			{
-				brightnessCurr = 0;
-
-				if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
-				{
-					stateLDR = STATE_1_TO_2;
-				}
-
-				QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
-														(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-														(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-				break;
+				QtwoColor.red++;
 			}
 
-			case STATE_1_TO_2:
+			if ((colors[currentColor * 3 + 1]) != 0)
 			{
-				brightnessCurr = 0;
-				brightnessTar = 1;
-
-				if ((colors[currentColor * 3]) != 0)
-				{
-					QtwoColor.red++;
-				}
-
-				if ((colors[currentColor * 3 + 1]) != 0)
-				{
-					QtwoColor.green++;
-				}
-
-				if ((colors[currentColor * 3 + 2]) != 0)
-				{
-					QtwoColor.blue++;
-				}
-
-				if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-						&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-						&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-				)
-				{
-					stateLDR = STATE_2;
-				}
-
-				break;
+				QtwoColor.green++;
 			}
 
-			case STATE_2:
+			if ((colors[currentColor * 3 + 2]) != 0)
 			{
-				brightnessCurr = 1;
-
-				if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
-				{
-					stateLDR = STATE_2_TO_3;
-				}
-				else if ((adcOutput) < (ldrLevels[brightnessCurr]))
-				{
-					stateLDR = STATE_2_TO_1;
-				}
-
-				QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
-														(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-														(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-				break;
+				QtwoColor.blue++;
 			}
 
-			case STATE_2_TO_3:
+			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			)
 			{
-				brightnessCurr = 1;
-				brightnessTar = 2;
-
-				if ((colors[currentColor * 3]) != 0)
-				{
-					QtwoColor.red++;
-				}
-
-				if ((colors[currentColor * 3 + 1]) != 0)
-				{
-					QtwoColor.green++;
-				}
-
-				if ((colors[currentColor * 3 + 2]) != 0)
-				{
-					QtwoColor.blue++;
-				}
-
-
-				if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-						&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-						&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-				)
-				{
-					stateLDR = STATE_3;
-				}
-
-				break;
-			}
-
-			case STATE_3:
-			{
-				brightnessCurr = 2;
-
-				if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
-				{
-					stateLDR = STATE_3_TO_4;
-				}
-				else if ((adcOutput) < (ldrLevels[brightnessCurr]))
-				{
-					stateLDR = STATE_3_TO_2;
-				}
-
-				QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
-														(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-														(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-				break;
-			}
-
-			case STATE_3_TO_4:
-			{
-				brightnessCurr = 2;
-				brightnessTar = 3;
-
-				if ((colors[currentColor * 3]) != 0)
-				{
-					QtwoColor.red++;
-				}
-
-				if ((colors[currentColor * 3 + 1]) != 0)
-				{
-					QtwoColor.green++;
-				}
-
-				if ((colors[currentColor * 3 + 2]) != 0)
-				{
-					QtwoColor.blue++;
-				}
-
-
-				if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-						&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-						&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-				)
-				{
-					stateLDR = STATE_4;
-				}
-
-				break;
-			}
-
-			case STATE_4:
-			{
-				brightnessCurr = 3;
-
-				if ((adcOutput) < (ldrLevels[brightnessCurr]))
-				{
-					stateLDR = STATE_4_TO_3;
-				}
-
-				QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
-														(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-														(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-				break;
-			}
-
-			case STATE_4_TO_3:
-			{
-				brightnessCurr = 3;
-				brightnessTar = 2;
-
-				if ((colors[currentColor * 3]) != 0)
-				{
-					QtwoColor.red--;
-				}
-
-				if ((colors[currentColor * 3 + 1]) != 0)
-				{
-					QtwoColor.green--;
-				}
-
-				if ((colors[currentColor * 3 + 2]) != 0)
-				{
-					QtwoColor.blue--;
-				}
-
-
-				if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-						&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-						&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-				)
-				{
-					stateLDR = STATE_3;
-				}
-
-				break;
-			}
-
-			case STATE_3_TO_2:
-			{
-				brightnessCurr = 2;
-				brightnessTar = 1;
-
-				if ((colors[currentColor * 3]) != 0)
-				{
-					QtwoColor.red--;
-				}
-
-				if ((colors[currentColor * 3 + 1]) != 0)
-				{
-					QtwoColor.green--;
-				}
-
-				if ((colors[currentColor * 3 + 2]) != 0)
-				{
-					QtwoColor.blue--;
-				}
-
-
-				if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-						&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-						&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-				)
-				{
-					stateLDR = STATE_2;
-				}
-
-				break;
-			}
-
-			case STATE_2_TO_1:
-			{
-				brightnessCurr = 1;
-				brightnessTar = 0;
-
-				if ((colors[currentColor * 3]) != 0)
-				{
-					QtwoColor.red--;
-				}
-
-				if ((colors[currentColor * 3 + 1]) != 0)
-				{
-					QtwoColor.green--;
-				}
-
-				if ((colors[currentColor * 3 + 2]) != 0)
-				{
-					QtwoColor.blue--;
-				}
-
-
-				if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-						||	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-						||	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-				)
-				{
-					stateLDR = STATE_1;
-				}
-
-				break;
+				stateLDR = STATE_2;
 			}
 		}
+		else
+		{
+			stateLDR = STATE_2;
+		}
+
+		break;
+	}
+
+	case STATE_2:
+	{
+		brightnessCurr = 1;
+
+		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
+		{
+			stateLDR = STATE_2_TO_3;
+		}
+		else if ((adcOutput) < (ldrLevels[brightnessCurr]))
+		{
+			stateLDR = STATE_2_TO_1;
+		}
+
+		QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
+				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+		break;
+	}
+
+	case STATE_2_TO_3:
+	{
+		if (stateTransition)
+		{
+			brightnessCurr = 1;
+			brightnessTar = 2;
+
+			if ((colors[currentColor * 3]) != 0)
+			{
+				QtwoColor.red++;
+			}
+
+			if ((colors[currentColor * 3 + 1]) != 0)
+			{
+				QtwoColor.green++;
+			}
+
+			if ((colors[currentColor * 3 + 2]) != 0)
+			{
+				QtwoColor.blue++;
+			}
+
+
+			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			)
+			{
+				stateLDR = STATE_3;
+			}
+		}
+		else
+		{
+			stateLDR = STATE_3;
+		}
+
+		break;
+	}
+
+	case STATE_3:
+	{
+		brightnessCurr = 2;
+
+		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
+		{
+			stateLDR = STATE_3_TO_4;
+		}
+		else if ((adcOutput) < (ldrLevels[brightnessCurr]))
+		{
+			stateLDR = STATE_3_TO_2;
+		}
+
+		QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
+				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+		break;
+	}
+
+	case STATE_3_TO_4:
+	{
+		if (stateTransition)
+		{
+			brightnessCurr = 2;
+			brightnessTar = 3;
+
+			if ((colors[currentColor * 3]) != 0)
+			{
+				QtwoColor.red++;
+			}
+
+			if ((colors[currentColor * 3 + 1]) != 0)
+			{
+				QtwoColor.green++;
+			}
+
+			if ((colors[currentColor * 3 + 2]) != 0)
+			{
+				QtwoColor.blue++;
+			}
+
+
+			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			)
+			{
+				stateLDR = STATE_4;
+			}
+		}
+		else
+		{
+			stateLDR = STATE_4;
+		}
+		break;
+	}
+
+	case STATE_4:
+	{
+		brightnessCurr = 3;
+
+		if ((adcOutput) < (ldrLevels[brightnessCurr]))
+		{
+			stateLDR = STATE_4_TO_3;
+		}
+
+		QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
+				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+		break;
+	}
+
+	case STATE_4_TO_3:
+	{
+		if (stateTransition)
+		{
+			brightnessCurr = 3;
+			brightnessTar = 2;
+
+			if ((colors[currentColor * 3]) != 0)
+			{
+				QtwoColor.red--;
+			}
+
+			if ((colors[currentColor * 3 + 1]) != 0)
+			{
+				QtwoColor.green--;
+			}
+
+			if ((colors[currentColor * 3 + 2]) != 0)
+			{
+				QtwoColor.blue--;
+			}
+
+
+			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			)
+			{
+				stateLDR = STATE_3;
+			}
+		}
+		else
+		{
+			stateLDR = STATE_3;
+		}
+
+		break;
+	}
+
+	case STATE_3_TO_2:
+	{
+		if (stateTransition)
+		{
+			brightnessCurr = 2;
+			brightnessTar = 1;
+
+			if ((colors[currentColor * 3]) != 0)
+			{
+				QtwoColor.red--;
+			}
+
+			if ((colors[currentColor * 3 + 1]) != 0)
+			{
+				QtwoColor.green--;
+			}
+
+			if ((colors[currentColor * 3 + 2]) != 0)
+			{
+				QtwoColor.blue--;
+			}
+
+
+			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			)
+			{
+				stateLDR = STATE_2;
+			}
+		}
+		else
+		{
+			stateLDR = STATE_2;
+		}
+
+		break;
+	}
+
+	case STATE_2_TO_1:
+	{
+		if (stateTransition)
+		{
+			brightnessCurr = 1;
+			brightnessTar = 0;
+
+			if ((colors[currentColor * 3]) != 0)
+			{
+				QtwoColor.red--;
+			}
+
+			if ((colors[currentColor * 3 + 1]) != 0)
+			{
+				QtwoColor.green--;
+			}
+
+			if ((colors[currentColor * 3 + 2]) != 0)
+			{
+				QtwoColor.blue--;
+			}
+
+
+			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
+					||	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					||	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			)
+			{
+				stateLDR = STATE_1;
+			}
+		}
+		else
+		{
+			stateLDR = STATE_1;
+		}
+
+		break;
+	}
 	}
 }
 
@@ -1459,19 +1506,22 @@ void Qtwo__main_x10 (void)
 	Qtwo__checkButtons();
 	Qtwo__updateColor();
 
-	if (		(!timeTransition)
-			&& 	((clockHoursPrev != Clock__getHours()) || (clockMinPrev != Clock__getMinutes()))
-	)
+	if (!timeTransition)
 	{
-		Qtwo__getLastVisibility();
-		Qtwo__updateMatrix();
-		clockHoursPrev = Clock__getHours();
-		clockMinPrev = Clock__getMinutes();
-		Qtwo__startTransition();
+		if ((clockHoursPrev != Clock__getHours()) || (clockMinPrev != Clock__getMinutes()))
+		{
+			Qtwo__getLastVisibility();
+			Qtwo__updateMatrix();
+			clockHoursPrev = Clock__getHours();
+			clockMinPrev = Clock__getMinutes();
+			Qtwo__startTransition();
+		}
+
+		Qtwo__setBrightness(TRUE);
 	}
 
 	Qtwo__updateVisibility(QTWO_TRANSITION_TIMER);
-	Qtwo__setBrightness(!timeTransition);
+	Qtwo__setBrightness(TRUE);
 	Qtwo__updateLeds();
 }
 
@@ -1480,16 +1530,20 @@ void Qtwo__seconds_x10 (void)
 {
 	Qtwo__updateColor();
 
-	if ((!timeTransition) && (clockSecPrev != Clock__getSeconds()))
+	if (!timeTransition)
 	{
-		Qtwo__getLastVisibility();
-		Qtwo__updateSeconds();
-		clockSecPrev = Clock__getSeconds();
-		Qtwo__startTransition();
+		if (clockSecPrev != Clock__getSeconds())
+		{
+			Qtwo__getLastVisibility();
+			Qtwo__updateSeconds();
+			clockSecPrev = Clock__getSeconds();
+			Qtwo__startTransition();
+		}
+
+		Qtwo__setBrightness(FALSE);
 	}
 
 	Qtwo__updateVisibility(QTWO_TRANSITION_TIMER_SEC);
-	Qtwo__setBrightness(!timeTransition);
 	Qtwo__updateLeds();
 	Qtwo__checkButtonsSeconds();
 }

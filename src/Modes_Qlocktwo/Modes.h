@@ -17,10 +17,15 @@
 typedef enum
 {
 	MODE__STARTUP = 0,
+#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
+	MODE__OFF,
+#endif
 	MODE__TIME_SETUP,
 	MODE__QLOCKTWO,
 	MODE__SECONDS,
+#if (OFF_BUTTON == OFF_BUTTON_MODE)
 	MODE__OFF,
+#endif
 	MODE_NB
 } Mode_t;
 
