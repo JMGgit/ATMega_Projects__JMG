@@ -12,7 +12,7 @@
 #include "../Main/Main_Config.h"
 #include "../Drivers/Drivers.h"
 
-uint16_t Temperature__getCurrentRawValue (void);
+uint8_t Temperature__getCurrentRawValue (uint16_t *value);
 void Temperature__getCurrentValues (uint8_t *negative,  uint8_t *t_int, uint8_t *t_frac);
 void Temperature__getValuesFromRaw (uint16_t rawValue, uint8_t *negative,  uint8_t *t_int, uint8_t *t_frac);
 uint16_t Temperature__getMinRawValue (uint16_t rawValue1, uint16_t rawValue2);

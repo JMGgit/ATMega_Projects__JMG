@@ -20,7 +20,7 @@
 
 void DS18B20__init (void);
 void DS18B20__x10 (void);
-uint16_t DS18B20__getCurrentRawValue (void);
+uint8_t DS18B20__getCurrentRawValue (uint16_t *value);
 
 #endif
 

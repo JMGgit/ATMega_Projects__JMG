@@ -30,7 +30,11 @@
 
 #define READ_BUFFER_SIZE	9
 
+#define INIT_TIME			50
+
 static uint16_t currentTempValue;
+
+static uint8_t initOver;
 
 
 static void DS18B20__write (uint8_t data)
@@ -136,6 +140,8 @@ void DS18B20__init (void)
 
 void DS18B20__x10 (void)
 {
+	static uint16_t initCnt = 0;
+
 	uint8_t dataBuffer[READ_BUFFER_SIZE];
 
 	/* bus idle */
@@ -148,16 +154,34 @@ void DS18B20__x10 (void)
 		/* update last temp */
 		currentTempValue = dataBuffer[0];
 		currentTempValue |= (dataBuffer[1] << 8);
-
 		/* trigger new conversion */
 		DS18B20__sendCommand(CMD_MEM__CONVERT);
+	}
+
+	if (!initOver)
+	{
+		initCnt++;
+
+		if (initCnt > INIT_TIME)
+		{
+			initOver = TRUE;
+		}
 	}
 }
 
 
-uint16_t DS18B20__getCurrentRawValue (void)
+uint8_t DS18B20__getCurrentRawValue (uint16_t *value)
 {
-	return currentTempValue;
+	*value = currentTempValue;
+
+	if (initOver)
+	{
+		return E_OK;
+	}
+	else
+	{
+		return E_NOT_OK;
+	}
 }
 
 #endif

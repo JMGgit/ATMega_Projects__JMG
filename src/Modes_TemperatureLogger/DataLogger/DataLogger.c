@@ -18,7 +18,7 @@ static uint8_t timePrev;
 static measurementInfos_t dataLogMeasurementInfos[DATA_LOGGER_MEASURES_NB];
 static uint16_t dataLog[MAX_MEASUREMENT_POINTS];
 static uint8_t mode;
-static uint16_t (*getCurrentData)();
+static uint8_t (*getCurrentData)(uint16_t *data);
 static uint16_t dataLogIt;
 static uint16_t dataLogIndexTable[DATA_LOGGER_MEASURES_NB];
 static uint8_t measIndex;
@@ -108,6 +108,9 @@ static uint8_t DataLogger__getTrigger (void)
 
 void DataLogger__x10 (void)
 {
+	uint16_t value;
+	static uint8_t waitForTrigger= FALSE;
+
 	switch (mode)
 	{
 		case DL_MODE__IDLE:
@@ -124,13 +127,20 @@ void DataLogger__x10 (void)
 			}
 			else
 			{
-				if (DataLogger__getTrigger() == TRUE)
+				if ((DataLogger__getTrigger() == TRUE) || (waitForTrigger == TRUE))
 				{
-					toggle(TEST_LED_PORT, TEST_LED_PIN);
-					dataLog[dataLogIt] = getCurrentData();
-					dataLogMeasurementInfos[measIndex - 1].min = Temperature__getMinRawValue(dataLog[dataLogIt], dataLogMeasurementInfos[measIndex - 1].min);
-					dataLogMeasurementInfos[measIndex - 1].max = Temperature__getMaxRawValue(dataLog[dataLogIt], dataLogMeasurementInfos[measIndex - 1].max);
-					dataLogIt++;
+					if (getCurrentData(&value) == E_OK)
+					{
+						dataLog[dataLogIt] = value;
+						dataLogMeasurementInfos[measIndex - 1].min = Temperature__getMinRawValue(dataLog[dataLogIt], dataLogMeasurementInfos[measIndex - 1].min);
+						dataLogMeasurementInfos[measIndex - 1].max = Temperature__getMaxRawValue(dataLog[dataLogIt], dataLogMeasurementInfos[measIndex - 1].max);
+						dataLogIt++;
+						waitForTrigger = FALSE;
+					}
+					else
+					{
+						waitForTrigger = TRUE;
+					}
 				}
 			}
 			break;
@@ -141,7 +151,7 @@ void DataLogger__x10 (void)
 }
 
 
-void DataLogger__startMeasure (uint16_t (*getValue)())
+void DataLogger__startMeasure (uint8_t (*getValue)(uint16_t*))
 {
 	if ((measIndex < DATA_LOGGER_MEASURES_NB) && (dataLogIt < MAX_MEASUREMENT_POINTS))
 	{
@@ -262,36 +272,38 @@ static void DataLogger__getTime1Plus2 (	uint16_t year_1, uint8_t month_1, uint8_
 										uint16_t *year_res, uint8_t *month_res, uint8_t *date_res, uint8_t *hour_res, uint8_t *min_res, uint8_t *sec_res)
 {
 	uint16_t days, currentYear;
-	uint8_t currentMonth;
+	uint8_t currentMonth, currentDate;
 
 	*sec_res = (sec_1 + sec_2) % 60;
 	*min_res = (min_1 + min_2 + ((sec_1 + sec_2) / 60)) % 60;
 	*hour_res = (hour_1 + hour_2 + ((min_1 + min_2 + ((sec_1 + sec_2) / 60)) / 60)) % 24;
-
-	days = date_2 + ((hour_2 + ((min_2 + (sec_2 / 60)) / 60)) / 24);
-
+	currentDate = date_1;
 	currentYear = year_1;
 	currentMonth = month_1;
+	days = 0;//date_2 + ((hour_2 + ((min_2 + (sec_2 / 60)) / 60)) / 24);
 
-	while (days > 0)
+	while ((int)(days - (DataLogger__getNumberOfDays(currentYear, currentMonth) - date_1)) > 0)
 	{
-		if ((days - DataLogger__getNumberOfDays(currentYear, currentMonth)) > 0)
-		{
-			days = days - DataLogger__getNumberOfDays(currentYear, currentMonth);
+		days = (days - (DataLogger__getNumberOfDays(currentYear, currentMonth) - date_1)) + 1;
+		currentDate = 1;
 
-			if (currentMonth < 12)
-			{
-				currentMonth++;
-			}
-			else
-			{
-				currentMonth = 1;
-				currentYear++;
-			}
+		if (currentMonth < 12)
+		{
+			currentMonth++;
+		}
+		else
+		{
+			currentMonth = 1;
+			currentYear++;
 		}
 	}
 
-	*date_res = date_1 + days;
+	if (days > 0)
+	{
+		currentDate += (uint8_t)days;
+	}
+
+	*date_res = currentDate;
 
 	if (*hour_res < hour_1)
 	{

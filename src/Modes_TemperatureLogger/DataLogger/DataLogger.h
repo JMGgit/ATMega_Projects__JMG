@@ -34,7 +34,7 @@ typedef struct
 
 void DataLogger__eepromInit (void);
 void DataLogger__x10 (void);
-void DataLogger__startMeasure (uint16_t (*getValue)());
+void DataLogger__startMeasure (uint8_t (*getValue)(uint16_t*));
 void DataLogger__stopMeasure (void);
 uint16_t DataLogger__getNumberOfStoredValues (void);
 uint16_t DataLogger__getStoredValue (uint16_t index);

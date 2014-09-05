@@ -213,7 +213,7 @@ void Mode_SetupMeasurement__x10 (void)
 	/* line 3 */
 	if (currentSelectedState != SEL_DELETE_CONFIRMATION)
 	{
-		strcpy(&lcdLine_3[0], "Supprimer tout <OUI> ");
+		strcpy(&lcdLine_3[0], "Supprimer tout <OUI>");
 	}
 	else
 	{

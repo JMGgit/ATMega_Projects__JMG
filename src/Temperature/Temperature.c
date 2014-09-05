@@ -9,46 +9,58 @@
 #include "Temperature.h"
 #include "../Clock/Clock.h" /* TEST */
 
-uint16_t Temperature__getCurrentRawValue (void)
+uint8_t Temperature__getCurrentRawValue (uint16_t *value)
 {
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
-	return DS18B20__getCurrentRawValue();
+	return DS18B20__getCurrentRawValue(value);
 #elif (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_TEST)
-	uint16_t test;
-
-	test = 0;
+	*value = 0;
 
 	if ((Clock__getSeconds() / 50) > 0)
 	{
-		test |= 0x08;
+		*value |= 0x08;
 	}
 
 	if (((Clock__getSeconds() % 50) / 25) > 0)
 	{
-		test |= 0x04;
+		*value |= 0x04;
 	}
 
 	if ((((Clock__getSeconds() % 50) % 25) / 12) > 0)
 	{
-		test |= 0x02;
+		*value |= 0x02;
 	}
 
 	if ((((((Clock__getSeconds() % 50) % 25) % 12) / 6) > 0) || (((Clock__getSeconds() % 50) % 25) / 12) == 2)
 	{
-		test |= 0x01;
+		*value |= 0x01;
 	}
 
-	test |= Clock__getMinutes() << 4;
-	return test;
+	*value |= Clock__getMinutes() << 4;
+
+	return E_OK;
 #else
-	return 0;
+	*value = 0;
+
+	return E_OK;
 #endif
 }
 
 
 void Temperature__getCurrentValues (uint8_t *negative, uint8_t *t_int, uint8_t *t_frac)
 {
-	Temperature__getValuesFromRaw(Temperature__getCurrentRawValue(), negative, t_int, t_frac);
+	uint16_t rawValue;
+
+	if (Temperature__getCurrentRawValue(&rawValue) == E_OK)
+	{
+		Temperature__getValuesFromRaw(rawValue, negative, t_int, t_frac);
+	}
+	else
+	{
+		negative = FALSE;
+		t_int = 0;
+		t_frac = 0;
+	}
 }
 
 
@@ -231,7 +243,16 @@ uint16_t Temperature__getMaxRawValue (uint16_t rawValue1, uint16_t rawValue2)
 
 void Temperature__getCurrentValueString (char *buffer)
 {
-	Temperature__getValueStringFromRaw(Temperature__getCurrentRawValue(), buffer);
+	uint16_t rawValue;
+
+	if (Temperature__getCurrentRawValue(&rawValue) == E_OK)
+	{
+		Temperature__getValueStringFromRaw(rawValue, buffer);
+	}
+	else
+	{
+		Temperature__getValueStringFromRaw(0, buffer);
+	}
 }
 
 
