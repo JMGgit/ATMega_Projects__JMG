@@ -280,7 +280,7 @@ static void DataLogger__getTime1Plus2 (	uint16_t year_1, uint8_t month_1, uint8_
 	currentDate = date_1;
 	currentYear = year_1;
 	currentMonth = month_1;
-	days = 0;//date_2 + ((hour_2 + ((min_2 + (sec_2 / 60)) / 60)) / 24);
+	days = date_2 + ((hour_2 + ((min_2 + (sec_2 / 60)) / 60)) / 24);
 
 	while ((int)(days - (DataLogger__getNumberOfDays(currentYear, currentMonth) - date_1)) > 0)
 	{
@@ -305,7 +305,10 @@ static void DataLogger__getTime1Plus2 (	uint16_t year_1, uint8_t month_1, uint8_
 
 	*date_res = currentDate;
 
-	if (*hour_res < hour_1)
+	if (	(*hour_res < hour_1)
+		|| 	((*hour_res == hour_1) && (*min_res < min_1))
+		||	((*hour_res == hour_1) && (*min_res == min_1) && (*sec_res < sec_1))
+	)
 	{
 		(*date_res)++;
 	}
