@@ -882,7 +882,7 @@ static void Qtwo__updateMatrix()
 #endif
 #elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
 		/* ET QUART */
-		for (colIt = 0; colIt <= 8; colIt++)
+		for (colIt = 0; colIt <= 7; colIt++)
 		{
 			if (colIt != 2)
 			{
@@ -1175,7 +1175,7 @@ static void Qtwo__updateMatrix()
 		}
 #elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
 		/* TROIS */
-		for (colIt = 7; colIt <= 10; colIt++)
+		for (colIt = 6; colIt <= 10; colIt++)
 		{
 			Qtwo__setCellActive(1, colIt);
 		}
