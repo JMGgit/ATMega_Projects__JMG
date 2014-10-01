@@ -116,10 +116,12 @@
 #define OFF_BUTTON						OFF_BUTTON_MODE
 
 /* BRIGHTNESS */
-#define BRIGHTNESS_LEVEL_1				4
-#define BRIGHTNESS_LEVEL_2				10
-#define BRIGHTNESS_LEVEL_3				25
-#define BRIGHTNESS_LEVEL_4				90
+/* standard: 4, 10, 25, 90
+ * bright: 10, 25, 90, 160 */
+#define BRIGHTNESS_LEVEL_1				10
+#define BRIGHTNESS_LEVEL_2				25
+#define BRIGHTNESS_LEVEL_3				90
+#define BRIGHTNESS_LEVEL_4				160
 
 #endif
 

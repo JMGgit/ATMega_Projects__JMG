@@ -9,7 +9,11 @@
 #include "Mode_Startup.h"
 #include "Modes.h"
 
-#define TEST_BRIGHTNESS	20
+
+/* BRIGHTNESS */
+/* standard: 20
+ * bright: 60 */
+#define TEST_BRIGHTNESS	60
 
 static uint8_t lineIt = 0;
 static uint8_t colIt = 0;
