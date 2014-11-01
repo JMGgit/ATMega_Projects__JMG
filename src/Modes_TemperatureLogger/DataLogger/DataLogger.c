@@ -290,7 +290,7 @@ static void DataLogger__getTime1Plus2 (	uint16_t year_1, uint8_t month_1, uint8_
 		days++;
 	}
 
-	while ((days - (DataLogger__getNumberOfDays(currentYear, currentMonth) - currentDate)) > 0)
+	while ((int)(days - (DataLogger__getNumberOfDays(currentYear, currentMonth) - currentDate)) > 0)
 	{
 		days = DataLogger__getNumberOfDays(currentYear, currentMonth) - currentDate + 1;
 		currentDate = 1;
