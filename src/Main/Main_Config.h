@@ -77,7 +77,7 @@
 #define QLOCKTWO_LANG_DE				1
 #define QLOCKTWO_LANG_DE_SUED			2
 #define QLOCKTWO_LANG_FR				3
-#define QLOCKTWO_LANG					QLOCKTWO_LANG_FR
+#define QLOCKTWO_LANG					QLOCKTWO_LANG_DE_SUED
 
 /* clock sync */
 #define CLOCK_SYNC_OFF					1
