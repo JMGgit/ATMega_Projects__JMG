@@ -11,10 +11,10 @@
 
 #include "Main_Types.h"
 #include "Main_Config.h"
-#include "../Drivers/Drivers.h"
-#include "../Buttons/Buttons.h"
-#include "../Clock/Clock.h"
-#include "Modes_All.h"
-#include "../Lcd/Lcd.h"
+#include "Drivers.h"
+#include "Buttons.h"
+#include "Clock.h"
+#include "Modes.h"
+#include "Lcd.h"
 
 #endif /* MAIN_H_ */
