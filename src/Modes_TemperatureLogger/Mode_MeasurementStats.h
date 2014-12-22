@@ -8,10 +8,10 @@
 #ifndef MODE_MEASUREMENTSTATS_H_
 #define MODE_MEASUREMENTSTATS_H_
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Buttons/Buttons.h"
-#include "../Lcd/Lcd.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Buttons.h"
+#include "Lcd.h"
 
 
 void Mode_MeasurementStats__x10 (void);

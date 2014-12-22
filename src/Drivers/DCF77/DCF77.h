@@ -9,10 +9,10 @@
 #define DCF77_H_
 
 #include <avr/io.h>
-#include "../../Main/Main_Types.h"
-#include "../../Main/Main_Config.h"
-#include "../Drivers_Config.h"
-#include "../AtMega/AtMega.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Drivers_Config.h"
+#include "AtMega/AtMega.h"
 
 
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)

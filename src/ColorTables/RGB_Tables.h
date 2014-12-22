@@ -9,7 +9,7 @@
 #define RGB_TABLES_H_
 
 
-#include "../Main/Main_Types.h"
+#include "Main_Types.h"
 
 
 #define NUMBER_OF_BLENDING_COLORS				16

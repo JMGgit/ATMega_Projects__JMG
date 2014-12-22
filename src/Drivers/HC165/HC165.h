@@ -9,9 +9,9 @@
 #define HC165_H_
 
 #include <avr/io.h>
-#include "../../Main/Main_Types.h"
-#include "../Drivers_Config.h"
-#include "../AtMega/AtMega.h"
+#include "Main_Types.h"
+#include "Drivers_Config.h"
+#include "AtMega/AtMega.h"
 
 
 #if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_HC165)

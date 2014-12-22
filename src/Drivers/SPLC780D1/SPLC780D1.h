@@ -12,10 +12,10 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include <string.h>
-#include "../../Main/Main_Types.h"
-#include "../../Main/Main_Config.h"
-#include "../Drivers_Config.h"
-#include "../AtMega/AtMega.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Drivers_Config.h"
+#include "AtMega/AtMega.h"
 
 
 #if (LCD_CONTROLLER == LCD_CONTROLLER_SPLC780D1)

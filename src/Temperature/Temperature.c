@@ -7,7 +7,10 @@
 
 
 #include "Temperature.h"
-#include "../Clock/Clock.h" /* TEST */
+#if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_TEST)
+#include "Clock.h"
+#endif
+
 
 uint8_t Temperature__getCurrentRawValue (uint16_t *value)
 {

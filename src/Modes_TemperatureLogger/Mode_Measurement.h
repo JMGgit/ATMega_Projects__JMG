@@ -8,13 +8,13 @@
 #ifndef MODE_MEASUREMENT_H_
 #define MODE_MEASUREMENT_H_
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Buttons/Buttons.h"
-#include "../Lcd/Lcd.h"
-#include "../Clock/Clock.h"
-#include "../Temperature/Temperature.h"
-#include "DataLogger/DataLogger.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Buttons.h"
+#include "Lcd.h"
+#include "Clock.h"
+#include "Temperature.h"
+#include "DataLogger.h"
 
 
 void Mode_Measurement__eepromInit (void);

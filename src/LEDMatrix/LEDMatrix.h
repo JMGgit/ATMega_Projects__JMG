@@ -9,9 +9,9 @@
 #define LEDMATRIX_H_
 
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Drivers/WS2801/WS2801.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "WS2801/WS2801.h"
 
 
 void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color);

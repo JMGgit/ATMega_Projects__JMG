@@ -9,9 +9,9 @@
 #define WS2801_H_
 
 #include <avr/io.h>
-#include "../../Main/Main_Types.h"
-#include "../Drivers_Config.h"
-#include "../AtMega/AtMega.h"
+#include "Main_Types.h"
+#include "Drivers_Config.h"
+#include "AtMega/AtMega.h"
 
 
 #ifdef WS2801_NB

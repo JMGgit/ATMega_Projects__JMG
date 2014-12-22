@@ -8,8 +8,8 @@
 #ifndef MODES_H_
 #define MODES_H_
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
 #include "Mode_AllOn.h"
 #include "Mode_ColorBlending.h"
 #include "Mode_Clock.h"

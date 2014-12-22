@@ -8,11 +8,11 @@
 #ifndef SNAKE_H_
 #define SNAKE_H_
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../LEDMatrix/LEDMatrix.h"
-#include "../Clock/Clock.h"
-#include "../Buttons/Buttons.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "LEDMatrix.h"
+#include "Clock.h"
+#include "Buttons.h"
 
 void Snake__init (void);
 void Snake__updateMatrix (void);

@@ -8,8 +8,8 @@
 #ifndef LEDMATRIX_DOTCORRECTION_H_
 #define LEDMATRIX_DOTCORRECTION_H_
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
 
 void LEDMatrix__applyDotCorrection (RGB_Color_t* color, uint8_t line, uint8_t column);
 

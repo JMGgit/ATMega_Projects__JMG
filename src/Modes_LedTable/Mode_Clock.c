@@ -7,7 +7,7 @@
 
 #include "Mode_Clock.h"
 #include "Mode_ColorBlending.h"
-#include "../Buttons/Buttons.h"
+#include "Buttons.h"
 
 
 #define OFFSET_COL_NUM_1		4

@@ -9,8 +9,8 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <util/atomic.h>
-#include "../../Main/Main_Types.h"
-#include "../Drivers_Config.h"
+#include "Main_Types.h"
+#include "Drivers_Config.h"
 #include "Ports.h"
 
 

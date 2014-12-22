@@ -7,7 +7,7 @@
 
 
 #include "Lcd.h"
-#include "../Clock/Clock.h"
+#include "Clock.h"
 
 
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)

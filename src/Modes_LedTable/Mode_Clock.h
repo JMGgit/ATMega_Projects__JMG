@@ -8,10 +8,10 @@
 #ifndef MODE_CLOCK_H_
 #define MODE_CLOCK_H_
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../LEDMatrix/LEDMatrix.h"
-#include "../Clock/Clock.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "LEDMatrix.h"
+#include "Clock.h"
 
 #define CLOCK_MODE_ONE_COLOR					1
 #define CLOCK_MODE_COLOR_BLENDING				2

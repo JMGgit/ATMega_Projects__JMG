@@ -9,11 +9,11 @@
 #define MODE_TRANSFER_H_
 
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Buttons/Buttons.h"
-#include "../Lcd/Lcd.h"
-#include "Transfer/Transfer.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Buttons.h"
+#include "Lcd.h"
+#include "Transfer.h"
 
 
 void Mode_Transfer__init (void);

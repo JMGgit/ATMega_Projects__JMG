@@ -8,7 +8,7 @@
 #ifndef PWM_TABLES_H_
 #define PWM_TABLES_H_
 
-#include "../Main/Main_Types.h"
+#include "Main_Types.h"
 
 
 extern const uint8_t PWM_Table_32[32];

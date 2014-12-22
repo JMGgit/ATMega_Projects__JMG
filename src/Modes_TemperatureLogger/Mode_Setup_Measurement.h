@@ -8,12 +8,12 @@
 #ifndef MODE_SETUP_MEASUREMENT_H_
 #define MODE_SETUP_MEASUREMENT_H_
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Buttons/Buttons.h"
-#include "../Lcd/Lcd.h"
-#include "../Clock/Clock.h"
-#include "DataLogger/DataLogger.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Buttons.h"
+#include "Lcd.h"
+#include "Clock.h"
+#include "DataLogger.h"
 
 
 #define MEASUREMENT_UNIT_SECOND		1

@@ -8,9 +8,9 @@
 #ifndef TEMPERATURE_H_
 #define TEMPERATURE_H_
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Drivers/Drivers.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Drivers.h"
 
 uint8_t Temperature__getCurrentRawValue (uint16_t *value);
 void Temperature__getCurrentValues (uint8_t *negative,  uint8_t *t_int, uint8_t *t_frac);

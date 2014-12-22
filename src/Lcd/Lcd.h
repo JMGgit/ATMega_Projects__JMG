@@ -9,9 +9,9 @@
 #define LCD_H_
 
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Drivers/Drivers.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Drivers.h"
 
 
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)

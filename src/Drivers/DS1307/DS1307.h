@@ -9,9 +9,9 @@
 #define DS1307_H_
 
 #include <avr/io.h>
-#include "../../Main/Main_Types.h"
-#include "../Drivers_Config.h"
-#include "../AtMega/AtMega.h"
+#include "Main_Types.h"
+#include "Drivers_Config.h"
+#include "AtMega/AtMega.h"
 
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 

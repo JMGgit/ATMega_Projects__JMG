@@ -8,7 +8,8 @@
 #ifndef DRIVERS_CONFIG_H_
 #define DRIVERS_CONFIG_H_
 
-#include "../Main/Main_Config.h"
+#include "Main_Config.h"
+
 
 #if (PROJECT == PROJECT__TEMPERATURE_LOGGER)
 

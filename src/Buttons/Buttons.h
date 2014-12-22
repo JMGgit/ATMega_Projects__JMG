@@ -9,9 +9,9 @@
 #define BUTTONS_H_
 
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Drivers/Drivers.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Drivers.h"
 
 #define BITPOS_BUTTON_MODE		7
 #define BITPOS_BUTTON_FUNC1		6

@@ -9,12 +9,12 @@
 #define MODE_STATS_H_
 
 
-#include "../Main/Main_Types.h"
-#include "../Main/Main_Config.h"
-#include "../Buttons/Buttons.h"
-#include "../Lcd/Lcd.h"
-#include "../Clock/Clock.h"
-#include "DataLogger/DataLogger.h"
+#include "Main_Types.h"
+#include "Main_Config.h"
+#include "Buttons.h"
+#include "Lcd.h"
+#include "Clock.h"
+#include "DataLogger.h"
 
 
 void Mode_Stats__init (void);
