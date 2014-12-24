@@ -84,7 +84,11 @@ void Buttons__x10 (void)
 #if (BUTTONS_USART == BUTTONS_USART_ON)
 	uint8_t USARTBuffer[USART_DATA_LENGTH_BUTTON];
 #endif
+#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+	uint8_t IRMPBuffer;
+#endif
 	uint8_t buttonUSART = 0;
+	uint8_t buttonIRMP = 0;
 
 #if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_HC165)
 	HC165__readByte(&buttonWired);
@@ -101,21 +105,59 @@ void Buttons__x10 (void)
 #endif
 
 #if (BUTTONS_USART == BUTTONS_USART_ON)
-	if (E_OK == (USART__readDataBytes(USARTBuffer, USART_DATA_LENGTH_BUTTON, USART_REQESTER_BUTTON)))
+	if (E_OK == USART__readData(USARTBuffer, USART_DATA_LENGTH_BUTTON, USART_REQESTER_BUTTON))
 	{
 		buttonUSART = USARTBuffer[1];
 	}
 #endif
 
+#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+	if (E_OK == IRMP__readData(&IRMPBuffer, 1))
+	{
+		if (IRMPBuffer == IRMP_BUTTON_MODE)
+		{
+			buttonIRMP = BUTTON_MODE;
+		}
+		else if (IRMPBuffer == IRMP_BUTTON_FUNC1)
+		{
+			buttonIRMP = BUTTON_FUNC1;
+		}
+		else if (IRMPBuffer == IRMP_BUTTON_FUNC2)
+		{
+			buttonIRMP = BUTTON_FUNC2;
+		}
+		else if (IRMPBuffer == IRMP_BUTTON_FUNC3)
+		{
+			buttonIRMP = BUTTON_FUNC3;
+		}
+		else if (IRMPBuffer == IRMP_BUTTON_UP)
+		{
+			buttonIRMP = BUTTON_UP;
+		}
+		else if (IRMPBuffer == IRMP_BUTTON_DOWN)
+		{
+			buttonIRMP = BUTTON_DOWN;
+		}
+		else if (IRMPBuffer == IRMP_BUTTON_LEFT)
+		{
+			buttonIRMP = BUTTON_LEFT;
+		}
+		else if (IRMPBuffer == IRMP_BUTTON_RIGHT)
+		{
+			buttonIRMP = BUTTON_RIGHT;
+		}
+	}
+#endif
+
 	/* update buttons states */
-	Buttons__updateState(buttonWired | buttonUSART, &buttonMode);
-	Buttons__updateState(buttonWired | buttonUSART, &buttonFunc1);
-	Buttons__updateState(buttonWired | buttonUSART, &buttonFunc2);
-	Buttons__updateState(buttonWired | buttonUSART, &buttonFunc3);
-	Buttons__updateState(buttonWired | buttonUSART, &buttonLeft);
-	Buttons__updateState(buttonWired | buttonUSART, &buttonRight);
-	Buttons__updateState(buttonWired | buttonUSART, &buttonUp);
-	Buttons__updateState(buttonWired | buttonUSART, &buttonDown);
+	Buttons__updateState(buttonWired | buttonUSART | buttonIRMP, &buttonMode);
+	Buttons__updateState(buttonWired | buttonUSART | buttonIRMP, &buttonFunc1);
+	Buttons__updateState(buttonWired | buttonUSART | buttonIRMP, &buttonFunc2);
+	Buttons__updateState(buttonWired | buttonUSART | buttonIRMP, &buttonFunc3);
+	Buttons__updateState(buttonWired | buttonUSART | buttonIRMP, &buttonLeft);
+	Buttons__updateState(buttonWired | buttonUSART | buttonIRMP, &buttonRight);
+	Buttons__updateState(buttonWired | buttonUSART | buttonIRMP, &buttonUp);
+	Buttons__updateState(buttonWired | buttonUSART | buttonIRMP, &buttonDown);
 
 	Buttons__updateState_USART(buttonUSART, &buttonMode);
 	Buttons__updateState_USART(buttonUSART, &buttonFunc1);

@@ -20,9 +20,9 @@
 #define CLOCK_LED_DDR	DDRD
 #define CLOCK_LED_PORT	PORTD
 #define CLOCK_LED_PIN	PD6
-#define TEST_LED_DDR	DDRD
-#define TEST_LED_PORT	PORTD
-#define TEST_LED_PIN	PD7
+#define TEST1_LED_DDR	DDRD
+#define TEST1_LED_PORT	PORTD
+#define TEST1_LED_PIN	PD7
 
 
 /********* BUTTONS ********/
@@ -94,6 +94,11 @@
 #define DS18B20_ALARM_TLOW			0	/* not supported for now */
 #define DS18B20_ALARM_THIGH			0	/* not supported for now */
 
+/********** IRMP **********/
+#define IRMP_OFF		0
+#define IRMP_ON			1
+#define IRMP			IRMP_OFF
+
 #endif
 
 
@@ -120,12 +125,12 @@
 #define CLOCK_LED_DDR	DDRD
 #define CLOCK_LED_PORT	PORTD
 #define CLOCK_LED_PIN	PD5
-#define TEST_LED_DDR	DDRD
-#define TEST_LED_PORT	PORTD
-#define TEST_LED_PIN	PD6
-#define DCF77_LED_DDR	TEST_LED_DDR
-#define DCF77_LED_PORT	TEST_LED_PORT
-#define DCF77_LED_PIN	TEST_LED_PIN
+#define TEST1_LED_DDR	DDRD
+#define TEST1_LED_PORT	PORTD
+#define TEST1_LED_PIN	PD6
+#define DCF77_LED_DDR	TEST1_LED_DDR
+#define DCF77_LED_PORT	TEST1_LED_PORT
+#define DCF77_LED_PIN	TEST1_LED_PIN
 
 /********** USART *********/
 #define USART_DATA_LENGTH_READ_MAX	0
@@ -140,6 +145,11 @@
 #define HC165_OUT_DDR	DDRB
 #define HC165_OUT_PORT	PINB
 #define HC165_OUT_PIN	PB1
+
+/********** IRMP **********/
+#define IRMP_OFF		0
+#define IRMP_ON			1
+#define IRMP			IRMP_OFF
 
 #endif
 
@@ -163,16 +173,22 @@
 /*********** CTL LED ***********/
 #define UC_LED_DDR		DDRD
 #define UC_LED_PORT		PORTD
-#define UC_LED_PIN		PD4
+#define UC_LED_PIN		PD5
 #define CLOCK_LED_DDR	DDRD
 #define CLOCK_LED_PORT	PORTD
-#define CLOCK_LED_PIN	PD5
-#define TEST_LED_DDR	DDRD
-#define TEST_LED_PORT	PORTD
-#define TEST_LED_PIN	PD6
-#define DCF77_LED_DDR	TEST_LED_DDR
-#define DCF77_LED_PORT	TEST_LED_PORT
-#define DCF77_LED_PIN	TEST_LED_PIN
+#define CLOCK_LED_PIN	PD6
+#define TEST1_LED_DDR	DDRD
+#define TEST1_LED_PORT	PORTD
+#define TEST1_LED_PIN	PD7
+#define TEST2_LED_DDR	DDRD
+#define TEST2_LED_PORT	PORTD
+#define TEST2_LED_PIN	PD4
+#define DCF77_LED_DDR	TEST1_LED_DDR
+#define DCF77_LED_PORT	TEST1_LED_PORT
+#define DCF77_LED_PIN	TEST1_LED_PIN
+#define IRMP_LED_DDR	TEST2_LED_DDR
+#define IRMP_LED_PORT	TEST2_LED_PORT
+#define IRMP_LED_PIN	TEST2_LED_PIN
 
 /********* BUTTONS ********/
 #define BUTTON_MODE_DDR		DDRB
@@ -203,7 +219,19 @@
 /********** USART *********/
 #define USART_DATA_LENGTH_READ_MAX	0
 
-/******** IR REMOTE *******/
+/********** IRMP **********/
+#define IRMP_OFF		0
+#define IRMP_ON			1
+#define IRMP			IRMP_ON
+
+#define IRMP_BUTTON_MODE		0x20DF
+#define IRMP_BUTTON_FUNC1		0xF807
+#define IRMP_BUTTON_FUNC2		0x7887
+#define IRMP_BUTTON_FUNC3		0x58A7
+#define IRMP_BUTTON_LEFT		0x10EF
+#define IRMP_BUTTON_UP			0xA05F
+#define IRMP_BUTTON_DOWN		0x00FF
+#define IRMP_BUTTON_RIGHT		0x807F
 
 #endif
 
@@ -231,9 +259,9 @@
 #define CLOCK_LED_DDR	DDRD
 #define CLOCK_LED_PORT	PORTD
 #define CLOCK_LED_PIN	PD5
-#define TEST_LED_DDR	DDRD
-#define TEST_LED_PORT	PORTD
-#define TEST_LED_PIN	PD7
+#define TEST1_LED_DDR	DDRD
+#define TEST1_LED_PORT	PORTD
+#define TEST1_LED_PIN	PD7
 
 
 /********* 74HC165 ********/
@@ -259,7 +287,12 @@
 #define USART_DATA_LENGTH_BUTTON	2
 #define USART_DATA_LENGTH_COLOR		4
 #define USART_DATA_LENGTH_CLOCK		8
-#define USART_DATA_LENGTH_READ_MAX		4
+#define USART_DATA_LENGTH_READ_MAX	4
+
+/********** IRMP **********/
+#define IRMP_OFF		0
+#define IRMP_ON			1
+#define IRMP			IRMP_OFF
 
 #endif
 

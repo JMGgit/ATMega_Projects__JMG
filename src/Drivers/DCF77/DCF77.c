@@ -19,7 +19,6 @@ void DCF77__init (void)
 {
 	setInput(DCF77_DATA_DDR, DCF77_DATA_PIN);
 	setLow(DCF77_DATA_PORT, DCF77_DATA_PIN);
-	setOutput(DCF77_LED_DDR, DCF77_LED_PIN);
 }
 
 

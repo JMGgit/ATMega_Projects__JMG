@@ -21,6 +21,10 @@
 #include "USART.h"
 
 
+#ifndef F_CPU
+#error F_CPU not defined!
+#endif
+
 void uC__init (void);
 uint8_t uC__isTaskTrigger_x10 (void);
 

@@ -29,19 +29,19 @@ void WS2801__updateAll (void)
 	{
 		if (itChannel < 256)
 		{
-			SPI__transmitDataBytes(&GS_Data_0[itChannel], 1);
+			SPI__transmitData(&GS_Data_0[itChannel], 1);
 		}
 		else if (itChannel < 512)
 		{
-			SPI__transmitDataBytes(&GS_Data_1[itChannel - 256], 1);
+			SPI__transmitData(&GS_Data_1[itChannel - 256], 1);
 		}
 		else if (itChannel < 768)
 		{
-			SPI__transmitDataBytes(&GS_Data_2[itChannel - 512], 1);
+			SPI__transmitData(&GS_Data_2[itChannel - 512], 1);
 		}
 		else if (itChannel < 1024)
 		{
-			SPI__transmitDataBytes(&GS_Data_3[itChannel - 768], 1);
+			SPI__transmitData(&GS_Data_3[itChannel - 768], 1);
 		}
 		else
 		{

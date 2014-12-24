@@ -13,6 +13,7 @@
 #include "Main_Config.h"
 #include "Drivers.h"
 
+
 #define BITPOS_BUTTON_MODE		7
 #define BITPOS_BUTTON_FUNC1		6
 #define BITPOS_BUTTON_FUNC2		5
@@ -64,6 +65,7 @@ typedef struct
 	uint8_t pressed;
 	uint8_t pressedOnce;
 	uint8_t pressedUSART;
+	uint8_t pressedIRMP;
 } Button_t;
 
 extern Button_t buttonMode;

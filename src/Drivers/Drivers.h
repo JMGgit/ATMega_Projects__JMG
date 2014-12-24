@@ -16,7 +16,9 @@
 #include "WS2801/WS2801.h"
 #include "SPLC780D1/SPLC780D1.h"
 #include "DS18B20/DS18B20.h"
+#include "IRMP/IRMP.h"
 #include "Drivers_Config.h"
+
 
 INLINE void Drivers__init (void)
 {
@@ -37,6 +39,16 @@ INLINE void Drivers__init (void)
 #endif
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
 	DS18B20__init();
+#endif
+#if (IRMP == IRMP_ON)
+	IRMP__init();
+#endif
+
+#ifdef TEST1_LED_DDR
+	setOutput(TEST1_LED_DDR, TEST1_LED_PIN);
+#endif
+#ifdef TEST2_LED_DDR
+	setOutput(TEST2_LED_DDR, TEST2_LED_PIN);
 #endif
 }
 

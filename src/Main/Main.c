@@ -19,8 +19,6 @@ int main (void)
 #endif
 	Modes__init();
 
-	setOutput(TEST_LED_DDR, TEST_LED_PIN);
-
 	while (1)
 	{
 		if (uC__isTaskTrigger_x10())

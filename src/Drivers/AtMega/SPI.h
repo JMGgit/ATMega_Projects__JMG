@@ -26,7 +26,7 @@
 
 
 void SPI__masterInit (void);
-void SPI__transmitDataBytes (uint8_t *data, uint8_t dataLength);
+void SPI__transmitData (uint8_t *data, uint8_t dataLength);
 
 
 #endif /* SPI_H_ */

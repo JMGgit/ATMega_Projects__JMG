@@ -64,7 +64,7 @@ ISR(USART0_RX_vect)
 }
 
 
-uint8_t USART__readDataBytes (uint8_t *data, uint8_t dataLength, uint8_t requester)
+uint8_t USART__readData (uint8_t *data, uint8_t dataLength, uint8_t requester)
 {
 	uint8_t idxByte, dataSize;
 	uint8_t retVal = E_NOT_OK;
@@ -94,7 +94,7 @@ uint8_t USART__readDataBytes (uint8_t *data, uint8_t dataLength, uint8_t request
 #endif
 
 
-void USART__transmitDataBytes (uint8_t *data, uint8_t dataLength)
+void USART__transmitData (uint8_t *data, uint8_t dataLength)
 {
 	uint8_t idxByte;
 

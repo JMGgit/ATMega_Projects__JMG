@@ -20,19 +20,19 @@ void DS1307__init (void)
 
 	/* set clock register */
 	data[0] = 0x00;
-	TWI__transmitDataBytes(data, 1, DS1307_ADDRESS);
+	TWI__transmitData(data, 1, DS1307_ADDRESS);
 
 	/* read first byte */
-	TWI__readDataBytes (&data[1], 1, DS1307_ADDRESS);
+	TWI__readData (&data[1], 1, DS1307_ADDRESS);
 
 	/* enable oscillator */
 	data[1] &= (~(1 << 7));
-	TWI__transmitDataBytes(data, 2, DS1307_ADDRESS);
+	TWI__transmitData(data, 2, DS1307_ADDRESS);
 
 	/* set control register and enable SQW output - 1 Hz */
 	data[0] = 0x07;
 	data[1] = (1 << 4);
-	TWI__transmitDataBytes(&data[0], 2, DS1307_ADDRESS);
+	TWI__transmitData(&data[0], 2, DS1307_ADDRESS);
 
 	/* update time from RTC */
 	DS1307__updateTimeFromRTC();
@@ -52,7 +52,7 @@ void DS1307__sendTimeToRTC (void)
 	data[6] = (((currentTime.month / 10) << 4) & (0x10)) | ((currentTime.month % 10) & 0x0F);
 	data[7] = (((currentTime.year / 10) << 4) & (0xF0)) | ((currentTime.year % 10) & 0x0F);
 
-	TWI__transmitDataBytes(data, 8, DS1307_ADDRESS);
+	TWI__transmitData(data, 8, DS1307_ADDRESS);
 }
 
 
@@ -62,8 +62,8 @@ void DS1307__updateTimeFromRTC (void)
 
 	/* set clock register and read bytes */
 	data[0] = 0x00;
-	TWI__transmitDataBytes(&data[0], 1, DS1307_ADDRESS);
-	TWI__readDataBytes (&data[1], 7, DS1307_ADDRESS);
+	TWI__transmitData(&data[0], 1, DS1307_ADDRESS);
+	TWI__readData (&data[1], 7, DS1307_ADDRESS);
 
 	/* copy to buffer */
 	currentTime.seconds = (((data[1] & 0x70) >> 4) * 10) + (data[1] & 0x0F);

@@ -376,7 +376,7 @@ static uint8_t Clock__updateSyncSignal (void)
 #elif (CLOCK_SYNC == CLOCK_SYNC_DCF77)
 	uint8_t USARTbuffer[USART_DATA_LENGTH_CLOCK];
 
-	if (E_OK == USART__readDataBytes(USARTbuffer, USART_DATA_LENGTH_CLOCK, USART_REQESTER_CLOCK))
+	if (E_OK == USART__readData(USARTbuffer, USART_DATA_LENGTH_CLOCK, USART_REQESTER_CLOCK))
 	{
 		currentSyncTime.seconds	= USARTbuffer[1];
 		currentSyncTime.minutes	= USARTbuffer[2];

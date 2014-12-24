@@ -74,7 +74,7 @@ static void Modes__updateColor (void)
 {
 	uint8_t USARTbuffer[USART_DATA_LENGTH_COLOR];
 
-	if (E_OK == USART__readDataBytes(USARTbuffer, USART_DATA_LENGTH_COLOR, USART_REQESTER_COLOR))
+	if (E_OK == USART__readData(USARTbuffer, USART_DATA_LENGTH_COLOR, USART_REQESTER_COLOR))
 	{
 		Modes_currentColor.red = USARTbuffer[1];
 		Modes_currentColor.green = USARTbuffer[2];
@@ -114,7 +114,7 @@ void Modes__x10 (void)
 {
 	uint8_t USARTbuffer[USART_DATA_LENGTH_MODE];
 
-	if ((Buttons__isPressedOnce(&buttonMode)) || (E_OK == (USART__readDataBytes(USARTbuffer, USART_DATA_LENGTH_MODE, USART_REQESTER_MODE))))
+	if ((Buttons__isPressedOnce(&buttonMode)) || (E_OK == USART__readData(USARTbuffer, USART_DATA_LENGTH_MODE, USART_REQESTER_MODE)))
 	{
 		Modes__setNextMode();
 	}

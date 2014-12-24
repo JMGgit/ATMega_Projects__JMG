@@ -50,9 +50,9 @@ void Transfer__x10 (void)
 		{
 			progress = 0;
 
-			if (E_OK == USART__readDataBytes(&usartReadBuffer[0], USART_DATA_LENGTH_TRANSFER_READ, USART_REQESTER_TRANSFER))
+			if (E_OK == USART__readData(&usartReadBuffer[0], USART_DATA_LENGTH_TRANSFER_READ, USART_REQESTER_TRANSFER))
 			{
-				toggle(TEST_LED_PORT, TEST_LED_PIN);
+				toggle(TEST1_LED_PORT, TEST1_LED_PIN);
 				progress = 10;
 				trMode = TRANSFER_MODE__HEADER;
 			}
@@ -63,7 +63,7 @@ void Transfer__x10 (void)
 		{
 			/* Byte 1 : number of measurements */
 			usartWriteBuffer[bufIdx++] = numberOfMeas;
-			USART__transmitDataBytes(usartWriteBuffer, bufIdx);
+			USART__transmitData(usartWriteBuffer, bufIdx);
 			bufIdx = 0;
 			measIt = 1;
 			progress = 20;
@@ -77,7 +77,7 @@ void Transfer__x10 (void)
 			measPoints = DataLogger__getNumberOfStoredValuesOfMeasure(measIt);
 			usartWriteBuffer[bufIdx++] = (uint8_t)((measPoints & 0xFF00) >> 8);
 			usartWriteBuffer[bufIdx++] = measPoints & 0xFF;
-			USART__transmitDataBytes(usartWriteBuffer, bufIdx);
+			USART__transmitData(usartWriteBuffer, bufIdx);
 			bufIdx = 0;
 			measPointsIt = 0;
 			measPointsCycle = 0;
@@ -101,7 +101,7 @@ void Transfer__x10 (void)
 				usartWriteBuffer[bufIdx++] = sec;
 				usartWriteBuffer[bufIdx++] = t_int;
 				usartWriteBuffer[bufIdx++] = t_frac;
-				USART__transmitDataBytes(usartWriteBuffer, bufIdx);
+				USART__transmitData(usartWriteBuffer, bufIdx);
 				bufIdx = 0;
 				measPointsIt++;
 				measPointsCycle++;

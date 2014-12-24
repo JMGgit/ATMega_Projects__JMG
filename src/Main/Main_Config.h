@@ -41,6 +41,10 @@
 #define BUTTONS_USART_ON				2
 #define BUTTONS_USART					BUTTONS_USART_OFF
 
+#define BUTTONS_IRMP_OFF					1
+#define BUTTONS_IRMP_ON					2
+#define BUTTONS_IR						BUTTONS_IRMP_OFF
+
 /* lcd */
 #define LCD_CONTROLLER_OFF				1
 #define LCD_CONTROLLER_SPLC780D1		2
@@ -94,6 +98,10 @@
 #define BUTTONS_USART_OFF				1
 #define BUTTONS_USART_ON				2
 #define BUTTONS_USART					BUTTONS_USART_OFF
+
+#define BUTTONS_IRMP_OFF					1
+#define BUTTONS_IRMP_ON					2
+#define BUTTONS_IR						BUTTONS_IRMP_OFF
 
 /* lcd */
 #define LCD_CONTROLLER_OFF				1
@@ -163,6 +171,10 @@
 #define BUTTONS_USART_ON				2
 #define BUTTONS_USART					BUTTONS_USART_OFF
 
+#define BUTTONS_IRMP_OFF				1
+#define BUTTONS_IRMP_ON					2
+#define BUTTONS_IRMP					BUTTONS_IRMP_ON
+
 /* lcd */
 #define LCD_CONTROLLER_OFF				1
 #define LCD_CONTROLLER_SPLC780D1		2
@@ -225,6 +237,10 @@
 #define BUTTONS_USART_OFF				1
 #define BUTTONS_USART_ON				2
 #define BUTTONS_USART					BUTTONS_USART_ON
+
+#define BUTTONS_IRMP_OFF					1
+#define BUTTONS_IRMP_ON					2
+#define BUTTONS_IR						BUTTONS_IRMP_OFF
 
 /* lcd */
 #define LCD_CONTROLLER_OFF				1

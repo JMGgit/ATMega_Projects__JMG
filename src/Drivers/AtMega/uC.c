@@ -20,7 +20,7 @@ void uC__init (void)
 	/* counter */
 	TCCR1B = (1 << WGM12); 						/* CTC counter */
 	TCCR1B |= ((1 << CS11) | (1 << CS10)); 		/* prescaler: 64 */
-	OCR1A = 3124;								/* interrupt every 10ms (200 000 cycles) */
+	OCR1A = (F_CPU / 100) / 64 - 1;				/* interrupt every 10ms (200 000 cycles) */
 	TIMSK1 |= (1 << OCIE1A);
 
 	/* SPI */
