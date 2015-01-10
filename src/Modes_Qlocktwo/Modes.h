@@ -12,17 +12,19 @@
 #include "Main_Config.h"
 #include "Mode_Qlocktwo.h"
 #include "Mode_Startup.h"
+#include "Mode_Snake.h"
 
 
 typedef enum
 {
 	MODE__STARTUP = 0,
-#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
+#if (OFF_BUTTON != OFF_BUTTON_MODE)
 	MODE__OFF,
 #endif
 	MODE__TIME_SETUP,
 	MODE__QLOCKTWO,
 	MODE__SECONDS,
+	MODE__SNAKE,
 #if (OFF_BUTTON == OFF_BUTTON_MODE)
 	MODE__OFF,
 #endif
@@ -33,7 +35,7 @@ typedef enum
 /* public functions */
 void Modes__init (void);
 void Modes__x10 (void);
-void Modes__setMode (uint8_t mode);
+void Modes__setMode (Mode_t mode);
 void Modes__eepromStorage (void);
 
 

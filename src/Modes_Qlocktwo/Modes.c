@@ -22,6 +22,7 @@ void Modes__setMode (Mode_t mode)
 		currentMode = MODE__QLOCKTWO;
 	}
 
+	Snake__init();
 	Qtwo__modeTransition();
 }
 
@@ -63,12 +64,25 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
+		case MODE__SNAKE:
+		{
+			Snake__updateMatrix();
+			break;
+		}
+
 		case MODE__OFF:
 		{
 			LEDMatrix__clearMatrix();
 
 #if (OFF_BUTTON == OFF_BUTTON_FUNC2)
 			if (Buttons__isPressedOnce(&buttonFunc2))
+			{
+				Modes__setMode(MODE__QLOCKTWO);
+			}
+#endif
+
+#if (OFF_BUTTON == OFF_BUTTON_OFF)
+			if (Buttons__isPressedOnce(&buttonOff))
 			{
 				Modes__setMode(MODE__QLOCKTWO);
 			}
@@ -105,6 +119,13 @@ void Modes__init (void)
 
 void Modes__x10 (void)
 {
+#if (OFF_BUTTON == OFF_BUTTON_OFF)
+	if (Buttons__isPressedOnce(&buttonOff))
+	{
+		Modes__setMode(MODE__OFF);
+	}
+#endif
+
 	if (Buttons__isPressedOnce(&buttonMode))
 	{
 		Modes__setNextMode();

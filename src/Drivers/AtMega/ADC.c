@@ -29,7 +29,7 @@ void ADC__init (void)
 
 uint16_t ADC__readValue (uint8_t channel)
 {
-	if (channel < 5)
+	if (channel <= 7)
 	{
 		ADMUX &= ~ (0x1F);
 		ADMUX |= channel;

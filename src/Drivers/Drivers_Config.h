@@ -26,6 +26,9 @@
 
 
 /********* BUTTONS ********/
+#define BUTTON_OFF_DDR		DDRC
+#define BUTTON_OFF_PORT		PINC
+#define BUTTON_OFF_PIN		BUTTON_INVALID
 #define BUTTON_MODE_DDR		DDRC
 #define BUTTON_MODE_PORT	PINC
 #define BUTTON_MODE_PIN		PC2
@@ -151,6 +154,9 @@
 #define IRMP_ON			1
 #define IRMP			IRMP_OFF
 
+/*********** LDR ***********/
+#define LDR_ADC_PIN		0
+
 #endif
 
 
@@ -191,6 +197,9 @@
 #define IRMP_LED_PIN	TEST2_LED_PIN
 
 /********* BUTTONS ********/
+#define BUTTON_OFF_DDR		DDRB
+#define BUTTON_OFF_PORT		PINB
+#define BUTTON_OFF_PIN		BUTTON_INVALID
 #define BUTTON_MODE_DDR		DDRB
 #define BUTTON_MODE_PORT	PINB
 #define BUTTON_MODE_PIN		PB1
@@ -220,18 +229,24 @@
 #define USART_DATA_LENGTH_READ_MAX	0
 
 /********** IRMP **********/
-#define IRMP_OFF		0
-#define IRMP_ON			1
-#define IRMP			IRMP_ON
+#define IRMP_OFF				0
+#define IRMP_ON					1
+#define IRMP					IRMP_ON
 
-#define IRMP_BUTTON_MODE		0x20DF
-#define IRMP_BUTTON_FUNC1		0xF807
-#define IRMP_BUTTON_FUNC2		0x7887
-#define IRMP_BUTTON_FUNC3		0x58A7
-#define IRMP_BUTTON_LEFT		0x10EF
-#define IRMP_BUTTON_UP			0xA05F
-#define IRMP_BUTTON_DOWN		0x00FF
-#define IRMP_BUTTON_RIGHT		0x807F
+#define IRMP_REMOTE_ADDRESS		0xF708
+
+#define IRMP_BUTTON_OFF			0x001B
+#define IRMP_BUTTON_MODE		0x0004
+#define IRMP_BUTTON_FUNC1		0x001F
+#define IRMP_BUTTON_FUNC2		0x001E
+#define IRMP_BUTTON_FUNC3		0x001A
+#define IRMP_BUTTON_UP			0x0005
+#define IRMP_BUTTON_DOWN		0x0000
+#define IRMP_BUTTON_LEFT		0x0008
+#define IRMP_BUTTON_RIGHT		0x0001
+
+/*********** LDR ***********/
+#define LDR_ADC_PIN		0
 
 #endif
 
@@ -261,7 +276,7 @@
 #define CLOCK_LED_PIN	PD5
 #define TEST1_LED_DDR	DDRD
 #define TEST1_LED_PORT	PORTD
-#define TEST1_LED_PIN	PD7
+#define TEST1_LED_PIN	PD6
 
 
 /********* 74HC165 ********/

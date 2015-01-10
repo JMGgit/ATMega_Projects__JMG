@@ -32,7 +32,7 @@
 
 static uint8_t clockSize = CLOCK_TYPE_BIG;
 
-uint8_t numTable[SIZE_LIN * SIZE_COL * 10] PROGMEM =
+const uint8_t numTable[SIZE_LIN * SIZE_COL * 10] PROGMEM =
 {
 	1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1,
 	0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
@@ -47,7 +47,7 @@ uint8_t numTable[SIZE_LIN * SIZE_COL * 10] PROGMEM =
 };
 
 
-uint8_t numTable_big[SIZE_LIN_BIG * SIZE_COL_BIG * 10] PROGMEM =
+const uint8_t numTable_big[SIZE_LIN_BIG * SIZE_COL_BIG * 10] PROGMEM =
 {
 	1, 1, 1, 1,
 	1, 0, 0, 1,
@@ -136,7 +136,7 @@ void Clock__updateMatrix (uint8_t clockMode)
 	uint8_t hour = Clock__getHours();
 	uint8_t min = Clock__getMinutes();
 	uint8_t itLin, itCol, index;
-	uint8_t *num1Table, *num2Table, *num3Table, *num4Table;
+	const uint8_t *num1Table, *num2Table, *num3Table, *num4Table;
 	RGB_Color_t ClockColor;
 
 	if (Buttons__isPressed(&buttonFunc1))

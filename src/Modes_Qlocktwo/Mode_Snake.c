@@ -84,8 +84,8 @@ void Snake__init (void)
 	/* apple position */
 	while (SnakeMatrix[apple.pos_line][apple.pos_col] != ST_EMPTY)
 	{
-		apple.pos_line = (uint8_t)(rand() % 13 + 1);
-		apple.pos_col = (uint8_t)(rand() % 23 + 1);
+		apple.pos_line = (uint8_t)(rand() % LED_MATRIX_SIZE_LIN + 1);
+		apple.pos_col = (uint8_t)(rand() % LED_MATRIX_SIZE_COL + 1);
 	}
 }
 
@@ -216,8 +216,8 @@ void Snake__updateMatrix (void)
 			/* get new apple position */
 			while (SnakeMatrix[apple.pos_line][apple.pos_col] != ST_EMPTY)
 			{
-				apple.pos_line = (uint8_t)(rand() % 13 + 1);
-				apple.pos_col = (uint8_t)(rand() % 23 + 1);
+				apple.pos_line = (uint8_t)(rand() % LED_MATRIX_SIZE_LIN + 1);
+				apple.pos_col = (uint8_t)(rand() % LED_MATRIX_SIZE_COL + 1);
 			}
 
 			apple.caught = FALSE;

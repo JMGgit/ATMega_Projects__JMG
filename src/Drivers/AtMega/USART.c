@@ -61,6 +61,8 @@ ISR(USART0_RX_vect)
 			USART_currentDataSize = 0;
 		}
 	}
+
+	toggle(TEST1_LED_PORT, TEST1_LED_PIN);
 }
 
 

@@ -41,9 +41,9 @@
 #define BUTTONS_USART_ON				2
 #define BUTTONS_USART					BUTTONS_USART_OFF
 
-#define BUTTONS_IRMP_OFF					1
+#define BUTTONS_IRMP_OFF				1
 #define BUTTONS_IRMP_ON					2
-#define BUTTONS_IR						BUTTONS_IRMP_OFF
+#define BUTTONS_IRMP					BUTTONS_IRMP_OFF
 
 /* lcd */
 #define LCD_CONTROLLER_OFF				1
@@ -99,9 +99,9 @@
 #define BUTTONS_USART_ON				2
 #define BUTTONS_USART					BUTTONS_USART_OFF
 
-#define BUTTONS_IRMP_OFF					1
+#define BUTTONS_IRMP_OFF				1	
 #define BUTTONS_IRMP_ON					2
-#define BUTTONS_IR						BUTTONS_IRMP_OFF
+#define BUTTONS_IRMP					BUTTONS_IRMP_OFF
 
 /* lcd */
 #define LCD_CONTROLLER_OFF				1
@@ -122,6 +122,7 @@
 /* BUTTON FOR OFF MODE */
 #define OFF_BUTTON_MODE					1
 #define OFF_BUTTON_FUNC2				2
+#define OFF_BUTTON_OFF					3
 #define OFF_BUTTON						OFF_BUTTON_MODE
 
 /* BRIGHTNESS */
@@ -136,6 +137,7 @@
 
 
 #if (PROJECT == PROJECT__QLOCKTWO_3_0)
+
 /* size of the LED matrix */
 #define LED_MATRIX_SIZE_LIN				10
 #define LED_MATRIX_SIZE_COL				11
@@ -194,7 +196,8 @@
 /* BUTTON FOR OFF MODE */
 #define OFF_BUTTON_MODE					1
 #define OFF_BUTTON_FUNC2				2
-#define OFF_BUTTON						OFF_BUTTON_MODE
+#define OFF_BUTTON_OFF					3
+#define OFF_BUTTON						OFF_BUTTON_OFF
 
 /* BRIGHTNESS */
 /* standard: 4, 10, 25, 90
@@ -238,9 +241,9 @@
 #define BUTTONS_USART_ON				2
 #define BUTTONS_USART					BUTTONS_USART_ON
 
-#define BUTTONS_IRMP_OFF					1
+#define BUTTONS_IRMP_OFF				1
 #define BUTTONS_IRMP_ON					2
-#define BUTTONS_IR						BUTTONS_IRMP_OFF
+#define BUTTONS_IRMP					BUTTONS_IRMP_OFF
 
 /* lcd */
 #define LCD_CONTROLLER_OFF				1

@@ -76,7 +76,7 @@ static uint8_t brigthnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 };
 
 
-uint8_t digitSeconds[DIGIT_SIZE_LIN * DIGIT_SIZE_COL * 10] PROGMEM =
+const uint8_t digitSeconds[DIGIT_SIZE_LIN * DIGIT_SIZE_COL * 10] PROGMEM =
 {
 	/* 0 */
 	0, 1, 1, 1, 0,
@@ -288,7 +288,7 @@ static void Qtwo__checkButtonsSeconds (void)
 
 static void Qtwo__setBrightness (uint8_t stateTransition)
 {
-	adcOutput = ADC__readValue(0);
+	adcOutput = ADC__readValue(LDR_ADC_PIN);
 
 	switch (stateLDR)
 	{

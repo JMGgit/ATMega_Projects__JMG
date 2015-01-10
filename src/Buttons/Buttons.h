@@ -14,6 +14,7 @@
 #include "Drivers.h"
 
 
+#define BITPOS_BUTTON_OFF		8
 #define BITPOS_BUTTON_MODE		7
 #define BITPOS_BUTTON_FUNC1		6
 #define BITPOS_BUTTON_FUNC2		5
@@ -23,6 +24,7 @@
 #define BITPOS_BUTTON_DOWN		1
 #define BITPOS_BUTTON_RIGHT		0
 
+#define BITMSK_BUTTON_OFF		(1 << BITPOS_BUTTON_OFF)
 #define BITMSK_BUTTON_MODE		(1 << BITPOS_BUTTON_MODE)
 #define BITMSK_BUTTON_FUNC1		(1 << BITPOS_BUTTON_FUNC1)
 #define BITMSK_BUTTON_FUNC2		(1 << BITPOS_BUTTON_FUNC2)
@@ -32,6 +34,7 @@
 #define BITMSK_BUTTON_DOWN		(1 << BITPOS_BUTTON_DOWN)
 #define BITMSK_BUTTON_RIGHT		(1 << BITPOS_BUTTON_RIGHT)
 
+#define BUTTON_OFF				BITMSK_BUTTON_OFF
 #define BUTTON_MODE				BITMSK_BUTTON_MODE
 #define BUTTON_FUNC1			BITMSK_BUTTON_FUNC1
 #define BUTTON_FUNC2			BITMSK_BUTTON_FUNC2
@@ -42,7 +45,7 @@
 #define BUTTON_RIGHT			BITMSK_BUTTON_RIGHT
 
 
-#define BUTTON_DEBOUNCE_TIME	7
+#define BUTTON_DEBOUNCE_TIME	3
 
 #define BUTTON_INVALID 			0x00
 
@@ -60,14 +63,21 @@
 
 typedef struct
 {
-	uint8_t bitMask;
+	uint16_t bitMask;
 	uint8_t debounceTime;
 	uint8_t pressed;
 	uint8_t pressedOnce;
+#if (BUTTONS_USART == BUTTONS_USART_ON)
 	uint8_t pressedUSART;
+	uint8_t pressedOnceUSART;
+#endif
+#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
 	uint8_t pressedIRMP;
+	uint8_t pressedOnceIRMP;
+#endif
 } Button_t;
 
+extern Button_t buttonOff;
 extern Button_t buttonMode;
 extern Button_t buttonFunc1;
 extern Button_t buttonFunc2;

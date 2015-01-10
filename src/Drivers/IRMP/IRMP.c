@@ -30,13 +30,13 @@ void IRMP__init (void)
 	irmp_init();
 
 	/* counter */
-	TCCR0A = (1 << WGM01); 				/* CTC counter */
-	TCCR0B |= (1 << CS01); 				/* prescaler: 8 */
-	OCR0A = (F_CPU / 15000) / 8 - 1;	/* interrupt every 15 000 cycles */
+	TCCR0A = (1 << WGM01); 					/* CTC counter */
+	TCCR0B |= (1 << CS01); 					/* prescaler: 8 */
+	OCR0A = (F_CPU / F_INTERRUPTS) / 8 - 1;	/* interrupt every 15 000 cycles */
 	TIMSK0 |= (1 << OCIE0A);
 
 	/* callback to illuminate test LED */
-	irmp_set_callback_ptr(IRMP__testLed);
+	irmp_set_callback_ptr(&IRMP__testLed);
 }
 
 
@@ -46,7 +46,7 @@ ISR(TIMER0_COMPA_vect)
 }
 
 
-uint8_t IRMP__readData (uint8_t *data, uint8_t dataLength)
+uint8_t IRMP__readData (uint16_t address, uint8_t *data, uint8_t dataLength, uint8_t *repeat)
 {
 	uint8_t retVal = E_NOT_OK;
 	IRMP_DATA IRMPData;
@@ -59,14 +59,22 @@ uint8_t IRMP__readData (uint8_t *data, uint8_t dataLength)
 	{
 		if (irmp_get_data(&IRMPData) == TRUE)
 		{
-			if (dataLength == 1)
+			if (IRMPData.address == address)
 			{
-				*data = (uint8_t)(IRMPData.command);
-			}
-			else
-			{
-				data[0] = (IRMPData.command) >> 8;
-				data[1] = (IRMPData.command) && 0xFF;
+				if (dataLength == 1)
+				{
+					*data = (uint8_t)(IRMPData.command);
+				}
+				else
+				{
+					data[0] = (IRMPData.command) >> 8;
+					data[1] = (IRMPData.command) & 0xFF;
+				}
+
+				if (IRMPData.flags & IRMP_FLAG_REPETITION)
+				{
+					*repeat = TRUE;
+				}
 			}
 
 			retVal = E_OK;

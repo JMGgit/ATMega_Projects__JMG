@@ -17,7 +17,7 @@
 #if (IRMP == IRMP_ON)
 
 void IRMP__init (void);
-uint8_t IRMP__readData (uint8_t *data, uint8_t dataLength);
+uint8_t IRMP__readData (uint16_t address, uint8_t *data, uint8_t dataLength, uint8_t *repeat);
 
 #endif
 

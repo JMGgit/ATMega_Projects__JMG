@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Atmel Studio Solution File, Format Version 11.00
+Project("{54F91283-7BC4-4236-8FF9-10F437C3AD48}") = "ATMegaProjects_JMG", "ATMegaProjects_JMG\ATMegaProjects_JMG.cproj", "{1C4920B2-6A66-4BED-B084-772FB954E829}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Led Table|AVR = Led Table|AVR
+		Qlocktwo 2.0|AVR = Qlocktwo 2.0|AVR
+		Qlocktwo 3.0|AVR = Qlocktwo 3.0|AVR
+		Temperature Logger|AVR = Temperature Logger|AVR
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C4920B2-6A66-4BED-B084-772FB954E829}.Led Table|AVR.ActiveCfg = Led Table|AVR
+		{1C4920B2-6A66-4BED-B084-772FB954E829}.Led Table|AVR.Build.0 = Led Table|AVR
+		{1C4920B2-6A66-4BED-B084-772FB954E829}.Qlocktwo 2.0|AVR.ActiveCfg = Qlocktwo 2.0|AVR
+		{1C4920B2-6A66-4BED-B084-772FB954E829}.Qlocktwo 2.0|AVR.Build.0 = Qlocktwo 2.0|AVR
+		{1C4920B2-6A66-4BED-B084-772FB954E829}.Qlocktwo 3.0|AVR.ActiveCfg = Qlocktwo 3.0|AVR
+		{1C4920B2-6A66-4BED-B084-772FB954E829}.Qlocktwo 3.0|AVR.Build.0 = Qlocktwo 3.0|AVR
+		{1C4920B2-6A66-4BED-B084-772FB954E829}.Temperature Logger|AVR.ActiveCfg = Temperature Logger|AVR
+		{1C4920B2-6A66-4BED-B084-772FB954E829}.Temperature Logger|AVR.Build.0 = Temperature Logger|AVR
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
