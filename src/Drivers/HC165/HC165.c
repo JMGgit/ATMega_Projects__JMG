@@ -9,7 +9,7 @@
 #include "HC165.h"
 
 
-#if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_HC165)
+#if (BUTTONS_WIRED == BUTTONS_WIRED_HC165)
 
 void HC165__init (void)
 {

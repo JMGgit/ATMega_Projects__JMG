@@ -22,7 +22,7 @@ Button_t buttonDown  = {BITMSK_BUTTON_DOWN,		0, FALSE, FALSE};
 
 void Buttons__init (void)
 {
-#if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_OFF)
+#if (BUTTONS_WIRED == BUTTONS_WIRED_PIN)
 	Button__initButton(BUTTON_OFF_DDR, BUTTON_OFF_PORT, BUTTON_OFF_PIN);
 	Button__initButton(BUTTON_MODE_DDR, BUTTON_MODE_PORT, BUTTON_MODE_PIN);
 	Button__initButton(BUTTON_FUNC1_DDR, BUTTON_FUNC1_PORT, BUTTON_FUNC1_PIN);
@@ -124,12 +124,12 @@ void Buttons__x10 (void)
 	uint8_t repeatIRMP = FALSE;
 #endif
 
-#if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_HC165)
+#if (BUTTONS_WIRED == BUTTONS_WIRED_HC165)
 	uint8_t buttonMultiplex;
 
 	HC165__readByte(&buttonMultiplex);
 	buttonWired = buttonMultiplex;
-#else
+#elif (BUTTONS_WIRED == BUTTONS_WIRED_PIN)
 	buttonWired = (		(Button__isLow(BUTTON_OFF_PORT, BUTTON_OFF_PIN) << BITPOS_BUTTON_OFF)
 					|	(Button__isLow(BUTTON_MODE_PORT, BUTTON_MODE_PIN) << BITPOS_BUTTON_MODE)
 					| 	(Button__isLow(BUTTON_FUNC1_PORT, BUTTON_FUNC1_PIN) << BITPOS_BUTTON_FUNC1)

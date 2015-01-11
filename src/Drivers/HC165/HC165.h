@@ -14,7 +14,7 @@
 #include "AtMega/AtMega.h"
 
 
-#if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_HC165)
+#if (BUTTONS_WIRED == BUTTONS_WIRED_HC165)
 
 /* public functions */
 void HC165__init (void);

@@ -9,7 +9,7 @@
 #include "IRMP.h"
 
 
-#if (IRMP == IRMP_ON)
+#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
 
 static void IRMP__testLed (uint8_t on)
 {

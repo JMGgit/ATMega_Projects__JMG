@@ -10,6 +10,8 @@
 
 
 static Mode_t currentMode;
+static uint8_t modeOffTransition = FALSE;
+
 
 void Modes__setMode (Mode_t mode)
 {
@@ -22,7 +24,9 @@ void Modes__setMode (Mode_t mode)
 		currentMode = MODE__QLOCKTWO;
 	}
 
+#if (PROJECT == PROJECT__QLOCKTWO_3_0)
 	Snake__init();
+#endif
 	Qtwo__modeTransition();
 }
 
@@ -64,30 +68,38 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
+#if (PROJECT == PROJECT__QLOCKTWO_3_0)
 		case MODE__SNAKE:
 		{
 			Snake__updateMatrix();
 			break;
 		}
+#endif
 
 		case MODE__OFF:
 		{
 			LEDMatrix__clearMatrix();
 
-#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
-			if (Buttons__isPressedOnce(&buttonFunc2))
+			if (!modeOffTransition)
 			{
-				Modes__setMode(MODE__QLOCKTWO);
-			}
+#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
+				if (Buttons__isPressedOnce(&buttonFunc2))
+				{
+					Modes__setMode(MODE__QLOCKTWO);
+				}
 #endif
 
 #if (OFF_BUTTON == OFF_BUTTON_OFF)
-			if (Buttons__isPressedOnce(&buttonOff))
-			{
-				Modes__setMode(MODE__QLOCKTWO);
-			}
+				if (Buttons__isPressedOnce(&buttonOff))
+				{
+					Modes__setMode(MODE__QLOCKTWO);
+				}
 #endif
-
+			}
+			else
+			{
+				modeOffTransition = FALSE;
+			}
 			break;
 		}
 
@@ -119,16 +131,34 @@ void Modes__init (void)
 
 void Modes__x10 (void)
 {
-#if (OFF_BUTTON == OFF_BUTTON_OFF)
-	if (Buttons__isPressedOnce(&buttonOff))
-	{
-		Modes__setMode(MODE__OFF);
-	}
-#endif
-
 	if (Buttons__isPressedOnce(&buttonMode))
 	{
+#if (OFF_BUTTON != OFF_BUTTON_MODE)
+		if (currentMode != MODE__OFF)
+		{
+			Modes__setNextMode();
+		}
+#else
 		Modes__setNextMode();
+#endif
+	}
+
+	if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
+	{
+#if (OFF_BUTTON == OFF_BUTTON_OFF)
+		if (Buttons__isPressedOnce(&buttonOff))
+		{
+			Modes__setMode(MODE__OFF);
+			modeOffTransition = TRUE;
+		}
+#endif
+#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
+		if (Buttons__isPressedOnce(&buttonFunc2))
+		{
+			Modes__setMode(MODE__OFF);
+			modeOffTransition = TRUE;
+		}
+#endif
 	}
 
 	Modes__updateMatrix();

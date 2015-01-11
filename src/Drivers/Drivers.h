@@ -23,7 +23,7 @@
 INLINE void Drivers__init (void)
 {
 	uC__init();
-#if (BUTTONS_MULTIPLEX == BUTTONS_MULTIPLEX_HC165)
+#if (BUTTONS_WIRED == BUTTONS_WIRED_HC165)
 	HC165__init();
 #endif
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
@@ -40,7 +40,7 @@ INLINE void Drivers__init (void)
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
 	DS18B20__init();
 #endif
-#if (IRMP == IRMP_ON)
+#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
 	IRMP__init();
 #endif
 

@@ -18,6 +18,6 @@ void Snake__init (void);
 void Snake__updateMatrix (void);
 
 
-#define SNAKE_TIMER_INIT 		50
+#define SNAKE_TIMER_INIT 		100
 
 #endif /* SNAKE_H_ */

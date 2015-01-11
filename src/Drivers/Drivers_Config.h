@@ -97,11 +97,6 @@
 #define DS18B20_ALARM_TLOW			0	/* not supported for now */
 #define DS18B20_ALARM_THIGH			0	/* not supported for now */
 
-/********** IRMP **********/
-#define IRMP_OFF		0
-#define IRMP_ON			1
-#define IRMP			IRMP_OFF
-
 #endif
 
 
@@ -148,11 +143,6 @@
 #define HC165_OUT_DDR	DDRB
 #define HC165_OUT_PORT	PINB
 #define HC165_OUT_PIN	PB1
-
-/********** IRMP **********/
-#define IRMP_OFF		0
-#define IRMP_ON			1
-#define IRMP			IRMP_OFF
 
 /*********** LDR ***********/
 #define LDR_ADC_PIN		0
@@ -229,12 +219,7 @@
 #define USART_DATA_LENGTH_READ_MAX	0
 
 /********** IRMP **********/
-#define IRMP_OFF				0
-#define IRMP_ON					1
-#define IRMP					IRMP_ON
-
 #define IRMP_REMOTE_ADDRESS		0xF708
-
 #define IRMP_BUTTON_OFF			0x001B
 #define IRMP_BUTTON_MODE		0x0004
 #define IRMP_BUTTON_FUNC1		0x001F
@@ -244,6 +229,17 @@
 #define IRMP_BUTTON_DOWN		0x0000
 #define IRMP_BUTTON_LEFT		0x0008
 #define IRMP_BUTTON_RIGHT		0x0001
+
+/********* 74HC165 ********/
+#define HC165_CLK_DDR	DDRB
+#define HC165_CLK_PORT	PORTB
+#define HC165_CLK_PIN	PB3
+#define HC165_SL_DDR	DDRB
+#define HC165_SL_PORT	PORTB
+#define HC165_SL_PIN	PB2
+#define HC165_OUT_DDR	DDRB
+#define HC165_OUT_PORT	PINB
+#define HC165_OUT_PIN	PB1
 
 /*********** LDR ***********/
 #define LDR_ADC_PIN		0
@@ -303,11 +299,6 @@
 #define USART_DATA_LENGTH_COLOR		4
 #define USART_DATA_LENGTH_CLOCK		8
 #define USART_DATA_LENGTH_READ_MAX	4
-
-/********** IRMP **********/
-#define IRMP_OFF		0
-#define IRMP_ON			1
-#define IRMP			IRMP_OFF
 
 #endif
 

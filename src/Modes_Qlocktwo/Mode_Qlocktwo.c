@@ -9,31 +9,34 @@
 #include "Modes.h"
 
 
-#define OFF			0
-#define OFF_TO_ON	1
-#define ON_TO_OFF	2
-#define ON			4
+#define OFF								0
+#define OFF_TO_ON						1
+#define ON_TO_OFF						2
+#define ON								4
 
-#define QTWO_LINE_NB				10
-#define QTWO_COL_NB					11
+#define QTWO_LINE_NB					10
+#define QTWO_COL_NB						11
 
-#define QTWO_BRIGHTNESS_NB			4
-#define QTWO_COLOR_NB				7
+#define QTWO_BRIGHTNESS_NB				4
+#define QTWO_COLOR_NB					7
 
-#define QTWO_LDR_HYST				30
+#define QTWO_LDR_HYST					30
 
-#define QTWO_TRANSITION_TIMER		50
-#define QTWO_TRANSITION_TIMER_SEC	15
-#define QTWO_TRANSITION_TIMER_SETUP	0
+#define QTWO_TRANSITION_TIMER			50
+#define QTWO_TRANSITION_TIMER_SEC		15
+#define QTWO_TRANSITION_TIMER_SETUP		0
 
-#define QTWO_SETUP_TIMER			50
+#define QTWO_SETUP_TIMER				50
 
-#define DIGIT_SIZE_LIN				7
-#define DIGIT_SIZE_COL				5
+#define DIGIT_SIZE_LIN					7
+#define DIGIT_SIZE_COL					5
 
-#define QTWO_COLOR_CHANGE_HOURS		2
+#define QTWO_COLOR_CHANGE_HOURS			2
 
-uint16_t ldrLevels[QTWO_BRIGHTNESS_NB] = {0, 150, 300, 600};
+#define QTWO_BRIGHTNESS_LOW				1
+#define QTWO_BRIGHTNESS_HIGH			2
+
+static uint16_t ldrLevels[QTWO_BRIGHTNESS_NB] = {0, 150, 300, 600};
 
 typedef enum
 {
@@ -53,16 +56,16 @@ StateLDR_N stateLDR = STATE_1;
 
 static uint8_t colors[3 * QTWO_COLOR_NB] =
 {
-		1, 1, 1,
 		1, 0, 0,
 		1, 1, 0,
 		0, 1, 0,
 		0, 1, 1,
 		1, 0, 1,
-		0, 0, 1
+		0, 0, 1,
+		1, 1, 1
 };
 
-static uint8_t brigthnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
+static uint8_t brightnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 {
 		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
 		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
@@ -75,105 +78,38 @@ static uint8_t brigthnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 		 (uint8_t)(1.25 * BRIGHTNESS_LEVEL_3), (uint8_t)(1.25 * BRIGHTNESS_LEVEL_4)}
 };
 
+static uint8_t brightnessLevels_high[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
+{
+		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
+		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
+		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
+		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
+		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
+		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
+		/* dark blue */
+		{(uint8_t)(2.50 * BRIGHTNESS_LEVEL_BRIGHT_1), (uint8_t)(1.50 * BRIGHTNESS_LEVEL_BRIGHT_2),
+		 (uint8_t)(1.25 * BRIGHTNESS_LEVEL_BRIGHT_3), (uint8_t)(1.25 * BRIGHTNESS_LEVEL_BRIGHT_4)}
+};
 
 const uint8_t digitSeconds[DIGIT_SIZE_LIN * DIGIT_SIZE_COL * 10] PROGMEM =
 {
-	/* 0 */
-	0, 1, 1, 1, 0,
-	1, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	0, 1, 1, 1, 0,
-
-	/* 1 */
-	0, 0, 1, 0, 0,
-	0, 1, 1, 0, 0,
-	1, 0, 1, 0, 0,
-	0, 0, 1, 0, 0,
-	0, 0, 1, 0, 0,
-	0, 0, 1, 0, 0,
-	0, 0, 1, 0, 0,
-
-	/* 2 */
-	0, 1, 1, 1, 0,
-	1, 0, 0, 0, 1,
-	0, 0, 0, 0, 1,
-	0, 0, 0, 1, 0,
-	0, 0, 1, 0, 0,
-	0, 1, 0, 0, 0,
-	1, 1, 1, 1, 1,
-
-	/* 3 */
-	1, 1, 1, 1, 1,
-	0, 0, 0, 1, 0,
-	0, 0, 1, 0, 0,
-	0, 0, 0, 1, 0,
-	0, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	0, 1, 1, 1, 0,
-
-	/* 4 */
-	0, 0, 0, 1, 0,
-	0, 0, 1, 1, 0,
-	0, 1, 0, 1, 0,
-	1, 0, 0, 1, 0,
-	1, 1, 1, 1, 1,
-	0, 0, 0, 1, 0,
-	0, 0, 0, 1, 0,
-
-	/* 5 */
-	1, 1, 1, 1, 1,
-	1, 0, 0, 0, 0,
-	1, 0, 0, 0, 0,
-	0, 1, 1, 1, 0,
-	0, 0, 0, 0, 1,
-	0, 0, 0, 0, 1,
-	1, 1, 1, 1, 0,
-
-	/* 6 */
-	0, 0, 1, 1, 0,
-	0, 1, 0, 0, 0,
-	1, 0, 0, 0, 0,
-	1, 1, 1, 1, 0,
-	1, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	0, 1, 1, 1, 0,
-
-	/* 7 */
-	1, 1, 1, 1, 1,
-	0, 0, 0, 0, 1,
-	0, 0, 0, 1, 0,
-	0, 0, 1, 0, 0,
-	0, 1, 0, 0, 0,
-	0, 1, 0, 0, 0,
-	0, 1, 0, 0, 0,
-
-	/* 8 */
-	0, 1, 1, 1, 0,
-	1, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	0, 1, 1, 1, 0,
-	1, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	0, 1, 1, 1, 0,
-
-	/* 9 */
-	0, 1, 1, 1, 0,
-	1, 0, 0, 0, 1,
-	1, 0, 0, 0, 1,
-	0, 1, 1, 1, 1,
-	0, 0, 0, 0, 1,
-	0, 0, 0, 1, 0,
-	0, 1, 1, 0, 0,
+	/* 0 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1,	1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	/* 1 */ 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
+	/* 2 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1,
+	/* 3 */ 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	/* 4 */ 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
+	/* 5 */ 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0,
+	/* 6 */ 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	/* 7 */ 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,
+	/* 8 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	/* 9 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,
 };
 
 static uint8_t edgesConfig[4] = {3, 2, 1, 4};
 
 static uint8_t matrix[QTWO_LINE_NB][QTWO_COL_NB];
 static uint8_t edges[4];
-static uint8_t brightnessCurr, brightnessTar, selectedColor, currentColor, timeTransition;
+static uint8_t brightnessCurr, brightnessTar, selectedColor, currentColor, timeTransition, brightnessTransition;
 
 static uint16_t adcOutput;
 
@@ -184,6 +120,10 @@ static uint8_t currentColor_EEPROM EEMEM = 0;
 static uint8_t clockHoursPrev, clockHoursColorPrev, clockMinPrev, clockSecPrev;
 
 static uint8_t colorTransTimer, QtwoSetupTimer, QtwoSetupDisplayOn;
+
+static uint8_t (*currentBrightnessTable)[QTWO_BRIGHTNESS_NB];
+static uint8_t currentBrightnessSetting;
+static uint8_t currentBrightnessSetting_EEPROM EEMEM;
 
 
 void Qtwo__init (void)
@@ -208,6 +148,18 @@ void Qtwo__init (void)
 			currentColor = 0;
 		}
 	}
+
+	/* brightness level */
+	if ((eeprom_read_byte(&currentBrightnessSetting_EEPROM)) == QTWO_BRIGHTNESS_HIGH)
+	{
+		currentBrightnessSetting = QTWO_BRIGHTNESS_HIGH;
+		currentBrightnessTable = brightnessLevels_high;
+	}
+	else
+	{
+		currentBrightnessSetting = QTWO_BRIGHTNESS_LOW;
+		currentBrightnessTable = brightnessLevels;
+	}
 }
 
 
@@ -215,6 +167,7 @@ void Qtwo__eepromStorage (void)
 {
 	eeprom_update_byte(&selectedColor_EEPROM, selectedColor);
 	eeprom_update_byte(&currentColor_EEPROM, currentColor);
+	eeprom_update_byte(&currentBrightnessSetting_EEPROM, currentBrightnessSetting);
 }
 
 
@@ -230,27 +183,64 @@ static void Qtwo__incMinutes (void)
 }
 
 
+#if (PROJECT == PROJECT__QLOCKTWO_3_0)
+static void Qtwo__decHours (void)
+{
+	Clock__decHours();
+}
+
+
+static void Qtwo__decMinutes (void)
+{
+	Clock__decMinutes();
+}
+#endif
+
+
 static void Qtwo__checkButtons (void)
 {
-	if ((Buttons__isPressedOnce(&buttonFunc1)) && (timeTransition == FALSE))
+	if ((Buttons__isPressedOnce(&buttonFunc1)) && (!timeTransition) && (!brightnessTransition))
 	{
-		if (selectedColor < QTWO_COLOR_NB - 1)
+			if (selectedColor < QTWO_COLOR_NB)
+			{
+				selectedColor++;
+			}
+			else
+			{
+				selectedColor = 0;
+			}
+
+			if (selectedColor == QTWO_COLOR_NB)
+			{
+				currentColor = QTWO_COLOR_NB - 1;
+				Qtwo__modeTransition();
+			}
+
+			Qtwo__eepromStorage();
+	}
+
+#if (OFF_BUTTON != OFF_BUTTON_FUNC2)
+	if ((Buttons__isPressedOnce(&buttonFunc2)) && (!timeTransition) && (!brightnessTransition))
+	{
+		if (currentBrightnessSetting == QTWO_BRIGHTNESS_LOW)
 		{
-			selectedColor++;
+			currentBrightnessSetting = QTWO_BRIGHTNESS_HIGH;
+			currentBrightnessTable = brightnessLevels_high;
 		}
 		else
 		{
-			selectedColor = 0;
+			currentBrightnessSetting = QTWO_BRIGHTNESS_LOW;
+			currentBrightnessTable = brightnessLevels;
 		}
 
-		/* store new color in EEPROM */
 		Qtwo__eepromStorage();
 	}
+#endif
 
-#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
-	if (Buttons__isPressedOnce(&buttonFunc2))
+#if (PROJECT == PROJECT__QLOCKTWO_3_0)
+	if (Buttons__isPressedOnce(&buttonFunc3))
 	{
-		Modes__setMode(MODE__OFF);
+		Modes__setMode(MODE__TIME_SETUP);
 	}
 #endif
 }
@@ -258,6 +248,7 @@ static void Qtwo__checkButtons (void)
 
 static void Qtwo__checkButtonsSetup (void)
 {
+#if (PROJECT == PROJECT__QLOCKTWO_2_0)
 	if (Buttons__isPressedOnce(&buttonFunc1))
 	{
 		Qtwo__incHours();
@@ -267,22 +258,79 @@ static void Qtwo__checkButtonsSetup (void)
 	{
 		Qtwo__incMinutes();
 	}
+#else
+	if (Buttons__isPressedOnce(&buttonUp))
+	{
+		Qtwo__incHours();
+	}
+
+	if (Buttons__isPressedOnce(&buttonDown))
+	{
+		Qtwo__decHours();
+	}
+
+	if (Buttons__isPressedOnce(&buttonRight))
+	{
+		Qtwo__incMinutes();
+	}
+
+	if (Buttons__isPressedOnce(&buttonLeft))
+	{
+		Qtwo__decMinutes();
+	}
+
+	if (Buttons__isPressedOnce(&buttonFunc3))
+	{
+		Modes__setMode(MODE__QLOCKTWO);
+	}
+#endif
 }
 
 
 static void Qtwo__checkButtonsSeconds (void)
 {
-	if (Buttons__isPressedOnce(&buttonFunc1))
-	{
-		selectedColor = QTWO_COLOR_NB;
-		currentColor = 0;
-		Modes__setMode(MODE__QLOCKTWO);
-	}
-
+#if (PROJECT == PROJECT__QLOCKTWO_2_0)
 	if (Buttons__isPressedOnce(&buttonFunc2))
 	{
 		Modes__setMode(MODE__TIME_SETUP);
 	}
+#else
+	if ((Buttons__isPressedOnce(&buttonFunc1)) && (!timeTransition) && (!brightnessTransition))
+	{
+			if (selectedColor < QTWO_COLOR_NB)
+			{
+				selectedColor++;
+			}
+			else
+			{
+				selectedColor = 0;
+			}
+
+			if (selectedColor == QTWO_COLOR_NB)
+			{
+				currentColor = QTWO_COLOR_NB - 1;
+				Qtwo__modeTransition();
+			}
+
+			Qtwo__eepromStorage();
+	}
+
+	if ((Buttons__isPressedOnce(&buttonFunc2)) && (!timeTransition) && (!brightnessTransition))
+	{
+		if (currentBrightnessSetting == QTWO_BRIGHTNESS_LOW)
+		{
+			currentBrightnessSetting = QTWO_BRIGHTNESS_HIGH;
+			currentBrightnessTable = brightnessLevels_high;
+		}
+		else
+		{
+			currentBrightnessSetting = QTWO_BRIGHTNESS_LOW;
+			currentBrightnessTable = brightnessLevels;
+		}
+
+		Qtwo__eepromStorage();
+	}
+#endif
 }
 
 
@@ -294,6 +342,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 	{
 	case STATE_1:
 	{
+		brightnessTransition = FALSE;
 		brightnessCurr = 0;
 
 		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
@@ -301,9 +350,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			stateLDR = STATE_1_TO_2;
 		}
 
-		QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
-				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+		QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
 		break;
 	}
 
@@ -311,6 +360,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 	{
 		if (stateTransition)
 		{
+			brightnessTransition = TRUE;
 			brightnessCurr = 0;
 			brightnessTar = 1;
 
@@ -329,9 +379,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 				QtwoColor.blue++;
 			}
 
-			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
 			)
 			{
 				stateLDR = STATE_2;
@@ -347,6 +397,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 
 	case STATE_2:
 	{
+		brightnessTransition = FALSE;
 		brightnessCurr = 1;
 
 		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
@@ -358,9 +409,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			stateLDR = STATE_2_TO_1;
 		}
 
-		QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
-				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+		QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
 		break;
 	}
 
@@ -368,6 +419,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 	{
 		if (stateTransition)
 		{
+			brightnessTransition = TRUE;
 			brightnessCurr = 1;
 			brightnessTar = 2;
 
@@ -387,9 +439,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			}
 
 
-			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
 			)
 			{
 				stateLDR = STATE_3;
@@ -405,6 +457,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 
 	case STATE_3:
 	{
+		brightnessTransition = FALSE;
 		brightnessCurr = 2;
 
 		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
@@ -416,9 +469,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			stateLDR = STATE_3_TO_2;
 		}
 
-		QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
-				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+		QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
 		break;
 	}
 
@@ -426,6 +479,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 	{
 		if (stateTransition)
 		{
+			brightnessTransition = TRUE;
 			brightnessCurr = 2;
 			brightnessTar = 3;
 
@@ -445,9 +499,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			}
 
 
-			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
 			)
 			{
 				stateLDR = STATE_4;
@@ -462,6 +516,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 
 	case STATE_4:
 	{
+		brightnessTransition = FALSE;
 		brightnessCurr = 3;
 
 		if ((adcOutput) < (ldrLevels[brightnessCurr]))
@@ -469,9 +524,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			stateLDR = STATE_4_TO_3;
 		}
 
-		QtwoColor = getRGBColorFromComponents(	(brigthnessLevels[currentColor][brightnessCurr]) * colors[currentColor * 3],
-				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-				(brigthnessLevels[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+		QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
 		break;
 	}
 
@@ -479,6 +534,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 	{
 		if (stateTransition)
 		{
+			brightnessTransition = TRUE;
 			brightnessCurr = 3;
 			brightnessTar = 2;
 
@@ -498,9 +554,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			}
 
 
-			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
 			)
 			{
 				stateLDR = STATE_3;
@@ -518,6 +574,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 	{
 		if (stateTransition)
 		{
+			brightnessTransition = TRUE;
 			brightnessCurr = 2;
 			brightnessTar = 1;
 
@@ -536,10 +593,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 				QtwoColor.blue--;
 			}
 
-
-			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
 			)
 			{
 				stateLDR = STATE_2;
@@ -557,6 +613,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 	{
 		if (stateTransition)
 		{
+			brightnessTransition = TRUE;
 			brightnessCurr = 1;
 			brightnessTar = 0;
 
@@ -576,9 +633,9 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			}
 
 
-			if (		(QtwoColor.red == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3])
-					||	(QtwoColor.green == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					||	(QtwoColor.blue == (brigthnessLevels[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+					||	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+					||	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
 			)
 			{
 				stateLDR = STATE_1;
@@ -593,7 +650,6 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 	}
 	}
 }
-
 
 
 static void Qtwo__setCellActive (uint8_t line, uint8_t col)
@@ -653,7 +709,7 @@ static void Qtwo__updateVisibility (uint8_t timer)
 {
 	uint8_t linIt, colIt;
 	uint8_t allColorsReady = TRUE;
-	uint8_t colorStep = (brigthnessLevels[currentColor][brightnessCurr] / timer) | 1;
+	uint8_t colorStep = (currentBrightnessTable[currentColor][brightnessCurr] / timer) | 1;
 
 	if (colorTransTimer > 0)
 	{
@@ -731,7 +787,7 @@ static void Qtwo__updateVisibility (uint8_t timer)
 			onOffColor.blue = 0;
 		}
 
-		colorTransTimer = (timer / brigthnessLevels[currentColor][brightnessCurr]);
+		colorTransTimer = (timer / currentBrightnessTable[currentColor][brightnessCurr]);
 	}
 
 	if (allColorsReady == TRUE)
@@ -758,7 +814,8 @@ static void Qtwo__updateVisibility (uint8_t timer)
 			if (edges[linIt] == ON_TO_OFF)
 			{
 				edges[linIt] = OFF;
-			} else if (edges[linIt] == OFF_TO_ON)
+			}
+			else if (edges[linIt] == OFF_TO_ON)
 			{
 				edges[linIt] = ON;
 			}
@@ -1501,12 +1558,13 @@ static void Qtwo__updateColor (void)
 	}
 }
 
+
 void Qtwo__main_x10 (void)
 {
 	Qtwo__checkButtons();
 	Qtwo__updateColor();
 
-	if (!timeTransition)
+	if ((!timeTransition) && (!brightnessTransition))
 	{
 		if ((clockHoursPrev != Clock__getHours()) || (clockMinPrev != Clock__getMinutes()))
 		{
@@ -1516,8 +1574,6 @@ void Qtwo__main_x10 (void)
 			clockMinPrev = Clock__getMinutes();
 			Qtwo__startTransition();
 		}
-
-		Qtwo__setBrightness(TRUE);
 	}
 
 	Qtwo__updateVisibility(QTWO_TRANSITION_TIMER);

@@ -33,9 +33,10 @@
 #define CLOCK_SYNC						CLOCK_SYNC_OFF
 
 /* buttons */
-#define BUTTONS_MULTIPLEX_OFF			1
-#define BUTTONS_MULTIPLEX_HC165			2
-#define BUTTONS_MULTIPLEX				BUTTONS_MULTIPLEX_OFF
+#define BUTTONS_WIRED_OFF				1
+#define BUTTONS_WIRED_PIN				2
+#define BUTTONS_WIRED_HC165				3
+#define BUTTONS_WIRED					BUTTONS_WIRED_PIN
 
 #define BUTTONS_USART_OFF				1
 #define BUTTONS_USART_ON				2
@@ -64,6 +65,7 @@
 
 
 #if (PROJECT == PROJECT__QLOCKTWO_2_0)
+
 /* size of the LED matrix */
 #define LED_MATRIX_SIZE_LIN				10
 #define LED_MATRIX_SIZE_COL				11
@@ -91,9 +93,10 @@
 #define CLOCK_SYNC						CLOCK_SYNC_DCF77
 
 /* buttons */
-#define BUTTONS_MULTIPLEX_OFF			1
-#define BUTTONS_MULTIPLEX_HC165			2
-#define BUTTONS_MULTIPLEX				BUTTONS_MULTIPLEX_HC165
+#define BUTTONS_WIRED_OFF				1
+#define BUTTONS_WIRED_PIN				2
+#define BUTTONS_WIRED_HC165				3
+#define BUTTONS_WIRED					BUTTONS_WIRED_HC165
 
 #define BUTTONS_USART_OFF				1
 #define BUTTONS_USART_ON				2
@@ -119,19 +122,21 @@
 #define MODE_STARTUP_ON					2
 #define MODE_STARTUP					MODE_STARTUP_ON
 
-/* BUTTON FOR OFF MODE */
+/* button for off mode */
 #define OFF_BUTTON_MODE					1
 #define OFF_BUTTON_FUNC2				2
 #define OFF_BUTTON_OFF					3
 #define OFF_BUTTON						OFF_BUTTON_MODE
 
-/* BRIGHTNESS */
-/* standard: 4, 10, 25, 90
- * bright: 10, 25, 90, 160 */
+/* brightness */
 #define BRIGHTNESS_LEVEL_1				4
 #define BRIGHTNESS_LEVEL_2				10
 #define BRIGHTNESS_LEVEL_3				25
 #define BRIGHTNESS_LEVEL_4				90
+#define BRIGHTNESS_LEVEL_BRIGHT_1		10
+#define BRIGHTNESS_LEVEL_BRIGHT_2		25
+#define BRIGHTNESS_LEVEL_BRIGHT_3		90
+#define BRIGHTNESS_LEVEL_BRIGHT_4		160
 
 #endif
 
@@ -165,9 +170,10 @@
 #define CLOCK_SYNC						CLOCK_SYNC_DCF77
 
 /* buttons */
-#define BUTTONS_MULTIPLEX_OFF			1
-#define BUTTONS_MULTIPLEX_HC165			2
-#define BUTTONS_MULTIPLEX				BUTTONS_MULTIPLEX_OFF
+#define BUTTONS_WIRED_OFF				1
+#define BUTTONS_WIRED_PIN				2
+#define BUTTONS_WIRED_HC165				3
+#define BUTTONS_WIRED					BUTTONS_WIRED_OFF
 
 #define BUTTONS_USART_OFF				1
 #define BUTTONS_USART_ON				2
@@ -193,19 +199,21 @@
 #define MODE_STARTUP_ON					2
 #define MODE_STARTUP					MODE_STARTUP_ON
 
-/* BUTTON FOR OFF MODE */
+/* button for off mode */
 #define OFF_BUTTON_MODE					1
 #define OFF_BUTTON_FUNC2				2
 #define OFF_BUTTON_OFF					3
 #define OFF_BUTTON						OFF_BUTTON_OFF
 
-/* BRIGHTNESS */
-/* standard: 4, 10, 25, 90
- * bright: 10, 25, 90, 160 */
+/* brightness */
 #define BRIGHTNESS_LEVEL_1				4
 #define BRIGHTNESS_LEVEL_2				10
 #define BRIGHTNESS_LEVEL_3				25
 #define BRIGHTNESS_LEVEL_4				90
+#define BRIGHTNESS_LEVEL_BRIGHT_1		10
+#define BRIGHTNESS_LEVEL_BRIGHT_2		25
+#define BRIGHTNESS_LEVEL_BRIGHT_3		90
+#define BRIGHTNESS_LEVEL_BRIGHT_4		160
 
 #endif
 
@@ -233,9 +241,10 @@
 #define CLOCK_SYNC						CLOCK_SYNC_OFF
 
 /* buttons */
-#define BUTTONS_MULTIPLEX_OFF			1
-#define BUTTONS_MULTIPLEX_HC165			2
-#define BUTTONS_MULTIPLEX				BUTTONS_MULTIPLEX_HC165
+#define BUTTONS_WIRED_OFF				1
+#define BUTTONS_WIRED_PIN				2
+#define BUTTONS_WIRED_HC165				3
+#define BUTTONS_WIRED					BUTTONS_WIRED_HC165
 
 #define BUTTONS_USART_OFF				1
 #define BUTTONS_USART_ON				2
