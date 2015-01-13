@@ -32,7 +32,7 @@ void LEDMatrix__clearMatrix (void)
 		}
 	}
 
-#if ((PROJECT == PROJECT__QLOCKTWO_2_0) || (PROJECT == PROJECT__QLOCKTWO_3_0))
+#if (PROJECT == PROJECT__QLOCKTWO)
 	/* clear 4 edges */
 	for (colIt = 1; colIt <= 4; colIt++)
 	{

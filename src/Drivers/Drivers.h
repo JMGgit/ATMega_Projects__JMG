@@ -16,7 +16,7 @@
 #include "WS2801/WS2801.h"
 #include "SPLC780D1/SPLC780D1.h"
 #include "DS18B20/DS18B20.h"
-#include "IRMP/IRMP.h"
+#include "IRMP/IRMP_Appl.h"
 #include "Drivers_Config.h"
 
 

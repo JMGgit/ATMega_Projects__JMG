@@ -36,7 +36,9 @@
 #define QTWO_BRIGHTNESS_LOW				1
 #define QTWO_BRIGHTNESS_HIGH			2
 
-static uint16_t ldrLevels[QTWO_BRIGHTNESS_NB] = {0, 150, 300, 600};
+#define TIMER_COLOR_BUTTON				120
+
+static const uint16_t ldrLevels[QTWO_BRIGHTNESS_NB] = {0, 150, 300, 600};
 
 typedef enum
 {
@@ -54,7 +56,7 @@ typedef enum
 
 StateLDR_N stateLDR = STATE_1;
 
-static uint8_t colors[3 * QTWO_COLOR_NB] =
+static const uint8_t colors[3 * QTWO_COLOR_NB] =
 {
 		1, 0, 0,
 		1, 1, 0,
@@ -65,7 +67,7 @@ static uint8_t colors[3 * QTWO_COLOR_NB] =
 		1, 1, 1
 };
 
-static uint8_t brightnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
+static const uint8_t brightnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 {
 		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
 		{BRIGHTNESS_LEVEL_1, BRIGHTNESS_LEVEL_2, BRIGHTNESS_LEVEL_3, BRIGHTNESS_LEVEL_4},
@@ -78,7 +80,7 @@ static uint8_t brightnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 		 (uint8_t)(1.25 * BRIGHTNESS_LEVEL_3), (uint8_t)(1.25 * BRIGHTNESS_LEVEL_4)}
 };
 
-static uint8_t brightnessLevels_high[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
+static const uint8_t brightnessLevels_high[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 {
 		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
 		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
@@ -88,30 +90,29 @@ static uint8_t brightnessLevels_high[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 		{BRIGHTNESS_LEVEL_BRIGHT_1, BRIGHTNESS_LEVEL_BRIGHT_2, BRIGHTNESS_LEVEL_BRIGHT_3, BRIGHTNESS_LEVEL_BRIGHT_4},
 		/* dark blue */
 		{(uint8_t)(2.50 * BRIGHTNESS_LEVEL_BRIGHT_1), (uint8_t)(1.50 * BRIGHTNESS_LEVEL_BRIGHT_2),
-		 (uint8_t)(1.25 * BRIGHTNESS_LEVEL_BRIGHT_3), (uint8_t)(1.25 * BRIGHTNESS_LEVEL_BRIGHT_4)}
+				(uint8_t)(1.25 * BRIGHTNESS_LEVEL_BRIGHT_3), (uint8_t)(1.25 * BRIGHTNESS_LEVEL_BRIGHT_4)}
 };
 
 const uint8_t digitSeconds[DIGIT_SIZE_LIN * DIGIT_SIZE_COL * 10] PROGMEM =
 {
-	/* 0 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1,	1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
-	/* 1 */ 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
-	/* 2 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1,
-	/* 3 */ 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
-	/* 4 */ 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
-	/* 5 */ 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0,
-	/* 6 */ 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
-	/* 7 */ 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,
-	/* 8 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
-	/* 9 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,
+		/* digits from 0 to 9 */
+		0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1,	1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+		0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
+		0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1,
+		1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+		0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
+		1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0,
+		0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+		1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,
+		0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+		0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,
 };
 
-static uint8_t edgesConfig[4] = {3, 2, 1, 4};
+static const uint8_t edgesConfig[4] = {3, 2, 1, 4};
 
 static uint8_t matrix[QTWO_LINE_NB][QTWO_COL_NB];
 static uint8_t edges[4];
-static uint8_t brightnessCurr, brightnessTar, selectedColor, currentColor, timeTransition, brightnessTransition;
-
-static uint16_t adcOutput;
+static uint8_t brightnessCurr, selectedColor, currentColor, timeTransition, brightnessTransition;
 
 static RGB_Color_t QtwoColor, offOnColor, onOffColor;
 static uint8_t selectedColor_EEPROM EEMEM = 0;
@@ -119,9 +120,7 @@ static uint8_t currentColor_EEPROM EEMEM = 0;
 
 static uint8_t clockHoursPrev, clockHoursColorPrev, clockMinPrev, clockSecPrev;
 
-static uint8_t colorTransTimer, QtwoSetupTimer, QtwoSetupDisplayOn;
-
-static uint8_t (*currentBrightnessTable)[QTWO_BRIGHTNESS_NB];
+static const uint8_t (*currentBrightnessTable)[QTWO_BRIGHTNESS_NB];
 static uint8_t currentBrightnessSetting;
 static uint8_t currentBrightnessSetting_EEPROM EEMEM;
 
@@ -183,7 +182,6 @@ static void Qtwo__incMinutes (void)
 }
 
 
-#if (PROJECT == PROJECT__QLOCKTWO_3_0)
 static void Qtwo__decHours (void)
 {
 	Clock__decHours();
@@ -194,14 +192,17 @@ static void Qtwo__decMinutes (void)
 {
 	Clock__decMinutes();
 }
-#endif
 
 
 static void Qtwo__checkButtons (void)
 {
-	if ((Buttons__isPressedOnce(&buttonFunc1)) && (!timeTransition) && (!brightnessTransition))
+	static uint8_t timerColorButton = TIMER_COLOR_BUTTON;
+
+	if ((!timeTransition) && (!brightnessTransition))
 	{
-			if (selectedColor < QTWO_COLOR_NB)
+		if (Buttons__isPressedOnce(&buttonFunc1))
+		{
+			if (selectedColor < (QTWO_COLOR_NB - 1))
 			{
 				selectedColor++;
 			}
@@ -210,57 +211,60 @@ static void Qtwo__checkButtons (void)
 				selectedColor = 0;
 			}
 
-			if (selectedColor == QTWO_COLOR_NB)
+			Qtwo__eepromStorage();
+		}
+
+		if (Buttons__isPressed(&buttonFunc1))
+		{
+			if (timerColorButton > 0)
 			{
+				timerColorButton--;
+			}
+			else
+			{
+				timerColorButton = TIMER_COLOR_BUTTON;
+				selectedColor = QTWO_COLOR_NB;
 				currentColor = QTWO_COLOR_NB - 1;
 				Qtwo__modeTransition();
+				Qtwo__eepromStorage();
 			}
-
-			Qtwo__eepromStorage();
-	}
-
-#if (OFF_BUTTON != OFF_BUTTON_FUNC2)
-	if ((Buttons__isPressedOnce(&buttonFunc2)) && (!timeTransition) && (!brightnessTransition))
-	{
-		if (currentBrightnessSetting == QTWO_BRIGHTNESS_LOW)
-		{
-			currentBrightnessSetting = QTWO_BRIGHTNESS_HIGH;
-			currentBrightnessTable = brightnessLevels_high;
 		}
 		else
 		{
-			currentBrightnessSetting = QTWO_BRIGHTNESS_LOW;
-			currentBrightnessTable = brightnessLevels;
+			timerColorButton = TIMER_COLOR_BUTTON;
 		}
 
-		Qtwo__eepromStorage();
-	}
+#if (BUTTON_OFF_AVAILABLE != BUTTON_OFF_AVAILABLE_FUNC2)
+		if (Buttons__isPressedOnce(&buttonFunc2))
+		{
+			if (currentBrightnessSetting == QTWO_BRIGHTNESS_LOW)
+			{
+				currentBrightnessSetting = QTWO_BRIGHTNESS_HIGH;
+				currentBrightnessTable = brightnessLevels_high;
+			}
+			else
+			{
+				currentBrightnessSetting = QTWO_BRIGHTNESS_LOW;
+				currentBrightnessTable = brightnessLevels;
+			}
+
+			Qtwo__eepromStorage();
+		}
 #endif
 
-#if (PROJECT == PROJECT__QLOCKTWO_3_0)
-	if (Buttons__isPressedOnce(&buttonFunc3))
-	{
-		Modes__setMode(MODE__TIME_SETUP);
+		if (Buttons__isPressedOnce(&buttonFunc3))
+		{
+			Modes__setMode(MODE__TIME_SETUP);
+		}
 	}
-#endif
 }
 
 
 static void Qtwo__checkButtonsSetup (void)
 {
-#if (PROJECT == PROJECT__QLOCKTWO_2_0)
-	if (Buttons__isPressedOnce(&buttonFunc1))
+	if ((Buttons__isPressedOnce(&buttonUp)) || (Buttons__isPressedOnce(&buttonFunc1)))
 	{
-		Qtwo__incHours();
-	}
-
-	if (Buttons__isPressedOnce(&buttonFunc2))
-	{
-		Qtwo__incMinutes();
-	}
-#else
-	if (Buttons__isPressedOnce(&buttonUp))
-	{
+		/* func1 for compatilibility with old projects */
 		Qtwo__incHours();
 	}
 
@@ -269,8 +273,9 @@ static void Qtwo__checkButtonsSetup (void)
 		Qtwo__decHours();
 	}
 
-	if (Buttons__isPressedOnce(&buttonRight))
+	if ((Buttons__isPressedOnce(&buttonRight)) || (Buttons__isPressedOnce(&buttonFunc2)))
 	{
+		/* func2 for compatilibility with old projects */
 		Qtwo__incMinutes();
 	}
 
@@ -283,13 +288,12 @@ static void Qtwo__checkButtonsSetup (void)
 	{
 		Modes__setMode(MODE__QLOCKTWO);
 	}
-#endif
 }
 
 
 static void Qtwo__checkButtonsSeconds (void)
 {
-#if (PROJECT == PROJECT__QLOCKTWO_2_0)
+#if (BUTTON_FUNC3_AVAILABLE ==  BUTTON_FUNC3_AVAILABLE_NO)
 	if (Buttons__isPressedOnce(&buttonFunc2))
 	{
 		Modes__setMode(MODE__TIME_SETUP);
@@ -297,22 +301,22 @@ static void Qtwo__checkButtonsSeconds (void)
 #else
 	if ((Buttons__isPressedOnce(&buttonFunc1)) && (!timeTransition) && (!brightnessTransition))
 	{
-			if (selectedColor < QTWO_COLOR_NB)
-			{
-				selectedColor++;
-			}
-			else
-			{
-				selectedColor = 0;
-			}
+		if (selectedColor < QTWO_COLOR_NB)
+		{
+			selectedColor++;
+		}
+		else
+		{
+			selectedColor = 0;
+		}
 
-			if (selectedColor == QTWO_COLOR_NB)
-			{
-				currentColor = QTWO_COLOR_NB - 1;
-				Qtwo__modeTransition();
-			}
+		if (selectedColor == QTWO_COLOR_NB)
+		{
+			currentColor = QTWO_COLOR_NB - 1;
+			Qtwo__modeTransition();
+		}
 
-			Qtwo__eepromStorage();
+		Qtwo__eepromStorage();
 	}
 
 	if ((Buttons__isPressedOnce(&buttonFunc2)) && (!timeTransition) && (!brightnessTransition))
@@ -336,7 +340,8 @@ static void Qtwo__checkButtonsSeconds (void)
 
 static void Qtwo__setBrightness (uint8_t stateTransition)
 {
-	adcOutput = ADC__readValue(LDR_ADC_PIN);
+	uint16_t adcOutput = ADC__readValue(LDR_ADC_PIN);
+	static uint8_t brightnessTar = 0;
 
 	switch (stateLDR)
 	{
@@ -710,6 +715,8 @@ static void Qtwo__updateVisibility (uint8_t timer)
 	uint8_t linIt, colIt;
 	uint8_t allColorsReady = TRUE;
 	uint8_t colorStep = (currentBrightnessTable[currentColor][brightnessCurr] / timer) | 1;
+
+	static uint8_t colorTransTimer = 0;
 
 	if (colorTransTimer > 0)
 	{
@@ -1607,6 +1614,9 @@ void Qtwo__seconds_x10 (void)
 
 void Qtwo__timeSetup_x10 (void)
 {
+	static uint8_t QtwoSetupDisplayOn = FALSE;
+	static uint8_t QtwoSetupTimer = 0;
+
 	Qtwo__checkButtonsSetup();
 	Qtwo__updateColor();
 
@@ -1666,8 +1676,8 @@ void Qtwo__modeTransition (void)
 		edges[edgeIt] = OFF;
 	}
 
-	clockHoursPrev = 255;
-	clockMinPrev = 255;
-	clockSecPrev = 255;
+	clockHoursPrev = 0xFF;
+	clockMinPrev = 0xFF;
+	clockSecPrev = 0xFF;
 	clockHoursColorPrev = Clock__getHours();
 }

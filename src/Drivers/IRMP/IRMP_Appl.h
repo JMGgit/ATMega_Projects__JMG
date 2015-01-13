@@ -5,8 +5,8 @@
  *      Author: JMG
  */
 
-#ifndef SRC_DRIVERS_IRMP_IRMP_H_
-#define SRC_DRIVERS_IRMP_IRMP_H_
+#ifndef SRC_DRIVERS_IRMP_IRMP_APPL_H_
+#define SRC_DRIVERS_IRMP_IRMP_APPL_H_
 
 #include <avr/io.h>
 #include "Main_Types.h"
@@ -21,4 +21,4 @@ uint8_t IRMP__readData (uint16_t address, uint8_t *data, uint8_t dataLength, uin
 
 #endif
 
-#endif /* SRC_DRIVERS_IRMP_IRMP_H_ */
+#endif /* SRC_DRIVERS_IRMP_IRMP_APPL_H_ */

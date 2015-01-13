@@ -24,7 +24,7 @@ void Modes__setMode (Mode_t mode)
 		currentMode = MODE__QLOCKTWO;
 	}
 
-#if (PROJECT == PROJECT__QLOCKTWO_3_0)
+#if (MODE_SNAKE == MODE_SNAKE_ON)
 	Snake__init();
 #endif
 	Qtwo__modeTransition();
@@ -68,7 +68,7 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
-#if (PROJECT == PROJECT__QLOCKTWO_3_0)
+#if (MODE_SNAKE == MODE_SNAKE_ON)
 		case MODE__SNAKE:
 		{
 			Snake__updateMatrix();
@@ -82,19 +82,17 @@ static void Modes__updateMatrix (void)
 
 			if (!modeOffTransition)
 			{
-#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
+#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
 				if (Buttons__isPressedOnce(&buttonFunc2))
 				{
 					Modes__setMode(MODE__QLOCKTWO);
 				}
 #endif
 
-#if (OFF_BUTTON == OFF_BUTTON_OFF)
 				if (Buttons__isPressedOnce(&buttonOff))
 				{
 					Modes__setMode(MODE__QLOCKTWO);
 				}
-#endif
 			}
 			else
 			{
@@ -133,7 +131,7 @@ void Modes__x10 (void)
 {
 	if (Buttons__isPressedOnce(&buttonMode))
 	{
-#if (OFF_BUTTON != OFF_BUTTON_MODE)
+#if (BUTTON_OFF_AVAILABLE != BUTTON_OFF_AVAILABLE_NO)
 		if (currentMode != MODE__OFF)
 		{
 			Modes__setNextMode();
@@ -145,14 +143,13 @@ void Modes__x10 (void)
 
 	if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
 	{
-#if (OFF_BUTTON == OFF_BUTTON_OFF)
 		if (Buttons__isPressedOnce(&buttonOff))
 		{
 			Modes__setMode(MODE__OFF);
 			modeOffTransition = TRUE;
 		}
-#endif
-#if (OFF_BUTTON == OFF_BUTTON_FUNC2)
+
+#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
 		if (Buttons__isPressedOnce(&buttonFunc2))
 		{
 			Modes__setMode(MODE__OFF);

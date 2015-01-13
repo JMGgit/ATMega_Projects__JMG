@@ -100,57 +100,7 @@
 #endif
 
 
-#if (PROJECT == PROJECT__QLOCKTWO_2_0)
-
-/*********** WS2801 ***********/
-#define WS2801_NB		114
-#define RGB_LED_CONNECTION__RED_GREEN_BLUE	1
-#define RGB_LED_CONNECTION__BLUE_GREEN_RED	2
-#define RGB_LED_CONNECTION					RGB_LED_CONNECTION__RED_GREEN_BLUE
-
-/********** DCF77 ***************/
-#define DCF77_DATA_DDR	DDRB
-#define DCF77_DATA_PORT	PINB
-#define DCF77_DATA_PIN	PB0
-#define DCF77_TASK_TIME	100
-/* 16 Mhz -> 125 */
-/* 20 Mhz -> 100 */
-
-/*********** CTL LED ***********/
-#define UC_LED_DDR		DDRD
-#define UC_LED_PORT		PORTD
-#define UC_LED_PIN		PD4
-#define CLOCK_LED_DDR	DDRD
-#define CLOCK_LED_PORT	PORTD
-#define CLOCK_LED_PIN	PD5
-#define TEST1_LED_DDR	DDRD
-#define TEST1_LED_PORT	PORTD
-#define TEST1_LED_PIN	PD6
-#define DCF77_LED_DDR	TEST1_LED_DDR
-#define DCF77_LED_PORT	TEST1_LED_PORT
-#define DCF77_LED_PIN	TEST1_LED_PIN
-
-/********** USART *********/
-#define USART_DATA_LENGTH_READ_MAX	0
-
-/********* 74HC165 ********/
-#define HC165_CLK_DDR	DDRB
-#define HC165_CLK_PORT	PORTB
-#define HC165_CLK_PIN	PB3
-#define HC165_SL_DDR	DDRB
-#define HC165_SL_PORT	PORTB
-#define HC165_SL_PIN	PB2
-#define HC165_OUT_DDR	DDRB
-#define HC165_OUT_PORT	PINB
-#define HC165_OUT_PIN	PB1
-
-/*********** LDR ***********/
-#define LDR_ADC_PIN		0
-
-#endif
-
-
-#if (PROJECT == PROJECT__QLOCKTWO_3_0)
+#if (PROJECT == PROJECT__QLOCKTWO)
 
 /*********** WS2801 ***********/
 #define WS2801_NB		114

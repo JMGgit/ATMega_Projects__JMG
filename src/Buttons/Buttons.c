@@ -85,24 +85,43 @@ static void Buttons__updateState_USART (uint16_t receiveBuffer, Button_t *button
 
 
 #if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
-static void Buttons__updateState_IRMP (uint16_t receiveBuffer, uint8_t repeat, Button_t *button)
+static void Buttons__updateState_IRMP (uint8_t signalValid, uint16_t receiveBuffer, uint8_t repeat, Button_t *button)
 {
-	if (receiveBuffer & (button->bitMask))
+	if (signalValid)
 	{
-		if (!(button->pressedIRMP) && (!repeat))
+		if (receiveBuffer & (button->bitMask))
 		{
-			button->pressedOnceIRMP = TRUE;
+			if (!(button->pressedIRMP) && (!repeat))
+			{
+				button->pressedOnceIRMP = TRUE;
+			}
+			else
+			{
+				button->pressedOnceIRMP = FALSE;
+			}
+
+			button->pressedIRMP = TRUE;
+			button->debounceTimeIRMP = IRMP_DEBOUNCE_TIME;
 		}
 		else
 		{
+			button->pressedIRMP = FALSE;
 			button->pressedOnceIRMP = FALSE;
 		}
-
-		button->pressedIRMP = TRUE;
 	}
 	else
 	{
-		button->pressedIRMP = FALSE;
+		if (button->debounceTimeIRMP > 0)
+		{
+			button->debounceTimeIRMP--;
+		}
+		else
+		{
+			button->debounceTimeIRMP = IRMP_DEBOUNCE_TIME;
+			button->pressedIRMP = FALSE;
+
+		}
+
 		button->pressedOnceIRMP = FALSE;
 	}
 }
@@ -118,6 +137,7 @@ void Buttons__x10 (void)
 #endif
 
 #if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+	uint8_t signalValidIRMP = FALSE;
 	uint8_t IRMPBuffer[2];
 	uint8_t IRMPBufferVal;
 	uint16_t buttonIRMP = 0;
@@ -152,6 +172,7 @@ void Buttons__x10 (void)
 #if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
 	if (E_OK == IRMP__readData(IRMP_REMOTE_ADDRESS, IRMPBuffer, 2, &repeatIRMP))
 	{
+		signalValidIRMP = TRUE;
 		IRMPBufferVal = (IRMPBuffer[0] << 8) | IRMPBuffer[1] ;
 
 		if (IRMPBufferVal == IRMP_BUTTON_OFF)
@@ -191,6 +212,10 @@ void Buttons__x10 (void)
 			buttonIRMP = BUTTON_RIGHT;
 		}
 	}
+	else
+	{
+		signalValidIRMP = FALSE;
+	}
 #endif
 
 	/* update buttons states */
@@ -217,15 +242,15 @@ void Buttons__x10 (void)
 #endif
 
 #if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonOff);
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonMode);
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonFunc1);
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonFunc2);
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonFunc3);
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonLeft);
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonRight);
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonUp);
-	Buttons__updateState_IRMP(buttonIRMP, repeatIRMP, &buttonDown);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonOff);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonMode);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonFunc1);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonFunc2);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonFunc3);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonLeft);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonRight);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonUp);
+	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonDown);
 #endif
 }
 

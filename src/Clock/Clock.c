@@ -71,7 +71,9 @@ static void Clock__getLastTimeFromDCF77 (void)
 	lastSyncTime.month    = DCF77__getMonth();
 	lastSyncTime.year     = DCF77__getYear();
 	lastSyncMinutesCheck  = DCF77__getMinutes();
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 	lastDS1307MinutesCheck = DS1307__getMinutes();
+#endif
 }
 
 
@@ -144,6 +146,7 @@ static void Clock__resetSyncTime (void)
 #if (CLOCK_SYNC != CLOCK_SYNC_OFF)
 static void Clock__sendLastSyncTimeToRTC (void)
 {
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
 	DS1307__setSeconds(lastSyncTime.seconds);
 	DS1307__setMinutes(lastSyncTime.minutes);
@@ -162,7 +165,6 @@ static void Clock__sendLastSyncTimeToRTC (void)
 	DS1307__setYear(Clock__getSyncYear());
 #endif
 
-#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 	DS1307__sendTimeToRTC();
 #endif
 }

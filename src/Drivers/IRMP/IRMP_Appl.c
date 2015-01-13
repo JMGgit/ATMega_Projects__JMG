@@ -6,7 +6,7 @@
  */
 
 
-#include "IRMP.h"
+#include <IRMP/IRMP_Appl.h>
 
 
 #if (BUTTONS_IRMP == BUTTONS_IRMP_ON)

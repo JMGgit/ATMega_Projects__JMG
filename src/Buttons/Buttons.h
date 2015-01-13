@@ -45,7 +45,8 @@
 #define BUTTON_RIGHT			BITMSK_BUTTON_RIGHT
 
 
-#define BUTTON_DEBOUNCE_TIME	3
+#define BUTTON_DEBOUNCE_TIME	2
+#define IRMP_DEBOUNCE_TIME      10
 
 #define BUTTON_INVALID 			0x00
 
@@ -73,6 +74,7 @@ typedef struct
 #endif
 #if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
 	uint8_t pressedIRMP;
+	uint8_t debounceTimeIRMP;
 	uint8_t pressedOnceIRMP;
 #endif
 } Button_t;
