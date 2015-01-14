@@ -154,7 +154,7 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 		<cconfiguration id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233" moduleId="org.eclipse.cdt.core.settings" name="Prj_Qtwo2">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233" moduleId="org.eclipse.cdt.core.settings" name="PrjQtwo2">
 				<externalSettings/>
 				<extensions>
 					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
@@ -165,7 +165,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app" description="Qlocktwo 2.0" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233" name="Prj_Qtwo2" parent="de.innot.avreclipse.configuration.app.release">
+				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app" description="Qlocktwo 2.0" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233" name="PrjQtwo2" parent="de.innot.avreclipse.configuration.app.release">
 					<folderInfo id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233." name="/" resourcePath="">
 						<toolChain id="de.innot.avreclipse.toolchain.winavr.app.release.1125040102" name="AVR-GCC Toolchain" superClass="de.innot.avreclipse.toolchain.winavr.app.release">
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.1642465355" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release"/>
@@ -233,7 +233,7 @@
 			<storageModule moduleId="org.eclipse.cdt.core.externalSettings"/>
 		</cconfiguration>
 		<cconfiguration id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555">
-			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555" moduleId="org.eclipse.cdt.core.settings" name="Prj_Qtwo3">
+			<storageModule buildSystemId="org.eclipse.cdt.managedbuilder.core.configurationDataProvider" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555" moduleId="org.eclipse.cdt.core.settings" name="PrjQtwo3">
 				<externalSettings/>
 				<extensions>
 					<extension id="org.eclipse.cdt.core.ELF" point="org.eclipse.cdt.core.BinaryParser"/>
@@ -244,7 +244,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app" description="Qlocktwo 3.0" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555" name="Prj_Qtwo3" parent="de.innot.avreclipse.configuration.app.release">
+				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app" description="Qlocktwo 3.0" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555" name="PrjQtwo3" parent="de.innot.avreclipse.configuration.app.release">
 					<folderInfo id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555." name="/" resourcePath="">
 						<toolChain id="de.innot.avreclipse.toolchain.winavr.app.release.1519188392" name="AVR-GCC Toolchain" superClass="de.innot.avreclipse.toolchain.winavr.app.release">
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.1596446264" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release"/>
@@ -325,10 +325,10 @@
 		</configuration>
 		<configuration configurationName="PrjQtwo2"/>
 		<configuration configurationName="Project__Qlocktwo"/>
-		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="Qlocktwo">
 			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
 		</configuration>
+		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="PrjQtwo3"/>
 		<configuration configurationName="PrjTemp"/>
 		<configuration configurationName="Project__Temperature_Logger"/>

@@ -23,7 +23,7 @@
 #define QTWO_LDR_HYST					30
 
 #define QTWO_TRANSITION_TIMER			50
-#define QTWO_TRANSITION_TIMER_SEC		15
+#define QTWO_TRANSITION_TIMER_SEC		17
 #define QTWO_TRANSITION_TIMER_SETUP		0
 
 #define QTWO_SETUP_TIMER				50
@@ -144,7 +144,7 @@ void Qtwo__init (void)
 		}
 		else
 		{
-			currentColor = 0;
+			currentColor = QTWO_COLOR_NB - 1;
 		}
 	}
 
@@ -293,30 +293,45 @@ static void Qtwo__checkButtonsSetup (void)
 
 static void Qtwo__checkButtonsSeconds (void)
 {
-#if (BUTTON_FUNC3_AVAILABLE ==  BUTTON_FUNC3_AVAILABLE_NO)
-	if (Buttons__isPressedOnce(&buttonFunc2))
-	{
-		Modes__setMode(MODE__TIME_SETUP);
-	}
-#else
+#if (BUTTON_FUNC3_AVAILABLE !=  BUTTON_FUNC3_AVAILABLE_NO)
+	static uint8_t timerColorButton = TIMER_COLOR_BUTTON;
+
 	if ((Buttons__isPressedOnce(&buttonFunc1)) && (!timeTransition) && (!brightnessTransition))
 	{
-		if (selectedColor < QTWO_COLOR_NB)
+		if (Buttons__isPressedOnce(&buttonFunc1))
 		{
-			selectedColor++;
+			if (selectedColor < (QTWO_COLOR_NB - 1))
+			{
+				selectedColor++;
+			}
+			else
+			{
+				selectedColor = 0;
+			}
+
+			Qtwo__eepromStorage();
+		}
+
+		if (Buttons__isPressed(&buttonFunc1))
+		{
+			if (timerColorButton > 0)
+			{
+				timerColorButton--;
+			}
+			else
+			{
+				/* TODO: currently not working because of timeTransition */
+				timerColorButton = TIMER_COLOR_BUTTON;
+				selectedColor = QTWO_COLOR_NB;
+				currentColor = QTWO_COLOR_NB - 1;
+				Qtwo__modeTransition();
+				Qtwo__eepromStorage();
+			}
 		}
 		else
 		{
-			selectedColor = 0;
+			timerColorButton = TIMER_COLOR_BUTTON;
 		}
-
-		if (selectedColor == QTWO_COLOR_NB)
-		{
-			currentColor = QTWO_COLOR_NB - 1;
-			Qtwo__modeTransition();
-		}
-
-		Qtwo__eepromStorage();
 	}
 
 	if ((Buttons__isPressedOnce(&buttonFunc2)) && (!timeTransition) && (!brightnessTransition))
@@ -333,6 +348,11 @@ static void Qtwo__checkButtonsSeconds (void)
 		}
 
 		Qtwo__eepromStorage();
+	}
+#else
+	if (Buttons__isPressedOnce(&buttonFunc2))
+	{
+		Modes__setMode(MODE__TIME_SETUP);
 	}
 #endif
 }
