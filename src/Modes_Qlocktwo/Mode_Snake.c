@@ -110,7 +110,7 @@ void Snake__init (void)
 	}
 
 	score = 0;
-	timerScore = 255;
+	timerScore = 120;
 	gameOver = FALSE;
 }
 
