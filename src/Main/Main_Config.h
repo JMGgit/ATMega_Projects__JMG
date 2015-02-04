@@ -137,15 +137,16 @@
 /* defined by project configuration */
 
 /* brightness */
-#define BRIGHTNESS_LEVEL_1				4
-#define BRIGHTNESS_LEVEL_2				10
-#define BRIGHTNESS_LEVEL_3				25
-#define BRIGHTNESS_LEVEL_4				90
-#define BRIGHTNESS_LEVEL_BRIGHT_1		10
-#define BRIGHTNESS_LEVEL_BRIGHT_2		25
-#define BRIGHTNESS_LEVEL_BRIGHT_3		90
-#define BRIGHTNESS_LEVEL_BRIGHT_4		160
-
+#define QTWO_BRIGHTNESS_LEVEL_1				4
+#define QTWO_BRIGHTNESS_LEVEL_2				10
+#define QTWO_BRIGHTNESS_LEVEL_3				25
+#define QTWO_BRIGHTNESS_LEVEL_4				90
+#define QTWO_BRIGHTNESS_LEVEL_BRIGHT_1		10
+#define QTWO_BRIGHTNESS_LEVEL_BRIGHT_2		25
+#define QTWO_BRIGHTNESS_LEVEL_BRIGHT_3		90
+#define QTWO_BRIGHTNESS_LEVEL_BRIGHT_4		160
+#define SNAKE_BRIGHTNESS_LEVEL				30
+#define TEST_BRIGHTNESS_LEVEL				60
 #endif
 
 
@@ -169,13 +170,13 @@
 #define CLOCK_SYNC_OFF					1
 #define CLOCK_SYNC_DCF77				2
 #define CLOCK_SYNC_USART				3
-#define CLOCK_SYNC						CLOCK_SYNC_OFF
+#define CLOCK_SYNC						CLOCK_SYNC_DCF77
 
 /* buttons */
 #define BUTTONS_WIRED_OFF				1
 #define BUTTONS_WIRED_PIN				2
 #define BUTTONS_WIRED_HC165				3
-#define BUTTONS_WIRED					BUTTONS_WIRED_HC165
+#define BUTTONS_WIRED					BUTTONS_WIRED_OFF
 
 #define BUTTONS_USART_OFF				1
 #define BUTTONS_USART_ON				2
@@ -183,7 +184,18 @@
 
 #define BUTTONS_IRMP_OFF				1
 #define BUTTONS_IRMP_ON					2
-#define BUTTONS_IRMP					BUTTONS_IRMP_OFF
+#define BUTTONS_IRMP					BUTTONS_IRMP_ON
+
+/* button for off mode */
+#define BUTTON_OFF_AVAILABLE_NO			1
+#define BUTTON_OFF_AVAILABLE_YES		2
+#define BUTTON_OFF_AVAILABLE_FUNC2		3
+/* defined by project configuration */
+
+/* availability of button func3 */
+#define BUTTON_FUNC3_AVAILABLE_NO		1
+#define BUTTON_FUNC3_AVAILABLE_YES		2
+/* defined by project configuration */
 
 /* lcd */
 #define LCD_CONTROLLER_OFF				1
@@ -195,6 +207,15 @@
 #define TEMPERATURE_SENSOR_TEST			2
 #define TEMPERATURE_SENSOR_DS18B20		3
 #define TEMPERATURE_SENSOR				TEMPERATURE_SENSOR_OFF
+
+/* startup mode */
+#define MODE_STARTUP_OFF				1
+#define MODE_STARTUP_ON					2
+#define MODE_STARTUP					MODE_STARTUP_ON
+
+/* brightness */
+#define SNAKE_BRIGHTNESS_LEVEL			255
+#define TEST_BRIGHTNESS_LEVEL			60
 
 #endif
 

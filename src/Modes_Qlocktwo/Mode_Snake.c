@@ -15,13 +15,17 @@
 #define ST_DIRECTION_LEFT		0x04
 #define ST_DIRECTION_RIGHT		0x05
 
-#define SNAKE_COLOR_R			0
-#define SNAKE_COLOR_G			30
-#define SNAKE_COLOR_B			0
+#define SNAKE_COLOR_R			0x00
+#define SNAKE_COLOR_G			SNAKE_BRIGHTNESS_LEVEL
+#define SNAKE_COLOR_B			0x00
 
-#define APPLE_COLOR_R			30
-#define APPLE_COLOR_G			0
-#define APPLE_COLOR_B			0
+#define APPLE_COLOR_R			SNAKE_BRIGHTNESS_LEVEL
+#define APPLE_COLOR_G			0x00
+#define APPLE_COLOR_B			0x00
+
+#define SCORE_COLOR_R			SNAKE_BRIGHTNESS_LEVEL
+#define SCORE_COLOR_G			SNAKE_BRIGHTNESS_LEVEL
+#define SCORE_COLOR_B			SNAKE_BRIGHTNESS_LEVEL
 
 #define DIGIT_SIZE_LIN			7
 #define DIGIT_SIZE_COL			5
@@ -114,6 +118,7 @@ void Snake__init (void)
 	gameOver = FALSE;
 }
 
+
 void Snake__updateMatrix (void)
 {
 	uint16_t linIt, colIt;
@@ -144,7 +149,7 @@ void Snake__updateMatrix (void)
 		}
 	}
 
-	if (timer > 0)
+	if ((timer > 0) && (gameOver == FALSE))
 	{
 		timer--;
 	}
@@ -287,12 +292,12 @@ void Snake__updateMatrix (void)
 		{
 			if (pgm_read_byte(&digitScore[(score / 10) * (DIGIT_SIZE_COL * DIGIT_SIZE_LIN)] + digitIt) == 1)
 			{
-				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL), 1 + digitIt % DIGIT_SIZE_COL, getRGBColorFromComponents(30, 30, 30));
+				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL), 1 + digitIt % DIGIT_SIZE_COL, getRGBColorFromComponents(SCORE_COLOR_R, SCORE_COLOR_R, SCORE_COLOR_R));
 			}
 
 			if (pgm_read_byte(&digitScore[(score % 10) * (DIGIT_SIZE_COL * DIGIT_SIZE_LIN)] + digitIt) == 1)
 			{
-				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL),  7 + (digitIt % DIGIT_SIZE_COL), getRGBColorFromComponents(30, 30, 30));
+				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL),  7 + (digitIt % DIGIT_SIZE_COL), getRGBColorFromComponents(SCORE_COLOR_R, SCORE_COLOR_R, SCORE_COLOR_R));
 			}
 		}
 

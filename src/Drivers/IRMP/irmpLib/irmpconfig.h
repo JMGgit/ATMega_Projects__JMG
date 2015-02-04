@@ -96,7 +96,7 @@
  * Change hardware pin here for ATMEL AVR
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
-#if defined (ATMEL_AVR)                                                 // use PB6 as IR input on AVR
+#if defined (ATMEL_AVR)                                                 // use PA1 as IR input on AVR
 #  define IRMP_PORT_LETTER                      A
 #  define IRMP_BIT_NUMBER                       1
 

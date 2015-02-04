@@ -9,45 +9,36 @@
 #include "Modes.h"
 
 
-static uint8_t currentMode;
+static Mode_t currentMode;
+static uint8_t modeOffTransition = FALSE;
 uint8_t mode_EEPROM EEMEM;
 RGB_Color_t Modes_currentColor = {255, 255, 255};
 
 
 static void Modes__transition (void)
 {
-	uint16_t linIt, colIt;
-
+#if (MODE_SNAKE == MODE_SNAKE_ON)
 	Snake__init();
-
-	/* refresh matrix */
-	/* TODO: add mode transition */
-	for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
-	{
-		for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
-		{
-			LEDMatrix__setRGBColor(linIt, colIt, getRGBColorFromComponents(0, 0, 0));
-		}
-	}
+#endif
 }
 
 
-void Modes__setMode (uint8_t mode)
+void Modes__setMode (Mode_t mode)
 {
-	if (mode <= MODE_NB)
+	if (mode < MODE_NB)
 	{
 		currentMode = mode;
 	}
 	else
 	{
-		currentMode = 1;
+		currentMode = MODE__ALL_ON;
 	}
 
 	Modes__transition();
 }
 
 
-static void Modes__eepromInit (void)
+void Modes__Start (void)
 {
 	currentMode = eeprom_read_byte(&mode_EEPROM);
 
@@ -104,25 +95,25 @@ static void Mode__eepromStorage (void)
 }
 
 
-void Modes__init (void)
+static void Modes__updateMatrix (void)
 {
-	Modes__eepromInit();
-}
-
-
-void Modes__x10 (void)
-{
-	uint8_t USARTbuffer[USART_DATA_LENGTH_MODE];
-
-	if ((Buttons__isPressedOnce(&buttonMode)) || (E_OK == USART__readData(USARTbuffer, USART_DATA_LENGTH_MODE, USART_REQESTER_MODE)))
-	{
-		Modes__setNextMode();
-	}
-
 	Modes__updateColor();
 
 	switch (currentMode)
 	{
+		case MODE__STARTUP:
+		{
+			Mode__Startup_x10();
+			break;
+		}
+
+		case MODE__ALL_ON:
+		{
+			//AllOn__updateMatrix();
+			Modes__setNextMode();
+			break;
+		}
+
 		case MODE__BLENDING:
 		case MODE__BLENDING_SWEEP:
 		case MODE__BLENDING_SWEEP_FAST:
@@ -147,21 +138,41 @@ void Modes__x10 (void)
 
 		case MODE__CLOCK:
 		{
-			Modes__setNextMode();
 			//Clock__updateMatrix(CLOCK_MODE_ONE_COLOR);
+			Modes__setNextMode();
 			break;
 		}
 
+#if (MODE_SNAKE == MODE_SNAKE_ON)
 		case MODE__SNAKE:
 		{
 			Snake__updateMatrix();
 			break;
 		}
+#endif
 
-		case MODE__ALL_ON:
+		case MODE__OFF:
 		{
-			Modes__setNextMode();
-			//AllOn__updateMatrix();
+			LEDMatrix__clearMatrix();
+
+			if (!modeOffTransition)
+			{
+#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
+				if (Buttons__isPressedOnce(&buttonFunc2))
+				{
+					Modes__setMode(MODE__ALL_ON);
+				}
+#endif
+
+				if (Buttons__isPressedOnce(&buttonOff))
+				{
+					Modes__Start();
+				}
+			}
+			else
+			{
+				modeOffTransition = FALSE;
+			}
 			break;
 		}
 
@@ -171,5 +182,53 @@ void Modes__x10 (void)
 		}
 	}
 
-	Mode__eepromStorage();
+	if ((currentMode != MODE__STARTUP) && (currentMode != MODE__OFF))
+	{
+		Mode__eepromStorage();
+	}
+}
+
+
+void Modes__init (void)
+{
+#if (MODE_STARTUP == MODE_STARTUP_ON)
+	Modes__setMode(MODE__STARTUP);
+#else
+	Modes__setMode(MODE__ALL_ON);
+#endif
+}
+
+
+void Modes__x10 (void)
+{
+	if (Buttons__isPressedOnce(&buttonMode))
+	{
+#if (BUTTON_OFF_AVAILABLE != BUTTON_OFF_AVAILABLE_NO)
+		if (currentMode != MODE__OFF)
+		{
+			Modes__setNextMode();
+		}
+#else
+		Modes__setNextMode();
+#endif
+	}
+
+	if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
+	{
+		if (Buttons__isPressedOnce(&buttonOff))
+		{
+			Modes__setMode(MODE__OFF);
+			modeOffTransition = TRUE;
+		}
+
+#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
+		if (Buttons__isPressedOnce(&buttonFunc2))
+		{
+			Modes__setMode(MODE__OFF);
+			modeOffTransition = TRUE;
+		}
+#endif
+	}
+
+	Modes__updateMatrix();
 }

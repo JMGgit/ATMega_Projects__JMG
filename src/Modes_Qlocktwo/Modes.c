@@ -13,6 +13,16 @@ static Mode_t currentMode;
 static uint8_t modeOffTransition = FALSE;
 
 
+static void Modes__transition (void)
+{
+#if (MODE_SNAKE == MODE_SNAKE_ON)
+	Snake__init();
+#endif
+	Qtwo__modeTransition();
+
+}
+
+
 void Modes__setMode (Mode_t mode)
 {
 	if (mode < MODE_NB)
@@ -24,10 +34,13 @@ void Modes__setMode (Mode_t mode)
 		currentMode = MODE__QLOCKTWO;
 	}
 
-#if (MODE_SNAKE == MODE_SNAKE_ON)
-	Snake__init();
-#endif
-	Qtwo__modeTransition();
+	Modes__transition();
+}
+
+
+void Modes__Start (void)
+{
+	currentMode = MODE__QLOCKTWO;
 }
 
 
@@ -36,6 +49,17 @@ static void Modes__setNextMode (void)
 	Modes__setMode(currentMode + 1);
 }
 
+
+uint8_t Modes__getMode (void)
+{
+	return currentMode;
+}
+
+
+static void Mode__eepromStorage (void)
+{
+	/* mode is not stored */
+}
 
 static void Modes__updateMatrix (void)
 {
@@ -91,7 +115,7 @@ static void Modes__updateMatrix (void)
 
 				if (Buttons__isPressedOnce(&buttonOff))
 				{
-					Modes__setMode(MODE__QLOCKTWO);
+					Modes__Start();
 				}
 			}
 			else
@@ -106,14 +130,12 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 	}
+
+	if ((currentMode != MODE__STARTUP) && (currentMode != MODE__OFF))
+	{
+		Mode__eepromStorage();
+	}
 }
-
-
-void Modes__eepromStorage (void)
-{
-	Qtwo__eepromStorage();
-}
-
 
 
 void Modes__init (void)

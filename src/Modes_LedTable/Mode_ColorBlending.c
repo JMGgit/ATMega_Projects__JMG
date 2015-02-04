@@ -59,7 +59,7 @@ void ColorBlending__updateMatrix (void)
 	{
 		timerColorChange = 1;
 		colorStep = 10;
-		updateTimer = 1000;
+		updateTimer = 500; /* TODO: try to increase SPI speed */
 	}
 	else if (Modes__getMode() == MODE__BLENDING_SWEEP_FAST)
 	{

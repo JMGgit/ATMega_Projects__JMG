@@ -36,6 +36,9 @@
 								<option id="de.innot.avreclipse.compiler.option.optimize.1046370329" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
 								<option id="de.innot.avreclipse.compiler.option.def.1170801763" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__LED_TABLE"/>
+									<listOptionValue builtIn="false" value="MODE_SNAKE=MODE_SNAKE_ON"/>
+									<listOptionValue builtIn="false" value="BUTTON_OFF_AVAILABLE=BUTTON_OFF_AVAILABLE_YES"/>
+									<listOptionValue builtIn="false" value="BUTTON_FUNC3_AVAILABLE=BUTTON_FUNC3_AVAILABLE_YES"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.380316832" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
@@ -49,6 +52,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.2098505273" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.undef.357876573" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef" valueType="undefDefinedSymbols"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.2034840780" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.217132772" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
@@ -125,6 +129,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.1112276852" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.undef.780198403" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef" valueType="undefDefinedSymbols"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.91298827" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.51292974" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
@@ -204,6 +209,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.1702651126" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.undef.182577217" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef" valueType="undefDefinedSymbols"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.2076679399" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.389932173" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
@@ -325,10 +331,10 @@
 		</configuration>
 		<configuration configurationName="PrjQtwo2"/>
 		<configuration configurationName="Project__Qlocktwo"/>
+		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="Qlocktwo">
 			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
 		</configuration>
-		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="PrjQtwo3"/>
 		<configuration configurationName="PrjTemp"/>
 		<configuration configurationName="Project__Temperature_Logger"/>
@@ -339,10 +345,10 @@
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233;de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233.;de.innot.avreclipse.tool.compiler.winavr.app.release.1273108763;de.innot.avreclipse.compiler.winavr.input.2076679399">
+		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198;de.innot.avreclipse.configuration.app.release.1446605198.;de.innot.avreclipse.tool.compiler.winavr.app.release.1207600079;de.innot.avreclipse.compiler.winavr.input.1539889638">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198;de.innot.avreclipse.configuration.app.release.1446605198.;de.innot.avreclipse.tool.compiler.winavr.app.release.1207600079;de.innot.avreclipse.compiler.winavr.input.1539889638">
+		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233;de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.362313233.;de.innot.avreclipse.tool.compiler.winavr.app.release.1273108763;de.innot.avreclipse.compiler.winavr.input.2076679399">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1013229584;de.innot.avreclipse.configuration.app.release.1446605198.1013229584.;de.innot.avreclipse.tool.compiler.winavr.app.release.1890345542;de.innot.avreclipse.compiler.winavr.input.91298827">
@@ -351,10 +357,13 @@
 		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1029823119;de.innot.avreclipse.configuration.app.release.1446605198.1029823119.;de.innot.avreclipse.tool.compiler.winavr.app.release.1787911802;de.innot.avreclipse.compiler.winavr.input.2016131843">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1815058140;de.innot.avreclipse.configuration.app.release.1446605198.1815058140.;de.innot.avreclipse.tool.compiler.winavr.app.release.903320046;de.innot.avreclipse.compiler.winavr.input.2034840780">
+		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555;de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.;de.innot.avreclipse.tool.compiler.winavr.app.release.2092674577;de.innot.avreclipse.compiler.winavr.input.929343895">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696;de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.;de.innot.avreclipse.tool.compiler.winavr.app.release.1967334780;de.innot.avreclipse.compiler.winavr.input.1424303630">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1815058140;de.innot.avreclipse.configuration.app.release.1446605198.1815058140.;de.innot.avreclipse.tool.compiler.winavr.app.release.903320046;de.innot.avreclipse.compiler.winavr.input.2034840780">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
 	</storageModule>

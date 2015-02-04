@@ -16,12 +16,20 @@
 #define ST_DIRECTION_RIGHT		0x05
 
 #define SNAKE_COLOR_R			0x00
-#define SNAKE_COLOR_G			0xFF
+#define SNAKE_COLOR_G			SNAKE_BRIGHTNESS_LEVEL
 #define SNAKE_COLOR_B			0x00
 
-#define APPLE_COLOR_R			0xFF
+#define APPLE_COLOR_R			SNAKE_BRIGHTNESS_LEVEL
 #define APPLE_COLOR_G			0x00
 #define APPLE_COLOR_B			0x00
+
+#define SCORE_COLOR_R			SNAKE_BRIGHTNESS_LEVEL
+#define SCORE_COLOR_G			SNAKE_BRIGHTNESS_LEVEL
+#define SCORE_COLOR_B			SNAKE_BRIGHTNESS_LEVEL
+
+#define DIGIT_SIZE_LIN			7
+#define DIGIT_SIZE_COL			5
+
 
 typedef struct
 {
@@ -31,6 +39,7 @@ typedef struct
 	uint8_t last_posCol;
 	uint8_t speed;
 } SnakeState_t;
+
 
 typedef struct
 {
@@ -44,8 +53,24 @@ static SnakeState_t snake;
 static uint8_t direction;
 static uint8_t newDirection = FALSE;
 static AppleState_t apple;
-static uint8_t timer;
+static uint8_t timer, timerScore;
 static uint8_t SnakeMatrix[LED_MATRIX_SIZE_LIN + 1][LED_MATRIX_SIZE_COL + 1];
+static uint8_t score, gameOver;
+
+
+const uint8_t digitScore[DIGIT_SIZE_LIN * DIGIT_SIZE_COL * 10] PROGMEM =
+{
+	/* 0 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1,	1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	/* 1 */ 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0,
+	/* 2 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1,
+	/* 3 */ 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	/* 4 */ 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0,
+	/* 5 */ 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0,
+	/* 6 */ 0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	/* 7 */ 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0,
+	/* 8 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0,
+	/* 9 */ 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1, 1, 0, 0,
+};
 
 
 void Snake__init (void)
@@ -87,7 +112,12 @@ void Snake__init (void)
 		apple.pos_line = (uint8_t)(rand() % LED_MATRIX_SIZE_LIN + 1);
 		apple.pos_col = (uint8_t)(rand() % LED_MATRIX_SIZE_COL + 1);
 	}
+
+	score = 0;
+	timerScore = 120;
+	gameOver = FALSE;
 }
+
 
 void Snake__updateMatrix (void)
 {
@@ -119,7 +149,7 @@ void Snake__updateMatrix (void)
 		}
 	}
 
-	if (timer > 0)
+	if ((timer > 0) && (gameOver == FALSE))
 	{
 		timer--;
 	}
@@ -227,11 +257,11 @@ void Snake__updateMatrix (void)
 		{
 			apple.caught = TRUE;
 			snake.speed++;
+			score++;
 		}
 		else if (SnakeMatrix[snake.first_posLine][snake.first_posCol] != ST_EMPTY)
 		{
-			/* game over! */
-			Snake__init();
+			gameOver = TRUE;
 		}
 
 		SnakeMatrix[snake.first_posLine][snake.first_posCol] = ST_FIRST;
@@ -241,16 +271,43 @@ void Snake__updateMatrix (void)
 
 	LEDMatrix__clearMatrix();
 
-	LEDMatrix__setRGBColor(apple.pos_line, apple.pos_col, getRGBColorFromComponents(APPLE_COLOR_R, APPLE_COLOR_G, APPLE_COLOR_B));
-
-	for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
+	if (!gameOver)
 	{
-		for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
+		LEDMatrix__setRGBColor(apple.pos_line, apple.pos_col, getRGBColorFromComponents(APPLE_COLOR_R, APPLE_COLOR_G, APPLE_COLOR_B));
+
+		for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
 		{
-			if (SnakeMatrix[linIt][colIt] != ST_EMPTY)
+			for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
 			{
-				LEDMatrix__setRGBColor(linIt, colIt, getRGBColorFromComponents(SNAKE_COLOR_R, SNAKE_COLOR_G, SNAKE_COLOR_B));
+				if (SnakeMatrix[linIt][colIt] != ST_EMPTY)
+				{
+					LEDMatrix__setRGBColor(linIt, colIt, getRGBColorFromComponents(SNAKE_COLOR_R, SNAKE_COLOR_G, SNAKE_COLOR_B));
+				}
 			}
+		}
+	}
+	else
+	{
+		for (uint8_t digitIt = 0; digitIt < DIGIT_SIZE_COL * DIGIT_SIZE_LIN; digitIt++)
+		{
+			if (pgm_read_byte(&digitScore[(score / 10) * (DIGIT_SIZE_COL * DIGIT_SIZE_LIN)] + digitIt) == 1)
+			{
+				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL), 1 + digitIt % DIGIT_SIZE_COL, getRGBColorFromComponents(SCORE_COLOR_R, SCORE_COLOR_R, SCORE_COLOR_R));
+			}
+
+			if (pgm_read_byte(&digitScore[(score % 10) * (DIGIT_SIZE_COL * DIGIT_SIZE_LIN)] + digitIt) == 1)
+			{
+				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL),  7 + (digitIt % DIGIT_SIZE_COL), getRGBColorFromComponents(SCORE_COLOR_R, SCORE_COLOR_R, SCORE_COLOR_R));
+			}
+		}
+
+		if (timerScore > 0)
+		{
+			timerScore--;
+		}
+		else
+		{
+			Snake__init();
 		}
 	}
 }
