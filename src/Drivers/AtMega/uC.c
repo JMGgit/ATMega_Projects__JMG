@@ -62,10 +62,15 @@ uint8_t uC__isTaskTrigger_x10 (void)
 	{
 		if (update10ms == TRUE)
 		{
-			update10ms = FALSE;
 			update = TRUE;
 		}
 	}
 
 	return update;
+}
+
+
+void uC__resetTaskTrigger_x10 (void)
+{
+	update10ms = FALSE;
 }

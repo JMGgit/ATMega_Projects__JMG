@@ -52,7 +52,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.2098505273" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
-								<option id="de.innot.avreclipse.compiler.option.undef.357876573" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef" valueType="undefDefinedSymbols"/>
+								<option id="de.innot.avreclipse.compiler.option.undef.357876573" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.2034840780" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.217132772" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
@@ -129,7 +129,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.1112276852" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
-								<option id="de.innot.avreclipse.compiler.option.undef.780198403" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef" valueType="undefDefinedSymbols"/>
+								<option id="de.innot.avreclipse.compiler.option.undef.780198403" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.91298827" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.51292974" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
@@ -209,7 +209,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.1702651126" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
-								<option id="de.innot.avreclipse.compiler.option.undef.182577217" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef" valueType="undefDefinedSymbols"/>
+								<option id="de.innot.avreclipse.compiler.option.undef.182577217" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.2076679399" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.389932173" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
@@ -331,10 +331,10 @@
 		</configuration>
 		<configuration configurationName="PrjQtwo2"/>
 		<configuration configurationName="Project__Qlocktwo"/>
-		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="Qlocktwo">
 			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
 		</configuration>
+		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="PrjQtwo3"/>
 		<configuration configurationName="PrjTemp"/>
 		<configuration configurationName="Project__Temperature_Logger"/>

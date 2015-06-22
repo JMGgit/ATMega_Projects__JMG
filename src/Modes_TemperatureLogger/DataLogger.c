@@ -160,7 +160,7 @@ void DataLogger__startMeasure (uint8_t (*getValue)(uint16_t*))
 		measIndex++;
 
 		dataLogIndexTable[measIndex - 1] = dataLogIt;
-		dataLogMeasurementInfos[measIndex - 1].yearStart = Clock__getYear();
+		dataLogMeasurementInfos[measIndex - 1].yearStart = 2000 + Clock__getYear();
 		dataLogMeasurementInfos[measIndex - 1].monthStart = Clock__getMonth();
 		dataLogMeasurementInfos[measIndex - 1].dateStart = Clock__getDate();
 		dataLogMeasurementInfos[measIndex - 1].hourStart = Clock__getHours();

@@ -209,9 +209,10 @@
 #define DCF77_DATA_DDR	DDRB
 #define DCF77_DATA_PORT	PINB
 #define DCF77_DATA_PIN	PB0
-#define DCF77_TASK_TIME	100
+#define DCF77_TASK_TIME	200
 /* 16 Mhz -> 125 */
 /* 20 Mhz -> 100 */
+/* 20 Mhz with slow SPI: 200 */
 
 /*********** CTL LED ***********/
 #define UC_LED_DDR		DDRD

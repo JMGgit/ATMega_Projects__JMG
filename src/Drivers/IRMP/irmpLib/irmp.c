@@ -1745,7 +1745,9 @@ static volatile uint8_t                     irmp_ir_detected = FALSE;
 static volatile uint8_t                     irmp_protocol;
 static volatile uint16_t                    irmp_address;
 static volatile uint16_t                    irmp_command;
+#if IRMP_SUPPORT_SAMSUNG_PROTOCOL == 1
 static volatile uint16_t                    irmp_id;                    // only used for SAMSUNG protocol
+#endif
 static volatile uint8_t                     irmp_flags;
 // static volatile uint8_t                  irmp_busy_flag;
 

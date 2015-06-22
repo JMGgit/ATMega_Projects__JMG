@@ -31,6 +31,8 @@
 #define CLOCK_TYPE_BIG			0x01
 
 static uint8_t clockSize = CLOCK_TYPE_BIG;
+static uint8_t lineOffset = 0;
+static uint8_t colOffset = 0;
 
 const uint8_t numTable[SIZE_LIN * SIZE_COL * 10] PROGMEM =
 {
@@ -138,6 +140,9 @@ void Clock__updateMatrix (uint8_t clockMode)
 	uint8_t itLin, itCol, index;
 	const uint8_t *num1Table, *num2Table, *num3Table, *num4Table;
 	RGB_Color_t ClockColor;
+	uint8_t numPosLin, numPosCol;
+
+	/* time setting */
 
 	if (Buttons__isPressed(&buttonFunc1))
 	{
@@ -162,6 +167,56 @@ void Clock__updateMatrix (uint8_t clockMode)
 		if (Buttons__isPressedOnce(&buttonDown))
 		{
 			Clock__decMinutes();
+		}
+	}
+
+	/* numbers position */
+
+	if (Buttons__isPressedOnce(&buttonUp))
+	{
+		if (lineOffset > 0)
+		{
+			lineOffset--;
+		}
+		else
+		{
+			lineOffset = LED_MATRIX_SIZE_LIN - 1;
+		}
+	}
+
+	if (Buttons__isPressedOnce(&buttonDown))
+	{
+		if (lineOffset < (LED_MATRIX_SIZE_LIN - 1))
+		{
+			lineOffset++;
+		}
+		else
+		{
+			lineOffset = 0;
+		}
+	}
+
+	if (Buttons__isPressedOnce(&buttonLeft))
+	{
+		if (colOffset > 0)
+		{
+			colOffset--;
+		}
+		else
+		{
+			colOffset = LED_MATRIX_SIZE_COL - 1;
+		}
+	}
+
+	if (Buttons__isPressedOnce(&buttonRight))
+	{
+		if (colOffset < (LED_MATRIX_SIZE_COL - 1))
+		{
+			colOffset++;
+		}
+		else
+		{
+			colOffset = 0;
 		}
 	}
 
@@ -235,27 +290,106 @@ void Clock__updateMatrix (uint8_t clockMode)
 
 				if (pgm_read_byte(&num1Table[index]) == 1)
 				{
-					LEDMatrix__setRGBColor(itLin + OFFSET_LIN_BIG, itCol + OFFSET_COL_NUM_1_BIG, ClockColor);
+					numPosLin = itLin + lineOffset + OFFSET_LIN_BIG;
+					numPosCol = itCol + colOffset + OFFSET_COL_NUM_1_BIG;
+
+					if (numPosLin > LED_MATRIX_SIZE_LIN)
+					{
+						numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+					}
+
+					if (numPosCol > LED_MATRIX_SIZE_COL)
+					{
+						numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+					}
+
+					LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 				}
 
 				if (pgm_read_byte(&num2Table[index]) == 1)
 				{
-					LEDMatrix__setRGBColor(itLin + OFFSET_LIN_BIG, itCol + OFFSET_COL_NUM_2_BIG, ClockColor);
+					numPosLin = itLin + lineOffset + OFFSET_LIN_BIG;
+					numPosCol = itCol + colOffset + OFFSET_COL_NUM_2_BIG;
+
+					if (numPosLin > LED_MATRIX_SIZE_LIN)
+					{
+						numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+					}
+
+					if (numPosCol > LED_MATRIX_SIZE_COL)
+					{
+						numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+					}
+
+					LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 				}
 
 				if (pgm_read_byte(&num3Table[index]) == 1)
 				{
-					LEDMatrix__setRGBColor(itLin + OFFSET_LIN_BIG, itCol + OFFSET_COL_NUM_3_BIG, ClockColor);
+					numPosLin = itLin + lineOffset + OFFSET_LIN_BIG;
+					numPosCol = itCol + colOffset + OFFSET_COL_NUM_3_BIG;
+
+					if (numPosLin > LED_MATRIX_SIZE_LIN)
+					{
+						numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+					}
+
+					if (numPosCol > LED_MATRIX_SIZE_COL)
+					{
+						numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+					}
+
+					LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 				}
 
 				if (pgm_read_byte(&num4Table[index]) == 1)
 				{
-					LEDMatrix__setRGBColor(itLin + OFFSET_LIN_BIG, itCol + OFFSET_COL_NUM_4_BIG, ClockColor);
+					numPosLin = itLin + lineOffset + OFFSET_LIN_BIG;
+					numPosCol = itCol + colOffset + OFFSET_COL_NUM_4_BIG;
+
+					if (numPosLin > LED_MATRIX_SIZE_LIN)
+					{
+						numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+					}
+
+					if (numPosCol > LED_MATRIX_SIZE_COL)
+					{
+						numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+					}
+
+					LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 				}
 			}
 		}
 	}
 
-	LEDMatrix__setRGBColor(6, 12, ClockColor);
-	LEDMatrix__setRGBColor(8, 12, ClockColor);
+	numPosLin = 6 + lineOffset;
+	numPosCol = 12 + colOffset;
+
+	if (numPosLin > LED_MATRIX_SIZE_LIN)
+	{
+		numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+	}
+
+	if (numPosCol > LED_MATRIX_SIZE_COL)
+	{
+		numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+	}
+
+	LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
+
+	numPosLin = 8 + lineOffset;
+	numPosCol = 12 + colOffset;
+
+	if (numPosLin > LED_MATRIX_SIZE_LIN)
+	{
+		numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+	}
+
+	if (numPosCol > LED_MATRIX_SIZE_COL)
+	{
+		numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+	}
+
+	LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 }

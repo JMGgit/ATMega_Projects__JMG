@@ -30,6 +30,11 @@ int main (void)
 			Clock__x10();
 			Buttons__x10();
 			Modes__x10();
+
+			ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+			{
+				uC__resetTaskTrigger_x10();
+			}
 		}
 	}
 
