@@ -8,6 +8,9 @@
 
 #include "Main.h"
 
+/* runtime test */
+uint8_t runtimeCounter;
+
 
 int main (void)
 {
@@ -34,6 +37,17 @@ int main (void)
 			ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 			{
 				uC__resetTaskTrigger_x10();
+			}
+
+			/* runtime test */
+			if (runtimeCounter < 100)
+			{
+				runtimeCounter++;
+			}
+			else
+			{
+				runtimeCounter = 0;
+				toggle(TEST2_LED_PORT, TEST2_LED_PIN);
 			}
 		}
 	}

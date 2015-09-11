@@ -9,6 +9,7 @@
 #define WS2801_H_
 
 #include <avr/io.h>
+#include <string.h>
 #include "Main_Types.h"
 #include "Drivers_Config.h"
 #include "AtMega/AtMega.h"
@@ -25,6 +26,7 @@ void WS2801__x10 (void);
 void WS2801__updateAll(void);
 void WS2801__setGSForChannel (uint8_t gsData, uint16_t channel);
 void WS2801__setRGBForLED (RGB_Color_t color, uint16_t led);
+void WS2801__resetAllLEDs (void);
 
 #endif
 #endif /* WS2801_H_ */

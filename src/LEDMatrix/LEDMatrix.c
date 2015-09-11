@@ -22,17 +22,12 @@ void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color)
 
 void LEDMatrix__clearMatrix (void)
 {
-	uint8_t linIt, colIt;
-
-	for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
-	{
-		for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
-		{
-			LEDMatrix__setRGBColor(linIt, colIt, getRGBColorFromComponents(0, 0, 0));
-		}
-	}
-
+#ifdef WS2801_NB
+	WS2801__resetAllLEDs();
+#endif
 #if (PROJECT == PROJECT__QLOCKTWO)
+	uint8_t colIt;
+
 	/* clear 4 edges */
 	for (colIt = 1; colIt <= 4; colIt++)
 	{
