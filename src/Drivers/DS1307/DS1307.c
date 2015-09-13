@@ -18,6 +18,7 @@ void DS1307__init (void)
 {
 	uint8_t data[2];
 	uint8_t transmitState = E_NOT_OK;
+	uint8_t receiveState = E_NOT_OK;
 
 	/* set clock register */
 	data[0] = 0x00;
@@ -30,7 +31,12 @@ void DS1307__init (void)
 	transmitState = E_NOT_OK;
 
 	/* read first byte */
-	TWI__readData (&data[1], 1, DS1307_ADDRESS);
+	while (receiveState != E_OK)
+	{
+		receiveState = TWI__readData (&data[1], 1, DS1307_ADDRESS);
+	}
+
+	receiveState = E_NOT_OK;
 
 	/* enable oscillator */
 	data[1] &= (~(1 << 7));
@@ -48,7 +54,7 @@ void DS1307__init (void)
 
     while (transmitState != E_OK)
     {
-        transmitState = TWI__transmitData(&data[0], 2, DS1307_ADDRESS);
+        transmitState = TWI__transmitData(data, 2, DS1307_ADDRESS);
     }
 
     transmitState = E_NOT_OK;
@@ -92,12 +98,12 @@ void DS1307__updateTimeFromRTC (void)
 
 	if (transmitState != E_OK)
 	{
-	    transmitState = TWI__transmitData(&data[0], 1, DS1307_ADDRESS);
+	    transmitState = TWI__transmitData(data, 1, DS1307_ADDRESS);
 	}
 
 	if (transmitState == E_OK)
 	{
-	    if (receiveState != E_OK)
+	    while (receiveState != E_OK)
 	    {
 	        receiveState = TWI__readData(&data[1], 7, DS1307_ADDRESS);
 	    }
@@ -114,7 +120,7 @@ void DS1307__updateTimeFromRTC (void)
 	        currentTime.year = (((data[7] & 0xF0) >> 4) * 10) + (data[7] & 0x0F);
 
 	        transmitState = E_NOT_OK;
-	        receiveState = E_OK;
+	        receiveState = E_NOT_OK;
 	    }
 	}
 }
