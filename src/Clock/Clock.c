@@ -10,23 +10,14 @@
 
 
 static Clock_time currentTime;
+static Clock_time currentSyncTime;
 
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
-static Clock_time lastSyncTime;
 static Clock_time previousSyncTime;
-static uint8_t lastSyncMinutesCheck;
+static uint8_t currentSyncMinutesCheck;
 static uint8_t previousSyncMinutesCheck;
-static uint8_t lastDS1307MinutesCheck;
+static uint8_t currentDS1307MinutesCheck;
 static uint8_t previousDS1307MinutesCheck;
-#elif (CLOCK_SYNC == CLOCK_SYNC_USART)
-static Clock_time currentSyncTime;
-uint8_t Clock__getSyncSeconds()		{return currentSyncTime.seconds;}
-uint8_t Clock__getSyncMinutes()		{return currentSyncTime.minutes;}
-uint8_t Clock__getSyncHours()		{return currentSyncTime.hours;}
-uint8_t Clock__getSyncDate()		{return currentSyncTime.date;}
-uint8_t Clock__getSyncDay()			{return currentSyncTime.day;}
-uint8_t Clock__getSyncMonth()		{return currentSyncTime.month;}
-uint8_t Clock__getSyncYear()		{return currentSyncTime.year;}
 #endif
 
 
@@ -49,31 +40,29 @@ static void Clock__updateTimeFromRTC (void)
 
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
 
-static void Clock__getLastTimeFromDCF77 (void)
+static void Clock__getCurrentTimeFromDCF77 (void)
 {
 	/* save last signal */
-	previousSyncTime.seconds  = lastSyncTime.seconds;
-	previousSyncTime.minutes  = lastSyncTime.minutes;
-	previousSyncTime.hours    = lastSyncTime.hours;
-	previousSyncTime.day      = lastSyncTime.day;
-	previousSyncTime.date     = lastSyncTime.date;
-	previousSyncTime.month    = lastSyncTime.month;
-	previousSyncTime.year     = lastSyncTime.year;
-	previousSyncMinutesCheck  = lastSyncMinutesCheck;
-	previousDS1307MinutesCheck = lastDS1307MinutesCheck;
+	previousSyncTime.seconds  = currentSyncTime.seconds;
+	previousSyncTime.minutes  = currentSyncTime.minutes;
+	previousSyncTime.hours    = currentSyncTime.hours;
+	previousSyncTime.day      = currentSyncTime.day;
+	previousSyncTime.date     = currentSyncTime.date;
+	previousSyncTime.month    = currentSyncTime.month;
+	previousSyncTime.year     = currentSyncTime.year;
+	previousSyncMinutesCheck  = currentSyncMinutesCheck;
+	previousDS1307MinutesCheck = currentDS1307MinutesCheck;
 
 	/* copy new signal */
-	lastSyncTime.seconds  = 0;
-	lastSyncTime.minutes  = DCF77__getMinutes();
-	lastSyncTime.hours    = DCF77__getHours();
-	lastSyncTime.day      = DCF77__getDay();
-	lastSyncTime.date     = DCF77__getDate();
-	lastSyncTime.month    = DCF77__getMonth();
-	lastSyncTime.year     = DCF77__getYear();
-	lastSyncMinutesCheck  = DCF77__getMinutes();
-#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
-	lastDS1307MinutesCheck = DS1307__getMinutes();
-#endif
+	currentSyncTime.seconds  = 0;
+	currentSyncTime.minutes  = DCF77__getMinutes();
+	currentSyncTime.hours    = DCF77__getHours();
+	currentSyncTime.day      = DCF77__getDay();
+	currentSyncTime.date     = DCF77__getDate();
+	currentSyncTime.month    = DCF77__getMonth();
+	currentSyncTime.year     = DCF77__getYear();
+	currentSyncMinutesCheck  = DCF77__getMinutes();
+	currentDS1307MinutesCheck = DS1307__getMinutes();
 }
 
 
@@ -81,10 +70,10 @@ static uint8_t Clock__isLastDCF77SignalPlausiCheckOk (void)
 {
 	uint8_t retVal = FALSE;
 
-	if (lastSyncMinutesCheck > previousSyncMinutesCheck)
+	if (currentSyncMinutesCheck > previousSyncMinutesCheck)
 	{
-		if (	(lastSyncMinutesCheck - previousSyncMinutesCheck)
-			== 	(lastDS1307MinutesCheck - previousDS1307MinutesCheck)
+		if (	(currentSyncMinutesCheck - previousSyncMinutesCheck)
+			== 	(currentDS1307MinutesCheck - previousDS1307MinutesCheck)
 		)
 		{
 			retVal = TRUE;
@@ -94,10 +83,10 @@ static uint8_t Clock__isLastDCF77SignalPlausiCheckOk (void)
 			retVal = FALSE;
 		}
 	}
-	else if (lastSyncMinutesCheck < previousSyncMinutesCheck)
+	else if (currentSyncMinutesCheck < previousSyncMinutesCheck)
 	{
-		if (	(previousSyncMinutesCheck - lastSyncMinutesCheck)
-			== 	(previousDS1307MinutesCheck - lastDS1307MinutesCheck)
+		if (	(previousSyncMinutesCheck - currentSyncMinutesCheck)
+			== 	(previousDS1307MinutesCheck - currentDS1307MinutesCheck)
 		)
 		{
 			retVal = TRUE;
@@ -129,43 +118,43 @@ static void Clock__resetSyncTime (void)
 	previousSyncMinutesCheck  = 0;
 	previousDS1307MinutesCheck = 0;
 
-	lastSyncTime.seconds  = 0;
-	lastSyncTime.minutes  = 0;
-	lastSyncTime.hours    = 0;
-	lastSyncTime.day      = 0;
-	lastSyncTime.date     = 0;
-	lastSyncTime.month    = 0;
-	lastSyncTime.year     = 0;
-	lastSyncMinutesCheck  = 0;
-	lastDS1307MinutesCheck = 0;
+	currentSyncTime.seconds  = 0;
+	currentSyncTime.minutes  = 0;
+	currentSyncTime.hours    = 0;
+	currentSyncTime.day      = 0;
+	currentSyncTime.date     = 0;
+	currentSyncTime.month    = 0;
+	currentSyncTime.year     = 0;
+	currentSyncMinutesCheck  = 0;
+	currentDS1307MinutesCheck = 0;
 }
 
 #endif
 
 
 #if (CLOCK_SYNC != CLOCK_SYNC_OFF)
-static void Clock__sendLastSyncTimeToRTC (void)
+static void Clock__sendCurrentSyncTimeToRTC (void)
 {
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
-#if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
-	DS1307__setSeconds(lastSyncTime.seconds);
-	DS1307__setMinutes(lastSyncTime.minutes);
-	DS1307__setHours(lastSyncTime.hours );
-	DS1307__setDay(lastSyncTime.day);
-	DS1307__setDate(lastSyncTime.date);
-	DS1307__setMonth(lastSyncTime.month);
-	DS1307__setYear(lastSyncTime.year);
-#elif (CLOCK_SYNC == CLOCK_SYNC_USART)
-	DS1307__setSeconds(Clock__getSyncSeconds());
-	DS1307__setMinutes(Clock__getSyncMinutes());
-	DS1307__setHours(Clock__getSyncHours());
-	DS1307__setDay(Clock__getSyncDay());
-	DS1307__setDate(Clock__getSyncDate());
-	DS1307__setMonth(Clock__getSyncMonth());
-	DS1307__setYear(Clock__getSyncYear());
-#endif
-
-	DS1307__sendTimeToRTC();
+	DS1307__setSeconds(currentSyncTime.seconds);
+	DS1307__setMinutes(currentSyncTime.minutes);
+	DS1307__setHours(currentSyncTime.hours );
+	DS1307__setDay(currentSyncTime.day);
+	DS1307__setDate(currentSyncTime.date);
+	DS1307__setMonth(currentSyncTime.month);
+	DS1307__setYear(currentSyncTime.year);
+	
+	if (        (currentSyncTime.seconds != DS1307__getSeconds())
+	        ||  (currentSyncTime.minutes != DS1307__getMinutes())
+	        ||  (currentSyncTime.hours != DS1307__getHours())
+	        ||  (currentSyncTime.day != DS1307__getDay())
+	        ||  (currentSyncTime.date != DS1307__getDate())
+	        ||  (currentSyncTime.month != DS1307__getMonth())
+	        ||  (currentSyncTime.year != DS1307__getYear())
+	)
+    {
+        DS1307__sendTimeToRTC();
+    }
 #endif
 }
 #endif
@@ -419,15 +408,15 @@ void Clock__x10 (void)
 	if (clockSyncStatus == CLOCK_SYNC_OK)
 	{
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
-		Clock__getLastTimeFromDCF77();
+		Clock__getCurrentTimeFromDCF77();
 
 		if (Clock__isLastDCF77SignalPlausiCheckOk())
 		{
-			Clock__sendLastSyncTimeToRTC();
+			Clock__sendCurrentSyncTimeToRTC();
 			Clock__resetSyncTime();
 		}
 #elif (CLOCK_SYNC == CLOCK_SYNC_USART)
-		Clock__sendLastSyncTimeToRTC();
+		Clock__sendCurrentSyncTimeToRTC();
 #endif
 	}
 

@@ -17,22 +17,41 @@ static DS1307_time currentTime;
 void DS1307__init (void)
 {
 	uint8_t data[2];
+	uint8_t transmitState = E_NOT_OK;
 
 	/* set clock register */
 	data[0] = 0x00;
-	TWI__transmitData(data, 1, DS1307_ADDRESS);
+
+	while (transmitState != E_OK)
+	{
+	    transmitState = TWI__transmitData(data, 1, DS1307_ADDRESS);
+	}
+
+	transmitState = E_NOT_OK;
 
 	/* read first byte */
 	TWI__readData (&data[1], 1, DS1307_ADDRESS);
 
 	/* enable oscillator */
 	data[1] &= (~(1 << 7));
-	TWI__transmitData(data, 2, DS1307_ADDRESS);
+
+	while (transmitState != E_OK)
+    {
+	    transmitState = TWI__transmitData(data, 2, DS1307_ADDRESS);
+    }
+
+	transmitState = E_NOT_OK;
 
 	/* set control register and enable SQW output - 1 Hz */
 	data[0] = 0x07;
 	data[1] = (1 << 4);
-	TWI__transmitData(&data[0], 2, DS1307_ADDRESS);
+
+    while (transmitState != E_OK)
+    {
+        transmitState = TWI__transmitData(&data[0], 2, DS1307_ADDRESS);
+    }
+
+    transmitState = E_NOT_OK;
 
 	/* update time from RTC */
 	DS1307__updateTimeFromRTC();
@@ -42,6 +61,7 @@ void DS1307__init (void)
 void DS1307__sendTimeToRTC (void)
 {
 	uint8_t data[8];
+	uint8_t transmitState = E_NOT_OK;
 
 	data[0] = 0x00;
 	data[1] = (((currentTime.seconds / 10) << 4) & (0x70)) | ((currentTime.seconds % 10) & 0x0F);
@@ -52,27 +72,51 @@ void DS1307__sendTimeToRTC (void)
 	data[6] = (((currentTime.month / 10) << 4) & (0x10)) | ((currentTime.month % 10) & 0x0F);
 	data[7] = (((currentTime.year / 10) << 4) & (0xF0)) | ((currentTime.year % 10) & 0x0F);
 
-	TWI__transmitData(data, 8, DS1307_ADDRESS);
+    while (transmitState != E_OK)
+    {
+        transmitState = TWI__transmitData(data, 8, DS1307_ADDRESS);
+    }
+
+	transmitState = E_NOT_OK;
 }
 
 
 void DS1307__updateTimeFromRTC (void)
 {
 	uint8_t data[8];
+	static uint8_t transmitState = E_NOT_OK;
+	static uint8_t receiveState = E_NOT_OK;
 
 	/* set clock register and read bytes */
 	data[0] = 0x00;
-	TWI__transmitData(&data[0], 1, DS1307_ADDRESS);
-	TWI__readData (&data[1], 7, DS1307_ADDRESS);
 
-	/* copy to buffer */
-	currentTime.seconds = (((data[1] & 0x70) >> 4) * 10) + (data[1] & 0x0F);
-	currentTime.minutes = (((data[2] & 0x70) >> 4) * 10) + (data[2] & 0x0F);
-	currentTime.hours = (((data[3] & 0x30) >> 4) * 10) + (data[3] & 0x0F);
-	currentTime.day = data[4] & 0x07;
-	currentTime.date = (((data[5] & 0x30) >> 4) * 10) + (data[5] & 0x0F);
-	currentTime.month = (((data[6] & 0x10) >> 4) * 10) + (data[6] & 0x0F);
-	currentTime.year = (((data[7] & 0xF0) >> 4) * 10) + (data[7] & 0x0F);
+	if (transmitState != E_OK)
+	{
+	    transmitState = TWI__transmitData(&data[0], 1, DS1307_ADDRESS);
+	}
+
+	if (transmitState == E_OK)
+	{
+	    if (receiveState != E_OK)
+	    {
+	        receiveState = TWI__readData(&data[1], 7, DS1307_ADDRESS);
+	    }
+
+	    if (receiveState == E_OK)
+	    {
+	        /* copy to buffer */
+	        currentTime.seconds = (((data[1] & 0x70) >> 4) * 10) + (data[1] & 0x0F);
+	        currentTime.minutes = (((data[2] & 0x70) >> 4) * 10) + (data[2] & 0x0F);
+	        currentTime.hours = (((data[3] & 0x30) >> 4) * 10) + (data[3] & 0x0F);
+	        currentTime.day = data[4] & 0x07;
+	        currentTime.date = (((data[5] & 0x30) >> 4) * 10) + (data[5] & 0x0F);
+	        currentTime.month = (((data[6] & 0x10) >> 4) * 10) + (data[6] & 0x0F);
+	        currentTime.year = (((data[7] & 0xF0) >> 4) * 10) + (data[7] & 0x0F);
+
+	        transmitState = E_NOT_OK;
+	        receiveState = E_OK;
+	    }
+	}
 }
 
 

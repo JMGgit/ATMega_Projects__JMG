@@ -20,7 +20,8 @@
 #define TRUE	0x01
 
 #define E_OK		0
-#define E_NOT_OK	1
+#define E_PENDING   1
+#define E_NOT_OK	2
 
 #define INLINE static inline
 

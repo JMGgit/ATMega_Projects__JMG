@@ -19,5 +19,5 @@
 
 
 void TWI__masterInit (void);
-void TWI__readData (uint8_t *data, uint8_t dataLength, uint8_t slaveAddress);
-void TWI__transmitData (uint8_t *data, uint8_t dataLength, uint8_t slaveAddress);
+uint8_t TWI__readData (uint8_t *data, uint8_t dataLength, uint8_t slaveAddress);
+uint8_t TWI__transmitData (uint8_t *data, uint8_t dataLength, uint8_t slaveAddress);
