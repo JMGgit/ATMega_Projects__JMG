@@ -23,28 +23,23 @@ void WS2801__x10 (void)
 
 void WS2801__updateAll (void)
 {
-	if (CHANNEL_NB < 256)
-	{
-		SPI__transmitData(GS_Data_0, CHANNEL_NB);
-	}
-	else if (CHANNEL_NB < 512)
-	{
-		SPI__transmitData(GS_Data_0, 256);
-		SPI__transmitData(GS_Data_1, CHANNEL_NB - 256);
-	}
-	else if (CHANNEL_NB < 768)
-	{
-		SPI__transmitData(GS_Data_0, 256);
-		SPI__transmitData(GS_Data_1, 256);
-		SPI__transmitData(GS_Data_2, CHANNEL_NB - 512);
-	}
-	else
-	{
-		SPI__transmitData(GS_Data_0, 256);
-		SPI__transmitData(GS_Data_1, 256);
-		SPI__transmitData(GS_Data_2, 256);
-		SPI__transmitData(GS_Data_3, CHANNEL_NB - 768);
-	}
+#if (CHANNEL_NB < 256)
+	SPI__transmitData(GS_Data_0, CHANNEL_NB);
+#elif (CHANNEL_NB < 512)
+	SPI__transmitData(GS_Data_0, 256);
+	SPI__transmitData(GS_Data_1, CHANNEL_NB - 256);
+#elif (CHANNEL_NB < 768)
+	SPI__transmitData(GS_Data_0, 256);
+	SPI__transmitData(GS_Data_1, 256);
+	SPI__transmitData(GS_Data_2, CHANNEL_NB - 512);
+#elif (CHANNEL_NB < 1024)
+	SPI__transmitData(GS_Data_0, 256);
+	SPI__transmitData(GS_Data_1, 256);
+	SPI__transmitData(GS_Data_2, 256);
+	SPI__transmitData(GS_Data_3, CHANNEL_NB - 768);
+#else
+#error max 1024 LED channels supported!
+#endif
 }
 
 
@@ -88,28 +83,23 @@ void WS2801__setRGBForLED (RGB_Color_t color, uint16_t led)
 
 void WS2801__resetAllLEDs (void)
 {
-	if (CHANNEL_NB < 256)
-	{
-		memset(GS_Data_0, 0, CHANNEL_NB);
-	}
-	else if (CHANNEL_NB < 512)
-	{
-		memset(GS_Data_0, 0, 256);
-		memset(GS_Data_1, 0, CHANNEL_NB - 256);
-	}
-	else if (CHANNEL_NB < 768)
-	{
-		memset(GS_Data_0, 0, 256);
-		memset(GS_Data_1, 0, 256);
-		memset(GS_Data_2, 0, CHANNEL_NB - 512);
-	}
-	else
-	{
-		memset(GS_Data_0, 0, 256);
-		memset(GS_Data_1, 0, 256);
-		memset(GS_Data_2, 0, 256);
-		memset(GS_Data_3, 0, CHANNEL_NB - 768);
-	}
+#if (CHANNEL_NB < 256)
+	memset(GS_Data_0, 0, CHANNEL_NB);
+#elif (CHANNEL_NB < 512)
+	memset(GS_Data_0, 0, 256);
+	memset(GS_Data_1, 0, CHANNEL_NB - 256);
+#elif (CHANNEL_NB < 768)
+	memset(GS_Data_0, 0, 256);
+	memset(GS_Data_1, 0, 256);
+	memset(GS_Data_2, 0, CHANNEL_NB - 512);
+#elif (CHANNEL_NB < 1024)
+	memset(GS_Data_0, 0, 256);
+	memset(GS_Data_1, 0, 256);
+	memset(GS_Data_2, 0, 256);
+	memset(GS_Data_3, 0, CHANNEL_NB - 768);
+#else
+#error max 1024 LED channels supported!
+#endif
 }
 
 #endif

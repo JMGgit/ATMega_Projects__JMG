@@ -19,40 +19,38 @@ void SPI__masterInit (void)
 	setLow(SPI_PORT, SPI_PIN_MOSI);
 	setLow(SPI_PORT, SPI_PIN_CLK);
 
-	/* enable SPI, master, clock rate fck/8 */
+	/* enable SPI, master, clock rate fck/16 */
 	SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
-	SPSR = 1 << SPI2X;
+	SPSR = 0;
 }
 
 
 void SPI__transmitData (uint8_t *data, uint16_t dataLength)
 {
-	uint8_t buffer;
+	uint8_t l_data = *data;
 
-	SPDR = *data;
-
-	/* wait for transmission complete */
-	while (!(SPSR & (1 << SPIF)))
-	{
-		;
-	}
-
+	SPDR = l_data;
+	data++;
 	dataLength--;
 
-	while (dataLength > 0)
-	{
-		buffer = *data;
-		data++;
+ 	do
+ 	{
+ 		l_data = *data;
+ 		data++;
 
-		/* wait for transmission complete */
-		while (!(SPSR & (1 << SPIF)))
+ 		/* wait for transmission complete */
+		while (!(SPSR & (1<<SPIF)))
 		{
 			;
 		}
 
-		/* copy data to register */
-		SPDR = buffer;
+		SPDR = l_data;
+ 	}
+ 	while (--dataLength);
 
-		dataLength--;
+ 	/* wait for transmission complete */
+	while (!(SPSR & (1<<SPIF)))
+	{
+		;
 	}
 }
