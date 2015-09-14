@@ -26,7 +26,7 @@ int main (void)
 	{
 		if (uC__isTaskTrigger_x10())
 		{
-#ifdef RUNTIME_TEST
+#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 			toggle(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
 #endif
 
@@ -43,7 +43,7 @@ int main (void)
 				uC__resetTaskTrigger_x10();
 			}
 
-#ifdef RUNTIME_TEST
+#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 			if (runtimeCounter < 100)
 			{
 				runtimeCounter++;
