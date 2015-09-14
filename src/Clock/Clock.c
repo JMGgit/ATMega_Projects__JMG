@@ -137,14 +137,6 @@ static void Clock__resetSyncTime (void)
 static void Clock__sendCurrentSyncTimeToRTC (void)
 {
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
-	DS1307__setSeconds(currentSyncTime.seconds);
-	DS1307__setMinutes(currentSyncTime.minutes);
-	DS1307__setHours(currentSyncTime.hours );
-	DS1307__setDay(currentSyncTime.day);
-	DS1307__setDate(currentSyncTime.date);
-	DS1307__setMonth(currentSyncTime.month);
-	DS1307__setYear(currentSyncTime.year);
-	
 	if (        (currentSyncTime.seconds != DS1307__getSeconds())
 	        ||  (currentSyncTime.minutes != DS1307__getMinutes())
 	        ||  (currentSyncTime.hours != DS1307__getHours())
@@ -154,6 +146,14 @@ static void Clock__sendCurrentSyncTimeToRTC (void)
 	        ||  (currentSyncTime.year != DS1307__getYear())
 	)
     {
+		DS1307__setSeconds(currentSyncTime.seconds);
+		DS1307__setMinutes(currentSyncTime.minutes);
+		DS1307__setHours(currentSyncTime.hours );
+		DS1307__setDay(currentSyncTime.day);
+		DS1307__setDate(currentSyncTime.date);
+		DS1307__setMonth(currentSyncTime.month);
+		DS1307__setYear(currentSyncTime.year);
+
         DS1307__sendTimeToRTC();
     }
 #endif
@@ -172,6 +172,7 @@ void Clock__incDate (void)
 	{
 		DS1307__setDate(0);
 	}
+
 	DS1307__sendTimeToRTC();
 
 #endif

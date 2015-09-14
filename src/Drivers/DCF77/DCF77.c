@@ -136,10 +136,12 @@ uint8_t DCF77__updateSignal (void)
 	{
 		itSample = 0;
 		retVal = DCF77_STATUS_FAILED;
+		//setLow(DCF77_LED_PORT, DCF77_LED_PIN);
 	}
 	else if (itSample < DCF77_SAMPLES)
 	{
 		retVal = DCF77_STATUS_PENDING;
+		//setHigh(DCF77_LED_PORT, DCF77_LED_PIN);
 	}
 	else
 	{

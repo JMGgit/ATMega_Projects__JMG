@@ -151,7 +151,7 @@
 /* runtime test */
 #define RUNTIME_TEST_OFF				0
 #define RUNTIME_TEST_ON					0
-#define RUNTIME_TEST					RUNTIME_TEST_ON
+#define RUNTIME_TEST					RUNTIME_TEST_OFF
 
 #endif
 
@@ -226,7 +226,7 @@
 /* runtime test */
 #define RUNTIME_TEST_OFF				0
 #define RUNTIME_TEST_ON					0
-#define RUNTIME_TEST					RUNTIME_TEST_ON
+#define RUNTIME_TEST					RUNTIME_TEST_OFF
 
 #endif
 
