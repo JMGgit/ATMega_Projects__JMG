@@ -96,7 +96,7 @@ void DS1307__updateTimeFromRTC (void)
 	/* set clock register and read bytes */
 	data[0] = 0x00;
 
-	if (transmitState != E_OK)
+	while (transmitState != E_OK)
 	{
 	    transmitState = TWI__transmitData(data, 1, DS1307_ADDRESS);
 	}

@@ -264,7 +264,7 @@ static void Qtwo__checkButtonsSetup (void)
 {
 	if ((Buttons__isPressedOnce(&buttonUp)) || (Buttons__isPressedOnce(&buttonFunc1)))
 	{
-		/* func1 for compatilibility with old projects */
+		/* func1 for compatibility with old projects */
 		Qtwo__incHours();
 	}
 
@@ -275,7 +275,7 @@ static void Qtwo__checkButtonsSetup (void)
 
 	if ((Buttons__isPressedOnce(&buttonRight)) || (Buttons__isPressedOnce(&buttonFunc2)))
 	{
-		/* func2 for compatilibility with old projects */
+		/* func2 for compatibility with old projects */
 		Qtwo__incMinutes();
 	}
 

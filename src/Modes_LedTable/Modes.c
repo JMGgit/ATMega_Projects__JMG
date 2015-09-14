@@ -115,23 +115,31 @@ static void Modes__updateMatrix (void)
 		}
 
 		case MODE__BLENDING:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_NORMAL);
+			break;
+		}
+
 		case MODE__BLENDING_SWEEP:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_SWEEP);
+			break;
+		}
+
 		case MODE__BLENDING_SWEEP_FAST:
 		{
-			ColorBlending__updateMatrix();
+			ColorBlending__updateMatrix(BLENDING_MODE_SWEEP_FAST);
 			break;
 		}
 
 		case MODE__BLENDING_CLOCK:
 		{
-			ColorBlending__updateMatrix();
 			Clock__updateMatrix(CLOCK_MODE_COLOR_BLENDING);
 			break;
 		}
 
 		case MODE__BLENDING_CLOCK_INVERTED:
 		{
-			ColorBlending__updateMatrix();
 			Clock__updateMatrix(CLOCK_MODE_COLOR_BLENDING_INVERTED);
 			break;
 		}

@@ -26,11 +26,11 @@ int main (void)
 	{
 		if (uC__isTaskTrigger_x10())
 		{
-			/* runtime test */
-			toggle(TEST3_LED_PORT, TEST3_LED_PIN); /* oscilloscope */
+#ifdef RUNTIME_TEST
+			toggle(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
+#endif
+
 			Drivers__x10();
-			/* runtime test */
-			toggle(TEST3_LED_PORT, TEST3_LED_PIN); /* oscilloscope */
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
 			Lcd__x10();
 #endif
@@ -43,9 +43,7 @@ int main (void)
 				uC__resetTaskTrigger_x10();
 			}
 
-			/* runtime test */
-			toggle(TEST3_LED_PORT, TEST3_LED_PIN); /* oscilloscope */
-
+#ifdef RUNTIME_TEST
 			if (runtimeCounter < 100)
 			{
 				runtimeCounter++;
@@ -53,8 +51,11 @@ int main (void)
 			else
 			{
 				runtimeCounter = 0;
-				toggle(TEST2_LED_PORT, TEST2_LED_PIN); /* LED */
+				toggle(RUNTIME_LED_PORT, RUNTIME_LED_PIN); /* LED */
 			}
+
+			toggle(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
+#endif
 		}
 	}
 

@@ -147,6 +147,12 @@
 #define QTWO_BRIGHTNESS_LEVEL_BRIGHT_4		160
 #define SNAKE_BRIGHTNESS_LEVEL				30
 #define TEST_BRIGHTNESS_LEVEL				60
+
+/* runtime test */
+#define RUNTIME_TEST_OFF				0
+#define RUNTIME_TEST_ON					0
+#define RUNTIME_TEST					RUNTIME_TEST_ON
+
 #endif
 
 
@@ -216,6 +222,11 @@
 /* brightness */
 #define SNAKE_BRIGHTNESS_LEVEL			255
 #define TEST_BRIGHTNESS_LEVEL			60
+
+/* runtime test */
+#define RUNTIME_TEST_OFF				0
+#define RUNTIME_TEST_ON					0
+#define RUNTIME_TEST					RUNTIME_TEST_ON
 
 #endif
 

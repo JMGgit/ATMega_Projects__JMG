@@ -34,102 +34,32 @@ static uint8_t clockSize = CLOCK_TYPE_BIG;
 static uint8_t lineOffset = 0;
 static uint8_t colOffset = 0;
 
-const uint8_t numTable[SIZE_LIN * SIZE_COL * 10] PROGMEM =
+static const uint8_t numTable[SIZE_LIN * SIZE_COL * 10] PROGMEM =
 {
-	1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1,
-	0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-	1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1,
-	1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-	1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1,
-	1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1,
-	1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1,
-	1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1,
-	1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1,
-	1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1
+	1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, /* 0 */
+	0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, /* 1 */
+	1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, /* 2 */
+	1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, /* 3 */
+	1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, /* 4 */
+	1, 1, 1, 1, 0, 0, 1, 1, 1, 0, 0, 1, 1, 1, 1, /* 5 */
+	1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, /* 6 */
+	1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, /* 7 */
+	1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, /* 8 */
+	1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1  /* 9 */
 };
 
-
-const uint8_t numTable_big[SIZE_LIN_BIG * SIZE_COL_BIG * 10] PROGMEM =
+static const uint8_t numTable_big[SIZE_LIN_BIG * SIZE_COL_BIG * 10] PROGMEM =
 {
-	1, 1, 1, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 1, 1, 1,
-
-	0, 0, 1, 0,
-	0, 0, 1, 0,
-	0, 0, 1, 0,
-	0, 0, 1, 0,
-	0, 0, 1, 0,
-	0, 0, 1, 0,
-	0, 0, 1, 0,
-
-	1, 1, 1, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	1, 1, 1, 1,
-	1, 0, 0, 0,
-	1, 0, 0, 0,
-	1, 1, 1, 1,
-
-	1, 1, 1, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	0, 1, 1, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	1, 1, 1, 1,
-
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 1, 1, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-
-	1, 1, 1, 1,
-	1, 0, 0, 0,
-	1, 0, 0, 0,
-	1, 1, 1, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	1, 1, 1, 1,
-
-	1, 1, 1, 1,
-	1, 0, 0, 0,
-	1, 0, 0, 0,
-	1, 1, 1, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 1, 1, 1,
-
-	1, 1, 1, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-
-	1, 1, 1, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 1, 1, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 1, 1, 1,
-
-	1, 1, 1, 1,
-	1, 0, 0, 1,
-	1, 0, 0, 1,
-	1, 1, 1, 1,
-	0, 0, 0, 1,
-	0, 0, 0, 1,
-	1, 1, 1, 1,
+	1, 1, 1, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 1, 1, 1, /* 0 */
+	0, 0, 1, 0,	0, 0, 1, 0,	0, 0, 1, 0,	0, 0, 1, 0,	0, 0, 1, 0,	0, 0, 1, 0,	0, 0, 1, 0, /* 1 */
+	1, 1, 1, 1,	0, 0, 0, 1,	0, 0, 0, 1,	1, 1, 1, 1,	1, 0, 0, 0,	1, 0, 0, 0,	1, 1, 1, 1, /* 2 */
+	1, 1, 1, 1,	0, 0, 0, 1,	0, 0, 0, 1,	0, 1, 1, 1,	0, 0, 0, 1,	0, 0, 0, 1,	1, 1, 1, 1, /* 3 */
+	1, 0, 0, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 1, 1, 1,	0, 0, 0, 1,	0, 0, 0, 1,	0, 0, 0, 1, /* 4 */
+	1, 1, 1, 1,	1, 0, 0, 0,	1, 0, 0, 0,	1, 1, 1, 1,	0, 0, 0, 1,	0, 0, 0, 1,	1, 1, 1, 1, /* 5 */
+	1, 1, 1, 1,	1, 0, 0, 0,	1, 0, 0, 0,	1, 1, 1, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 1, 1, 1, /* 6 */
+	1, 1, 1, 1,	0, 0, 0, 1,	0, 0, 0, 1,	0, 0, 0, 1,	0, 0, 0, 1,	0, 0, 0, 1,	0, 0, 0, 1, /* 7 */
+	1, 1, 1, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 1, 1, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 1, 1, 1, /* 8 */
+	1, 1, 1, 1,	1, 0, 0, 1,	1, 0, 0, 1,	1, 1, 1, 1,	0, 0, 0, 1,	0, 0, 0, 1,	1, 1, 1, 1  /* 9 */
 };
 
 
@@ -137,40 +67,37 @@ void Clock__updateMatrix (uint8_t clockMode)
 {
 	uint8_t hour = Clock__getHours();
 	uint8_t min = Clock__getMinutes();
-	uint8_t itLin, itCol, index;
+	uint8_t itLin, itCol, index, numPosLin, numPosCol;
 	const uint8_t *num1Table, *num2Table, *num3Table, *num4Table;
 	RGB_Color_t ClockColor;
-	uint8_t numPosLin, numPosCol;
 
-	/* time setting */
+	/* Buttons mapping:
+	 * - Func1: size of digits
+	 * - Func2: time setting - hours
+	 * - Func3: time setting - minutes
+	 * - Up/Down/Left/Right: position of digits */
 
-	if (Buttons__isPressed(&buttonFunc1))
+	if (Buttons__isPressedOnce(&buttonFunc1))
 	{
-		if (Buttons__isPressedOnce(&buttonUp))
+		if (clockSize == CLOCK_TYPE_NORMAL)
 		{
-			Clock__incHours();
+			clockSize = CLOCK_TYPE_BIG;
 		}
-
-		if (Buttons__isPressedOnce(&buttonDown))
+		else
 		{
-			Clock__decHours();
+			clockSize = CLOCK_TYPE_NORMAL;
 		}
 	}
 
-	if (Buttons__isPressed(&buttonFunc2))
+	if (Buttons__isPressedOnce(&buttonFunc2))
 	{
-		if (Buttons__isPressedOnce(&buttonUp))
-		{
-			Clock__incMinutes();
-		}
-
-		if (Buttons__isPressedOnce(&buttonDown))
-		{
-			Clock__decMinutes();
-		}
+		Clock__incHours();
 	}
 
-	/* numbers position */
+	if (Buttons__isPressedOnce(&buttonFunc3))
+	{
+		Clock__incMinutes();
+	}
 
 	if (Buttons__isPressedOnce(&buttonUp))
 	{
@@ -220,10 +147,7 @@ void Clock__updateMatrix (uint8_t clockMode)
 		}
 	}
 
-	if ((clockMode == CLOCK_MODE_ONE_COLOR) || (clockMode == CLOCK_MODE_COLOR_BLENDING))
-	{
-		LEDMatrix__clearMatrix();
-	}
+	/* color calculation */
 
 	if (clockMode == CLOCK_MODE_ONE_COLOR)
 	{
@@ -231,14 +155,30 @@ void Clock__updateMatrix (uint8_t clockMode)
 	}
 	else if (clockMode == CLOCK_MODE_COLOR_BLENDING)
 	{
+		ColorBlending__calcCurrentColor();
 		ClockColor = ColorBlending__getCurrentColor();
 	}
-	else /* CLOCK_MODE_COLOR_BLENDING_INVERTED */
+	else /* inverted mode */
 	{
-		ClockColor.red = 0;
-		ClockColor.green = 0;
-		ClockColor.blue = 0;
+		ColorBlending__calcCurrentColor();
+		ClockColor = getRGBColorFromComponents(0, 0, 0);
 	}
+
+	/* background color */
+	if (clockMode == CLOCK_MODE_ONE_COLOR)
+	{
+		LEDMatrix__clearMatrix();
+	}
+	else if (clockMode == CLOCK_MODE_COLOR_BLENDING)
+	{
+		LEDMatrix__clearMatrix();
+	}
+	else /* inverted mode */
+	{
+		LEDMatrix__setRGBColorForMatrix(ColorBlending__getCurrentColor());
+	}
+
+	/* digits */
 
 	if (clockSize == CLOCK_TYPE_NORMAL)
 	{
@@ -255,27 +195,79 @@ void Clock__updateMatrix (uint8_t clockMode)
 
 				if (pgm_read_byte(&num1Table[index]) == 1)
 				{
-					LEDMatrix__setRGBColor(itLin + OFFSET_LIN, itCol + OFFSET_COL_NUM_1, ClockColor);
+					numPosLin = itLin + lineOffset + OFFSET_LIN;
+					numPosCol = itCol + colOffset + OFFSET_COL_NUM_1;
+
+					if (numPosLin > LED_MATRIX_SIZE_LIN)
+					{
+						numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+					}
+
+					if (numPosCol > LED_MATRIX_SIZE_COL)
+					{
+						numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+					}
+
+					LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 				}
 
 				if (pgm_read_byte(&num2Table[index]) == 1)
 				{
-					LEDMatrix__setRGBColor(itLin + OFFSET_LIN, itCol + OFFSET_COL_NUM_2, ClockColor);
+					numPosLin = itLin + lineOffset + OFFSET_LIN;
+					numPosCol = itCol + colOffset + OFFSET_COL_NUM_2;
+
+					if (numPosLin > LED_MATRIX_SIZE_LIN)
+					{
+						numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+					}
+
+					if (numPosCol > LED_MATRIX_SIZE_COL)
+					{
+						numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+					}
+
+					LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 				}
 
 				if (pgm_read_byte(&num3Table[index]) == 1)
 				{
-					LEDMatrix__setRGBColor(itLin + OFFSET_LIN, itCol + OFFSET_COL_NUM_3, ClockColor);
+					numPosLin = itLin + lineOffset + OFFSET_LIN;
+					numPosCol = itCol + colOffset + OFFSET_COL_NUM_3;
+
+					if (numPosLin > LED_MATRIX_SIZE_LIN)
+					{
+						numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+					}
+
+					if (numPosCol > LED_MATRIX_SIZE_COL)
+					{
+						numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+					}
+
+					LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 				}
 
 				if (pgm_read_byte(&num4Table[index]) == 1)
 				{
-					LEDMatrix__setRGBColor(itLin + OFFSET_LIN, itCol + OFFSET_COL_NUM_4, ClockColor);
+					numPosLin = itLin + lineOffset + OFFSET_LIN;
+					numPosCol = itCol + colOffset + OFFSET_COL_NUM_4;
+
+					if (numPosLin > LED_MATRIX_SIZE_LIN)
+					{
+						numPosLin = numPosLin - LED_MATRIX_SIZE_LIN;
+					}
+
+					if (numPosCol > LED_MATRIX_SIZE_COL)
+					{
+						numPosCol = numPosCol - LED_MATRIX_SIZE_COL;
+					}
+
+					LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 				}
 			}
 		}
 	}
-	else
+	else /* big size */
 	{
 		num1Table = &numTable_big[(SIZE_LIN_BIG * SIZE_COL_BIG) * (hour / 10)];
 		num2Table = &numTable_big[(SIZE_LIN_BIG * SIZE_COL_BIG) * (hour % 10)];
@@ -362,6 +354,8 @@ void Clock__updateMatrix (uint8_t clockMode)
 			}
 		}
 	}
+
+	/* hours/minutes separation ":" */
 
 	numPosLin = 6 + lineOffset;
 	numPosCol = 12 + colOffset;

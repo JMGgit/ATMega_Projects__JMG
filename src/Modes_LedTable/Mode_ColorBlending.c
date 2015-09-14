@@ -50,16 +50,16 @@ RGB_Color_t ColorBlending__getCurrentColorCol (uint8_t col)
 	return color;
 }
 
-void ColorBlending__updateMatrix (void)
+
+void ColorBlending__calcCurrentColor (void)
 {
-	uint16_t linIt, colIt;
 	uint8_t colorFactor = 255;
 
 	if (Modes__getMode() == MODE__BLENDING_SWEEP)
 	{
 		timerColorChange = 1;
 		colorStep = 10;
-		updateTimer = 500; /* TODO: try to increase SPI speed */
+		updateTimer = 500;
 	}
 	else if (Modes__getMode() == MODE__BLENDING_SWEEP_FAST)
 	{
@@ -228,23 +228,32 @@ void ColorBlending__updateMatrix (void)
 			colorItTable[tableIt].red = currentColor.red;
 			colorItTable[tableIt].green = currentColor.green;
 			colorItTable[tableIt].blue = currentColor.blue;
-
 		}
+	}
+}
 
-		if ((Modes__getMode() == MODE__BLENDING_SWEEP) || (Modes__getMode() == MODE__BLENDING_SWEEP_FAST))
+
+void ColorBlending__updateMatrix (uint8_t blendingMode)
+{
+	uint16_t linIt, colIt;
+	RGB_Color_t *l_currentColor;
+
+	ColorBlending__calcCurrentColor();
+
+	if ((blendingMode == BLENDING_MODE_SWEEP) || (blendingMode == BLENDING_MODE_SWEEP_FAST))
+	{
+		for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
 		{
+			l_currentColor = &colorItTable[colIt - 1];
 
 			for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
 			{
-				for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
-				{
-					LEDMatrix__setRGBColor(linIt, colIt, colorItTable[colIt - 1]);
-				}
+				LEDMatrix__setRGBColor(linIt, colIt, *l_currentColor);
 			}
 		}
-		else
-		{
-			LEDMatrix__setRGBColorForMatrix(currentColor);
-		}
+	}
+	else /* without sweep */
+	{
+		LEDMatrix__setRGBColorForMatrix(currentColor);
 	}
 }

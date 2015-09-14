@@ -15,8 +15,13 @@
 #include "RGB_Tables.h"
 
 
-void ColorBlending__updateMatrix (void);
+void ColorBlending__calcCurrentColor (void);
+void ColorBlending__updateMatrix (uint8_t blendingMode);
 RGB_Color_t ColorBlending__getCurrentColor (void);
 RGB_Color_t ColorBlending__getCurrentColorCol (uint8_t col);
+
+#define BLENDING_MODE_NORMAL		0
+#define BLENDING_MODE_SWEEP			1
+#define BLENDING_MODE_SWEEP_FAST	2
 
 #endif /* MODE_COLORBLENDING_H_ */

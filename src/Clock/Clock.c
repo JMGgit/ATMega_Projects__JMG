@@ -10,8 +10,9 @@
 
 
 static Clock_time currentTime;
+#if (CLOCK_SYNC != CLOCK_SYNC_OFF)
 static Clock_time currentSyncTime;
-
+#endif
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
 static Clock_time previousSyncTime;
 static uint8_t currentSyncMinutesCheck;
@@ -364,7 +365,7 @@ static uint8_t Clock__updateSyncSignal (void)
 	{
 		retVal = CLOCK_SYNC_OK;
 	}
-#elif (CLOCK_SYNC == CLOCK_SYNC_DCF77)
+#elif (CLOCK_SYNC == CLOCK_SYNC_USART)
 	uint8_t USARTbuffer[USART_DATA_LENGTH_CLOCK];
 
 	if (E_OK == USART__readData(USARTbuffer, USART_DATA_LENGTH_CLOCK, USART_REQESTER_CLOCK))
