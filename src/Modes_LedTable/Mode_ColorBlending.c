@@ -231,23 +231,20 @@ void ColorBlending__updateMatrix (void)
 
 		}
 
-		for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
+		if ((Modes__getMode() == MODE__BLENDING_SWEEP) || (Modes__getMode() == MODE__BLENDING_SWEEP_FAST))
 		{
-			for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
+
+			for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
 			{
-				if ((Modes__getMode() == MODE__BLENDING_SWEEP) || (Modes__getMode() == MODE__BLENDING_SWEEP_FAST))
+				for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
 				{
 					LEDMatrix__setRGBColor(linIt, colIt, colorItTable[colIt - 1]);
 				}
-				else if (Modes__getMode() == MODE__BLENDING)
-				{
-					LEDMatrix__setRGBColor(linIt, colIt, currentColor);
-				}
-				else
-				{
-					LEDMatrix__setRGBColor(linIt, colIt, currentColor);
-				}
 			}
+		}
+		else
+		{
+			LEDMatrix__setRGBColorForMatrix(currentColor);
 		}
 	}
 }

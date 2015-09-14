@@ -15,6 +15,7 @@
 
 
 void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color);
+void LEDMatrix__setRGBColorForMatrix (RGB_Color_t color);
 void LEDMatrix__clearMatrix (void);
 
 extern RGB_Color_t Modes_currentColor;

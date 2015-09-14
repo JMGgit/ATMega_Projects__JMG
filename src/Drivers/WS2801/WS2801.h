@@ -24,8 +24,8 @@ void WS2801__x10 (void);
 
 /* private functions */
 void WS2801__updateAll(void);
-void WS2801__setGSForChannel (uint8_t gsData, uint16_t channel);
 void WS2801__setRGBForLED (RGB_Color_t color, uint16_t led);
+void WS2801__setRGBForAllLEDs (RGB_Color_t color);
 void WS2801__resetAllLEDs (void);
 
 #endif

@@ -50,6 +50,9 @@ INLINE void Drivers__init (void)
 #ifdef TEST2_LED_DDR
 	setOutput(TEST2_LED_DDR, TEST2_LED_PIN);
 #endif
+#ifdef TEST3_LED_DDR
+	setOutput(TEST3_LED_DDR, TEST3_LED_PIN);
+#endif
 }
 
 

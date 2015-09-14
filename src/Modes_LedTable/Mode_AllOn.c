@@ -10,13 +10,5 @@
 
 void AllOn__updateMatrix (void)
 {
-	uint16_t linIt, colIt;
-
-	for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
-	{
-		for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
-		{
-			LEDMatrix__setRGBColor(linIt, colIt, Modes_currentColor);
-		}
-	}
+	LEDMatrix__setRGBColorForMatrix(Modes_currentColor);
 }

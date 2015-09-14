@@ -44,7 +44,7 @@ void Modes__Start (void)
 
 	if (currentMode == 0xFF)
 	{
-		currentMode = MODE__BLENDING_CLOCK_INVERTED;
+		currentMode = MODE__BLENDING_CLOCK;
 	}
 }
 

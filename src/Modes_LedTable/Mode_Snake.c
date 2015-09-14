@@ -77,6 +77,8 @@ void Snake__init (void)
 {
 	uint16_t linIt, colIt;
 
+	LEDMatrix__clearMatrix();
+
 	timer = SNAKE_TIMER_INIT;
 
 	for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)

@@ -9,10 +9,8 @@
 
 #ifdef WS2801_NB
 
-static uint8_t GS_Data_0[256];
-static uint8_t GS_Data_1[256];
-static uint8_t GS_Data_2[256];
-static uint8_t GS_Data_3[256];
+RGB_Color_t GS_Data[WS2801_NB];
+/* remark: cannot be declared as static: ATMega limitation?? */
 
 
 void WS2801__x10 (void)
@@ -23,45 +21,33 @@ void WS2801__x10 (void)
 
 void WS2801__updateAll (void)
 {
-#if (CHANNEL_NB < 256)
-	SPI__transmitData(GS_Data_0, CHANNEL_NB);
-#elif (CHANNEL_NB < 512)
-	SPI__transmitData(GS_Data_0, 256);
-	SPI__transmitData(GS_Data_1, CHANNEL_NB - 256);
-#elif (CHANNEL_NB < 768)
-	SPI__transmitData(GS_Data_0, 256);
-	SPI__transmitData(GS_Data_1, 256);
-	SPI__transmitData(GS_Data_2, CHANNEL_NB - 512);
-#elif (CHANNEL_NB < 1024)
-	SPI__transmitData(GS_Data_0, 256);
-	SPI__transmitData(GS_Data_1, 256);
-	SPI__transmitData(GS_Data_2, 256);
-	SPI__transmitData(GS_Data_3, CHANNEL_NB - 768);
-#else
-#error max 1024 LED channels supported!
-#endif
-}
+	uint16_t idxLed;
 
-
-void WS2801__setGSForChannel (uint8_t gsData, uint16_t channel)
-{
-	if (channel < CHANNEL_NB)
+	for (idxLed = 0; idxLed < WS2801_NB; idxLed++)
 	{
-		if (channel < 256)
+		/* copy data to register */
+		SPDR = GS_Data[idxLed].blue;
+
+		/* wait for transmission complete */
+		while (!(SPSR & (1 << SPIF)))
 		{
-			GS_Data_0[channel] = gsData;
+			;
 		}
-		else if (channel < 512)
+
+		SPDR = GS_Data[idxLed].green;
+
+		/* wait for transmission complete */
+		while (!(SPSR & (1 << SPIF)))
 		{
-			GS_Data_1[channel - 256] = gsData;
+			;
 		}
-		else if (channel < 768)
+
+		SPDR = GS_Data[idxLed].red;
+
+		/* wait for transmission complete */
+		while (!(SPSR & (1 << SPIF)))
 		{
-			GS_Data_2[channel - 512] = gsData;
-		}
-		else
-		{
-			GS_Data_3[channel - 768] = gsData;
+			;
 		}
 	}
 }
@@ -69,37 +55,24 @@ void WS2801__setGSForChannel (uint8_t gsData, uint16_t channel)
 
 void WS2801__setRGBForLED (RGB_Color_t color, uint16_t led)
 {
-#if (RGB_LED_CONNECTION == RGB_LED_CONNECTION__BLUE_GREEN_RED)
-		WS2801__setGSForChannel(color.red, led * 3 + 2);
-		WS2801__setGSForChannel(color.green, led * 3 + 1);
-		WS2801__setGSForChannel(color.blue, led * 3);
-#elif (RGB_LED_CONNECTION == RGB_LED_CONNECTION__RED_GREEN_BLUE)
-		WS2801__setGSForChannel(color.red, led * 3);
-		WS2801__setGSForChannel(color.green, led * 3 + 1);
-		WS2801__setGSForChannel(color.blue, led * 3 + 2);
-#endif
+	GS_Data[led] = color;
+}
+
+
+void WS2801__setRGBForAllLEDs (RGB_Color_t color)
+{
+	uint16_t idxLed;
+
+	for (idxLed = 0; idxLed < WS2801_NB; idxLed++)
+	{
+		GS_Data[idxLed] = color;
+	}
 }
 
 
 void WS2801__resetAllLEDs (void)
 {
-#if (CHANNEL_NB < 256)
-	memset(GS_Data_0, 0, CHANNEL_NB);
-#elif (CHANNEL_NB < 512)
-	memset(GS_Data_0, 0, 256);
-	memset(GS_Data_1, 0, CHANNEL_NB - 256);
-#elif (CHANNEL_NB < 768)
-	memset(GS_Data_0, 0, 256);
-	memset(GS_Data_1, 0, 256);
-	memset(GS_Data_2, 0, CHANNEL_NB - 512);
-#elif (CHANNEL_NB < 1024)
-	memset(GS_Data_0, 0, 256);
-	memset(GS_Data_1, 0, 256);
-	memset(GS_Data_2, 0, 256);
-	memset(GS_Data_3, 0, CHANNEL_NB - 768);
-#else
-#error max 1024 LED channels supported!
-#endif
+	memset(&GS_Data[0], 0, sizeof(GS_Data));
 }
 
 #endif
