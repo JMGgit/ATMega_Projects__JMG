@@ -26,7 +26,11 @@ void WS2801__updateAll (void)
 	for (idxLed = 0; idxLed < WS2801_NB; idxLed++)
 	{
 		/* copy data to register */
+#if (RGB_LED_CONNECTION == RGB_LED_CONNECTION__BLUE_GREEN_RED)
 		SPDR = GS_Data[idxLed].blue;
+#else
+		SPDR = GS_Data[idxLed].red;
+#endif
 
 		/* wait for transmission complete */
 		while (!(SPSR & (1 << SPIF)))
@@ -42,7 +46,11 @@ void WS2801__updateAll (void)
 			;
 		}
 
+#if (RGB_LED_CONNECTION == RGB_LED_CONNECTION__BLUE_GREEN_RED)
 		SPDR = GS_Data[idxLed].red;
+#else
+		SPDR = GS_Data[idxLed].blue;
+#endif
 
 		/* wait for transmission complete */
 		while (!(SPSR & (1 << SPIF)))

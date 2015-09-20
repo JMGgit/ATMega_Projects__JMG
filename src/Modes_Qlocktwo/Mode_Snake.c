@@ -123,6 +123,8 @@ void Snake__updateMatrix (void)
 {
 	uint16_t linIt, colIt;
 
+	LEDMatrix__clearMatrix();
+
 	/* calculate new direction */
 	if (newDirection == FALSE)
 	{
@@ -268,8 +270,6 @@ void Snake__updateMatrix (void)
 		timer = SNAKE_TIMER_INIT / snake.speed;
 
 	}
-
-	LEDMatrix__clearMatrix();
 
 	if (!gameOver)
 	{
