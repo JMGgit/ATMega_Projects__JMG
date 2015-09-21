@@ -21,7 +21,6 @@ void Qtwo__main_x10 (void);
 void Qtwo__seconds_x10 (void);
 void Qtwo__timeSetup_x10 (void);
 void Qtwo__modeTransition (void);
-void Qtwo__eepromStorage (void);
 
 
 #endif /* MODE_QLOCKTWO_H_ */

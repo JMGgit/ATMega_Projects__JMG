@@ -17,6 +17,8 @@
 #define CLOCK_MODE_COLOR_BLENDING				2
 #define CLOCK_MODE_COLOR_BLENDING_INVERTED		3
 
-void Clock__updateMatrix (uint8_t clockMode);
+
+void ModeClock__init (void);
+void ModeClock__updateMatrix (uint8_t clockMode);
 
 #endif /* MODE_CLOCK_H_ */

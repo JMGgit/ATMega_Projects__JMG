@@ -162,7 +162,7 @@ void Qtwo__init (void)
 }
 
 
-void Qtwo__eepromStorage (void)
+static void Qtwo__eepromStorage (void)
 {
 	eeprom_update_byte(&selectedColor_EEPROM, selectedColor);
 	eeprom_update_byte(&currentColor_EEPROM, currentColor);

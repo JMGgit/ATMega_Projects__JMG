@@ -27,12 +27,14 @@
 #define SIZE_LIN_BIG			7
 #define SIZE_COL_BIG			4
 
-#define CLOCK_TYPE_NORMAL		0x00
-#define CLOCK_TYPE_BIG			0x01
+#define CLOCK_SIZE_SMALL		0x00
+#define CLOCK_SIZE_BIG			0x01
 
-static uint8_t clockSize = CLOCK_TYPE_BIG;
-static uint8_t lineOffset = 0;
-static uint8_t colOffset = 0;
+static uint8_t clockSize, lineOffset, colOffset;
+
+static uint8_t clockSize_EEPROM EEMEM = 0;
+static uint8_t lineOffset_EEPROM EEMEM = 0;
+static uint8_t colOffset_EEPROM EEMEM = 0;
 
 static const uint8_t numTable[SIZE_LIN * SIZE_COL * 10] PROGMEM =
 {
@@ -63,7 +65,46 @@ static const uint8_t numTable_big[SIZE_LIN_BIG * SIZE_COL_BIG * 10] PROGMEM =
 };
 
 
-void Clock__updateMatrix (uint8_t clockMode)
+void ModeClock__init (void)
+{
+	if (eeprom_read_byte(&clockSize_EEPROM) == CLOCK_SIZE_BIG)
+	{
+		clockSize = CLOCK_SIZE_BIG;
+	}
+	else
+	{
+		clockSize = CLOCK_SIZE_SMALL;
+	}
+
+	if (eeprom_read_byte(&lineOffset_EEPROM) <= LED_MATRIX_SIZE_LIN)
+	{
+		lineOffset = eeprom_read_byte(&lineOffset_EEPROM);
+	}
+	else
+	{
+		lineOffset = 0;
+	}
+
+	if (eeprom_read_byte(&colOffset_EEPROM) <= LED_MATRIX_SIZE_COL)
+	{
+		colOffset = eeprom_read_byte(&colOffset_EEPROM);
+	}
+	else
+	{
+		colOffset = 0;
+	}
+}
+
+
+static void ModeClock__eepromStorage (void)
+{
+	eeprom_update_byte(&clockSize_EEPROM, clockSize);
+	eeprom_update_byte(&lineOffset_EEPROM, lineOffset);
+	eeprom_update_byte(&colOffset_EEPROM, colOffset);
+}
+
+
+void ModeClock__updateMatrix (uint8_t clockMode)
 {
 	uint8_t hour = Clock__getHours();
 	uint8_t min = Clock__getMinutes();
@@ -79,14 +120,16 @@ void Clock__updateMatrix (uint8_t clockMode)
 
 	if (Buttons__isPressedOnce(&buttonFunc1))
 	{
-		if (clockSize == CLOCK_TYPE_NORMAL)
+		if (clockSize == CLOCK_SIZE_SMALL)
 		{
-			clockSize = CLOCK_TYPE_BIG;
+			clockSize = CLOCK_SIZE_BIG;
 		}
 		else
 		{
-			clockSize = CLOCK_TYPE_NORMAL;
+			clockSize = CLOCK_SIZE_SMALL;
 		}
+
+		ModeClock__eepromStorage();
 	}
 
 	if (Buttons__isPressedOnce(&buttonFunc2))
@@ -109,6 +152,8 @@ void Clock__updateMatrix (uint8_t clockMode)
 		{
 			lineOffset = LED_MATRIX_SIZE_LIN - 1;
 		}
+
+		ModeClock__eepromStorage();
 	}
 
 	if (Buttons__isPressedOnce(&buttonDown))
@@ -121,6 +166,8 @@ void Clock__updateMatrix (uint8_t clockMode)
 		{
 			lineOffset = 0;
 		}
+
+		ModeClock__eepromStorage();
 	}
 
 	if (Buttons__isPressedOnce(&buttonLeft))
@@ -133,6 +180,8 @@ void Clock__updateMatrix (uint8_t clockMode)
 		{
 			colOffset = LED_MATRIX_SIZE_COL - 1;
 		}
+
+		ModeClock__eepromStorage();
 	}
 
 	if (Buttons__isPressedOnce(&buttonRight))
@@ -145,6 +194,8 @@ void Clock__updateMatrix (uint8_t clockMode)
 		{
 			colOffset = 0;
 		}
+
+		ModeClock__eepromStorage();
 	}
 
 	/* color calculation */
@@ -180,7 +231,7 @@ void Clock__updateMatrix (uint8_t clockMode)
 
 	/* digits */
 
-	if (clockSize == CLOCK_TYPE_NORMAL)
+	if (clockSize == CLOCK_SIZE_SMALL)
 	{
 		num1Table = &numTable[(SIZE_LIN * SIZE_COL) * (hour / 10)];
 		num2Table = &numTable[(SIZE_LIN * SIZE_COL) * (hour % 10)];

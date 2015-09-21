@@ -134,19 +134,19 @@ static void Modes__updateMatrix (void)
 
 		case MODE__BLENDING_CLOCK:
 		{
-			Clock__updateMatrix(CLOCK_MODE_COLOR_BLENDING);
+			ModeClock__updateMatrix(CLOCK_MODE_COLOR_BLENDING);
 			break;
 		}
 
 		case MODE__BLENDING_CLOCK_INVERTED:
 		{
-			Clock__updateMatrix(CLOCK_MODE_COLOR_BLENDING_INVERTED);
+			ModeClock__updateMatrix(CLOCK_MODE_COLOR_BLENDING_INVERTED);
 			break;
 		}
 
 		case MODE__CLOCK:
 		{
-			//Clock__updateMatrix(CLOCK_MODE_ONE_COLOR);
+			//ModeClock__updateMatrix(CLOCK_MODE_ONE_COLOR);
 			Modes__setNextMode();
 			break;
 		}
@@ -204,6 +204,7 @@ void Modes__init (void)
 #else
 	Modes__setMode(MODE__ALL_ON);
 #endif
+	ModeClock__init();
 }
 
 
