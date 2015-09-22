@@ -9,6 +9,8 @@
 #include "Clock.h"
 
 
+#if (CLOCK_TYPE != CLOCK_TYPE_OFF)
+
 static Clock_time currentTime;
 #if (CLOCK_SYNC != CLOCK_SYNC_OFF)
 static Clock_time currentSyncTime;
@@ -734,3 +736,5 @@ void CLock__getCompleteDateWithYearString (char* buffer)
 
 	buffer[idxBuffer++] = ' ';
 }
+
+#endif

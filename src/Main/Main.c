@@ -16,7 +16,9 @@ int main (void)
 {
 	Drivers__init();
 	Buttons__init();
+#if (CLOCK_TYPE != CLOCK_TYPE_OFF)
 	Clock__init();
+#endif
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
 	Lcd__init();
 #endif
@@ -34,7 +36,9 @@ int main (void)
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
 			Lcd__x10();
 #endif
+#if (CLOCK_TYPE != CLOCK_TYPE_OFF)
 			Clock__x10();
+#endif
 			Buttons__x10();
 			Modes__x10();
 
