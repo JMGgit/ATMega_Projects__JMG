@@ -331,10 +331,10 @@
 		</configuration>
 		<configuration configurationName="PrjQtwo2"/>
 		<configuration configurationName="Project__Qlocktwo"/>
+		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="Qlocktwo">
 			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
 		</configuration>
-		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="PrjQtwo3"/>
 		<configuration configurationName="PrjTemp"/>
 		<configuration configurationName="Project__Temperature_Logger"/>
