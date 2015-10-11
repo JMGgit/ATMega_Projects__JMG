@@ -107,8 +107,7 @@ static void Modes__updateMatrix (void)
 
 		case MODE__ALL_ON:
 		{
-			//AllOn__updateMatrix();
-			Modes__setNextMode();
+			AllOn__updateMatrix();
 			break;
 		}
 

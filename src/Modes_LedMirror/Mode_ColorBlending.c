@@ -19,12 +19,8 @@ static uint16_t timeCounter = 0;
 static uint8_t colorIt = 0;
 static RGB_Color_t colorItTable[LED_MATRIX_SIZE_COL];
 static uint8_t tableIt = 0;
-static uint8_t direction = LEFT_RIGHT;
 static uint8_t timerColorChange = 0;
 static uint8_t colorStep = 0;
-static uint16_t updateCounter = 0;
-static uint16_t updateTimer = 0;
-static uint8_t pause = FALSE;
 
 
 RGB_Color_t ColorBlending__getCurrentColor (void)
@@ -57,178 +53,145 @@ void ColorBlending__calcCurrentColor (void)
 
 	if (Modes__getMode() == MODE__BLENDING_SWEEP)
 	{
-		timerColorChange = 1;
+		timerColorChange = 50;
 		colorStep = 10;
-		updateTimer = 500;
 	}
 	else if (Modes__getMode() == MODE__BLENDING_SWEEP_FAST)
 	{
 		timerColorChange = 1;
 		colorStep = 10;
-		updateTimer = 1;
 	}
 	else
 	{
 		timerColorChange = 10;
 		colorStep = 1;
-		updateTimer = 1;
 	}
 
-	if (pause == TRUE)
+	timeCounter++;
+
+	if (timeCounter >= timerColorChange)
 	{
-		updateCounter++;
+		timeCounter = 0;
 
-		if (updateCounter >= updateTimer)
+		if ((currentColor.red == endColor.red) && (currentColor.green == endColor.green) && (currentColor.blue == endColor.blue))
 		{
-			pause = FALSE;
-		}
-	}
-	else
-	{
-		timeCounter++;
-
-		if (timeCounter >= timerColorChange)
-		{
-			timeCounter = 0;
-
-			if	((currentColor.red == endColor.red) && (currentColor.green == endColor.green) && (currentColor.blue == endColor.blue))
-			{
-				if (colorIt < (NUMBER_OF_BLENDING_COLORS - 1))
-				{
-					colorIt++;
-				}
-				else
-				{
-					colorIt = 0;
-				}
-			}
-
-			startColor.red		= 	colorFactor * pgm_read_byte(&RGB_BlendingColors[(colorIt * 3)]);
-			startColor.green 	= 	colorFactor * pgm_read_byte(&RGB_BlendingColors[(colorIt * 3) + 1]);
-			startColor.blue 	=	colorFactor * pgm_read_byte(&RGB_BlendingColors[(colorIt * 3)+ 2]);
-
 			if (colorIt < (NUMBER_OF_BLENDING_COLORS - 1))
 			{
-				endColor.red 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[((colorIt + 1) * 3)]);
-				endColor.green 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[((colorIt + 1) * 3) + 1]);
-				endColor.blue 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[((colorIt + 1) * 3) + 2]);
+				colorIt++;
 			}
 			else
 			{
-				endColor.red 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[0]);
-				endColor.green 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[1]);
-				endColor.blue 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[2]);
+				colorIt = 0;
 			}
+		}
 
-			if (currentColor.red < endColor.red)
+		startColor.red		= 	colorFactor * pgm_read_byte(&RGB_BlendingColors[(colorIt * 3)]);
+		startColor.green 	= 	colorFactor * pgm_read_byte(&RGB_BlendingColors[(colorIt * 3) + 1]);
+		startColor.blue 	=	colorFactor * pgm_read_byte(&RGB_BlendingColors[(colorIt * 3)+ 2]);
+
+		if (colorIt < (NUMBER_OF_BLENDING_COLORS - 1))
+		{
+			endColor.red 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[((colorIt + 1) * 3)]);
+			endColor.green 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[((colorIt + 1) * 3) + 1]);
+			endColor.blue 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[((colorIt + 1) * 3) + 2]);
+		}
+		else
+		{
+			endColor.red 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[0]);
+			endColor.green 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[1]);
+			endColor.blue 		= colorFactor * pgm_read_byte(&RGB_BlendingColors[2]);
+		}
+
+		if (currentColor.red < endColor.red)
+		{
+			if ((currentColor.red + colorStep) < endColor.red)
 			{
-				if ((currentColor.red + colorStep) < endColor.red)
+				currentColor.red = currentColor.red + colorStep;
+			}
+			else
+			{
+				currentColor.red = endColor.red;
+			}
+		}
+		else
+		{
+			if (currentColor.red >  endColor.red)
+			{
+				if ((currentColor.red - colorStep) >  endColor.red)
 				{
-					currentColor.red = currentColor.red + colorStep;
+					currentColor.red = currentColor.red - colorStep;
 				}
 				else
 				{
 					currentColor.red = endColor.red;
 				}
 			}
+		}
+
+		if (currentColor.green < endColor.green)
+		{
+			if ((currentColor.green + colorStep) < endColor.green)
+			{
+				currentColor.green = currentColor.green + colorStep;
+			}
 			else
 			{
-				if (currentColor.red >  endColor.red)
-				{
-					if ((currentColor.red - colorStep) >  endColor.red)
-					{
-						currentColor.red = currentColor.red - colorStep;
-					}
-					else
-					{
-						currentColor.red = endColor.red;
-					}
-				}
+				currentColor.green = endColor.green;
 			}
-
-			if (currentColor.green < endColor.green)
+		}
+		else
+		{
+			if (currentColor.green >  endColor.green)
 			{
-				if ((currentColor.green + colorStep) < endColor.green)
+				if ((currentColor.green - colorStep) >  endColor.green)
 				{
-					currentColor.green = currentColor.green + colorStep;
+					currentColor.green = currentColor.green - colorStep;
 				}
 				else
 				{
 					currentColor.green = endColor.green;
 				}
 			}
+		}
+
+		if (currentColor.blue < endColor.blue)
+		{
+			if ((currentColor.blue + colorStep) < endColor.blue)
+			{
+				currentColor.blue = currentColor.blue + colorStep;
+			}
 			else
 			{
-				if (currentColor.green >  endColor.green)
-				{
-					if ((currentColor.green - colorStep) >  endColor.green)
-					{
-						currentColor.green = currentColor.green - colorStep;
-					}
-					else
-					{
-						currentColor.green = endColor.green;
-					}
-				}
+				currentColor.blue = endColor.blue;
 			}
-
-			if (currentColor.blue < endColor.blue)
+		}
+		else
+		{
+			if (currentColor.blue >  endColor.blue)
 			{
-				if ((currentColor.blue + colorStep) < endColor.blue)
+				if ((currentColor.blue - colorStep) >  endColor.blue)
 				{
-					currentColor.blue = currentColor.blue + colorStep;
+					currentColor.blue = currentColor.blue - colorStep;
 				}
 				else
 				{
 					currentColor.blue = endColor.blue;
 				}
 			}
-			else
-			{
-				if (currentColor.blue >  endColor.blue)
-				{
-					if ((currentColor.blue - colorStep) >  endColor.blue)
-					{
-						currentColor.blue = currentColor.blue - colorStep;
-					}
-					else
-					{
-						currentColor.blue = endColor.blue;
-					}
-				}
-			}
-
-			if (direction == LEFT_RIGHT)
-			{
-				if (tableIt < (LED_MATRIX_SIZE_COL - 1))
-				{
-					tableIt++;
-				}
-				else
-				{
-					direction = RIGHT_LEFT;
-					pause = TRUE;
-					updateCounter = 0;
-				}
-			}
-			else
-			{
-				if (tableIt > 0)
-				{
-					tableIt--;
-				}
-				else
-				{
-					direction = LEFT_RIGHT;
-					pause = TRUE;
-					updateCounter = 0;
-				}
-			}
-
-			colorItTable[tableIt].red = currentColor.red;
-			colorItTable[tableIt].green = currentColor.green;
-			colorItTable[tableIt].blue = currentColor.blue;
 		}
+
+		if (tableIt < (LED_MATRIX_SIZE_COL - 1))
+		{
+			tableIt++;
+		}
+		else
+		{
+			tableIt = 0;
+		}
+
+		colorItTable[tableIt].red = currentColor.red;
+		colorItTable[tableIt].green = currentColor.green;
+		colorItTable[tableIt].blue = currentColor.blue;
 	}
 }
 
