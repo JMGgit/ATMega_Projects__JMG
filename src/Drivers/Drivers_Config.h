@@ -350,4 +350,16 @@
 
 #endif
 
+/* SPI SPEED */
+#define SPI_CLK_DIV_16			1
+#define SPI_CLK_DIV_4			2
+
+#ifdef WS2801_NB
+#if (WS2801_NB < 100)
+#define SPI_SPEED SPI_CLK_DIV_4
+#else
+#define SPI_SPEED SPI_CLK_DIV_16
+#endif
+#endif
+
 #endif /* DRIVERS_CONFIG_H_ */

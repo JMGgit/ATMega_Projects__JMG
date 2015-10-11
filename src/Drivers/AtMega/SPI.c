@@ -19,9 +19,15 @@ void SPI__masterInit (void)
 	setLow(SPI_PORT, SPI_PIN_MOSI);
 	setLow(SPI_PORT, SPI_PIN_CLK);
 
+#if (SPI_SPEED == SPI_CLK_DIV_4)
+	/* enable SPI, master, clock rate fck/4 */
+	SPCR = (1 << SPE) | (1 << MSTR);
+	SPSR = 0;
+#elif (SPI_SPEED == SPI_CLK_DIV_16)
 	/* enable SPI, master, clock rate fck/16 */
 	SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
 	SPSR = 0;
+#endif
 }
 
 
