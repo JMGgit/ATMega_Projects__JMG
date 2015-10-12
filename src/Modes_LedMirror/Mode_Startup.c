@@ -10,10 +10,10 @@
 #include "Modes.h"
 
 
-static uint8_t lineIt = 0;
+static uint8_t lineIt = 1;
 static uint8_t colIt = 0;
 static RGB_Color_t color = {TEST_BRIGHTNESS_LEVEL, 0, 0};
-static testLedStates_N testLedState;
+static testLedStates_N testLedState = TEST_RED;
 
 
 void Mode__Startup_x10 (void)
@@ -38,7 +38,7 @@ void Mode__Startup_x10 (void)
 			}
 			else
 			{
-				testLedState++;
+				testLedState = TEST_GREEN;
 			}
 
 			break;
@@ -62,7 +62,7 @@ void Mode__Startup_x10 (void)
 			}
 			else
 			{
-				testLedState++;
+				testLedState = TEST_BLUE;
 			}
 
 			break;
@@ -86,7 +86,7 @@ void Mode__Startup_x10 (void)
 			}
 			else
 			{
-				testLedState++;
+				testLedState = TEST_WHITE;
 			}
 
 			break;
@@ -110,7 +110,7 @@ void Mode__Startup_x10 (void)
 			}
 			else
 			{
-				testLedState++;
+				testLedState = TEST_DONE;
 			}
 			break;
 		}
@@ -118,6 +118,7 @@ void Mode__Startup_x10 (void)
 		default:
 		{
 			Modes__Start();
+			break;
 		}
 	}
 

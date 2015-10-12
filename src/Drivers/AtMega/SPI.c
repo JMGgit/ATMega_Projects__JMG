@@ -19,14 +19,16 @@ void SPI__masterInit (void)
 	setLow(SPI_PORT, SPI_PIN_MOSI);
 	setLow(SPI_PORT, SPI_PIN_CLK);
 
-#if (SPI_SPEED == SPI_CLK_DIV_4)
-	/* enable SPI, master, clock rate fck/4 */
-	SPCR = (1 << SPE) | (1 << MSTR);
-	SPSR = 0;
+#if (SPI_SPEED == SPI_CLK_DIV_8)
+	/* enable SPI, master, clock rate fck/8 */
+	SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
+	SPSR = 1 << SPI2X;
 #elif (SPI_SPEED == SPI_CLK_DIV_16)
 	/* enable SPI, master, clock rate fck/16 */
-	SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
+	SPCR = (1 << SPE) | (1 << MSTR);
 	SPSR = 0;
+#else
+#error :SPI speed not defined!
 #endif
 }
 
