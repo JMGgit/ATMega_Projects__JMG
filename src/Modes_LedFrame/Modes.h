@@ -15,23 +15,20 @@
 #include "Mode_ColorBlending.h"
 #include "Mode_Clock.h"
 #include "Mode_Snake.h"
-#include "Mode_DoubleColor.h"
 
 
 typedef enum
 {
 	MODE__STARTUP = 0,
 	MODE__OFF,
-	MODE__BLENDING_SLOW,
-	MODE__BLENDING_SLOW_2_COLORS,
+	MODE__BLENDING,
 	MODE__BLENDING_FAST,
-	MODE__BLENDING_FAST_2_COLORS,
 	MODE__BLENDING_SWEEP_FAST,
-	MODE__DOUBLE_COLOR,
 	MODE_NB
 } Mode_t;
 
-#define MODE__INIT MODE__BLENDING_SLOW
+#define MODE__INIT MODE__BLENDING
+
 
 /* public functions */
 void Modes__init (void);

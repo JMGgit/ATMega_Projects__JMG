@@ -21,7 +21,6 @@ static RGB_Color_t colorItTable[LED_MATRIX_SIZE_COL];
 static uint8_t tableIt = 0;
 static uint8_t timerColorChange = 0;
 static uint8_t colorStep = 0;
-static uint16_t linIt, colIt;
 
 
 RGB_Color_t ColorBlending__getCurrentColor (void)
@@ -52,44 +51,25 @@ static void ColorBlending__calcCurrentColor (uint8_t blendingMode)
 {
 	uint8_t colorFactor = 255;
 
-	switch (blendingMode)
+	if (blendingMode == BLENDING_MODE_SWEEP)
 	{
-		case BLENDING_MODE_SLOW:
-		case BLENDING_MODE_SLOW_2_COLORS:
-		{
-			timerColorChange = 20;
-			colorStep = 1;
-			break;
-		}
-
-		case BLENDING_MODE_FAST:
-		case BLENDING_MODE_FAST_2_COLORS:
-		{
-			timerColorChange = 1;
-			colorStep = 1;
-			break;
-		}
-
-		case BLENDING_MODE_SWEEP:
-		{
-			timerColorChange = 50;
-			colorStep = 10;
-			break;
-		}
-
-		case BLENDING_MODE_SWEEP_FAST:
-		{
-			timerColorChange = 1;
-			colorStep = 10;
-			break;
-		}
-
-		default:
-		{
-			timerColorChange = 20;
-			colorStep = 1;
-			break;
-		}
+		timerColorChange = 50;
+		colorStep = 10;
+	}
+	else if (blendingMode == BLENDING_MODE_SWEEP_FAST)
+	{
+		timerColorChange = 1;
+		colorStep = 10;
+	}
+	else if (blendingMode == BLENDING_MODE_FAST)
+	{
+		timerColorChange = 1;
+		colorStep = 1;
+	}
+	else /* BLENDING_MODE_NORMAL */
+	{
+		timerColorChange = 20;
+		colorStep = 1;
 	}
 
 	timeCounter++;
@@ -223,8 +203,8 @@ static void ColorBlending__calcCurrentColor (uint8_t blendingMode)
 
 void ColorBlending__updateMatrix (uint8_t blendingMode)
 {
+	uint16_t linIt, colIt;
 	RGB_Color_t *l_currentColor;
-	RGB_Color_t l_currentColorB;
 
 	ColorBlending__calcCurrentColor(blendingMode);
 
@@ -242,32 +222,6 @@ void ColorBlending__updateMatrix (uint8_t blendingMode)
 	}
 	else /* without sweep */
 	{
-		l_currentColor = &currentColor;
-
-		if ((blendingMode == BLENDING_MODE_SLOW_2_COLORS) || (blendingMode == BLENDING_MODE_FAST_2_COLORS))
-		{
-			for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
-			{
-				if ((linIt % 2 ) == 0)
-				{
-					l_currentColorB = *l_currentColor;
-				}
-				else
-				{
-					l_currentColorB = getRGBColorFromComponents(255 - (*l_currentColor).red,
-																255 - (*l_currentColor).green,
-																255 - (*l_currentColor).blue);
-
-				}
-				for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
-				{
-					LEDMatrix__setRGBColor(linIt, colIt, l_currentColorB);
-				}
-			}
-		}
-		else
-		{
-			LEDMatrix__setRGBColorForMatrix(*l_currentColor);
-		}
+		LEDMatrix__setRGBColorForMatrix(currentColor);
 	}
 }
