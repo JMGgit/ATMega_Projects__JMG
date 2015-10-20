@@ -12,7 +12,7 @@
 #define OFF								0
 #define OFF_TO_ON						1
 #define ON_TO_OFF						2
-#define ON								4
+#define ON								3
 
 #define QTWO_LINE_NB					10
 #define QTWO_COL_NB						11

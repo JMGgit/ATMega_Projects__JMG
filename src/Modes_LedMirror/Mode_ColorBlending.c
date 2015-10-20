@@ -48,49 +48,9 @@ RGB_Color_t ColorBlending__getCurrentColorCol (uint8_t col)
 }
 
 
-void ColorBlending__calcCurrentColor (uint8_t blendingMode)
+void ColorBlending__calcCurrentColor (uint8_t timerColorChange, uint8_t colorStep)
 {
 	uint8_t colorFactor = 255;
-
-	switch (blendingMode)
-	{
-		case BLENDING_MODE_SLOW:
-		case BLENDING_MODE_SLOW_2_COLORS:
-		{
-			timerColorChange = 20;
-			colorStep = 1;
-			break;
-		}
-
-		case BLENDING_MODE_FAST:
-		case BLENDING_MODE_FAST_2_COLORS:
-		{
-			timerColorChange = 1;
-			colorStep = 1;
-			break;
-		}
-
-		case BLENDING_MODE_SWEEP:
-		{
-			timerColorChange = 50;
-			colorStep = 10;
-			break;
-		}
-
-		case BLENDING_MODE_SWEEP_FAST:
-		{
-			timerColorChange = 1;
-			colorStep = 10;
-			break;
-		}
-
-		default:
-		{
-			timerColorChange = 20;
-			colorStep = 1;
-			break;
-		}
-	}
 
 	timeCounter++;
 
@@ -226,7 +186,47 @@ void ColorBlending__updateMatrix (uint8_t blendingMode)
 	RGB_Color_t *l_currentColor;
 	RGB_Color_t l_currentColorB;
 
-	ColorBlending__calcCurrentColor(blendingMode);
+	switch (blendingMode)
+	{
+		case BLENDING_MODE_SLOW:
+		case BLENDING_MODE_SLOW_2_COLORS:
+		{
+			timerColorChange = 20;
+			colorStep = 1;
+			break;
+		}
+
+		case BLENDING_MODE_FAST:
+		case BLENDING_MODE_FAST_2_COLORS:
+		{
+			timerColorChange = 1;
+			colorStep = 1;
+			break;
+		}
+
+		case BLENDING_MODE_SWEEP:
+		{
+			timerColorChange = 50;
+			colorStep = 10;
+			break;
+		}
+
+		case BLENDING_MODE_SWEEP_FAST:
+		{
+			timerColorChange = 1;
+			colorStep = 10;
+			break;
+		}
+
+		default:
+		{
+			timerColorChange = 20;
+			colorStep = 1;
+			break;
+		}
+	}
+
+	ColorBlending__calcCurrentColor(timerColorChange, colorStep);
 
 	if ((blendingMode == BLENDING_MODE_SWEEP) || (blendingMode == BLENDING_MODE_SWEEP_FAST))
 	{

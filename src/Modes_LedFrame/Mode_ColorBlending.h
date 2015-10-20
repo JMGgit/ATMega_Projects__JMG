@@ -16,12 +16,15 @@
 
 
 void ColorBlending__updateMatrix (uint8_t blendingMode);
+void ColorBlending__calcCurrentColor (uint8_t timerColorChange, uint8_t colorStep);
 RGB_Color_t ColorBlending__getCurrentColor (void);
 RGB_Color_t ColorBlending__getCurrentColorCol (uint8_t col);
 
-#define BLENDING_MODE_NORMAL		0
-#define BLENDING_MODE_FAST			1
-#define BLENDING_MODE_SWEEP			2
-#define BLENDING_MODE_SWEEP_FAST	3
+#define BLENDING_MODE_SLOW				0
+#define BLENDING_MODE_SLOW_2_COLORS		1
+#define BLENDING_MODE_FAST				2
+#define BLENDING_MODE_FAST_2_COLORS		3
+#define BLENDING_MODE_SWEEP				4
+#define BLENDING_MODE_SWEEP_FAST		5
 
 #endif /* MODE_COLORBLENDING_H_ */

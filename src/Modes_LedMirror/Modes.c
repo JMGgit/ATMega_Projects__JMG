@@ -137,6 +137,7 @@ static void Modes__updateMatrix (void)
 
 		case MODE__DOUBLE_COLOR:
 		{
+			LEDMatrix__clearMatrix();
 			DoubleColor__UpdateMatrix_x10();
 			break;
 		}

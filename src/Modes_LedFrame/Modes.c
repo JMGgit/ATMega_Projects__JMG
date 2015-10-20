@@ -105,10 +105,15 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
-
-		case MODE__BLENDING:
+		case MODE__BLENDING_SLOW:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_NORMAL);
+			ColorBlending__updateMatrix(BLENDING_MODE_SLOW);
+			break;
+		}
+
+		case MODE__BLENDING_SLOW_2_COLORS:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_SLOW_2_COLORS);
 			break;
 		}
 
@@ -118,10 +123,22 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
+		case MODE__BLENDING_FAST_2_COLORS:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_FAST_2_COLORS);
+			break;
+		}
 
 		case MODE__BLENDING_SWEEP_FAST:
 		{
 			ColorBlending__updateMatrix(BLENDING_MODE_SWEEP_FAST);
+			break;
+		}
+
+		case MODE__DOUBLE_COLOR:
+		{
+			LEDMatrix__clearMatrix();
+			DoubleColor__UpdateMatrix_x10();
 			break;
 		}
 
