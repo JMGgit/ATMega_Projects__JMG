@@ -178,7 +178,7 @@ void Modes__init (void)
 #if (MODE_STARTUP == MODE_STARTUP_ON)
 	Modes__setMode(MODE__STARTUP);
 #else
-	Modes__setMode(MODE__INIT);
+	Modes__Start();
 #endif
 }
 
