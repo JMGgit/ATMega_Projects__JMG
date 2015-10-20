@@ -48,7 +48,7 @@ RGB_Color_t ColorBlending__getCurrentColorCol (uint8_t col)
 }
 
 
-static void ColorBlending__calcCurrentColor (uint8_t blendingMode)
+void ColorBlending__calcCurrentColor (uint8_t blendingMode)
 {
 	uint8_t colorFactor = 255;
 
@@ -254,9 +254,10 @@ void ColorBlending__updateMatrix (uint8_t blendingMode)
 				}
 				else
 				{
-					l_currentColorB = getRGBColorFromComponents(255 - (*l_currentColor).red,
-																255 - (*l_currentColor).green,
-																255 - (*l_currentColor).blue);
+					/* shift colors */
+					l_currentColorB = getRGBColorFromComponents((*l_currentColor).blue,
+																(*l_currentColor).red,
+																(*l_currentColor).green);
 
 				}
 				for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)

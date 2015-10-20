@@ -19,9 +19,9 @@ void DoubleColor__UpdateMatrix_x10 (void)
 {
 	uint8_t it, colIdx;
 
-	/* TODO: calculate color dynamically */
-	colorA = getRGBColorFromComponents(255, 255, 0);
-	colorB = getRGBColorFromComponents(0, 0, 255);
+	ColorBlending__calcCurrentColor(BLENDING_MODE_FAST);
+	colorA = ColorBlending__getCurrentColor();
+	colorB = getRGBColorFromComponents(colorA.blue, colorA.green, colorA.red); /* colorA shifted */
 
 	if (timer == 0)
 	{

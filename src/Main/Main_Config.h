@@ -310,7 +310,7 @@
 #if (PROJECT == PROJECT__LED_FRAME)
 
 /* size of the LED matrix */
-#define LED_MATRIX_SIZE_LIN				1
+#define LED_MATRIX_SIZE_LIN				2
 #define LED_MATRIX_SIZE_COL				40
 
 /* clock */

@@ -13,6 +13,7 @@
 #include "Main_Config.h"
 #include "LEDMatrix.h"
 #include "RGB_Tables.h"
+#include "Mode_ColorBlending.h"
 
 
 #define UPDATE_TIME		30

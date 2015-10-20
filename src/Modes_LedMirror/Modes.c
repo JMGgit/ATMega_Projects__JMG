@@ -125,8 +125,7 @@ static void Modes__updateMatrix (void)
 
 		case MODE__BLENDING_FAST_2_COLORS:
 		{
-			//ColorBlending__updateMatrix(BLENDING_MODE_FAST_2_COLORS);
-			Modes__setNextMode();
+			ColorBlending__updateMatrix(BLENDING_MODE_FAST_2_COLORS);
 			break;
 		}
 
