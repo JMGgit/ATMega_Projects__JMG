@@ -192,7 +192,7 @@ void ColorBlending__updateMatrix (uint8_t blendingMode)
 		case BLENDING_MODE_SLOW_2_COLORS:
 		{
 			timerColorChange = 20;
-			colorStep = 1;
+			colorStep = 2;
 			break;
 		}
 

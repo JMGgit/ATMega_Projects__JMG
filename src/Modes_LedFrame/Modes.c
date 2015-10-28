@@ -11,15 +11,19 @@
 
 static Mode_t currentMode;
 static uint8_t modeOffTransition = FALSE;
+static uint16_t timerModeChange;
 uint8_t mode_EEPROM EEMEM;
 RGB_Color_t Modes_currentColor = {255, 255, 255};
 
 
-static void Modes__transition (void)
+uint16_t timerModeChangeConf[MODE_NB] =
 {
-
-}
-
+		0, 		/* MODE__STARTUP */
+		0, 		/* MODE__OFF*/
+		60000, 	/* MODE__BLENDING_SLOW_2_COLORS */
+		12000, 	/* MODE__BLENDING_SWEEP_FAST */
+		60000 	/* MODE__DOUBLE_COLOR*/
+};
 
 void Modes__setMode (Mode_t mode)
 {
@@ -31,8 +35,6 @@ void Modes__setMode (Mode_t mode)
 	{
 		currentMode = MODE__INIT;
 	}
-
-	Modes__transition();
 }
 
 
@@ -105,27 +107,9 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
-		case MODE__BLENDING_SLOW:
-		{
-			ColorBlending__updateMatrix(BLENDING_MODE_SLOW);
-			break;
-		}
-
 		case MODE__BLENDING_SLOW_2_COLORS:
 		{
 			ColorBlending__updateMatrix(BLENDING_MODE_SLOW_2_COLORS);
-			break;
-		}
-
-		case MODE__BLENDING_FAST:
-		{
-			ColorBlending__updateMatrix(BLENDING_MODE_FAST);
-			break;
-		}
-
-		case MODE__BLENDING_FAST_2_COLORS:
-		{
-			ColorBlending__updateMatrix(BLENDING_MODE_FAST_2_COLORS);
 			break;
 		}
 
@@ -185,20 +169,33 @@ void Modes__init (void)
 
 void Modes__x10 (void)
 {
-	if (Buttons__isPressedOnce(&buttonMode))
+	if ((currentMode != MODE__OFF) && (currentMode != MODE__STARTUP))
 	{
-		if (currentMode != MODE__OFF)
+		if (Buttons__isPressedOnce(&buttonMode))
 		{
 			Modes__setNextMode();
+			timerModeChange = 0;
 		}
-	}
-
-	if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
-	{
-		if (Buttons__isPressedOnce(&buttonOff))
+		else
 		{
-			Modes__setMode(MODE__OFF);
-			modeOffTransition = TRUE;
+			if (timerModeChange < timerModeChangeConf[currentMode])
+			{
+				timerModeChange++;
+			}
+			else
+			{
+				Modes__setNextMode();
+				timerModeChange = 0;
+			}
+		}
+
+		if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
+		{
+			if (Buttons__isPressedOnce(&buttonOff))
+			{
+				Modes__setMode(MODE__OFF);
+				modeOffTransition = TRUE;
+			}
 		}
 	}
 

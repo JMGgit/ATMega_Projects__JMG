@@ -13,10 +13,10 @@
 #define ON_TO_OFF						2
 #define ON								3
 
-#define UPDATE_TIME				30
+#define UPDATE_TIME				0
 #define COLOR_STEP				5
-#define SNAKE_SIZE				7
-#define SNAKE_TRANSITION_TIME	20
+#define SNAKE_SIZE				4
+#define SNAKE_TRANSITION_TIME	60
 
 
 static RGB_Color_t colorCalc, offOnColorCalc, onOffColorCalc, colorTransition;
@@ -268,12 +268,11 @@ static void DoubleColor__getLastVisibility (void)
 
 void DoubleColor__UpdateMatrix_x10 (void)
 {
-	ColorBlending__calcCurrentColor(UPDATE_TIME, COLOR_STEP);
-
 	if (!timeTransition)
 	{
 		if (timer == 0)
 		{
+			ColorBlending__calcCurrentColor(UPDATE_TIME, COLOR_STEP);
 			colorCalc = ColorBlending__getCurrentColor();
 			DoubleColor__startTransition();
 			DoubleColor__getLastVisibility();
