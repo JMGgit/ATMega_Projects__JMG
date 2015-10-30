@@ -21,7 +21,7 @@ uint16_t timerModeChangeConf[MODE_NB] =
 		0, 		/* MODE__STARTUP */
 		0, 		/* MODE__OFF*/
 		60000, 	/* MODE__BLENDING_SLOW_2_COLORS */
-		12000, 	/* MODE__BLENDING_SWEEP_FAST */
+		30000, 	/* MODE__BLENDING_SWEEP_FAST */
 		60000 	/* MODE__DOUBLE_COLOR*/
 };
 
