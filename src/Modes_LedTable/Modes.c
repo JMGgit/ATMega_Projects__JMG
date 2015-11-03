@@ -16,11 +16,16 @@ uint8_t mode_EEPROM EEMEM;
 
 uint16_t timerModeChangeConf[MODE_NB] =
 {
-		0, 		/* MODE__STARTUP */
-		0, 		/* MODE__OFF*/
-		60000, 	/* MODE__BLENDING_SLOW_2_COLORS */
-		30000, 	/* MODE__BLENDING_SWEEP_FAST */
-		60000 	/* MODE__DOUBLE_COLOR*/
+		0,	/* MODE__STARTUP = 0 */
+		0,	/* MODE__OFF */
+		0,	/* MODE__ALL_ON */
+		0,	/* MODE__BLENDING_SLOW */
+		0,	/* MODE__BLENDING_SWEEP */
+		0,	/* MODE__BLENDING_SWEEP_FAST */
+		0,	/* MODE__BLENDING_CLOCK */
+		0,	/* MODE__BLENDING_CLOCK_INVERTED */
+		0,	/* MODE__CLOCK */
+		0	/* MODE__SNAKE */
 };
 
 

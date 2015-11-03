@@ -20,9 +20,7 @@
 typedef enum
 {
 	MODE__STARTUP = 0,
-#if (BUTTON_OFF_AVAILABLE != BUTTON_OFF_AVAILABLE_NO)
 	MODE__OFF,
-#endif
 	MODE__ALL_ON,
 	MODE__BLENDING_SLOW,
 	MODE__BLENDING_SWEEP,
@@ -33,6 +31,7 @@ typedef enum
 	MODE__SNAKE,
 	MODE_NB
 } Mode_t;
+
 
 #define MODE__INIT MODE__BLENDING_SLOW
 
