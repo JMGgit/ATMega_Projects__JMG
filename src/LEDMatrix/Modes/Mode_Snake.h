@@ -14,10 +14,13 @@
 #include "Clock.h"
 #include "Buttons.h"
 
+#if (MODE_SNAKE == MODE_SNAKE_ON)
+
 void Snake__init (void);
 void Snake__updateMatrix (void);
 
-
 #define SNAKE_TIMER_INIT 		50
+
+#endif
 
 #endif /* SNAKE_H_ */

@@ -28,7 +28,7 @@ void SPI__masterInit (void)
 	SPCR = (1 << SPE) | (1 << MSTR);
 	SPSR = 0;
 #else
-#error :SPI speed not defined!
+#error : SPI speed not defined!
 #endif
 }
 

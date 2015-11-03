@@ -10,6 +10,8 @@
 #include "Buttons.h"
 
 
+#if (CLOCK_TYPE != CLOCK_TYPE_OFF)
+
 #define OFFSET_COL_NUM_1		4
 #define OFFSET_COL_NUM_2		8
 #define OFFSET_COL_NUM_3		14
@@ -29,6 +31,9 @@
 
 #define CLOCK_SIZE_SMALL		0x00
 #define CLOCK_SIZE_BIG			0x01
+
+#define UPDATE_TIME				20
+#define COLOR_STEP				2
 
 static uint8_t clockSize, lineOffset, colOffset;
 
@@ -202,25 +207,21 @@ void ModeClock__updateMatrix (uint8_t clockMode)
 
 	if (clockMode == CLOCK_MODE_ONE_COLOR)
 	{
-		ClockColor = Modes_currentColor;
+		ClockColor = LEDMatrix__getColorFromInputs();
 	}
 	else if (clockMode == CLOCK_MODE_COLOR_BLENDING)
 	{
-		ColorBlending__calcCurrentColor();
+		ColorBlending__calcCurrentColor(UPDATE_TIME, COLOR_STEP);
 		ClockColor = ColorBlending__getCurrentColor();
 	}
 	else /* inverted mode */
 	{
-		ColorBlending__calcCurrentColor();
+		ColorBlending__calcCurrentColor(UPDATE_TIME, COLOR_STEP);
 		ClockColor = getRGBColorFromComponents(0, 0, 0);
 	}
 
-	/* background color */
-	if (clockMode == CLOCK_MODE_ONE_COLOR)
-	{
-		LEDMatrix__clearMatrix();
-	}
-	else if (clockMode == CLOCK_MODE_COLOR_BLENDING)
+	/* no background color */
+	if ((clockMode == CLOCK_MODE_ONE_COLOR) || (clockMode == CLOCK_MODE_COLOR_BLENDING))
 	{
 		LEDMatrix__clearMatrix();
 	}
@@ -438,3 +439,5 @@ void ModeClock__updateMatrix (uint8_t clockMode)
 
 	LEDMatrix__setRGBColor(numPosLin, numPosCol, ClockColor);
 }
+
+#endif

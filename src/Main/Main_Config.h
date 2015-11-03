@@ -134,6 +134,7 @@
 #define MODE_STARTUP_ON					2
 #define MODE_STARTUP					MODE_STARTUP_ON
 
+/* snake game */
 #define MODE_SNAKE_OFF					1
 #define MODE_SNAKE_ON					2
 /* defined by project configuration */
@@ -221,6 +222,10 @@
 #define MODE_STARTUP_ON					2
 #define MODE_STARTUP					MODE_STARTUP_OFF
 
+/* snake game */
+#define MODE_SNAKE_OFF					1
+#define MODE_SNAKE_ON					2
+
 /* brightness */
 #define SNAKE_BRIGHTNESS_LEVEL			255
 #define TEST_BRIGHTNESS_LEVEL			60
@@ -296,6 +301,10 @@
 #define MODE_STARTUP_ON					2
 #define MODE_STARTUP					MODE_STARTUP_OFF
 
+/* snake game */
+#define MODE_SNAKE_OFF					1
+#define MODE_SNAKE_ON					2
+
 /* brightness */
 #define TEST_BRIGHTNESS_LEVEL			60
 
@@ -369,6 +378,10 @@
 #define MODE_STARTUP_OFF				1
 #define MODE_STARTUP_ON					2
 #define MODE_STARTUP					MODE_STARTUP_OFF
+
+/* snake game */
+#define MODE_SNAKE_OFF					1
+#define MODE_SNAKE_ON					2
 
 /* brightness */
 #define TEST_BRIGHTNESS_LEVEL			60

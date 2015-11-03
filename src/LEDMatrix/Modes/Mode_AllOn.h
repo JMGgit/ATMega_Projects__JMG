@@ -11,6 +11,7 @@
 #include "Main_Types.h"
 #include "Main_Config.h"
 #include "LEDMatrix.h"
+#include "Buttons.h"
 
 
 void AllOn__updateMatrix (void);

@@ -6,7 +6,6 @@
  */
 
 #include "LEDMatrix.h"
-#include "LEDMatrix_DotCorrection.h"
 
 
 #ifdef LED_MATRIX_SIZE_LIN

@@ -19,7 +19,6 @@ static void Modes__transition (void)
 	Snake__init();
 #endif
 	Qtwo__modeTransition();
-
 }
 
 

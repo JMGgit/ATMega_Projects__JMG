@@ -217,6 +217,8 @@ static void DoubleColor__updateLeds (void)
 			tempOffOnColor = getRGBColorFromComponents(offOnColorCalc.green, offOnColorCalc.blue, offOnColorCalc. red);
 		}
 
+		LEDMatrix__clearMatrix();
+
 		for (colIt = 0; colIt < LED_MATRIX_SIZE_COL; colIt++)
 		{
 			if (matrix[linIt][colIt] == ON)

@@ -46,10 +46,11 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/ColorTables}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Drivers}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Lcd}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes_LedTable}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.2098505273" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.undef.357876573" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
@@ -152,7 +153,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_LedFrame|src/Modes_LedMirror|src/Modes_Qlocktwo|src/Modes_LedTable" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/LEDMatrix|src/Modes_LedFrame|src/Modes_LedMirror|src/Modes_Qlocktwo|src/Modes_LedTable" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -207,6 +208,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes_Qlocktwo}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.1702651126" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.undef.182577217" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
@@ -287,6 +289,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes_Qlocktwo}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.544563005" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.929343895" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
@@ -366,6 +369,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes_LedMirror}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.2107479837" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.undef.1678489552" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
@@ -446,6 +450,7 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes_LedFrame}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.221168237" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.undef.606479537" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>

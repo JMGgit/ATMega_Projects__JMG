@@ -97,6 +97,9 @@
 #define DS18B20_ALARM_TLOW			0	/* not supported for now */
 #define DS18B20_ALARM_THIGH			0	/* not supported for now */
 
+/* SPI not needed but speed has to be defined */
+#define SPI_SPEED SPI_CLK_DIV_8
+
 #endif
 
 

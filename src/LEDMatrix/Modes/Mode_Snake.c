@@ -7,6 +7,7 @@
 
 #include "Mode_Snake.h"
 
+#if (MODE_SNAKE == MODE_SNAKE_ON)
 
 #define ST_EMPTY				0x00
 #define ST_FIRST				0x01
@@ -311,3 +312,5 @@ void Snake__updateMatrix (void)
 		}
 	}
 }
+
+#endif

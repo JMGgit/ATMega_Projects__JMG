@@ -8,7 +8,10 @@
 #include "Mode_AllOn.h"
 
 
+static RGB_Color_t currentColor = {255, 255, 255};
+
 void AllOn__updateMatrix (void)
 {
-	LEDMatrix__setRGBColorForMatrix(Modes_currentColor);
+	currentColor = LEDMatrix__getColorFromInputs();
+	LEDMatrix__setRGBColorForMatrix(currentColor);
 }

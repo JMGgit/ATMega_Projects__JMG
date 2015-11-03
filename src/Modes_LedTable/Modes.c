@@ -11,15 +11,25 @@
 
 static Mode_t currentMode;
 static uint8_t modeOffTransition = FALSE;
+static uint16_t timerModeChange;
 uint8_t mode_EEPROM EEMEM;
-RGB_Color_t Modes_currentColor = {255, 255, 255};
+
+uint16_t timerModeChangeConf[MODE_NB] =
+{
+		0, 		/* MODE__STARTUP */
+		0, 		/* MODE__OFF*/
+		60000, 	/* MODE__BLENDING_SLOW_2_COLORS */
+		30000, 	/* MODE__BLENDING_SWEEP_FAST */
+		60000 	/* MODE__DOUBLE_COLOR*/
+};
 
 
 static void Modes__transition (void)
 {
-#if (MODE_SNAKE == MODE_SNAKE_ON)
-	Snake__init();
-#endif
+	if (currentMode == MODE__SNAKE)
+	{
+		Snake__init();
+	}
 }
 
 
@@ -31,7 +41,7 @@ void Modes__setMode (Mode_t mode)
 	}
 	else
 	{
-		currentMode = MODE__ALL_ON;
+		currentMode = MODE__INIT;
 	}
 
 	Modes__transition();
@@ -44,7 +54,7 @@ void Modes__Start (void)
 
 	if (currentMode == 0xFF)
 	{
-		currentMode = MODE__BLENDING_CLOCK;
+		currentMode = MODE__INIT;
 	}
 }
 
@@ -61,34 +71,6 @@ uint8_t Modes__getMode (void)
 }
 
 
-static void Modes__updateColor (void)
-{
-	uint8_t USARTbuffer[USART_DATA_LENGTH_COLOR];
-
-	if (E_OK == USART__readData(USARTbuffer, USART_DATA_LENGTH_COLOR, USART_REQESTER_COLOR))
-	{
-		Modes_currentColor.red = USARTbuffer[1];
-		Modes_currentColor.green = USARTbuffer[2];
-		Modes_currentColor.blue = USARTbuffer[3];
-	}
-
-	if (Buttons__isPressed(&buttonFunc1))
-	{
-		Modes_currentColor.red--;
-	}
-
-	if (Buttons__isPressed(&buttonFunc2))
-	{
-		Modes_currentColor.green--;
-	}
-
-	if (Buttons__isPressed(&buttonFunc3))
-	{
-		Modes_currentColor.blue--;
-	}
-}
-
-
 static void Mode__eepromStorage (void)
 {
 	eeprom_update_byte(&mode_EEPROM, currentMode);
@@ -97,8 +79,6 @@ static void Mode__eepromStorage (void)
 
 static void Modes__updateMatrix (void)
 {
-	Modes__updateColor();
-
 	switch (currentMode)
 	{
 		case MODE__STARTUP:
@@ -114,9 +94,9 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
-		case MODE__BLENDING:
+		case MODE__BLENDING_SLOW:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_NORMAL);
+			ColorBlending__updateMatrix(BLENDING_MODE_SLOW);
 			break;
 		}
 
@@ -151,13 +131,11 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
-#if (MODE_SNAKE == MODE_SNAKE_ON)
 		case MODE__SNAKE:
 		{
 			Snake__updateMatrix();
 			break;
 		}
-#endif
 
 		case MODE__OFF:
 		{
@@ -165,13 +143,6 @@ static void Modes__updateMatrix (void)
 
 			if (!modeOffTransition)
 			{
-#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
-				if (Buttons__isPressedOnce(&buttonFunc2))
-				{
-					Modes__setMode(MODE__ALL_ON);
-				}
-#endif
-
 				if (Buttons__isPressedOnce(&buttonOff))
 				{
 					Modes__Start();
@@ -202,7 +173,7 @@ void Modes__init (void)
 #if (MODE_STARTUP == MODE_STARTUP_ON)
 	Modes__setMode(MODE__STARTUP);
 #else
-	Modes__setMode(MODE__ALL_ON);
+	Modes__Start();
 #endif
 	ModeClock__init();
 }
@@ -210,33 +181,34 @@ void Modes__init (void)
 
 void Modes__x10 (void)
 {
-	if (Buttons__isPressedOnce(&buttonMode))
+	if ((currentMode != MODE__OFF) && (currentMode != MODE__STARTUP))
 	{
-#if (BUTTON_OFF_AVAILABLE != BUTTON_OFF_AVAILABLE_NO)
-		if (currentMode != MODE__OFF)
+		if (Buttons__isPressedOnce(&buttonMode))
 		{
 			Modes__setNextMode();
+			timerModeChange = 0;
 		}
-#else
-		Modes__setNextMode();
-#endif
-	}
-
-	if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
-	{
-		if (Buttons__isPressedOnce(&buttonOff))
+		else
 		{
-			Modes__setMode(MODE__OFF);
-			modeOffTransition = TRUE;
+			if (timerModeChange < timerModeChangeConf[currentMode])
+			{
+				timerModeChange++;
+			}
+			else
+			{
+				Modes__setNextMode();
+				timerModeChange = 0;
+			}
 		}
 
-#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
-		if (Buttons__isPressedOnce(&buttonFunc2))
+		if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
 		{
-			Modes__setMode(MODE__OFF);
-			modeOffTransition = TRUE;
+			if (Buttons__isPressedOnce(&buttonOff))
+			{
+				Modes__setMode(MODE__OFF);
+				modeOffTransition = TRUE;
+			}
 		}
-#endif
 	}
 
 	Modes__updateMatrix();

@@ -13,6 +13,8 @@
 #include "LEDMatrix.h"
 #include "Clock.h"
 
+#if (CLOCK_TYPE != CLOCK_TYPE_OFF)
+
 #define CLOCK_MODE_ONE_COLOR					1
 #define CLOCK_MODE_COLOR_BLENDING				2
 #define CLOCK_MODE_COLOR_BLENDING_INVERTED		3
@@ -20,5 +22,7 @@
 
 void ModeClock__init (void);
 void ModeClock__updateMatrix (uint8_t clockMode);
+
+#endif
 
 #endif /* MODE_CLOCK_H_ */

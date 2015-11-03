@@ -13,7 +13,6 @@ static Mode_t currentMode;
 static uint8_t modeOffTransition = FALSE;
 static uint16_t timerModeChange;
 uint8_t mode_EEPROM EEMEM;
-RGB_Color_t Modes_currentColor = {255, 255, 255};
 
 
 uint16_t timerModeChangeConf[MODE_NB] =
@@ -61,34 +60,6 @@ uint8_t Modes__getMode (void)
 }
 
 
-static void Modes__updateColor (void)
-{
-	uint8_t USARTbuffer[USART_DATA_LENGTH_COLOR];
-
-	if (E_OK == USART__readData(USARTbuffer, USART_DATA_LENGTH_COLOR, USART_REQESTER_COLOR))
-	{
-		Modes_currentColor.red = USARTbuffer[1];
-		Modes_currentColor.green = USARTbuffer[2];
-		Modes_currentColor.blue = USARTbuffer[3];
-	}
-
-	if (Buttons__isPressed(&buttonFunc1))
-	{
-		Modes_currentColor.red--;
-	}
-
-	if (Buttons__isPressed(&buttonFunc2))
-	{
-		Modes_currentColor.green--;
-	}
-
-	if (Buttons__isPressed(&buttonFunc3))
-	{
-		Modes_currentColor.blue--;
-	}
-}
-
-
 static void Mode__eepromStorage (void)
 {
 	eeprom_update_byte(&mode_EEPROM, currentMode);
@@ -97,8 +68,6 @@ static void Mode__eepromStorage (void)
 
 static void Modes__updateMatrix (void)
 {
-	Modes__updateColor();
-
 	switch (currentMode)
 	{
 		case MODE__STARTUP:
@@ -121,7 +90,6 @@ static void Modes__updateMatrix (void)
 
 		case MODE__DOUBLE_COLOR:
 		{
-			LEDMatrix__clearMatrix();
 			DoubleColor__UpdateMatrix_x10();
 			break;
 		}
