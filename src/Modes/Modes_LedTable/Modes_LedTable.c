@@ -16,16 +16,19 @@ uint8_t mode_EEPROM EEMEM;
 
 uint16_t timerModeChangeConf[MODE_NB] =
 {
-		0,	/* MODE__STARTUP = 0 */
-		0,	/* MODE__OFF */
-		0,	/* MODE__ALL_ON */
-		0,	/* MODE__BLENDING_SLOW */
-		0,	/* MODE__BLENDING_SWEEP */
-		0,	/* MODE__BLENDING_SWEEP_FAST */
-		0,	/* MODE__BLENDING_CLOCK */
-		0,	/* MODE__BLENDING_CLOCK_INVERTED */
-		0,	/* MODE__CLOCK */
-		0	/* MODE__SNAKE */
+		0xFFFF,	/* MODE__STARTUP = 0 */
+		0xFFFF,	/* MODE__OFF */
+		0xFFFF,	/* MODE__ALL_ON */
+		0xFFFF,	/* MODE__BLENDING_SLOW */
+		0xFFFF, /* MODE__BLENDING_SLOW_2_COLORS */
+		0xFFFF,	/* MODE__BLENDING_FAST */
+		0xFFFF,	/* MODE__BLENDING_FAST_2_COLORS */
+		0xFFFF,	/* MODE__BLENDING_SWEEP */
+		0xFFFF,	/* MODE__BLENDING_SWEEP_FAST */
+		0xFFFF,	/* MODE__BLENDING_CLOCK */
+		0xFFFF,	/* MODE__BLENDING_CLOCK_INVERTED */
+		0xFFFF,	/* MODE__CLOCK */
+		0xFFFF,	/* MODE__SNAKE */
 };
 
 
@@ -105,9 +108,27 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
+		case MODE__BLENDING_SLOW_2_COLORS:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_SLOW_2_COLORS);
+			break;
+		}
+
+		case MODE__BLENDING_FAST_2_COLORS:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_FAST_2_COLORS);
+			break;
+		}
+
 		case MODE__BLENDING_SWEEP:
 		{
 			ColorBlending__updateMatrix(BLENDING_MODE_SWEEP);
+			break;
+		}
+
+		case MODE__BLENDING_FAST:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_FAST);
 			break;
 		}
 
@@ -193,7 +214,7 @@ void Modes__x10 (void)
 			Modes__setNextMode();
 			timerModeChange = 0;
 		}
-		else
+		else if (timerModeChangeConf[currentMode] != 0xFFFF)
 		{
 			if (timerModeChange < timerModeChangeConf[currentMode])
 			{
@@ -204,6 +225,10 @@ void Modes__x10 (void)
 				Modes__setNextMode();
 				timerModeChange = 0;
 			}
+		}
+		else
+		{
+			/* nothing to do */
 		}
 
 		if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))

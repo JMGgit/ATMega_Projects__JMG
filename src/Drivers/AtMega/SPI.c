@@ -25,8 +25,7 @@ void SPI__masterInit (void)
 	SPSR = 1 << SPI2X;
 #elif (SPI_SPEED == SPI_CLK_DIV_16)
 	/* enable SPI, master, clock rate fck/16 */
-	SPCR = (1 << SPE) | (1 << MSTR);
-	SPSR = 0;
+	SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
 #else
 #error : SPI speed not defined!
 #endif

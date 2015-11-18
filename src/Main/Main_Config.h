@@ -152,9 +152,9 @@
 #define TEST_BRIGHTNESS_LEVEL				60
 
 /* runtime test */
-#define RUNTIME_TEST_OFF				0
-#define RUNTIME_TEST_ON					0
-#define RUNTIME_TEST					RUNTIME_TEST_OFF
+#define RUNTIME_TEST_OFF					1
+#define RUNTIME_TEST_ON						2
+#define RUNTIME_TEST						RUNTIME_TEST_OFF
 
 #endif
 
@@ -231,8 +231,8 @@
 #define TEST_BRIGHTNESS_LEVEL			60
 
 /* runtime test */
-#define RUNTIME_TEST_OFF				0
-#define RUNTIME_TEST_ON					0
+#define RUNTIME_TEST_OFF				1
+#define RUNTIME_TEST_ON					2
 #define RUNTIME_TEST					RUNTIME_TEST_OFF
 
 #endif
@@ -272,7 +272,7 @@
 
 #define BUTTONS_IRMP_OFF				1
 #define BUTTONS_IRMP_ON					2
-#define BUTTONS_IRMP					BUTTONS_IRMP_OFF
+#define BUTTONS_IRMP					BUTTONS_IRMP_ON
 
 /* button for off mode */
 #define BUTTON_OFF_AVAILABLE_NO			1
@@ -309,8 +309,8 @@
 #define TEST_BRIGHTNESS_LEVEL			60
 
 /* runtime test */
-#define RUNTIME_TEST_OFF				0
-#define RUNTIME_TEST_ON					0
+#define RUNTIME_TEST_OFF				1
+#define RUNTIME_TEST_ON					2
 #define RUNTIME_TEST					RUNTIME_TEST_OFF
 
 #endif
@@ -387,8 +387,8 @@
 #define TEST_BRIGHTNESS_LEVEL			60
 
 /* runtime test */
-#define RUNTIME_TEST_OFF				0
-#define RUNTIME_TEST_ON					0
+#define RUNTIME_TEST_OFF				1
+#define RUNTIME_TEST_ON					2
 #define RUNTIME_TEST					RUNTIME_TEST_OFF
 
 #endif

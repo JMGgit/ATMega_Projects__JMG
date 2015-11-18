@@ -13,10 +13,10 @@
 #define ON_TO_OFF						2
 #define ON								3
 
-#define UPDATE_TIME				0
-#define COLOR_STEP				5
-#define SNAKE_SIZE				4
-#define SNAKE_TRANSITION_TIME	60
+#define UPDATE_TIME						0
+#define COLOR_STEP						5
+#define SNAKE_SIZE						4
+#define SNAKE_TRANSITION_TIME			60
 
 
 static RGB_Color_t colorCalc, offOnColorCalc, onOffColorCalc, colorTransition;
@@ -201,6 +201,8 @@ static void DoubleColor__updateLeds (void)
 	uint8_t linIt, colIt;
 	RGB_Color_t tempColor, tempOnOffColor, tempOffOnColor;
 
+	LEDMatrix__clearMatrix();
+
 	for (linIt = 0; linIt < LED_MATRIX_SIZE_LIN; linIt++)
 	{
 		if ((linIt % 2) == 0)
@@ -216,8 +218,6 @@ static void DoubleColor__updateLeds (void)
 			tempOnOffColor = getRGBColorFromComponents(onOffColorCalc.green, onOffColorCalc.blue, onOffColorCalc. red);
 			tempOffOnColor = getRGBColorFromComponents(offOnColorCalc.green, offOnColorCalc.blue, offOnColorCalc. red);
 		}
-
-		LEDMatrix__clearMatrix();
 
 		for (colIt = 0; colIt < LED_MATRIX_SIZE_COL; colIt++)
 		{

@@ -178,7 +178,7 @@ avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/av
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/Fuses/Write=true
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/NoChipErase=false
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/NoSigCheck=false
-avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/NoVerify=false
+avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/NoVerify=true
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/NoWrite=false
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/OtherOptions=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/ProgrammerID=programmerconfig.2

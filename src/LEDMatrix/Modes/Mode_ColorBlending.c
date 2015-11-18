@@ -21,7 +21,6 @@ static RGB_Color_t colorItTable[LED_MATRIX_SIZE_COL];
 static uint8_t tableIt = 0;
 static uint8_t timerColorChange = 0;
 static uint8_t colorStep = 0;
-static uint16_t linIt, colIt;
 
 
 RGB_Color_t ColorBlending__getCurrentColor (void)
@@ -183,6 +182,7 @@ void ColorBlending__calcCurrentColor (uint8_t timerColorChange, uint8_t colorSte
 
 void ColorBlending__updateMatrix (uint8_t blendingMode)
 {
+	uint16_t linIt, colIt;
 	RGB_Color_t *l_currentColor;
 	RGB_Color_t l_currentColorB;
 
@@ -260,6 +260,7 @@ void ColorBlending__updateMatrix (uint8_t blendingMode)
 																(*l_currentColor).green);
 
 				}
+
 				for (colIt = 1; colIt <= LED_MATRIX_SIZE_COL; colIt++)
 				{
 					LEDMatrix__setRGBColor(linIt, colIt, l_currentColorB);

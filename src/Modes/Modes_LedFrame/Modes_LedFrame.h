@@ -27,7 +27,7 @@ typedef enum
 	MODE_NB
 } Mode_t;
 
-#define MODE__INIT MODE__BLENDING_SLOW_2_COLORS
+#define MODE__INIT (MODE__OFF + 1)
 
 
 #endif /* MODES_LEDFRAME_H_ */

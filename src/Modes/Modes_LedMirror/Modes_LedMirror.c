@@ -17,10 +17,13 @@ uint8_t mode_EEPROM EEMEM;
 
 uint16_t timerModeChangeConf[MODE_NB] =
 {
-		0, 		/* MODE__STARTUP */
-		0, 		/* MODE__OFF*/
+		0xFFFF,	/* MODE__STARTUP */
+		0xFFFF,	/* MODE__OFF*/
+		60000,	/* MODE__BLENDING_SLOW */
 		60000, 	/* MODE__BLENDING_SLOW_2_COLORS */
-		30000, 	/* MODE__BLENDING_SWEEP_FAST */
+		60000,	/* MODE__BLENDING_FAST */
+		60000,	/* MODE__BLENDING_FAST_2_COLORS */
+		60000, 	/* MODE__BLENDING_SWEEP_FAST */
 		60000 	/* MODE__DOUBLE_COLOR*/
 };
 
@@ -76,9 +79,27 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
+		case MODE__BLENDING_SLOW:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_SLOW);
+			break;
+		}
+
+		case MODE__BLENDING_FAST:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_FAST);
+			break;
+		}
+
 		case MODE__BLENDING_SLOW_2_COLORS:
 		{
 			ColorBlending__updateMatrix(BLENDING_MODE_SLOW_2_COLORS);
+			break;
+		}
+
+		case MODE__BLENDING_FAST_2_COLORS:
+		{
+			ColorBlending__updateMatrix(BLENDING_MODE_FAST_2_COLORS);
 			break;
 		}
 
@@ -90,7 +111,8 @@ static void Modes__updateMatrix (void)
 
 		case MODE__DOUBLE_COLOR:
 		{
-			DoubleColor__UpdateMatrix_x10();
+			//DoubleColor__UpdateMatrix_x10();
+			Modes__setNextMode();
 			break;
 		}
 
