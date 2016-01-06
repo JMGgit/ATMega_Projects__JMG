@@ -36,7 +36,7 @@ typedef enum
 } Mode_t;
 
 
-#define MODE__INIT (MODE_OFF + 1)
+#define MODE__INIT (MODE__OFF + 1)
 
 
 #endif /* MODES_LEDTABLE_H_ */

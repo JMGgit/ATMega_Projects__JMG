@@ -13,7 +13,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app" description="LED Table" id="de.innot.avreclipse.configuration.app.release.1446605198.1815058140" name="PrjTable" parent="de.innot.avreclipse.configuration.app.release">
+				<configuration artifactExtension="elf" artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" description="LED Table" id="de.innot.avreclipse.configuration.app.release.1446605198.1815058140" name="PrjTable" parent="de.innot.avreclipse.configuration.app.release">
 					<folderInfo id="de.innot.avreclipse.configuration.app.release.1446605198.1815058140." name="/" resourcePath="">
 						<toolChain id="de.innot.avreclipse.toolchain.winavr.app.release.726092110" name="AVR-GCC Toolchain" superClass="de.innot.avreclipse.toolchain.winavr.app.release">
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.925215199" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release"/>
@@ -94,7 +94,7 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release,org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app" description="Temperature Logger" id="de.innot.avreclipse.configuration.app.release.1446605198.1013229584" name="PrjTemp" parent="de.innot.avreclipse.configuration.app.release">
+				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" description="Temperature Logger" id="de.innot.avreclipse.configuration.app.release.1446605198.1013229584" name="PrjTemp" parent="de.innot.avreclipse.configuration.app.release">
 					<folderInfo id="de.innot.avreclipse.configuration.app.release.1446605198.1013229584." name="/" resourcePath="">
 						<toolChain id="de.innot.avreclipse.toolchain.winavr.app.release.2029150830" name="AVR-GCC Toolchain" superClass="de.innot.avreclipse.toolchain.winavr.app.release">
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.1892919751" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release"/>
@@ -488,24 +488,24 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.LanguageSettingsProviders"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
-		<configuration configurationName="Release">
-			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
-		</configuration>
+		<configuration configurationName="PrjFrame"/>
+		<configuration configurationName="PrjQtwo3"/>
+		<configuration configurationName="PrjTemp"/>
+		<configuration configurationName="PrjTable"/>
+		<configuration configurationName="Project__Qlocktwo"/>
+		<configuration configurationName="PrjMirror"/>
 		<configuration configurationName="Qlocktwo_3_0">
 			<resource resourceType="PROJECT" workspacePath="/ATMega"/>
 		</configuration>
+		<configuration configurationName="Project__Temperature_Logger"/>
 		<configuration configurationName="PrjQtwo2"/>
-		<configuration configurationName="PrjMirror"/>
-		<configuration configurationName="Project__Qlocktwo"/>
+		<configuration configurationName="Release">
+			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
+		</configuration>
 		<configuration configurationName="Project__Led_Table"/>
 		<configuration configurationName="Qlocktwo">
 			<resource resourceType="PROJECT" workspacePath="/TemperatureLogger"/>
 		</configuration>
-		<configuration configurationName="PrjFrame"/>
-		<configuration configurationName="PrjQtwo3"/>
-		<configuration configurationName="PrjTemp"/>
-		<configuration configurationName="Project__Temperature_Logger"/>
-		<configuration configurationName="PrjTable"/>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
 	</storageModule>
