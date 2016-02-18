@@ -104,6 +104,7 @@
 
 
 #if (PROJECT == PROJECT__QLOCKTWO)
+#ifdef __AVR_ATmega644P__ /* Qlocktwo 2.x / 3.0 */
 
 /*********** WS2801 ***********/
 #define WS2801_NB							114
@@ -203,6 +204,108 @@
 
 /*********** LDR ***********/
 #define LDR_ADC_PIN		0
+
+#endif
+#endif
+
+
+#if (PROJECT == PROJECT__QLOCKTWO)
+#ifdef __AVR_ATmega328P__ /* Qlocktwo 4.0 */
+
+/*********** WS2801 ***********/
+#define WS2812_NB							114
+#define RGB_LED_CONNECTION__RED_GREEN_BLUE	1
+#define RGB_LED_CONNECTION__BLUE_GREEN_RED	2
+#define RGB_LED_CONNECTION					RGB_LED_CONNECTION__BLUE_GREEN_RED
+
+/********** DCF77 ***************/
+#define DCF77_DATA_DDR		DDRB
+#define DCF77_DATA_PORT		PINB
+#define DCF77_DATA_PIN		PB0
+#define DCF77_TASK_TIME		100
+
+/*********** CTL LED ***********/
+#define UC_LED_DDR			DDRD
+#define UC_LED_PORT			PORTD
+#define UC_LED_PIN			PD4
+#define CLOCK_LED_DDR		DDRD
+#define CLOCK_LED_PORT		PORTD
+#define CLOCK_LED_PIN		PD5
+#define TEST1_LED_DDR		DDRD
+#define TEST1_LED_PORT		PORTD
+#define TEST1_LED_PIN		PD6
+#define TEST2_LED_DDR		DDRD
+#define TEST2_LED_PORT		PORTD
+#define TEST2_LED_PIN		PD7
+#define TEST3_LED_DDR		DDRD
+#define TEST3_LED_PORT		PORTD
+#define TEST3_LED_PIN		PD3
+#define DCF77_LED_DDR		TEST1_LED_DDR
+#define DCF77_LED_PORT		TEST1_LED_PORT
+#define DCF77_LED_PIN		TEST1_LED_PIN
+#define IRMP_LED_DDR		TEST2_LED_DDR
+#define IRMP_LED_PORT		TEST2_LED_PORT
+#define IRMP_LED_PIN		TEST2_LED_PIN
+#define RUNTIME_LED_DDR 	TEST2_LED_DDR
+#define RUNTIME_LED_PORT 	TEST2_LED_PORT
+#define RUNTIME_LED_PIN		TEST2_LED_PIN
+#define RUNTIME_OSC_DDR 	TEST3_LED_DDR
+#define RUNTIME_OSC_PORT 	TEST3_LED_PORT
+#define RUNTIME_OSC_PIN		TEST3_LED_PIN
+
+/********** USART *********/
+#define USART_DATA_LENGTH_READ_MAX	0
+
+/********** IRMP **********/
+#define IRMP_REMOTE_ADDRESS		0xF708
+#define IRMP_BUTTON_OFF			0x001B
+#define IRMP_BUTTON_MODE		0x0004
+#define IRMP_BUTTON_FUNC1		0x001F
+#define IRMP_BUTTON_FUNC2		0x001E
+#define IRMP_BUTTON_FUNC3		0x001A
+#define IRMP_BUTTON_UP			0x0005
+#define IRMP_BUTTON_DOWN		0x0000
+#define IRMP_BUTTON_LEFT		0x0008
+#define IRMP_BUTTON_RIGHT		0x0001
+
+
+/*********** LDR ***********/
+#define LDR_ADC_PIN		0
+
+/* SPI not needed but speed has to be defined */
+#define SPI_SPEED SPI_DISABLED
+
+#endif
+#endif
+
+
+#if (PROJECT == PROJECT__IRMP)
+
+/*********** CTL LED ***********/
+//#define UC_LED_DDR			DDRB
+//#define UC_LED_PORT			PORTB
+//#define UC_LED_PIN			PB1
+//#define IRMP_LED_DDR			UC_LED_DDR
+//#define IRMP_LED_PORT			UC_LED_PORT
+//#define IRMP_LED_PIN			UC_LED_PIN
+
+/********** USART *********/
+#define USART_DATA_LENGTH_READ_MAX	0
+
+/********** IRMP **********/
+#define IRMP_REMOTE_ADDRESS		0xF708
+#define IRMP_BUTTON_OFF			0x001B
+#define IRMP_BUTTON_MODE		0x0004
+#define IRMP_BUTTON_FUNC1		0x001F
+#define IRMP_BUTTON_FUNC2		0x001E
+#define IRMP_BUTTON_FUNC3		0x001A
+#define IRMP_BUTTON_UP			0x0005
+#define IRMP_BUTTON_DOWN		0x0000
+#define IRMP_BUTTON_LEFT		0x0008
+#define IRMP_BUTTON_RIGHT		0x0001
+
+/* SPI not needed but speed has to be defined */
+#define SPI_SPEED SPI_DISABLED
 
 #endif
 
@@ -448,6 +551,7 @@
 /* SPI SPEED */
 #define SPI_CLK_DIV_16			1
 #define SPI_CLK_DIV_8			2
+#define SPI_DISABLED			255
 
 #ifdef WS2801_NB
 #if (WS2801_NB < 100)

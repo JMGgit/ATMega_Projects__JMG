@@ -12,8 +12,7 @@
 #include "Main_Types.h"
 #include "Main_Config.h"
 #include "Drivers_Config.h"
-#include "AtMega/AtMega.h"
-
+#include "uC.h"
 
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
 

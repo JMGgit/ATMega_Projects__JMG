@@ -19,6 +19,9 @@ Button_t buttonRight = {BITMSK_BUTTON_RIGHT,	0, FALSE, FALSE};
 Button_t buttonUp    = {BITMSK_BUTTON_UP,		0, FALSE, FALSE};
 Button_t buttonDown  = {BITMSK_BUTTON_DOWN,		0, FALSE, FALSE};
 
+#if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
+uint16_t TWI_sendBuffer;
+#endif
 
 void Buttons__init (void)
 {
@@ -36,6 +39,7 @@ void Buttons__init (void)
 }
 
 
+#if (BUTTONS_WIRED != BUTTONS_WIRED_OFF)
 static void Buttons__updateState (uint16_t receiveBuffer, Button_t *button)
 {
 	if (receiveBuffer & (button->bitMask))
@@ -65,6 +69,7 @@ static void Buttons__updateState (uint16_t receiveBuffer, Button_t *button)
 		button->pressedOnce = FALSE;
 	}
 }
+#endif
 
 
 #if (BUTTONS_USART == BUTTONS_USART_ON)
@@ -84,7 +89,7 @@ static void Buttons__updateState_USART (uint16_t receiveBuffer, Button_t *button
 #endif
 
 
-#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+#if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
 static void Buttons__updateState_IRMP (uint8_t signalValid, uint16_t receiveBuffer, uint8_t repeat, Button_t *button)
 {
 	if (signalValid)
@@ -128,21 +133,43 @@ static void Buttons__updateState_IRMP (uint8_t signalValid, uint16_t receiveBuff
 #endif
 
 
-void Buttons__x10 (void)
+#if (BUTTONS_TWI == BUTTONS_TWI_ON)
+static void Buttons__updateState_TWI (uint16_t receiveBuffer, Button_t *button)
 {
-	uint16_t buttonWired = 0;
-#if (BUTTONS_USART == BUTTONS_USART_ON)
-	uint8_t USARTBuffer[USART_DATA_LENGTH_BUTTON];
-	uint16_t buttonUSART = 0;
+	if (receiveBuffer & (button->bitMask))
+	{
+		if (button->debounceTime < 0xFF)
+		{
+			button->debounceTime++;
+		}
+	}
+	else
+	{
+		button->debounceTime = 0;
+	}
+
+	if (button->debounceTime > BUTTON_DEBOUNCE_TIME)
+	{
+		button->pressedTWI = TRUE;
+		button->pressedOnceTWI = FALSE;
+	}
+	else if (button->debounceTime == BUTTON_DEBOUNCE_TIME)
+	{
+		button->pressedOnceTWI = TRUE;
+	}
+	else
+	{
+		button->pressedTWI = FALSE;
+		button->pressedOnceTWI = FALSE;
+	}
+}
 #endif
 
-#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
-	uint8_t signalValidIRMP = FALSE;
-	uint8_t IRMPBuffer[2];
-	uint8_t IRMPBufferVal;
-	uint16_t buttonIRMP = 0;
-	uint8_t repeatIRMP = FALSE;
-#endif
+
+void Buttons__x10 (void)
+{
+#if (BUTTONS_WIRED != BUTTONS_WIRED_OFF)
+	uint16_t buttonWired = 0;
 
 #if (BUTTONS_WIRED == BUTTONS_WIRED_HC165)
 	uint8_t buttonMultiplex;
@@ -162,14 +189,44 @@ void Buttons__x10 (void)
 					);
 #endif
 
+	Buttons__updateState(buttonWired, &buttonOff);
+	Buttons__updateState(buttonWired, &buttonMode);
+	Buttons__updateState(buttonWired, &buttonFunc1);
+	Buttons__updateState(buttonWired, &buttonFunc2);
+	Buttons__updateState(buttonWired, &buttonFunc3);
+	Buttons__updateState(buttonWired, &buttonLeft);
+	Buttons__updateState(buttonWired, &buttonRight);
+	Buttons__updateState(buttonWired, &buttonUp);
+	Buttons__updateState(buttonWired, &buttonDown);
+#endif
+
 #if (BUTTONS_USART == BUTTONS_USART_ON)
+	uint8_t USARTBuffer[USART_DATA_LENGTH_BUTTON];
+	uint16_t buttonUSART = 0;
+
 	if (E_OK == USART__readData(USARTBuffer, USART_DATA_LENGTH_BUTTON, USART_REQESTER_BUTTON))
 	{
 		buttonUSART = USARTBuffer[1];
 	}
+
+	Buttons__updateState_USART(buttonUSART, &buttonOff);
+	Buttons__updateState_USART(buttonUSART, &buttonMode);
+	Buttons__updateState_USART(buttonUSART, &buttonFunc1);
+	Buttons__updateState_USART(buttonUSART, &buttonFunc2);
+	Buttons__updateState_USART(buttonUSART, &buttonFunc3);
+	Buttons__updateState_USART(buttonUSART, &buttonLeft);
+	Buttons__updateState_USART(buttonUSART, &buttonRight);
+	Buttons__updateState_USART(buttonUSART, &buttonUp);
+	Buttons__updateState_USART(buttonUSART, &buttonDown);
 #endif
 
-#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+#if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
+	uint8_t signalValidIRMP = FALSE;
+	uint8_t IRMPBuffer[2];
+	uint8_t IRMPBufferVal;
+	uint16_t buttonIRMP = 0;
+	uint8_t repeatIRMP = FALSE;
+
 	if (E_OK == IRMP__readData(IRMP_REMOTE_ADDRESS, IRMPBuffer, 2, &repeatIRMP))
 	{
 		signalValidIRMP = TRUE;
@@ -216,32 +273,7 @@ void Buttons__x10 (void)
 	{
 		signalValidIRMP = FALSE;
 	}
-#endif
 
-	/* update buttons states */
-	Buttons__updateState(buttonWired, &buttonOff);
-	Buttons__updateState(buttonWired, &buttonMode);
-	Buttons__updateState(buttonWired, &buttonFunc1);
-	Buttons__updateState(buttonWired, &buttonFunc2);
-	Buttons__updateState(buttonWired, &buttonFunc3);
-	Buttons__updateState(buttonWired, &buttonLeft);
-	Buttons__updateState(buttonWired, &buttonRight);
-	Buttons__updateState(buttonWired, &buttonUp);
-	Buttons__updateState(buttonWired, &buttonDown);
-
-#if (BUTTONS_USART == BUTTONS_USART_ON)
-	Buttons__updateState_USART(buttonUSART, &buttonOff);
-	Buttons__updateState_USART(buttonUSART, &buttonMode);
-	Buttons__updateState_USART(buttonUSART, &buttonFunc1);
-	Buttons__updateState_USART(buttonUSART, &buttonFunc2);
-	Buttons__updateState_USART(buttonUSART, &buttonFunc3);
-	Buttons__updateState_USART(buttonUSART, &buttonLeft);
-	Buttons__updateState_USART(buttonUSART, &buttonRight);
-	Buttons__updateState_USART(buttonUSART, &buttonUp);
-	Buttons__updateState_USART(buttonUSART, &buttonDown);
-#endif
-
-#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
 	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonOff);
 	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonMode);
 	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonFunc1);
@@ -251,8 +283,76 @@ void Buttons__x10 (void)
 	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonRight);
 	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonUp);
 	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonDown);
+
+#if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
+	TWI_sendBuffer =
+				((buttonOff.pressedIRMP) << BITPOS_BUTTON_OFF)
+			|	((buttonMode.pressedIRMP) << BITPOS_BUTTON_MODE)
+			|	((buttonFunc1.pressedIRMP) << BITPOS_BUTTON_FUNC1)
+			|	((buttonFunc2.pressedIRMP) << BITPOS_BUTTON_FUNC2)
+			|	((buttonFunc3.pressedIRMP) << BITPOS_BUTTON_FUNC3)
+			|	((buttonLeft.pressedIRMP) << BITPOS_BUTTON_LEFT)
+			|	((buttonRight.pressedIRMP) << BITPOS_BUTTON_RIGHT)
+			|	((buttonUp.pressedIRMP) << BITPOS_BUTTON_UP)
+			|	((buttonDown.pressedIRMP) << BITPOS_BUTTON_DOWN)
+			;
+#endif
+#endif
+
+#if (BUTTONS_TWI == BUTTONS_TWI_ON)
+	uint16_t buttonTWI = 0;
+
+	uint8_t data[2];
+	uint8_t receiveState = E_NOT_OK;
+
+	while (receiveState != E_OK)
+	{
+		receiveState = TWI__masterReadData(&data[0], 2, BUTTONS_TWI_SLAVE_ADDRESS);
+	}
+
+	receiveState = E_NOT_OK;
+
+	buttonTWI = data[0] + (data[1] << 8);
+
+	Buttons__updateState_TWI(buttonTWI, &buttonOff);
+	Buttons__updateState_TWI(buttonTWI, &buttonMode);
+	Buttons__updateState_TWI(buttonTWI, &buttonFunc1);
+	Buttons__updateState_TWI(buttonTWI, &buttonFunc2);
+	Buttons__updateState_TWI(buttonTWI, &buttonFunc3);
+	Buttons__updateState_TWI(buttonTWI, &buttonLeft);
+	Buttons__updateState_TWI(buttonTWI, &buttonRight);
+	Buttons__updateState_TWI(buttonTWI, &buttonUp);
+	Buttons__updateState_TWI(buttonTWI, &buttonDown);
+
+	if (		((buttonTWI & BITMSK_BUTTON_OFF) != 0)
+			||	((buttonTWI & BITMSK_BUTTON_MODE) != 0)
+			||	((buttonTWI & BITMSK_BUTTON_FUNC1) != 0)
+			||	((buttonTWI & BITMSK_BUTTON_FUNC2) != 0)
+			||	((buttonTWI & BITMSK_BUTTON_FUNC3) != 0)
+			||	((buttonTWI & BITMSK_BUTTON_LEFT) != 0)
+			||	((buttonTWI & BITMSK_BUTTON_RIGHT) != 0)
+			||	((buttonTWI & BITMSK_BUTTON_UP) != 0)
+			||	((buttonTWI & BITMSK_BUTTON_DOWN) != 0)
+	)
+	{
+		setHigh(IRMP_LED_PORT, IRMP_LED_PIN);
+	}
+	else
+	{
+		setLow(IRMP_LED_PORT, IRMP_LED_PIN);
+	}
 #endif
 }
+
+
+#if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
+void Buttons__TwiDataCallback (uint8_t input_buffer_length, const uint8_t *input_buffer, uint8_t *output_buffer_length, uint8_t *output_buffer)
+{
+	Buttons__x10();
+	memcpy(output_buffer, &TWI_sendBuffer, 2);
+	*output_buffer_length = 2;
+}
+#endif
 
 
 uint8_t Buttons__isPressed (Button_t *button)
@@ -261,8 +361,11 @@ uint8_t Buttons__isPressed (Button_t *button)
 #if (BUTTONS_USART == BUTTONS_USART_ON)
 			|| button->pressedUSART
 #endif
-#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+#if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
 			|| button->pressedIRMP
+#endif
+#if (BUTTONS_TWI == BUTTONS_TWI_ON)
+			|| button->pressedTWI
 #endif
 			);
 }
@@ -274,8 +377,11 @@ uint8_t Buttons__isPressedOnce (Button_t *button)
 #if (BUTTONS_USART == BUTTONS_USART_ON)
 			|| button->pressedOnceUSART
 #endif
-#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+#if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
 			|| button->pressedOnceIRMP
+#endif
+#if (BUTTONS_TWI == BUTTONS_TWI_ON)
+			|| button->pressedOnceTWI
 #endif
 			);
 }

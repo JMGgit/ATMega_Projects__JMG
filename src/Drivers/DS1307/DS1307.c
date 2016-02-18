@@ -25,7 +25,7 @@ void DS1307__init (void)
 
 	while (transmitState != E_OK)
 	{
-	    transmitState = TWI__transmitData(data, 1, DS1307_ADDRESS);
+	    transmitState = TWI__masterTransmitData(data, 1, DS1307_ADDRESS);
 	}
 
 	transmitState = E_NOT_OK;
@@ -33,7 +33,7 @@ void DS1307__init (void)
 	/* read first byte */
 	while (receiveState != E_OK)
 	{
-		receiveState = TWI__readData (&data[1], 1, DS1307_ADDRESS);
+		receiveState = TWI__masterReadData (&data[1], 1, DS1307_ADDRESS);
 	}
 
 	receiveState = E_NOT_OK;
@@ -43,7 +43,7 @@ void DS1307__init (void)
 
 	while (transmitState != E_OK)
     {
-	    transmitState = TWI__transmitData(data, 2, DS1307_ADDRESS);
+	    transmitState = TWI__masterTransmitData(data, 2, DS1307_ADDRESS);
     }
 
 	transmitState = E_NOT_OK;
@@ -54,7 +54,7 @@ void DS1307__init (void)
 
     while (transmitState != E_OK)
     {
-        transmitState = TWI__transmitData(data, 2, DS1307_ADDRESS);
+        transmitState = TWI__masterTransmitData(data, 2, DS1307_ADDRESS);
     }
 
     transmitState = E_NOT_OK;
@@ -80,7 +80,7 @@ void DS1307__sendTimeToRTC (void)
 
     while (transmitState != E_OK)
     {
-        transmitState = TWI__transmitData(data, 8, DS1307_ADDRESS);
+        transmitState = TWI__masterTransmitData(data, 8, DS1307_ADDRESS);
     }
 
 	transmitState = E_NOT_OK;
@@ -90,38 +90,35 @@ void DS1307__sendTimeToRTC (void)
 void DS1307__updateTimeFromRTC (void)
 {
 	uint8_t data[8];
-	static uint8_t transmitState = E_NOT_OK;
-	static uint8_t receiveState = E_NOT_OK;
+	uint8_t transmitState = E_NOT_OK;
+	uint8_t receiveState = E_NOT_OK;
 
 	/* set clock register and read bytes */
 	data[0] = 0x00;
 
 	while (transmitState != E_OK)
 	{
-	    transmitState = TWI__transmitData(data, 1, DS1307_ADDRESS);
+	    transmitState = TWI__masterTransmitData(data, 1, DS1307_ADDRESS);
 	}
 
 	if (transmitState == E_OK)
 	{
 	    while (receiveState != E_OK)
 	    {
-	        receiveState = TWI__readData(&data[1], 7, DS1307_ADDRESS);
+	        receiveState = TWI__masterReadData(&data[1], 7, DS1307_ADDRESS);
 	    }
 
-	    if (receiveState == E_OK)
-	    {
-	        /* copy to buffer */
-	        currentTime.seconds = (((data[1] & 0x70) >> 4) * 10) + (data[1] & 0x0F);
-	        currentTime.minutes = (((data[2] & 0x70) >> 4) * 10) + (data[2] & 0x0F);
-	        currentTime.hours = (((data[3] & 0x30) >> 4) * 10) + (data[3] & 0x0F);
-	        currentTime.day = data[4] & 0x07;
-	        currentTime.date = (((data[5] & 0x30) >> 4) * 10) + (data[5] & 0x0F);
-	        currentTime.month = (((data[6] & 0x10) >> 4) * 10) + (data[6] & 0x0F);
-	        currentTime.year = (((data[7] & 0xF0) >> 4) * 10) + (data[7] & 0x0F);
+	    /* copy to buffer */
+	    currentTime.seconds = (((data[1] & 0x70) >> 4) * 10) + (data[1] & 0x0F);
+	    currentTime.minutes = (((data[2] & 0x70) >> 4) * 10) + (data[2] & 0x0F);
+	    currentTime.hours = (((data[3] & 0x30) >> 4) * 10) + (data[3] & 0x0F);
+	    currentTime.day = data[4] & 0x07;
+	    currentTime.date = (((data[5] & 0x30) >> 4) * 10) + (data[5] & 0x0F);
+	    currentTime.month = (((data[6] & 0x10) >> 4) * 10) + (data[6] & 0x0F);
+	    currentTime.year = (((data[7] & 0xF0) >> 4) * 10) + (data[7] & 0x0F);
 
-	        transmitState = E_NOT_OK;
-	        receiveState = E_NOT_OK;
-	    }
+	    transmitState = E_NOT_OK;
+	    receiveState = E_NOT_OK;
 	}
 }
 

@@ -9,10 +9,11 @@
 #include <IRMP/IRMP_Appl.h>
 
 
-#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+#if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
 
 static void IRMP__testLed (uint8_t on)
 {
+#ifdef IRMP_LED_PORT
 	if (on)
 	{
 		setHigh(IRMP_LED_PORT, IRMP_LED_PIN);
@@ -21,6 +22,7 @@ static void IRMP__testLed (uint8_t on)
 	{
 		setLow(IRMP_LED_PORT, IRMP_LED_PIN);
 	}
+#endif
 }
 
 
@@ -31,12 +33,19 @@ void IRMP__init (void)
 
 	/* counter */
 	TCCR0A = (1 << WGM01); 					/* CTC counter */
-	TCCR0B |= (1 << CS01); 					/* prescaler: 8 */
+	TCCR0B = (1 << CS01); 					/* prescaler: 8 */
 	OCR0A = (F_CPU / F_INTERRUPTS) / 8 - 1;	/* interrupt every 15 000 cycles */
-	TIMSK0 |= (1 << OCIE0A);
+#if defined (TIMSK0)
+	TIMSK0 |= (1 << OCIE0A);				/* enable interrupt */
+#else
+	TIMSK |= (1 << OCIE0A);					/* enable interrupt */
+#endif
 
 	/* callback to illuminate test LED */
 	irmp_set_callback_ptr(&IRMP__testLed);
+#ifdef IRMP_LED_PORT
+	setOutput(IRMP_LED_DDR, IRMP_LED_PIN);
+#endif
 }
 
 

@@ -22,7 +22,7 @@
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
 
-#include <IRMP/irmpLib/irmp.h>
+#include "irmp.h"
 
 #if IRMP_SUPPORT_GRUNDIG_PROTOCOL == 1 || IRMP_SUPPORT_NOKIA_PROTOCOL == 1 || IRMP_SUPPORT_IR60_PROTOCOL == 1
 #  define IRMP_SUPPORT_GRUNDIG_NOKIA_IR60_PROTOCOL  1

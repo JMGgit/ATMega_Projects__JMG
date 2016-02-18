@@ -96,10 +96,21 @@
  * Change hardware pin here for ATMEL AVR
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
-#if defined (ATMEL_AVR)                                                 // use PA1 as IR input on AVR
+#if defined (ATMEL_AVR)
+#if defined (__AVR_ATmega644P__)
 #  define IRMP_PORT_LETTER                      A
 #  define IRMP_BIT_NUMBER                       1
 
+#elif defined (__AVR_ATmega328P__)
+#  define IRMP_PORT_LETTER                      C
+#  define IRMP_BIT_NUMBER                       1
+
+#elif defined (__AVR_ATtiny85__)
+#  define IRMP_PORT_LETTER                      B
+#  define IRMP_BIT_NUMBER                       1
+#else
+#error controller not supported
+#endif
 /*---------------------------------------------------------------------------------------------------------------------------------------------------
  * Change hardware pin here for PIC C18 or XC8 compiler
  *---------------------------------------------------------------------------------------------------------------------------------------------------

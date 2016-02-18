@@ -13,8 +13,10 @@
 #include "Main_Config.h"
 #include "Drivers.h"
 #include "Buttons.h"
+#if (PROJECT != PROJECT__IRMP)
 #include "Clock.h"
 #include "Modes.h"
 #include "Lcd.h"
+#endif
 
 #endif /* MAIN_H_ */

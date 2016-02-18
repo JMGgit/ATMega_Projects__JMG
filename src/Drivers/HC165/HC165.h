@@ -11,7 +11,7 @@
 #include <avr/io.h>
 #include "Main_Types.h"
 #include "Drivers_Config.h"
-#include "AtMega/AtMega.h"
+#include "uC.h"
 
 
 #if (BUTTONS_WIRED == BUTTONS_WIRED_HC165)

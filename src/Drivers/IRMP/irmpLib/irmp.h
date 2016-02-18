@@ -15,15 +15,17 @@
 #ifndef _IRMP_H_
 #define _IRMP_H_
 
-#include <IRMP/irmpLib/irmpsystem.h>
+#include "irmpsystem.h"
 
 #ifndef IRMP_USE_AS_LIB
-#  include <IRMP/irmpLib/irmpconfig.h>
+#  include "irmpconfig.h"
 #endif
 
 #if defined (ATMEL_AVR)
+#ifndef CONCAT
 #  define _CONCAT(a,b)                          a##b
 #  define CONCAT(a,b)                           _CONCAT(a,b)
+#endif
 #  define IRMP_PORT                             CONCAT(PORT, IRMP_PORT_LETTER)
 #  define IRMP_DDR                              CONCAT(DDR, IRMP_PORT_LETTER)
 #  define IRMP_PIN                              CONCAT(PIN, IRMP_PORT_LETTER)

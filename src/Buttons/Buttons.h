@@ -61,6 +61,10 @@
 	}										\
 }
 
+#if (BUTTONS_TWI == BUTTONS_TWI_ON)
+#define BUTTONS_TWI_SLAVE_ADDRESS	0x10
+#endif
+
 
 typedef struct
 {
@@ -72,10 +76,14 @@ typedef struct
 	uint8_t pressedUSART;
 	uint8_t pressedOnceUSART;
 #endif
-#if (BUTTONS_IRMP == BUTTONS_IRMP_ON)
+#if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
 	uint8_t pressedIRMP;
 	uint8_t debounceTimeIRMP;
 	uint8_t pressedOnceIRMP;
+#endif
+#if (BUTTONS_TWI == BUTTONS_TWI_ON)
+	uint8_t pressedTWI;
+	uint8_t pressedOnceTWI;
 #endif
 } Button_t;
 
@@ -94,6 +102,7 @@ void Buttons__x10 (void);
 
 uint8_t Buttons__isPressed (Button_t *button);
 uint8_t Buttons__isPressedOnce (Button_t *button);
-
-
+#if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
+void Buttons__TwiDataCallback (uint8_t input_buffer_length, const uint8_t *input_buffer, uint8_t *output_buffer_length, uint8_t *output_buffer);
+#endif
 #endif /* BUTTONS_H_ */

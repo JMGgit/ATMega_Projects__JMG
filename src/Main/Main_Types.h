@@ -12,6 +12,7 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <avr/pgmspace.h>
 #include <avr/eeprom.h>
 
@@ -27,6 +28,9 @@
 
 #define MIN(a, b) (((a) < (b)) ? (a) : (b) )
 #define MAX(a, b) (((a) > (b)) ? (a) : (b) )
+
+#define CONCAT(a, b)            a ## b
+#define CONCAT_EXP(a, b)   CONCAT(a, b)
 
 typedef struct
 {

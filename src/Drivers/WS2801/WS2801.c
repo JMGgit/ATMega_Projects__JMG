@@ -13,13 +13,7 @@ RGB_Color_t GS_Data[WS2801_NB];
 /* remark: cannot be declared as static: ATMega limitation?? */
 
 
-void WS2801__x10 (void)
-{
-	WS2801__updateAll();
-}
-
-
-void WS2801__updateAll (void)
+static void WS2801__updateAll (void)
 {
 	uint16_t idxLed;
 
@@ -58,6 +52,12 @@ void WS2801__updateAll (void)
 			;
 		}
 	}
+}
+
+
+void WS2801__x10 (void)
+{
+	WS2801__updateAll();
 }
 
 

@@ -11,7 +11,6 @@
 /* runtime test */
 uint8_t runtimeCounter;
 
-
 int main (void)
 {
 	Drivers__init();
@@ -22,8 +21,14 @@ int main (void)
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
 	Lcd__init();
 #endif
+#if (PROJECT != PROJECT__IRMP)
 	Modes__init();
+#endif
 
+#if (PROJECT == PROJECT__IRMP)
+	/* only one loop function. No other function can be called afeter it */
+	TWI__loop(Buttons__TwiDataCallback);
+#else
 	while (1)
 	{
 		if (uC__isTaskTrigger_x10())
@@ -31,7 +36,6 @@ int main (void)
 #if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 			toggle(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
 #endif
-
 			Drivers__x10();
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
 			Lcd__x10();
@@ -62,6 +66,7 @@ int main (void)
 #endif
 		}
 	}
+#endif
 
 	return 0;
 }
