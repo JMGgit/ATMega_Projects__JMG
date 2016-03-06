@@ -38,6 +38,12 @@
 
 #define TIMER_COLOR_BUTTON				120
 
+#define QTWO_LANG_DE_SUED				0
+#define QTWO_LANG_DE					1
+#define QTWO_LANG_FR					2
+#define QTWO_LANG_EN					3
+#define QTWO_LANG_NB					4
+
 static const uint16_t ldrLevels[QTWO_BRIGHTNESS_NB] = {0, 150, 300, 600};
 
 typedef enum
@@ -124,6 +130,8 @@ static const uint8_t (*currentBrightnessTable)[QTWO_BRIGHTNESS_NB];
 static uint8_t currentBrightnessSetting;
 static uint8_t currentBrightnessSetting_EEPROM EEMEM;
 
+static uint8_t selectedLang;
+static uint8_t selectedLang_EEPROM EEMEM;
 
 void Qtwo__init (void)
 {
@@ -159,6 +167,21 @@ void Qtwo__init (void)
 		currentBrightnessSetting = QTWO_BRIGHTNESS_LOW;
 		currentBrightnessTable = brightnessLevels;
 	}
+
+#if (QLOCKTWO_LANG == QLOCKTWO_LANG_DE)
+	selectedLang = QTWO_LANG_DE;
+#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED)
+	selectedLang = QTWO_LANG_DE_SUED;
+#elif (selectedLang == QTWO_LANG_FR)
+	selectedLang = QTWO_LANG_FR;
+#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_EN)
+	selectedLang = QTWO_LANG_EN;
+#else /* multi */
+	if ((eeprom_read_byte(&selectedLang_EEPROM)) < QTWO_LANG_NB)
+	{
+		selectedLang = eeprom_read_byte(&selectedLang_EEPROM);
+	}
+#endif
 }
 
 
@@ -191,6 +214,25 @@ static void Qtwo__decHours (void)
 static void Qtwo__decMinutes (void)
 {
 	Clock__decMinutes();
+}
+
+
+static void Qtwo__setNextLang (void)
+{
+	if (selectedLang < (QTWO_LANG_NB - 1))
+	{
+		selectedLang++;
+
+		if (selectedLang == QTWO_LANG_EN)
+		{
+			/* not suported for now */
+			Qtwo__setNextLang();
+		}
+	}
+	else
+	{
+		selectedLang = 0;
+	}
 }
 
 
@@ -262,9 +304,16 @@ static void Qtwo__checkButtons (void)
 
 static void Qtwo__checkButtonsSetup (void)
 {
-	if ((Buttons__isPressedOnce(&buttonUp)) || (Buttons__isPressedOnce(&buttonFunc1)))
+#if (BUTTONS_IRMP == BUTTONS_IRMP_USED)
+	static uint8_t langTimer = 255;
+#endif
+
+	if (	(Buttons__isPressedOnce(&buttonUp))
+#if (BUTTONS_IRMP != BUTTONS_IRMP_USED)
+		|| 	(Buttons__isPressedOnce(&buttonFunc1)) /* for compatibility with old projects */
+#endif
+	)
 	{
-		/* func1 for compatibility with old projects */
 		Qtwo__incHours();
 	}
 
@@ -273,9 +322,12 @@ static void Qtwo__checkButtonsSetup (void)
 		Qtwo__decHours();
 	}
 
-	if ((Buttons__isPressedOnce(&buttonRight)) || (Buttons__isPressedOnce(&buttonFunc2)))
+	if (	(Buttons__isPressedOnce(&buttonRight))
+#if (BUTTONS_IRMP != BUTTONS_IRMP_USED)
+		|| 	(Buttons__isPressedOnce(&buttonFunc2)) /* for compatibility with old projects */
+#endif
+	)
 	{
-		/* func2 for compatibility with old projects */
 		Qtwo__incMinutes();
 	}
 
@@ -283,6 +335,26 @@ static void Qtwo__checkButtonsSetup (void)
 	{
 		Qtwo__decMinutes();
 	}
+
+#if (BUTTONS_IRMP == BUTTONS_IRMP_USED)
+	if (Buttons__isPressed(&buttonFunc2))
+	{
+		if (langTimer > 0)
+		{
+			langTimer--;
+		}
+		else
+		{
+			langTimer = 255;
+			Qtwo__setNextLang();
+			Modes__setMode(MODE__QLOCKTWO);
+		}
+	}
+	else
+	{
+		langTimer = 255;
+	}
+#endif
 
 	if (Buttons__isPressedOnce(&buttonFunc3))
 	{
@@ -365,314 +437,314 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 
 	switch (stateLDR)
 	{
-	case STATE_1:
-	{
-		brightnessTransition = FALSE;
-		brightnessCurr = 0;
-
-		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
+		case STATE_1:
 		{
-			stateLDR = STATE_1_TO_2;
+			brightnessTransition = FALSE;
+			brightnessCurr = 0;
+
+			if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
+			{
+				stateLDR = STATE_1_TO_2;
+			}
+
+			QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+			break;
 		}
 
-		QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
-				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-		break;
-	}
-
-	case STATE_1_TO_2:
-	{
-		if (stateTransition)
+		case STATE_1_TO_2:
 		{
-			brightnessTransition = TRUE;
-			brightnessCurr = 0;
-			brightnessTar = 1;
-
-			if ((colors[currentColor * 3]) != 0)
+			if (stateTransition)
 			{
-				QtwoColor.red++;
-			}
+				brightnessTransition = TRUE;
+				brightnessCurr = 0;
+				brightnessTar = 1;
 
-			if ((colors[currentColor * 3 + 1]) != 0)
-			{
-				QtwoColor.green++;
-			}
+				if ((colors[currentColor * 3]) != 0)
+				{
+					QtwoColor.red++;
+				}
 
-			if ((colors[currentColor * 3 + 2]) != 0)
-			{
-				QtwoColor.blue++;
-			}
+				if ((colors[currentColor * 3 + 1]) != 0)
+				{
+					QtwoColor.green++;
+				}
 
-			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-			)
+				if ((colors[currentColor * 3 + 2]) != 0)
+				{
+					QtwoColor.blue++;
+				}
+
+				if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+						&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+						&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+				)
+				{
+					stateLDR = STATE_2;
+				}
+			}
+			else
 			{
 				stateLDR = STATE_2;
 			}
-		}
-		else
-		{
-			stateLDR = STATE_2;
+
+			break;
 		}
 
-		break;
-	}
-
-	case STATE_2:
-	{
-		brightnessTransition = FALSE;
-		brightnessCurr = 1;
-
-		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
+		case STATE_2:
 		{
-			stateLDR = STATE_2_TO_3;
-		}
-		else if ((adcOutput) < (ldrLevels[brightnessCurr]))
-		{
-			stateLDR = STATE_2_TO_1;
-		}
-
-		QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
-				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-		break;
-	}
-
-	case STATE_2_TO_3:
-	{
-		if (stateTransition)
-		{
-			brightnessTransition = TRUE;
+			brightnessTransition = FALSE;
 			brightnessCurr = 1;
-			brightnessTar = 2;
 
-			if ((colors[currentColor * 3]) != 0)
+			if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
 			{
-				QtwoColor.red++;
+				stateLDR = STATE_2_TO_3;
+			}
+			else if ((adcOutput) < (ldrLevels[brightnessCurr]))
+			{
+				stateLDR = STATE_2_TO_1;
 			}
 
-			if ((colors[currentColor * 3 + 1]) != 0)
+			QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+			break;
+		}
+
+		case STATE_2_TO_3:
+		{
+			if (stateTransition)
 			{
-				QtwoColor.green++;
+				brightnessTransition = TRUE;
+				brightnessCurr = 1;
+				brightnessTar = 2;
+
+				if ((colors[currentColor * 3]) != 0)
+				{
+					QtwoColor.red++;
+				}
+
+				if ((colors[currentColor * 3 + 1]) != 0)
+				{
+					QtwoColor.green++;
+				}
+
+				if ((colors[currentColor * 3 + 2]) != 0)
+				{
+					QtwoColor.blue++;
+				}
+
+
+				if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+						&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+						&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+				)
+				{
+					stateLDR = STATE_3;
+				}
 			}
-
-			if ((colors[currentColor * 3 + 2]) != 0)
-			{
-				QtwoColor.blue++;
-			}
-
-
-			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-			)
+			else
 			{
 				stateLDR = STATE_3;
 			}
-		}
-		else
-		{
-			stateLDR = STATE_3;
+
+			break;
 		}
 
-		break;
-	}
-
-	case STATE_3:
-	{
-		brightnessTransition = FALSE;
-		brightnessCurr = 2;
-
-		if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
+		case STATE_3:
 		{
-			stateLDR = STATE_3_TO_4;
-		}
-		else if ((adcOutput) < (ldrLevels[brightnessCurr]))
-		{
-			stateLDR = STATE_3_TO_2;
-		}
-
-		QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
-				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-		break;
-	}
-
-	case STATE_3_TO_4:
-	{
-		if (stateTransition)
-		{
-			brightnessTransition = TRUE;
+			brightnessTransition = FALSE;
 			brightnessCurr = 2;
-			brightnessTar = 3;
 
-			if ((colors[currentColor * 3]) != 0)
+			if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
 			{
-				QtwoColor.red++;
+				stateLDR = STATE_3_TO_4;
+			}
+			else if ((adcOutput) < (ldrLevels[brightnessCurr]))
+			{
+				stateLDR = STATE_3_TO_2;
 			}
 
-			if ((colors[currentColor * 3 + 1]) != 0)
+			QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+			break;
+		}
+
+		case STATE_3_TO_4:
+		{
+			if (stateTransition)
 			{
-				QtwoColor.green++;
+				brightnessTransition = TRUE;
+				brightnessCurr = 2;
+				brightnessTar = 3;
+
+				if ((colors[currentColor * 3]) != 0)
+				{
+					QtwoColor.red++;
+				}
+
+				if ((colors[currentColor * 3 + 1]) != 0)
+				{
+					QtwoColor.green++;
+				}
+
+				if ((colors[currentColor * 3 + 2]) != 0)
+				{
+					QtwoColor.blue++;
+				}
+
+
+				if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+						&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+						&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+				)
+				{
+					stateLDR = STATE_4;
+				}
 			}
-
-			if ((colors[currentColor * 3 + 2]) != 0)
-			{
-				QtwoColor.blue++;
-			}
-
-
-			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-			)
+			else
 			{
 				stateLDR = STATE_4;
 			}
-		}
-		else
-		{
-			stateLDR = STATE_4;
-		}
-		break;
-	}
-
-	case STATE_4:
-	{
-		brightnessTransition = FALSE;
-		brightnessCurr = 3;
-
-		if ((adcOutput) < (ldrLevels[brightnessCurr]))
-		{
-			stateLDR = STATE_4_TO_3;
+			break;
 		}
 
-		QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
-				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
-				(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-		break;
-	}
-
-	case STATE_4_TO_3:
-	{
-		if (stateTransition)
+		case STATE_4:
 		{
-			brightnessTransition = TRUE;
+			brightnessTransition = FALSE;
 			brightnessCurr = 3;
-			brightnessTar = 2;
 
-			if ((colors[currentColor * 3]) != 0)
+			if ((adcOutput) < (ldrLevels[brightnessCurr]))
 			{
-				QtwoColor.red--;
+				stateLDR = STATE_4_TO_3;
 			}
 
-			if ((colors[currentColor * 3 + 1]) != 0)
+			QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
+					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
+			break;
+		}
+
+		case STATE_4_TO_3:
+		{
+			if (stateTransition)
 			{
-				QtwoColor.green--;
+				brightnessTransition = TRUE;
+				brightnessCurr = 3;
+				brightnessTar = 2;
+
+				if ((colors[currentColor * 3]) != 0)
+				{
+					QtwoColor.red--;
+				}
+
+				if ((colors[currentColor * 3 + 1]) != 0)
+				{
+					QtwoColor.green--;
+				}
+
+				if ((colors[currentColor * 3 + 2]) != 0)
+				{
+					QtwoColor.blue--;
+				}
+
+
+				if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+						&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+						&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+				)
+				{
+					stateLDR = STATE_3;
+				}
 			}
-
-			if ((colors[currentColor * 3 + 2]) != 0)
-			{
-				QtwoColor.blue--;
-			}
-
-
-			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-			)
+			else
 			{
 				stateLDR = STATE_3;
 			}
-		}
-		else
-		{
-			stateLDR = STATE_3;
+
+			break;
 		}
 
-		break;
-	}
-
-	case STATE_3_TO_2:
-	{
-		if (stateTransition)
+		case STATE_3_TO_2:
 		{
-			brightnessTransition = TRUE;
-			brightnessCurr = 2;
-			brightnessTar = 1;
-
-			if ((colors[currentColor * 3]) != 0)
+			if (stateTransition)
 			{
-				QtwoColor.red--;
-			}
+				brightnessTransition = TRUE;
+				brightnessCurr = 2;
+				brightnessTar = 1;
 
-			if ((colors[currentColor * 3 + 1]) != 0)
-			{
-				QtwoColor.green--;
-			}
+				if ((colors[currentColor * 3]) != 0)
+				{
+					QtwoColor.red--;
+				}
 
-			if ((colors[currentColor * 3 + 2]) != 0)
-			{
-				QtwoColor.blue--;
-			}
+				if ((colors[currentColor * 3 + 1]) != 0)
+				{
+					QtwoColor.green--;
+				}
 
-			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
-					&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-			)
+				if ((colors[currentColor * 3 + 2]) != 0)
+				{
+					QtwoColor.blue--;
+				}
+
+				if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+						&&	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+						&&	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+				)
+				{
+					stateLDR = STATE_2;
+				}
+			}
+			else
 			{
 				stateLDR = STATE_2;
 			}
-		}
-		else
-		{
-			stateLDR = STATE_2;
+
+			break;
 		}
 
-		break;
-	}
-
-	case STATE_2_TO_1:
-	{
-		if (stateTransition)
+		case STATE_2_TO_1:
 		{
-			brightnessTransition = TRUE;
-			brightnessCurr = 1;
-			brightnessTar = 0;
-
-			if ((colors[currentColor * 3]) != 0)
+			if (stateTransition)
 			{
-				QtwoColor.red--;
+				brightnessTransition = TRUE;
+				brightnessCurr = 1;
+				brightnessTar = 0;
+
+				if ((colors[currentColor * 3]) != 0)
+				{
+					QtwoColor.red--;
+				}
+
+				if ((colors[currentColor * 3 + 1]) != 0)
+				{
+					QtwoColor.green--;
+				}
+
+				if ((colors[currentColor * 3 + 2]) != 0)
+				{
+					QtwoColor.blue--;
+				}
+
+
+				if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
+						||	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
+						||	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
+				)
+				{
+					stateLDR = STATE_1;
+				}
 			}
-
-			if ((colors[currentColor * 3 + 1]) != 0)
-			{
-				QtwoColor.green--;
-			}
-
-			if ((colors[currentColor * 3 + 2]) != 0)
-			{
-				QtwoColor.blue--;
-			}
-
-
-			if (		(QtwoColor.red == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3])
-					||	(QtwoColor.green == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 1])
-					||	(QtwoColor.blue == (currentBrightnessTable[currentColor][brightnessTar]) * colors[currentColor * 3 + 2])
-			)
+			else
 			{
 				stateLDR = STATE_1;
 			}
-		}
-		else
-		{
-			stateLDR = STATE_1;
-		}
 
-		break;
-	}
+			break;
+		}
 	}
 }
 
@@ -871,298 +943,391 @@ static void Qtwo__updateMatrix()
 	uint8_t matrixEdges = Clock__getMinutes() % 5;
 	uint8_t colIt;
 
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
 	uint8_t setNACH = FALSE;
 	uint8_t setVOR = FALSE;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
 	uint8_t setMOINS = FALSE;
 	uint8_t setHEURES = TRUE;
-#endif
 
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-	/* ES IST */
-	for (colIt = 0; colIt <= 5; colIt++)
+	if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
 	{
-		if (colIt != 2)
+		/* ES IST */
+		for (colIt = 0; colIt <= 5; colIt++)
 		{
-			Qtwo__setCellActive(0, colIt);
+			if (colIt != 2)
+			{
+				Qtwo__setCellActive(0, colIt);
+			}
 		}
 	}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-	/* IL EST */
-	for (colIt = 0; colIt <= 5; colIt++)
+
+	if (selectedLang == QTWO_LANG_FR)
 	{
-		if (colIt != 2)
+		/* IL EST */
+		for (colIt = 0; colIt <= 5; colIt++)
 		{
-			Qtwo__setCellActive(0, colIt);
+			if (colIt != 2)
+			{
+				Qtwo__setCellActive(0, colIt);
+			}
 		}
 	}
-#endif
 
 	switch (matrixMinutes)
 	{
-	case 0: /* HH:00 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* UHR */
-		for (colIt = 8; colIt <= 10; colIt++)
+		case 0: /* HH:00 */
 		{
-			Qtwo__setCellActive(9, colIt);
-		}
-#endif
-		break;
-	}
-	case 1: /* HH:05 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* FÜNF NACH HH */
-		for (colIt = 7; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(0, colIt);
-		}
-		setNACH = TRUE;
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* UHR */
+				for (colIt = 8; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(9, colIt);
+				}
+			}
 
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* CINQ */
-		for (colIt = 6; colIt <= 9; colIt++)
-		{
-			Qtwo__setCellActive(8, colIt);
+			break;
 		}
-#endif
-		break;
-	}
-	case 2: /* HH:10 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ZEHN NACH HH */
-		for (colIt = 0; colIt <= 3; colIt++)
+
+		case 1: /* HH:05 */
 		{
-			Qtwo__setCellActive(1, colIt);
-		}
-		setNACH = TRUE;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* DIX */
-		for (colIt = 8; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(6, colIt);
-		}
-#endif
-		break;
-	}
-	case 3: /* HH:15 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* VIERTEL */
-		for (colIt = 4; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(2, colIt);
-		}
-#if (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED)
-		/* HH+1 */
-		matrixHours++;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_DE)
-		/* NACH */
-		setNACH = TRUE;
-#endif
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* ET QUART */
-		for (colIt = 0; colIt <= 7; colIt++)
-		{
-			if (colIt != 2)
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
 			{
-				Qtwo__setCellActive(7, colIt);
+				/* FÜNF NACH HH */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(0, colIt);
+				}
+
+				setNACH = TRUE;
 			}
-		}
-#endif
-		break;
-	}
-	case 4: /* HH:20 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ZWANZIG NACH HH */
-		for (colIt = 4; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(1, colIt);
-		}
-		setNACH = TRUE;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* VINGT */
-		for (colIt = 0; colIt <= 4; colIt++)
-		{
-			Qtwo__setCellActive(8, colIt);
-		}
-#endif
-		break;
-	}
-	case 5: /* HH:25 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* FÜNF VOR HALB HH+1 */
-		for (colIt = 7; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(0, colIt);
-		}
-		for (colIt = 0; colIt <= 3; colIt++)
-		{
-			Qtwo__setCellActive(4, colIt);
-		}
-		setVOR = TRUE;
-		matrixHours++;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* VINGT-CINQ */
-		for (colIt = 0; colIt <= 9; colIt++)
-		{
-			Qtwo__setCellActive(8, colIt);
-		}
-#endif
-		break;
-	}
-	case 6: /* HH:30 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* HALB HH+1 */
-		for (colIt = 0; colIt <= 3; colIt++)
-		{
-			Qtwo__setCellActive(4, colIt);
-		}
-		matrixHours++;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* ET DEMI */
-		for (colIt = 0; colIt <= 6; colIt++)
-		{
-			if (colIt != 2)
+
+			if (selectedLang == QTWO_LANG_FR)
 			{
-				Qtwo__setCellActive(9, colIt);
+				/* CINQ */
+				for (colIt = 6; colIt <= 9; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
 			}
+
+			break;
 		}
-#endif
-		break;
-	}
-	case 7: /* HH:35 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* FÜNF NACH HALB HH+1 */
-		for (colIt = 7; colIt <= 10; colIt++)
+
+		case 2: /* HH:10 */
 		{
-			Qtwo__setCellActive(0, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ZEHN NACH HH */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(1, colIt);
+				}
+				setNACH = TRUE;
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* DIX */
+				for (colIt = 8; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(6, colIt);
+				}
+			}
+
+			break;
 		}
-		for (colIt = 0; colIt <= 3; colIt++)
+
+		case 3: /* HH:15 */
 		{
-			Qtwo__setCellActive(4, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* VIERTEL */
+				for (colIt = 4; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(2, colIt);
+				}
+
+				if (selectedLang == QTWO_LANG_DE_SUED)
+				{
+					/* HH+1 */
+					matrixHours++;
+				}
+				else
+				{
+					/* NACH */
+					setNACH = TRUE;
+				}
+
+				if (selectedLang == QTWO_LANG_FR)
+				{
+					/* ET QUART */
+					for (colIt = 0; colIt <= 7; colIt++)
+					{
+						if (colIt != 2)
+						{
+							Qtwo__setCellActive(7, colIt);
+						}
+					}
+				}
+			}
+
+			break;
 		}
-		setNACH = TRUE;
-		matrixHours++;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* MOINS VINGT-CINQ */
-		for (colIt = 0; colIt <= 9; colIt++)
+
+		case 4: /* HH:20 */
 		{
-			Qtwo__setCellActive(8, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ZWANZIG NACH HH */
+				for (colIt = 4; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(1, colIt);
+				}
+				setNACH = TRUE;
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* VINGT */
+				for (colIt = 0; colIt <= 4; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
+			}
+
+			break;
 		}
-		setMOINS = TRUE;
-		matrixHours++;
-#endif
-		break;
-	}
-	case 8: /* HH:40 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ZWANZIG VOR HH */
-		for (colIt = 4; colIt <= 10; colIt++)
+
+		case 5: /* HH:25 */
 		{
-			Qtwo__setCellActive(1, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* FÜNF VOR HALB HH+1 */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(0, colIt);
+				}
+
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(4, colIt);
+				}
+
+				setVOR = TRUE;
+				matrixHours++;
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* VINGT-CINQ */
+				for (colIt = 0; colIt <= 9; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
+			}
+
+			break;
 		}
-		setVOR = TRUE;
-		matrixHours++;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* VINGT */
-		for (colIt = 0; colIt <= 4; colIt++)
+
+		case 6: /* HH:30 */
 		{
-			Qtwo__setCellActive(8, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* HALB HH+1 */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(4, colIt);
+				}
+
+				matrixHours++;
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* ET DEMI */
+				for (colIt = 0; colIt <= 6; colIt++)
+				{
+					if (colIt != 2)
+					{
+						Qtwo__setCellActive(9, colIt);
+					}
+				}
+			}
+
+			break;
 		}
-		setMOINS = TRUE;
-		matrixHours++;
-#endif
-		break;
-	}
-	case 9: /* HH:45 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-#if (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED)
-		/* DREIVIERTEL HH+1 */
-		for (colIt = 0; colIt <= 10; colIt++)
+
+		case 7: /* HH:35 */
 		{
-			Qtwo__setCellActive(2, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* FÜNF NACH HALB HH+1 */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(0, colIt);
+				}
+
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(4, colIt);
+				}
+
+				setNACH = TRUE;
+				matrixHours++;
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* MOINS VINGT-CINQ */
+				for (colIt = 0; colIt <= 9; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
+
+				setMOINS = TRUE;
+				matrixHours++;
+			}
+
+			break;
 		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_DE)
-		/* VIERTEL VOR HH+1 */
-		for (colIt = 4; colIt <= 10; colIt++)
+
+		case 8: /* HH:40 */
 		{
-			Qtwo__setCellActive(2, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ZWANZIG VOR HH */
+				for (colIt = 4; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(1, colIt);
+				}
+
+				setVOR = TRUE;
+				matrixHours++;
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* VINGT */
+				for (colIt = 0; colIt <= 4; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
+
+				setMOINS = TRUE;
+				matrixHours++;
+			}
+
+			break;
 		}
-		setVOR = TRUE;
-#endif
-		matrixHours++;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* MOINS LE QUART */
-		for (colIt = 6; colIt <= 7; colIt++)
+
+		case 9: /* HH:45 */
 		{
-			Qtwo__setCellActive(6, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				if (selectedLang == QTWO_LANG_DE_SUED)
+				{
+					/* DREIVIERTEL HH+1 */
+					for (colIt = 0; colIt <= 10; colIt++)
+					{
+						Qtwo__setCellActive(2, colIt);
+					}
+				}
+				else
+				{
+					/* VIERTEL VOR HH+1 */
+					for (colIt = 4; colIt <= 10; colIt++)
+					{
+						Qtwo__setCellActive(2, colIt);
+					}
+
+					setVOR = TRUE;
+				}
+
+				matrixHours++;
+
+				if (selectedLang == QTWO_LANG_FR)
+				{
+					/* MOINS LE QUART */
+					for (colIt = 6; colIt <= 7; colIt++)
+					{
+						Qtwo__setCellActive(6, colIt);
+					}
+
+					for (colIt = 3; colIt <= 7; colIt++)
+					{
+						Qtwo__setCellActive(7, colIt);
+					}
+
+					setMOINS = TRUE;
+					matrixHours++;
+				}
+			}
+
+			break;
 		}
-		for (colIt = 3; colIt <= 7; colIt++)
+
+		case 10: /* HH:50 */
 		{
-			Qtwo__setCellActive(7, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ZEHN VOR HH+1 */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(1, colIt);
+				}
+
+				setVOR = TRUE;
+				matrixHours++;
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* MOINS DIX */
+				for (colIt = 8; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(6, colIt);
+				}
+
+				setMOINS = TRUE;
+				matrixHours++;
+			}
+
+			break;
 		}
-		setMOINS = TRUE;
-		matrixHours++;
-#endif
-		break;
-	}
-	case 10: /* HH:50 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ZEHN VOR HH+1 */
-		for (colIt = 0; colIt <= 3; colIt++)
+
+		case 11: /* HH:55 */
 		{
-			Qtwo__setCellActive(1, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* FÜNF VOR HH+1 */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(0, colIt);
+				}
+
+				setVOR = TRUE;
+				matrixHours++;
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* MOINS CINQ */
+				for (colIt = 6; colIt <= 9; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
+
+				setMOINS = TRUE;
+				matrixHours++;
+			}
+
+			break;
 		}
-		setVOR = TRUE;
-		matrixHours++;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* MOINS DIX */
-		for (colIt = 8; colIt <= 10; colIt++)
+
+		default:
 		{
-			Qtwo__setCellActive(6, colIt);
+			break;
 		}
-		setMOINS = TRUE;
-		matrixHours++;
-#endif
-		break;
-	}
-	case 11: /* HH:55 */
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* FÜNF VOR HH+1 */
-		for (colIt = 7; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(0, colIt);
-		}
-		setVOR = TRUE;
-		matrixHours++;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* MOINS CINQ */
-		for (colIt = 6; colIt <= 9; colIt++)
-		{
-			Qtwo__setCellActive(8, colIt);
-		}
-		setMOINS = TRUE;
-		matrixHours++;
-#endif
-		break;
-	}
-	default:
-	{
-		break;
-	}
 	}
 
 	matrixHours = matrixHours % 24; /* avoid overflow */
@@ -1174,313 +1339,396 @@ static void Qtwo__updateMatrix()
 
 	switch (matrixHours)
 	{
-	case 0:
-#if (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-	{
-		/* MINUIT */
-		for (colIt = 5; colIt <= 10; colIt++)
+		case 0:
 		{
-			Qtwo__setCellActive(4, colIt);
-		}
-		setHEURES = FALSE;
-		break;
-	}
-#endif
-	case 12:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ZWÖLF */
-		for (colIt = 6; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(8, colIt);
-		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* MIDI */
-		for (colIt = 0; colIt <= 3; colIt++)
-		{
-			Qtwo__setCellActive(4, colIt);
-		}
-		setHEURES = FALSE;
-#endif
-		break;
-	}
-	case 1:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		if (matrixMinutes == 0)
-		{
-			/* EIN */
-			for (colIt = 0; colIt <= 2; colIt++)
+			if (selectedLang == QTWO_LANG_DE)
 			{
-				Qtwo__setCellActive(5, colIt);
+				/* MINUIT */
+				for (colIt = 5; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(4, colIt);
+				}
+
+				setHEURES = FALSE;
 			}
+
+			break;
 		}
-		else
+
+		case 12:
 		{
-			/* EINS */
-			for (colIt = 0; colIt <= 3; colIt++)
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
 			{
-				Qtwo__setCellActive(5, colIt);
+				/* ZWÖLF */
+				for (colIt = 6; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
 			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* MIDI */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(4, colIt);
+				}
+
+				setHEURES = FALSE;
+			}
+
+			break;
 		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* UNE */
-		for (colIt = 4; colIt <= 6; colIt++)
+
+		case 1:
 		{
-			Qtwo__setCellActive(2, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				if (matrixMinutes == 0)
+				{
+					/* EIN */
+					for (colIt = 0; colIt <= 2; colIt++)
+					{
+						Qtwo__setCellActive(5, colIt);
+					}
+				}
+				else
+				{
+					/* EINS */
+					for (colIt = 0; colIt <= 3; colIt++)
+					{
+						Qtwo__setCellActive(5, colIt);
+					}
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* UNE */
+				for (colIt = 4; colIt <= 6; colIt++)
+				{
+					Qtwo__setCellActive(2, colIt);
+				}
+			}
+
+			break;
 		}
-#endif
-		break;
-	}
-	case 2:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ZWEI */
-		for (colIt = 7; colIt <= 10; colIt++)
+
+		case 2:
 		{
-			Qtwo__setCellActive(5, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ZWEI */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(5, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* DEUX */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(0, colIt);
+				}
+			}
+
+			break;
 		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* DEUX */
-		for (colIt = 7; colIt <= 10; colIt++)
+
+		case 3:
 		{
-			Qtwo__setCellActive(0, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* DREI */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(6, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* TROIS */
+				for (colIt = 6; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(1, colIt);
+				}
+			}
+
+			break;
 		}
-#endif
-		break;
-	}
-	case 3:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* DREI */
-		for (colIt = 0; colIt <= 3; colIt++)
+
+		case 4:
 		{
-			Qtwo__setCellActive(6, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* VIER */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(6, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* QUATRE */
+				for (colIt = 0; colIt <= 5; colIt++)
+				{
+					Qtwo__setCellActive(1, colIt);
+				}
+			}
+
+			break;
 		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* TROIS */
-		for (colIt = 6; colIt <= 10; colIt++)
+
+		case 5:
 		{
-			Qtwo__setCellActive(1, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* FÜNF */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(4, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* CINQ */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(3, colIt);
+				}
+			}
+
+			break;
 		}
-#endif
-		break;
-	}
-	case 4:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* VIER */
-		for (colIt = 7; colIt <= 10; colIt++)
+
+		case 6:
 		{
-			Qtwo__setCellActive(6, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* SECHS */
+				for (colIt = 0; colIt <= 4; colIt++)
+				{
+					Qtwo__setCellActive(7, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* SIX */
+				for (colIt = 4; colIt <= 6; colIt++)
+				{
+					Qtwo__setCellActive(3, colIt);
+				}
+			}
+
+			break;
 		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* QUATRE */
-		for (colIt = 0; colIt <= 5; colIt++)
+		case 7:
 		{
-			Qtwo__setCellActive(1, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* SIEBEN */
+				for (colIt = 0; colIt <= 5; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* MIDI */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(2, colIt);
+				}
+			}
+
+			break;
 		}
-#endif
-		break;
-	}
-	case 5:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* FÜNF */
-		for (colIt = 7; colIt <= 10; colIt++)
+		case 8:
 		{
-			Qtwo__setCellActive(4, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ACHT */
+				for (colIt = 7; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(7, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* HUIT */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(3, colIt);
+				}
+			}
+
+			break;
 		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* CINQ */
-		for (colIt = 7; colIt <= 10; colIt++)
+		case 9:
 		{
-			Qtwo__setCellActive(3, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* NEUN */
+				for (colIt = 3; colIt <= 6; colIt++)
+				{
+					Qtwo__setCellActive(9, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* NEUF */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(2, colIt);
+				}
+			}
+
+			break;
 		}
-#endif
-		break;
-	}
-	case 6:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* SECHS */
-		for (colIt = 0; colIt <= 4; colIt++)
+		case 10:
 		{
-			Qtwo__setCellActive(7, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ZEHN */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(9, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* DIX */
+				for (colIt = 2; colIt <= 4; colIt++)
+				{
+					Qtwo__setCellActive(4, colIt);
+				}
+			}
+
+			break;
 		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* SIX */
-		for (colIt = 4; colIt <= 6; colIt++)
+		case 11:
 		{
-			Qtwo__setCellActive(3, colIt);
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ELF */
+				for (colIt = 5; colIt <= 7; colIt++)
+				{
+					Qtwo__setCellActive(4, colIt);
+				}
+			}
+
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* ONZE */
+				for (colIt = 0; colIt <= 3; colIt++)
+				{
+					Qtwo__setCellActive(5, colIt);
+				}
+			}
+
+			break;
 		}
-#endif
-		break;
-	}
-	case 7:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* SIEBEN */
-		for (colIt = 0; colIt <= 5; colIt++)
+
+		default:
 		{
-			Qtwo__setCellActive(8, colIt);
+			break;
 		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* MIDI */
-		for (colIt = 7; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(2, colIt);
-		}
-#endif
-		break;
-	}
-	case 8:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ACHT */
-		for (colIt = 7; colIt <= 10; colIt++)
-		{
-			Qtwo__setCellActive(7, colIt);
-		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* HUIT */
-		for (colIt = 0; colIt <= 3; colIt++)
-		{
-			Qtwo__setCellActive(3, colIt);
-		}
-#endif
-		break;
-	}
-	case 9:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* NEUN */
-		for (colIt = 3; colIt <= 6; colIt++)
-		{
-			Qtwo__setCellActive(9, colIt);
-		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* NEUF */
-		for (colIt = 0; colIt <= 3; colIt++)
-		{
-			Qtwo__setCellActive(2, colIt);
-		}
-#endif
-		break;
-	}
-	case 10:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ZEHN */
-		for (colIt = 0; colIt <= 3; colIt++)
-		{
-			Qtwo__setCellActive(9, colIt);
-		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* DIX */
-		for (colIt = 2; colIt <= 4; colIt++)
-		{
-			Qtwo__setCellActive(4, colIt);
-		}
-#endif
-		break;
-	}
-	case 11:
-	{
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-		/* ELF */
-		for (colIt = 5; colIt <= 7; colIt++)
-		{
-			Qtwo__setCellActive(4, colIt);
-		}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-		/* ONZE */
-		for (colIt = 0; colIt <= 3; colIt++)
-		{
-			Qtwo__setCellActive(5, colIt);
-		}
-#endif
-		break;
-	}
-	default:
-	{
-		break;
-	}
 	}
 
 	switch (matrixEdges)
 	{
-	case 0:
-	{
-		break;
-	}
-	case 1:
-	{
-		Qtwo__setEdgeActive(0);
-		break;
-	}
-	case 2:
-	{
-		Qtwo__setEdgeActive(0);
-		Qtwo__setEdgeActive(1);
-		break;
-	}
-	case 3:
-	{
-		Qtwo__setEdgeActive(0);
-		Qtwo__setEdgeActive(1);
-		Qtwo__setEdgeActive(2);
-		break;
-	}
-	case 4:
-	{
-		Qtwo__setEdgeActive(0);
-		Qtwo__setEdgeActive(1);
-		Qtwo__setEdgeActive(2);
-		Qtwo__setEdgeActive(3);
-		break;
-	}
-	default:
-	{
-		break;
-	}
+		case 0:
+		{
+			break;
+		}
+		case 1:
+		{
+			Qtwo__setEdgeActive(0);
+			break;
+		}
+
+		case 2:
+		{
+			Qtwo__setEdgeActive(0);
+			Qtwo__setEdgeActive(1);
+			break;
+		}
+
+		case 3:
+		{
+			Qtwo__setEdgeActive(0);
+			Qtwo__setEdgeActive(1);
+			Qtwo__setEdgeActive(2);
+			break;
+		}
+
+		case 4:
+		{
+			Qtwo__setEdgeActive(0);
+			Qtwo__setEdgeActive(1);
+			Qtwo__setEdgeActive(2);
+			Qtwo__setEdgeActive(3);
+			break;
+		}
+
+		default:
+		{
+			break;
+		}
 	}
 
-#if ((QLOCKTWO_LANG == QLOCKTWO_LANG_DE) || (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED))
-	if (setNACH)
+	if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
 	{
-		for (colIt = 7; colIt <= 10; colIt++)
+		if (setNACH)
 		{
-			Qtwo__setCellActive(3, colIt);
+			for (colIt = 7; colIt <= 10; colIt++)
+			{
+				Qtwo__setCellActive(3, colIt);
+			}
+		}
+
+		if (setVOR)
+		{
+			for (colIt = 0; colIt <= 2; colIt++)
+			{
+				Qtwo__setCellActive(3, colIt);
+			}
 		}
 	}
-	if (setVOR)
+
+	if (selectedLang == QTWO_LANG_FR)
 	{
-		for (colIt = 0; colIt <= 2; colIt++)
+		if (setHEURES)
 		{
-			Qtwo__setCellActive(3, colIt);
+			for (colIt = 5; colIt <= 9; colIt++)
+			{
+				Qtwo__setCellActive(5, colIt);
+			}
+
+			if (matrixHours != 1)
+			{
+				Qtwo__setCellActive(5, 10);
+			}
+		}
+
+		if (setMOINS)
+		{
+			for (colIt = 0; colIt <= 4; colIt++)
+			{
+				Qtwo__setCellActive(6, colIt);
+			}
 		}
 	}
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_FR)
-	if (setHEURES)
-	{
-		for (colIt = 5; colIt <= 9; colIt++)
-		{
-			Qtwo__setCellActive(5, colIt);
-		}
-		if (matrixHours != 1)
-		{
-			Qtwo__setCellActive(5, 10);
-		}
-	}
-	if (setMOINS)
-	{
-		for (colIt = 0; colIt <= 4; colIt++)
-		{
-			Qtwo__setCellActive(6, colIt);
-		}
-	}
-#endif
 }
 
 

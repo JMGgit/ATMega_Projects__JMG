@@ -103,7 +103,9 @@
 #define QLOCKTWO_LANG_DE				1
 #define QLOCKTWO_LANG_DE_SUED			2
 #define QLOCKTWO_LANG_FR				3
-#define QLOCKTWO_LANG					QLOCKTWO_LANG_DE_SUED
+#define QLOCKTWO_LANG_EN				4
+#define QLOCKTWO_LANG_MULTI				5
+#define QLOCKTWO_LANG					QLOCKTWO_LANG_MULTI
 
 /* clock sync */
 #define CLOCK_SYNC_OFF					1
@@ -204,7 +206,9 @@
 #define QLOCKTWO_LANG_DE				1
 #define QLOCKTWO_LANG_DE_SUED			2
 #define QLOCKTWO_LANG_FR				3
-#define QLOCKTWO_LANG					QLOCKTWO_LANG_DE_SUED
+#define QLOCKTWO_LANG_EN				4
+#define QLOCKTWO_LANG_MULTI				5
+#define QLOCKTWO_LANG					QLOCKTWO_LANG_MULTI
 
 /* clock sync */
 #define CLOCK_SYNC_OFF					1
