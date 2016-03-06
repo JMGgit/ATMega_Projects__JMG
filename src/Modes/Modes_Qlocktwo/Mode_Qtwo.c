@@ -190,6 +190,7 @@ static void Qtwo__eepromStorage (void)
 	eeprom_update_byte(&selectedColor_EEPROM, selectedColor);
 	eeprom_update_byte(&currentColor_EEPROM, currentColor);
 	eeprom_update_byte(&currentBrightnessSetting_EEPROM, currentBrightnessSetting);
+	eeprom_update_byte(&selectedLang_EEPROM, selectedLang);
 }
 
 
@@ -233,6 +234,8 @@ static void Qtwo__setNextLang (void)
 	{
 		selectedLang = 0;
 	}
+
+	Qtwo__eepromStorage();
 }
 
 

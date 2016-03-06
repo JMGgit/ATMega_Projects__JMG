@@ -162,6 +162,7 @@ static void Clock__sendCurrentSyncTimeToRTC (void)
 }
 #endif
 
+
 void Clock__incDate (void)
 {
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
@@ -193,6 +194,7 @@ void Clock__incMonth (void)
 	{
 		DS1307__setMonth(0);
 	}
+
 	DS1307__sendTimeToRTC();
 
 #endif
@@ -210,6 +212,7 @@ void Clock__incYear (void)
 	{
 		DS1307__setYear(0);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -226,6 +229,7 @@ void Clock__incHours (void)
 	{
 		DS1307__setHours(0);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -242,6 +246,7 @@ void Clock__incMinutes (void)
 	{
 		DS1307__setMinutes(0);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -258,6 +263,7 @@ void Clock__incSeconds (void)
 	{
 		DS1307__setSeconds(0);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -274,6 +280,7 @@ void Clock__decDate (void)
 	{
 		DS1307__setDate(31);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -290,6 +297,7 @@ void Clock__decMonth (void)
 	{
 		DS1307__setMonth(12);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -306,6 +314,7 @@ void Clock__decYear (void)
 	{
 		DS1307__setYear(99);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -322,6 +331,7 @@ void Clock__decHours (void)
 	{
 		DS1307__setHours(23);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -338,6 +348,7 @@ void Clock__decMinutes (void)
 	{
 		DS1307__setMinutes(59);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
@@ -354,6 +365,7 @@ void Clock__decSeconds (void)
 	{
 		DS1307__setSeconds(59);
 	}
+
 	DS1307__sendTimeToRTC();
 #endif
 }
