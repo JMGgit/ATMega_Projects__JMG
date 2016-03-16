@@ -12,7 +12,6 @@
 #ifdef WS2812_NB
 
 RGB_Color_t GS_Data[WS2812_NB];
-static uint8_t timer50ms;
 /* remark: cannot be declared as static: ATMega limitation?? */
 
 
@@ -24,15 +23,7 @@ static void WS2812__updateAll (void)
 
 void WS2812__x10 (void)
 {
-	if (timer50ms < 0)
-	{
-		timer50ms++;
-	}
-	else
-	{
-		WS2812__updateAll();
-		timer50ms = 0;
-	}
+	WS2812__updateAll();
 }
 
 

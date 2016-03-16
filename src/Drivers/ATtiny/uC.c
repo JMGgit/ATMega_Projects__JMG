@@ -13,7 +13,7 @@ void uC__init (void)
 #if 0 /* no cyclic task and no UC_LED */
 	/* counter */
 	TCCR1 = (1 << CS13) | (1 << CS11) | (1 << CS10); 	/* prescaler: 1024 */
-	OCR1A = (F_CPU / 100) / 1024 - 1;	/* interrupt every 10ms (200 000 cycles) */
+	OCR1A = (F_CPU / 100) / 1024 - 1;	/* interrupt every 10ms */
 	TIMSK = (1 << OCIE1A);
 
 	setOutput(UC_LED_DDR, UC_LED_PIN);

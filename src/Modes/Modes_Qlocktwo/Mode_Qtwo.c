@@ -218,7 +218,8 @@ static void Qtwo__decMinutes (void)
 }
 
 
-static void Qtwo__setNextLang (void)
+#if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
+void Qtwo__setNextLang (void)
 {
 	if (selectedLang < (QTWO_LANG_NB - 1))
 	{
@@ -237,7 +238,7 @@ static void Qtwo__setNextLang (void)
 
 	Qtwo__eepromStorage();
 }
-
+#endif
 
 static void Qtwo__checkButtons (void)
 {
@@ -307,7 +308,7 @@ static void Qtwo__checkButtons (void)
 
 static void Qtwo__checkButtonsSetup (void)
 {
-#if (BUTTONS_IRMP == BUTTONS_IRMP_USED)
+#if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
 	static uint8_t langTimer = 255;
 #endif
 
@@ -339,7 +340,7 @@ static void Qtwo__checkButtonsSetup (void)
 		Qtwo__decMinutes();
 	}
 
-#if (BUTTONS_IRMP == BUTTONS_IRMP_USED)
+#if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
 	if (Buttons__isPressed(&buttonFunc2))
 	{
 		if (langTimer > 0)
@@ -1344,7 +1345,7 @@ static void Qtwo__updateMatrix()
 	{
 		case 0:
 		{
-			if (selectedLang == QTWO_LANG_DE)
+			if (selectedLang == QTWO_LANG_FR)
 			{
 				/* MINUIT */
 				for (colIt = 5; colIt <= 10; colIt++)
@@ -1353,6 +1354,15 @@ static void Qtwo__updateMatrix()
 				}
 
 				setHEURES = FALSE;
+			}
+
+			if ((selectedLang == QTWO_LANG_DE) || (selectedLang == QTWO_LANG_DE_SUED))
+			{
+				/* ZWÖLF */
+				for (colIt = 6; colIt <= 10; colIt++)
+				{
+					Qtwo__setCellActive(8, colIt);
+				}
 			}
 
 			break;

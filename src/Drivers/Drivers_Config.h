@@ -284,10 +284,10 @@
 /*********** CTL LED ***********/
 //#define UC_LED_DDR			DDRB
 //#define UC_LED_PORT			PORTB
-//#define UC_LED_PIN			PB1
-//#define IRMP_LED_DDR			UC_LED_DDR
-//#define IRMP_LED_PORT			UC_LED_PORT
-//#define IRMP_LED_PIN			UC_LED_PIN
+//#define UC_LED_PIN			PB2
+//#define IRMP_LED_DDR			DDRB
+//#define IRMP_LED_PORT			PORTB
+//#define IRMP_LED_PIN			PB0
 
 /********** USART *********/
 #define USART_DATA_LENGTH_READ_MAX	0
