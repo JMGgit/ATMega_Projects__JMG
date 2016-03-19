@@ -9,7 +9,9 @@
 #include "Main.h"
 
 /* runtime test */
+#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 uint8_t runtimeCounter;
+#endif
 
 int main (void)
 {
@@ -25,10 +27,6 @@ int main (void)
 	Modes__init();
 #endif
 
-#if (PROJECT == PROJECT__IRMP)
-	/* only one loop function. No other function can be called afeter it */
-	TWI__loop(Buttons__TwiDataCallback);
-#else
 	while (1)
 	{
 		if (uC__isTaskTrigger_x10())
@@ -44,7 +42,9 @@ int main (void)
 			Clock__x10();
 #endif
 			Buttons__x10();
+#if (PROJECT != PROJECT__IRMP)
 			Modes__x10();
+#endif
 
 			ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 			{
@@ -66,7 +66,6 @@ int main (void)
 #endif
 		}
 	}
-#endif
 
 	return 0;
 }

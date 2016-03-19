@@ -23,6 +23,15 @@
 
 INLINE void Drivers__init (void)
 {
+#ifdef TEST1_LED_DDR
+	setOutput(TEST1_LED_DDR, TEST1_LED_PIN);
+#endif
+#ifdef TEST2_LED_DDR
+	setOutput(TEST2_LED_DDR, TEST2_LED_PIN);
+#endif
+#ifdef TEST3_LED_DDR
+	setOutput(TEST3_LED_DDR, TEST3_LED_PIN);
+#endif
 	uC__init();
 #if (BUTTONS_WIRED == BUTTONS_WIRED_HC165)
 	HC165__init();
@@ -41,16 +50,6 @@ INLINE void Drivers__init (void)
 #endif
 #if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
 	IRMP__init();
-#endif
-
-#ifdef TEST1_LED_DDR
-	setOutput(TEST1_LED_DDR, TEST1_LED_PIN);
-#endif
-#ifdef TEST2_LED_DDR
-	setOutput(TEST2_LED_DDR, TEST2_LED_PIN);
-#endif
-#ifdef TEST3_LED_DDR
-	setOutput(TEST3_LED_DDR, TEST3_LED_PIN);
 #endif
 }
 

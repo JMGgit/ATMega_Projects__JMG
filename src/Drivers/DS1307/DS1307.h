@@ -9,7 +9,7 @@
 #define DS1307_H_
 
 #include <avr/io.h>
-#include <ATmega/uC.h>
+#include "uC.h"
 #include "Main_Types.h"
 #include "Drivers_Config.h"
 

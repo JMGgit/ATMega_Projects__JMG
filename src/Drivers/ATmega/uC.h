@@ -13,7 +13,8 @@
 #include <avr/interrupt.h>
 #include "Ports.h"
 #include "SPI.h"
-#include "TWI.h"
+#include "TWI_Master.h"
+#include "TWI_Slave.h"
 #include "USART.h"
 #include "ADC.h"
 #include <util/atomic.h>

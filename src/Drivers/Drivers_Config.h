@@ -98,7 +98,7 @@
 #define DS18B20_ALARM_THIGH			0	/* not supported for now */
 
 /* SPI not needed but speed has to be defined */
-#define SPI_SPEED SPI_CLK_DIV_8
+#define SPI_SPEED SPI_DISABLED
 
 #endif
 
@@ -282,12 +282,27 @@
 #if (PROJECT == PROJECT__IRMP)
 
 /*********** CTL LED ***********/
-//#define UC_LED_DDR			DDRB
-//#define UC_LED_PORT			PORTB
-//#define UC_LED_PIN			PB2
-//#define IRMP_LED_DDR			DDRB
-//#define IRMP_LED_PORT			PORTB
-//#define IRMP_LED_PIN			PB0
+#define UC_LED_DDR			DDRD
+#define UC_LED_PORT			PORTD
+#define UC_LED_PIN			PD4
+#define TEST1_LED_DDR		DDRD
+#define TEST1_LED_PORT		PORTD
+#define TEST1_LED_PIN		PD6
+#define TEST2_LED_DDR		DDRD
+#define TEST2_LED_PORT		PORTD
+#define TEST2_LED_PIN		PD7
+#define TEST3_LED_DDR		DDRD
+#define TEST3_LED_PORT		PORTD
+#define TEST3_LED_PIN		PD3
+#define IRMP_LED_DDR		TEST1_LED_DDR
+#define IRMP_LED_PORT		TEST1_LED_PORT
+#define IRMP_LED_PIN		TEST1_LED_PIN
+#define RUNTIME_LED_DDR 	TEST2_LED_DDR
+#define RUNTIME_LED_PORT 	TEST2_LED_PORT
+#define RUNTIME_LED_PIN		TEST2_LED_PIN
+#define RUNTIME_OSC_DDR 	TEST3_LED_DDR
+#define RUNTIME_OSC_PORT 	TEST3_LED_PORT
+#define RUNTIME_OSC_PIN		TEST3_LED_PIN
 
 /********** USART *********/
 #define USART_DATA_LENGTH_READ_MAX	0
@@ -560,5 +575,19 @@
 #define SPI_SPEED SPI_CLK_DIV_16
 #endif
 #endif
+
+/* TWI MODE */
+#define TWI_MODE_DISABLED		1
+#define TWI_MODE_MASTER			2
+#define TWI_MODE_SLAVE			3
+
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
+#define TWI_MODE 				TWI_MODE_MASTER
+#elif (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
+#define TWI_MODE 				TWI_MODE_SLAVE
+#else /* no TWI needed */
+#define TWI_MODE 				TWI_MODE_DISABLED
+#endif
+
 
 #endif /* DRIVERS_CONFIG_H_ */

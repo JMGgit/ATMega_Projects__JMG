@@ -1,30 +1,31 @@
 /*
- * TWI.c
+ * TWI_Master.c
  *
  *  Created on: 27.03.2013
  *      Author: Jean-Martin George
  */
 
 
-#include "TWI.h"
+#include "TWI_Master.h"
 
+#if (TWI_MODE == TWI_MODE_MASTER)
 
 typedef enum
 {
-	TWI_ST_IDLE = 0,
-	TWI_ST_TRANSMIT_START,
-	TWI_ST_TRANSMIT_ADDRESS,
-	TWI_ST_TRANSMIT_DATA,
-	TWI_ST_TRANSMIT_STOP,
-	TWI_ST_TRANSMIT_END,
-	TWI_ST_RECEIVE_START,
-	TWI_ST_RECEIVE_ADDRESS,
-	TWI_ST_RECEIVE_DATA,
-	TWI_ST_RECEIVE_STOP,
-	TWI_ST_RECEIVE_END
-} TWI_State_t;
+	TWI_MASTER_IDLE = 0,
+	TWI_MASTER_TRANSMIT_START,
+	TWI_MASTER_TRANSMIT_ADDRESS,
+	TWI_MASTER_TRANSMIT_DATA,
+	TWI_MASTER_TRANSMIT_STOP,
+	TWI_MASTER_TRANSMIT_END,
+	TWI_MASTER_RECEIVE_START,
+	TWI_MASTER_RECEIVE_ADDRESS,
+	TWI_MASTER_RECEIVE_DATA,
+	TWI_MASTER_RECEIVE_STOP,
+	TWI_MASTER_RECEIVE_END
+} TWI_Master_State_t;
 
-static TWI_State_t TWI_State = TWI_ST_IDLE;
+static TWI_Master_State_t TWI_Master_State = TWI_MASTER_IDLE;
 
 
 void TWI__masterInit (void)
@@ -43,27 +44,27 @@ uint8_t TWI__masterTransmitData (uint8_t *data, uint8_t dataLength, uint8_t slav
 	static uint8_t idxByte = 0;
 	uint8_t retVal = E_NOT_OK;
 
-	switch (TWI_State)
+	switch (TWI_Master_State)
 	{
-		case TWI_ST_IDLE:
+		case TWI_MASTER_IDLE:
 		{
 			idxByte = 0;
-			TWI_State = TWI_ST_TRANSMIT_START;
+			TWI_Master_State = TWI_MASTER_TRANSMIT_START;
 			retVal = E_PENDING;
 			break;
 		}
 
-		case TWI_ST_TRANSMIT_START:
+		case TWI_MASTER_TRANSMIT_START:
 		{
 			/* send start condition */
 			TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
 
-			TWI_State = TWI_ST_TRANSMIT_ADDRESS;
+			TWI_Master_State = TWI_MASTER_TRANSMIT_ADDRESS;
 			retVal = E_PENDING;
 			break;
 		}
 
-		case TWI_ST_TRANSMIT_ADDRESS:
+		case TWI_MASTER_TRANSMIT_ADDRESS:
 		{
 			/* assure last transmission is finished */
 			if (TWCR & (1 << TWINT))
@@ -72,14 +73,14 @@ uint8_t TWI__masterTransmitData (uint8_t *data, uint8_t dataLength, uint8_t slav
 				TWDR = (((slaveAddress) << 1) & 0xFE) | TWI_MASTER_WRITE_BIT; /* slave address and write bit */
 				TWCR = (1 << TWINT) | (1 << TWEN);
 
-				TWI_State = TWI_ST_TRANSMIT_DATA;
+				TWI_Master_State = TWI_MASTER_TRANSMIT_DATA;
 			}
 
 			retVal = E_PENDING;
 			break;
 		}
 
-		case TWI_ST_TRANSMIT_DATA:
+		case TWI_MASTER_TRANSMIT_DATA:
 		{
 			/* assure last transmission is finished */
 			if ((TWCR & (1 << TWINT)))
@@ -92,7 +93,7 @@ uint8_t TWI__masterTransmitData (uint8_t *data, uint8_t dataLength, uint8_t slav
 
 				if (idxByte >= dataLength)
 				{
-					TWI_State = TWI_ST_TRANSMIT_STOP;
+					TWI_Master_State = TWI_MASTER_TRANSMIT_STOP;
 				}
 			}
 
@@ -100,7 +101,7 @@ uint8_t TWI__masterTransmitData (uint8_t *data, uint8_t dataLength, uint8_t slav
 			break;
 		}
 
-		case TWI_ST_TRANSMIT_STOP:
+		case TWI_MASTER_TRANSMIT_STOP:
 		{
 			/* assure last transmission is finished */
 			if ((TWCR & (1 << TWINT)))
@@ -108,19 +109,19 @@ uint8_t TWI__masterTransmitData (uint8_t *data, uint8_t dataLength, uint8_t slav
 				/* transmit STOP condition*/
 				TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
 
-				TWI_State = TWI_ST_TRANSMIT_END;
+				TWI_Master_State = TWI_MASTER_TRANSMIT_END;
 			}
 
 			retVal = E_PENDING;
 			break;
 		}
 
-		case TWI_ST_TRANSMIT_END:
+		case TWI_MASTER_TRANSMIT_END:
 		{
 			/* assure last transmission is finished */
 			if (!(TWCR & (1 << TWSTO)))
 			{
-				TWI_State = TWI_ST_IDLE;
+				TWI_Master_State = TWI_MASTER_IDLE;
 				retVal = E_OK;
 			}
 			else
@@ -146,27 +147,27 @@ uint8_t TWI__masterReadData (uint8_t *data, uint8_t dataLength, uint8_t slaveAdd
 	static uint8_t idxByte = 0;
 	uint8_t retVal = E_NOT_OK;
 
-	switch (TWI_State)
+	switch (TWI_Master_State)
 	{
-		case TWI_ST_IDLE:
+		case TWI_MASTER_IDLE:
 		{
 			idxByte = 0;
-			TWI_State = TWI_ST_RECEIVE_START;
+			TWI_Master_State = TWI_MASTER_RECEIVE_START;
 			retVal = E_PENDING;
 			break;
 		}
 
-		case TWI_ST_RECEIVE_START:
+		case TWI_MASTER_RECEIVE_START:
 		{
 			/* send start condition */
 			TWCR = (1 << TWINT) | (1 << TWSTA) | (1 << TWEN);
 
-			TWI_State = TWI_ST_RECEIVE_ADDRESS;
+			TWI_Master_State = TWI_MASTER_RECEIVE_ADDRESS;
 			retVal = E_PENDING;
 			break;
 		}
 
-		case TWI_ST_RECEIVE_ADDRESS:
+		case TWI_MASTER_RECEIVE_ADDRESS:
 		{
 			/* assure last transmission is finished */
 			if ((TWCR & (1 << TWINT)))
@@ -175,14 +176,14 @@ uint8_t TWI__masterReadData (uint8_t *data, uint8_t dataLength, uint8_t slaveAdd
 				TWDR = (((slaveAddress) << 1) & 0xFE) | TWI_MASTER_READ_BIT;
 				TWCR = (1 << TWINT) | (1 << TWEN);
 
-				TWI_State = TWI_ST_RECEIVE_DATA;
+				TWI_Master_State = TWI_MASTER_RECEIVE_DATA;
 			}
 
 			retVal = E_PENDING;
 			break;
 		}
 
-		case TWI_ST_RECEIVE_DATA:
+		case TWI_MASTER_RECEIVE_DATA:
 		{
 			/* assure last transmission is finished */
 			if ((TWCR & (1 << TWINT)))
@@ -208,7 +209,7 @@ uint8_t TWI__masterReadData (uint8_t *data, uint8_t dataLength, uint8_t slaveAdd
 				}
 				else
 				{
-					TWI_State = TWI_ST_RECEIVE_STOP;
+					TWI_Master_State = TWI_MASTER_RECEIVE_STOP;
 				}
 
 				idxByte++;
@@ -218,7 +219,7 @@ uint8_t TWI__masterReadData (uint8_t *data, uint8_t dataLength, uint8_t slaveAdd
 			break;
 		}
 
-		case TWI_ST_RECEIVE_STOP:
+		case TWI_MASTER_RECEIVE_STOP:
 		{
 			/* assure last transmission is finished */
 			if ((TWCR & (1 << TWINT)))
@@ -226,19 +227,19 @@ uint8_t TWI__masterReadData (uint8_t *data, uint8_t dataLength, uint8_t slaveAdd
 				/* send STOP condition*/
 				TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWSTO);
 
-				TWI_State = TWI_ST_RECEIVE_END;
+				TWI_Master_State = TWI_MASTER_RECEIVE_END;
 			}
 
 			retVal = E_PENDING;
 			break;
 		}
 
-		case TWI_ST_RECEIVE_END:
+		case TWI_MASTER_RECEIVE_END:
 		{
 			/* assure last transmission is finished */
 			if (!(TWCR & (1 << TWSTO)))
 			{
-				TWI_State = TWI_ST_IDLE;
+				TWI_Master_State = TWI_MASTER_IDLE;
 				retVal = E_OK;
 			}
 			else
@@ -257,3 +258,5 @@ uint8_t TWI__masterReadData (uint8_t *data, uint8_t dataLength, uint8_t slaveAdd
 
 	return retVal;
 }
+
+#endif

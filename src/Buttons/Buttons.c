@@ -20,7 +20,8 @@ Button_t buttonUp    = {BITMSK_BUTTON_UP,		0, FALSE, FALSE};
 Button_t buttonDown  = {BITMSK_BUTTON_DOWN,		0, FALSE, FALSE};
 
 #if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
-uint16_t TWI_sendBuffer;
+uint16_t buttonTWI;
+uint8_t twiTxBuffer[2];
 #endif
 
 void Buttons__init (void)
@@ -35,6 +36,9 @@ void Buttons__init (void)
 	Button__initButton(BUTTON_RIGHT_DDR, BUTTON_RIGHT_PORT, BUTTON_RIGHT_PIN);
 	Button__initButton(BUTTON_UP_DDR, BUTTON_UP_PORT, BUTTON_UP_PIN);
 	Button__initButton(BUTTON_DOWN_DDR, BUTTON_DOWN_PORT, BUTTON_DOWN_PIN);
+#endif
+#if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
+	TWI__slaveInit (twiTxBuffer, 2);
 #endif
 }
 
@@ -285,7 +289,7 @@ void Buttons__x10 (void)
 	Buttons__updateState_IRMP(signalValidIRMP, buttonIRMP, repeatIRMP, &buttonDown);
 
 #if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
-	TWI_sendBuffer =
+	buttonTWI =
 				((buttonOff.pressedIRMP) << BITPOS_BUTTON_OFF)
 			|	((buttonMode.pressedIRMP) << BITPOS_BUTTON_MODE)
 			|	((buttonFunc1.pressedIRMP) << BITPOS_BUTTON_FUNC1)
@@ -296,6 +300,9 @@ void Buttons__x10 (void)
 			|	((buttonUp.pressedIRMP) << BITPOS_BUTTON_UP)
 			|	((buttonDown.pressedIRMP) << BITPOS_BUTTON_DOWN)
 			;
+
+	memcpy (twiTxBuffer, &buttonTWI, 2);
+	TWI__slaveUpdateTxData();
 #endif
 #endif
 
@@ -343,16 +350,6 @@ void Buttons__x10 (void)
 	}
 #endif
 }
-
-
-#if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
-void Buttons__TwiDataCallback (uint8_t input_buffer_length, const uint8_t *input_buffer, uint8_t *output_buffer_length, uint8_t *output_buffer)
-{
-	Buttons__x10();
-	memcpy(output_buffer, &TWI_sendBuffer, 2);
-	*output_buffer_length = 2;
-}
-#endif
 
 
 uint8_t Buttons__isPressed (Button_t *button)
