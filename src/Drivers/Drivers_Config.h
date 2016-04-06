@@ -212,8 +212,16 @@
 #if (PROJECT == PROJECT__QLOCKTWO)
 #ifdef __AVR_ATmega328P__ /* Qlocktwo 4.0 */
 
-/*********** WS2801 ***********/
+/*********** WS2812 ***********/
+#define WS2812_CONNECTION_TYPE_DIGIDOT_SPI	1
+#define WS2812_CONNECTION_TYPE_DIRECT		2
+#define WS2812_CONNECTION_TYPE				WS2812_CONNECTION_TYPE_DIGIDOT_SPI
 #define WS2812_NB							114
+
+#define WS2812_DIGIDOT_CS_DDR				DDRC
+#define WS2812_DIGIDOT_CS_PORT				PORTC
+#define WS2812_DIGIDOT_CS_PIN				PC1
+
 #define RGB_LED_CONNECTION__RED_GREEN_BLUE	1
 #define RGB_LED_CONNECTION__BLUE_GREEN_RED	2
 #define RGB_LED_CONNECTION					RGB_LED_CONNECTION__BLUE_GREEN_RED
@@ -271,9 +279,6 @@
 
 /*********** LDR ***********/
 #define LDR_ADC_PIN		0
-
-/* SPI not needed but speed has to be defined */
-#define SPI_SPEED SPI_DISABLED
 
 #endif
 #endif
@@ -566,6 +571,7 @@
 /* SPI SPEED */
 #define SPI_CLK_DIV_16			1
 #define SPI_CLK_DIV_8			2
+#define SPI_CLK_DIV_2			3
 #define SPI_DISABLED			255
 
 #ifdef WS2801_NB
@@ -573,6 +579,12 @@
 #define SPI_SPEED SPI_CLK_DIV_8
 #else
 #define SPI_SPEED SPI_CLK_DIV_16
+#endif
+#endif
+
+#ifdef WS2812_NB
+#if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
+#define SPI_SPEED				SPI_CLK_DIV_16
 #endif
 #endif
 

@@ -139,6 +139,7 @@ static void Modes__updateMatrix (void)
 
 void Modes__init (void)
 {
+	LEDMatrix__clearMatrix();
 #if (MODE_STARTUP == MODE_STARTUP_ON)
 	Modes__setMode(MODE__STARTUP);
 #else

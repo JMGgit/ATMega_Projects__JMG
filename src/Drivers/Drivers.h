@@ -51,6 +51,11 @@ INLINE void Drivers__init (void)
 #if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
 	IRMP__init();
 #endif
+#ifdef WS2812_NB
+#if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
+	WS2812_DigiDotBooster__init();
+#endif
+#endif
 }
 
 

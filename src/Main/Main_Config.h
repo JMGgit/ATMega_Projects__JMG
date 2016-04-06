@@ -229,11 +229,11 @@
 #define BUTTONS_IRMP_OFF				1
 #define BUTTONS_IRMP_USED				2
 #define BUTTONS_IRMP_SEND_TO_TWI		3
-#define BUTTONS_IRMP					BUTTONS_IRMP_OFF
+#define BUTTONS_IRMP					BUTTONS_IRMP_USED
 
 #define BUTTONS_TWI_OFF					1
 #define BUTTONS_TWI_ON					2
-#define BUTTONS_TWI						BUTTONS_TWI_ON
+#define BUTTONS_TWI						BUTTONS_TWI_OFF
 
 /* button for off mode */
 #define BUTTON_OFF_AVAILABLE_NO			1

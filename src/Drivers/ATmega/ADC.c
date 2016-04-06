@@ -29,6 +29,8 @@ void ADC__init (void)
 
 uint16_t ADC__readValue (uint8_t channel)
 {
+	uint16_t retVal;
+
 	if (channel <= 7)
 	{
 		ADMUX &= ~ (0x1F);
@@ -42,10 +44,12 @@ uint16_t ADC__readValue (uint8_t channel)
 			/* wait */
 		}
 
-		return ((ADCL) | (ADCH << 8));
+		retVal = ((ADCL) | (ADCH << 8));
 	}
 	else
 	{
-		return 0;
+		retVal = 0;
 	}
+
+	return retVal;
 }

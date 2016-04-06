@@ -14,9 +14,11 @@
 #include "Main_Types.h"
 #include "Drivers_Config.h"
 #include "WS2812lib/light_ws2812.h"
+#include "WS2812_DigidotBooster/WS2812_DigiDotBooster.h"
 #include "uC.h"
 
 
+void WS2812__init (void);
 void WS2812__x10 (void);
 void WS2812__setRGBForLED (RGB_Color_t color, uint16_t led);
 void WS2812__setRGBForAllLEDs (RGB_Color_t color);

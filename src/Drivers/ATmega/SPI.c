@@ -28,6 +28,9 @@ void SPI__masterInit (void)
 #elif (SPI_SPEED == SPI_CLK_DIV_16)
 	/* enable SPI, master, clock rate fck/16 */
 	SPCR = (1 << SPE) | (1 << MSTR) | (1 << SPR0);
+#elif (SPI_SPEED == SPI_CLK_DIV_2)
+	SPCR = (1 << SPE) | (1 << MSTR);
+	SPSR = 1 << SPI2X;
 #else
 	#error : SPI speed not defined!
 #endif
@@ -61,6 +64,21 @@ void SPI__transmitData (uint8_t *data, uint16_t dataLength)
 	while (!(SPSR & (1<<SPIF)))
 	{
 		;
+	}
+}
+
+
+void SPI__slaveSelect (volatile uint8_t *slaveDdr, volatile uint8_t *slavePort, uint8_t slavePin, uint8_t enableSlave)
+{
+	setOutput(*slaveDdr, slavePin);
+
+	if (enableSlave)
+	{
+		setLow(*slavePort, slavePin);
+	}
+	else
+	{
+		setHigh(*slavePort, slavePin);
 	}
 }
 

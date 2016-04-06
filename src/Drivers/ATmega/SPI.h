@@ -38,6 +38,7 @@
 
 void SPI__masterInit (void);
 void SPI__transmitData (uint8_t *data, uint16_t dataLength);
+void SPI__slaveSelect (volatile uint8_t *slaveDdr, volatile uint8_t *slavePort, uint8_t slavePin, uint8_t enableSlave);
 
 #endif
 

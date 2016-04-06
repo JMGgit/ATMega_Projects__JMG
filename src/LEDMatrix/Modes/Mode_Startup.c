@@ -10,7 +10,7 @@
 #include "Modes.h"
 
 
-static uint8_t lineIt = 1;
+static uint8_t lineIt = 0;
 static uint8_t colIt = 0;
 static RGB_Color_t color = {TEST_BRIGHTNESS_LEVEL, 0, 0};
 static testLedStates_N testLedState = TEST_RED;
