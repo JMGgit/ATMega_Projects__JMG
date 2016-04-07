@@ -7,7 +7,9 @@
 
 
 #include "WS2812_DigiDotBooster.h"
-#include <util/delay.h>
+
+#ifdef WS2812_NB
+#if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
 
 #define TXBUFFERSIZE	10
 
@@ -148,3 +150,6 @@ void WS2812_DigiDotBooster__x10 (void)
 
 	WS2812_DigiDotBooster__transmitTxBuffer(TRUE);
 }
+
+#endif
+#endif

@@ -308,10 +308,6 @@ static void Qtwo__checkButtons (void)
 
 static void Qtwo__checkButtonsSetup (void)
 {
-#if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
-	static uint8_t langTimer = 255;
-#endif
-
 	if (	(Buttons__isPressedOnce(&buttonUp))
 #if (BUTTONS_IRMP != BUTTONS_IRMP_USED)
 		|| 	(Buttons__isPressedOnce(&buttonFunc1)) /* for compatibility with old projects */
@@ -339,26 +335,6 @@ static void Qtwo__checkButtonsSetup (void)
 	{
 		Qtwo__decMinutes();
 	}
-
-#if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
-	if (Buttons__isPressed(&buttonFunc2))
-	{
-		if (langTimer > 0)
-		{
-			langTimer--;
-		}
-		else
-		{
-			langTimer = 255;
-			Qtwo__setNextLang();
-			Modes__setMode(MODE__QLOCKTWO);
-		}
-	}
-	else
-	{
-		langTimer = 255;
-	}
-#endif
 
 	if (Buttons__isPressedOnce(&buttonFunc3))
 	{

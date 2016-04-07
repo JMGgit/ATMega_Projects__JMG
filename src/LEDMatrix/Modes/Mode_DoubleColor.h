@@ -16,6 +16,6 @@
 #include "Mode_ColorBlending.h"
 
 
-void DoubleColor__UpdateMatrix_x10 (void);
+void DoubleColor__x10 (void);
 
 #endif /* SRC_MODES_LEDMIRROR_MODE_DOUBLECOLOR_H_ */

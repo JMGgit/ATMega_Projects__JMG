@@ -180,7 +180,7 @@ void ColorBlending__calcCurrentColor (uint8_t timerColorChange, uint8_t colorSte
 }
 
 
-void ColorBlending__updateMatrix (uint8_t blendingMode)
+void ColorBlending__x10 (uint8_t blendingMode)
 {
 	uint16_t linIt, colIt;
 	RGB_Color_t *l_currentColor;

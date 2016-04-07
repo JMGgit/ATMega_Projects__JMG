@@ -21,7 +21,7 @@
 
 
 void ModeClock__init (void);
-void ModeClock__updateMatrix (uint8_t clockMode);
+void ModeClock__x10 (uint8_t clockMode);
 
 #endif
 

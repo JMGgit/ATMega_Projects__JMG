@@ -109,7 +109,7 @@ static void ModeClock__eepromStorage (void)
 }
 
 
-void ModeClock__updateMatrix (uint8_t clockMode)
+void ModeClock__x10 (uint8_t clockMode)
 {
 	uint8_t hour = Clock__getHours();
 	uint8_t min = Clock__getMinutes();

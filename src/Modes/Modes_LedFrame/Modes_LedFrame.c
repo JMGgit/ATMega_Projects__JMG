@@ -78,19 +78,19 @@ static void Modes__updateMatrix (void)
 
 		case MODE__BLENDING_SLOW_2_COLORS:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_SLOW_2_COLORS);
+			ColorBlending__x10(BLENDING_MODE_SLOW_2_COLORS);
 			break;
 		}
 
 		case MODE__BLENDING_SWEEP_FAST:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_SWEEP_FAST);
+			ColorBlending__x10(BLENDING_MODE_SWEEP_FAST);
 			break;
 		}
 
 		case MODE__DOUBLE_COLOR:
 		{
-			DoubleColor__UpdateMatrix_x10();
+			DoubleColor__x10_x10();
 			break;
 		}
 

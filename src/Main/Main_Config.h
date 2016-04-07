@@ -143,11 +143,6 @@
 #define BUTTON_FUNC3_AVAILABLE_YES		2
 /* defined by project configuration */
 
-/* startup mode */
-#define MODE_STARTUP_OFF				1
-#define MODE_STARTUP_ON					2
-#define MODE_STARTUP					MODE_STARTUP_ON
-
 /* snake game */
 #define MODE_SNAKE_OFF					1
 #define MODE_SNAKE_ON					2
@@ -245,11 +240,6 @@
 #define BUTTON_FUNC3_AVAILABLE_NO		1
 #define BUTTON_FUNC3_AVAILABLE_YES		2
 #define BUTTON_FUNC3_AVAILABLE			BUTTON_FUNC3_AVAILABLE_YES
-
-/* startup mode */
-#define MODE_STARTUP_OFF				1
-#define MODE_STARTUP_ON					2
-#define MODE_STARTUP					MODE_STARTUP_ON
 
 /* snake game */
 #define MODE_SNAKE_OFF					1

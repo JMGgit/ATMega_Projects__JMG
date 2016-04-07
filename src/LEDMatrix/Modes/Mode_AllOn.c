@@ -10,7 +10,7 @@
 
 static RGB_Color_t currentColor = {255, 255, 255};
 
-void AllOn__updateMatrix (void)
+void AllOn__x10 (void)
 {
 	currentColor = LEDMatrix__getColorFromInputs();
 	LEDMatrix__setRGBColorForMatrix(currentColor);

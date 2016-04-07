@@ -120,7 +120,7 @@ void Snake__init (void)
 }
 
 
-void Snake__updateMatrix (void)
+void Snake__x10 (void)
 {
 	uint16_t linIt, colIt;
 

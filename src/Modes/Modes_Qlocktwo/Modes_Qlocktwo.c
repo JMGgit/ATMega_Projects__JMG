@@ -11,7 +11,7 @@
 
 static Mode_t currentMode;
 static uint8_t modeOffTransition = FALSE;
-
+static uint8_t startupOn_EEPROM EEMEM;
 
 static void Modes__transition (void)
 {
@@ -94,7 +94,7 @@ static void Modes__updateMatrix (void)
 #if (MODE_SNAKE == MODE_SNAKE_ON)
 		case MODE__SNAKE:
 		{
-			Snake__updateMatrix();
+			Snake__x10();
 			break;
 		}
 #endif
@@ -105,17 +105,7 @@ static void Modes__updateMatrix (void)
 
 			if (!modeOffTransition)
 			{
-#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
-				if (Buttons__isPressedOnce(&buttonFunc2))
-				{
-					Modes__setMode(MODE__QLOCKTWO);
-				}
-#endif
-
-				if (Buttons__isPressedOnce(&buttonOff))
-				{
-					Modes__Start();
-				}
+				Off__x10();
 			}
 			else
 			{
@@ -140,11 +130,16 @@ static void Modes__updateMatrix (void)
 void Modes__init (void)
 {
 	LEDMatrix__clearMatrix();
-#if (MODE_STARTUP == MODE_STARTUP_ON)
-	Modes__setMode(MODE__STARTUP);
-#else
-	Modes__setMode(MODE__QLOCKTWO);
-#endif
+
+	if (eeprom_read_byte(&startupOn_EEPROM) == TRUE)
+	{
+		Modes__setMode(MODE__STARTUP);
+	}
+	else
+	{
+		Modes__Start();
+	}
+
 	Qtwo__init();
 }
 
@@ -181,4 +176,10 @@ void Modes__x10 (void)
 	}
 
 	Modes__updateMatrix();
+}
+
+
+void Modes__setStartup (uint8_t enabled)
+{
+	eeprom_update_byte(&startupOn_EEPROM, enabled);
 }

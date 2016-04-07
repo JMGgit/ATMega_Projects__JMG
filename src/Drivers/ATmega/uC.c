@@ -28,6 +28,9 @@ void uC__init (void)
 	OCR1A = (F_CPU / 100) / 64 - 1;				/* interrupt every 10ms */
 	TIMSK1 |= (1 << OCIE1A);
 
+	/* enable interrupts */
+	sei();
+
 #if (SPI_SPEED != SPI_DISABLED)
 	SPI__masterInit();
 #endif
@@ -38,9 +41,6 @@ void uC__init (void)
 	USART__init();
 #endif
 	ADC__init();
-
-	/* enable interrupts */
-	sei();
 }
 
 

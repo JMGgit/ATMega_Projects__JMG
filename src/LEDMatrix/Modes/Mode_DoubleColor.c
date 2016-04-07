@@ -268,7 +268,7 @@ static void DoubleColor__getLastVisibility (void)
 }
 
 
-void DoubleColor__UpdateMatrix_x10 (void)
+void DoubleColor__x10 (void)
 {
 	if (!timeTransition)
 	{

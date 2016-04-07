@@ -14,6 +14,6 @@
 #include "Buttons.h"
 
 
-void AllOn__updateMatrix (void);
+void AllOn__x10 (void);
 
 #endif /* MODE_ALLON_H_ */

@@ -85,7 +85,7 @@ static void Mode__eepromStorage (void)
 }
 
 
-static void Modes__updateMatrix (void)
+static void Modes__x10 (void)
 {
 	switch (currentMode)
 	{
@@ -97,69 +97,69 @@ static void Modes__updateMatrix (void)
 
 		case MODE__ALL_ON:
 		{
-			//AllOn__updateMatrix();
+			//AllOn__x10();
 			Modes__setNextMode();
 			break;
 		}
 
 		case MODE__BLENDING_SLOW:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_SLOW);
+			ColorBlending__x10(BLENDING_MODE_SLOW);
 			break;
 		}
 
 		case MODE__BLENDING_SLOW_2_COLORS:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_SLOW_2_COLORS);
+			ColorBlending__x10(BLENDING_MODE_SLOW_2_COLORS);
 			break;
 		}
 
 		case MODE__BLENDING_FAST_2_COLORS:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_FAST_2_COLORS);
+			ColorBlending__x10(BLENDING_MODE_FAST_2_COLORS);
 			break;
 		}
 
 		case MODE__BLENDING_SWEEP:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_SWEEP);
+			ColorBlending__x10(BLENDING_MODE_SWEEP);
 			break;
 		}
 
 		case MODE__BLENDING_FAST:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_FAST);
+			ColorBlending__x10(BLENDING_MODE_FAST);
 			break;
 		}
 
 		case MODE__BLENDING_SWEEP_FAST:
 		{
-			ColorBlending__updateMatrix(BLENDING_MODE_SWEEP_FAST);
+			ColorBlending__x10(BLENDING_MODE_SWEEP_FAST);
 			break;
 		}
 
 		case MODE__BLENDING_CLOCK:
 		{
-			ModeClock__updateMatrix(CLOCK_MODE_COLOR_BLENDING);
+			ModeClock__x10(CLOCK_MODE_COLOR_BLENDING);
 			break;
 		}
 
 		case MODE__BLENDING_CLOCK_INVERTED:
 		{
-			ModeClock__updateMatrix(CLOCK_MODE_COLOR_BLENDING_INVERTED);
+			ModeClock__x10(CLOCK_MODE_COLOR_BLENDING_INVERTED);
 			break;
 		}
 
 		case MODE__CLOCK:
 		{
-			//ModeClock__updateMatrix(CLOCK_MODE_ONE_COLOR);
+			//ModeClock__x10(CLOCK_MODE_ONE_COLOR);
 			Modes__setNextMode();
 			break;
 		}
 
 		case MODE__SNAKE:
 		{
-			Snake__updateMatrix();
+			Snake__x10();
 			break;
 		}
 
@@ -241,5 +241,5 @@ void Modes__x10 (void)
 		}
 	}
 
-	Modes__updateMatrix();
+	Modes__x10();
 }
