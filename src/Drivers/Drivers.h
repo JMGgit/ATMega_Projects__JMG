@@ -21,7 +21,7 @@
 #include "Drivers_Config.h"
 
 
-INLINE void Drivers__init (void)
+static inline void Drivers__init (void)
 {
 #ifdef TEST1_LED_DDR
 	setOutput(TEST1_LED_DDR, TEST1_LED_PIN);
@@ -59,7 +59,7 @@ INLINE void Drivers__init (void)
 }
 
 
-INLINE void Drivers__x10 (void)
+static inline void Drivers__x10 (void)
 {
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
 	DS18B20__x10();
@@ -67,7 +67,13 @@ INLINE void Drivers__x10 (void)
 #ifdef WS2801_NB
 	WS2801__x10();
 #endif
+}
+
+
+static inline void Drivers__end__x10 (void)
+{
 #ifdef WS2812_NB
+	/* has to be called after modes to finish the SPI transfer */
 	WS2812__x10();
 #endif
 }

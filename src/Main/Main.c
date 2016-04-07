@@ -45,6 +45,7 @@ int main (void)
 #if (PROJECT != PROJECT__IRMP)
 			Modes__x10();
 #endif
+			Drivers__end__x10();
 
 			ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 			{

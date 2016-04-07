@@ -24,8 +24,6 @@
 #define E_PENDING   1
 #define E_NOT_OK	2
 
-#define INLINE static inline
-
 #define MIN(a, b) (((a) < (b)) ? (a) : (b) )
 #define MAX(a, b) (((a) > (b)) ? (a) : (b) )
 
@@ -41,7 +39,7 @@ typedef struct
 
 
 /* ToDO: move functions */
-INLINE RGB_Color_t getRGBColorFromComponents (uint8_t red, uint8_t green, uint8_t blue)
+static inline  RGB_Color_t getRGBColorFromComponents (uint8_t red, uint8_t green, uint8_t blue)
 {
 	return ((RGB_Color_t){red, green, blue});
 }

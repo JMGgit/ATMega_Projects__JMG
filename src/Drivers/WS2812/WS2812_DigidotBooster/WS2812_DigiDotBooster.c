@@ -22,6 +22,9 @@
 static uint8_t txBuffer[TXBUFFERSIZE];
 static uint8_t txbufferIdx, globalBufferIdx;
 
+/* store color to avoid too many data transmission to RGB register
+ * (optimization may work for Qlocktwo but not for big matrix or if cells are independant) */
+static RGB_Color_t lastColor;
 static uint8_t slaveSelected = FALSE;
 
 
@@ -33,13 +36,22 @@ static inline void WS2812_DigiDotBooster__transmitTxBuffer (uint8_t finishTransm
 	}
 
 	SPI__transmitData(txBuffer, txbufferIdx);
+
 	txbufferIdx = 0;
+
 	slaveSelected = TRUE;
 
 	if (finishTransmission)
 	{
 		SPI__slaveSelect(&WS2812_DIGIDOT_CS_DDR, &WS2812_DIGIDOT_CS_PORT, WS2812_DIGIDOT_CS_PIN, FALSE);
+
 		slaveSelected = FALSE;
+
+		lastColor.red = 255;
+		lastColor.green = 255;
+		lastColor.blue = 255;
+
+		globalBufferIdx = 0;
 	}
 }
 
@@ -48,6 +60,15 @@ static inline void WS2812_DigiDotBooster__addData (uint8_t data)
 {
 	txBuffer[txbufferIdx++] = data;
 	globalBufferIdx++;
+
+	if (globalBufferIdx == 255)
+	{
+		/* not allowed by DigiDitBooster! */
+		while (1)
+		{
+			;
+		}
+	}
 }
 
 
@@ -62,16 +83,29 @@ void WS2812_DigiDotBooster__init (void)
 
 	WS2812_DigiDotBooster__transmitTxBuffer(TRUE);
 	_delay_ms(10);
+
+	lastColor.red = 255;
+	lastColor.green = 255;
+	lastColor.blue = 255;
 }
 
 
 void WS2812_DigiDotBooster__setRGBForLED (RGB_Color_t color, uint8_t led)
 {
+	if (	(color.red 		!= lastColor.red)
+		||	(color.green 	!= lastColor.green)
+		|| 	(color.blue 	!= lastColor.blue)
+		)
+	{
+		WS2812_DigiDotBooster__addData(CMD_SETRGB);
+		WS2812_DigiDotBooster__addData(color.red);
+		WS2812_DigiDotBooster__addData(color.green);
+		WS2812_DigiDotBooster__addData(color.blue);
 
-	WS2812_DigiDotBooster__addData(CMD_SETRGB);
-	WS2812_DigiDotBooster__addData(color.red);
-	WS2812_DigiDotBooster__addData(color.green);
-	WS2812_DigiDotBooster__addData(color.blue);
+		lastColor.red 	= color.red;
+		lastColor.green = color.green;
+		lastColor.blue 	= color.blue;
+	}
 
 	WS2812_DigiDotBooster__addData(CMD_SETLED);
 	WS2812_DigiDotBooster__addData(led);
@@ -81,10 +115,20 @@ void WS2812_DigiDotBooster__setRGBForLED (RGB_Color_t color, uint8_t led)
 
 void WS2812_DigiDotBooster__setRGBForAllLEDs (RGB_Color_t color)
 {
-	WS2812_DigiDotBooster__addData(CMD_SETRGB);
-	WS2812_DigiDotBooster__addData(color.red);
-	WS2812_DigiDotBooster__addData(color.green);
-	WS2812_DigiDotBooster__addData(color.blue);
+	if (	(color.red 		!= lastColor.red)
+		||	(color.green 	!= lastColor.green)
+		|| 	(color.blue 	!= lastColor.blue)
+		)
+	{
+		WS2812_DigiDotBooster__addData(CMD_SETRGB);
+		WS2812_DigiDotBooster__addData(color.red);
+		WS2812_DigiDotBooster__addData(color.green);
+		WS2812_DigiDotBooster__addData(color.blue);
+
+		lastColor.red 	= color.red;
+		lastColor.green = color.green;
+		lastColor.blue 	= color.blue;
+	}
 
 	WS2812_DigiDotBooster__addData(CMD_SETALL);
 
@@ -103,15 +147,4 @@ void WS2812_DigiDotBooster__x10 (void)
 	WS2812_DigiDotBooster__addData(CMD_SHOW);
 
 	WS2812_DigiDotBooster__transmitTxBuffer(TRUE);
-
-	if (globalBufferIdx == 255)
-	{
-		/* not allowed by DigiDitBooster! */
-		while (1)
-		{
-			;
-		}
-	}
-
-	globalBufferIdx = 0;
 }
