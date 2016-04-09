@@ -8,10 +8,6 @@
 
 #include "Main.h"
 
-/* runtime test */
-#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
-uint8_t runtimeCounter;
-#endif
 
 int main (void)
 {
@@ -32,9 +28,6 @@ int main (void)
 		if (uC__isTaskTrigger_x10())
 		{
 			uC__resetTaskTrigger_x10();
-#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
-			toggle(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
-#endif
 			Drivers__x10();
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
 			Lcd__x10();
@@ -46,22 +39,7 @@ int main (void)
 #if (PROJECT != PROJECT__IRMP)
 			Modes__x10();
 #endif
-			Drivers__end__x10();
-
-#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
-			if (runtimeCounter < 100)
-			{
-				runtimeCounter++;
-			}
-			else
-			{
-				runtimeCounter = 0;
-				toggle(RUNTIME_LED_PORT, RUNTIME_LED_PIN); /* LED */
-			}
-
-			toggle(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
-#endif
-
+			Drivers__end_x10();
 		}
 	}
 

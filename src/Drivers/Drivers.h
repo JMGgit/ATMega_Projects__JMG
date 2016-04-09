@@ -62,6 +62,7 @@ static inline void Drivers__init (void)
 
 static inline void Drivers__x10 (void)
 {
+	uC__x10();
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
 	DS18B20__x10();
 #endif
@@ -71,11 +72,12 @@ static inline void Drivers__x10 (void)
 }
 
 
-static inline void Drivers__end__x10 (void)
+static inline void Drivers__end_x10 (void)
 {
 #if (LED_TYPE == LED_TYPE_WS2812)
 	/* has to be called after modes to finish the SPI transfer */
 	WS2812__x10();
+	uC__end_x10();
 #endif
 }
 

@@ -11,6 +11,10 @@
 
 static volatile uint8_t update10ms;
 
+#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
+uint8_t runtimeCounter;
+#endif
+
 
 void uC__init (void)
 {
@@ -92,6 +96,32 @@ void uC__resetTaskTrigger_x10 (void)
 		update10ms = FALSE;
 		wdt_reset(); /* reset watchdog */
 	}
+}
+
+
+void uC__x10 (void)
+{
+#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
+	setHigh(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
+
+	if (runtimeCounter < 100)
+	{
+		runtimeCounter++;
+	}
+	else
+	{
+		runtimeCounter = 0;
+		toggle(RUNTIME_LED_PORT, RUNTIME_LED_PIN); /* LED */
+	}
+#endif
+}
+
+
+void uC__end_x10 (void)
+{
+#if (RUNTIME_TEST != RUNTIME_TEST_OFF)
+	setLow(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
+#endif
 }
 
 

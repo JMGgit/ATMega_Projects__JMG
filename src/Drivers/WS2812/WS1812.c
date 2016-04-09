@@ -55,11 +55,8 @@ void WS2812__toggleledOrder (void)
 static void WS2812__updateAll (void)
 {
 	ws2812_setleds((struct cRGB*)GS_Data, LEDS_NB);
-
 }
 #endif
-
-
 
 
 void WS2812__x10 (void)
