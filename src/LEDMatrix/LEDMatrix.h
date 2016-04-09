@@ -19,6 +19,7 @@
 void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color);
 void LEDMatrix__setRGBColorForMatrix (RGB_Color_t color);
 void LEDMatrix__clearMatrix (void);
+void LEDMatrix__toggleledOrder (void);
 
 
 #endif /* LEDMATRIX_H_ */

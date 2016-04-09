@@ -16,7 +16,7 @@
 #include "Drivers_Config.h"
 #include "uC.h"
 
-#ifdef WS2812_NB
+#if (LED_TYPE == LED_TYPE_WS2812)
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
 
 void WS2812_DigiDotBooster__init (void);

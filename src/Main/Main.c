@@ -31,6 +31,7 @@ int main (void)
 	{
 		if (uC__isTaskTrigger_x10())
 		{
+			uC__resetTaskTrigger_x10();
 #if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 			toggle(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
 #endif
@@ -47,11 +48,6 @@ int main (void)
 #endif
 			Drivers__end__x10();
 
-			ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
-			{
-				uC__resetTaskTrigger_x10();
-			}
-
 #if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 			if (runtimeCounter < 100)
 			{
@@ -65,6 +61,7 @@ int main (void)
 
 			toggle(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
 #endif
+
 		}
 	}
 

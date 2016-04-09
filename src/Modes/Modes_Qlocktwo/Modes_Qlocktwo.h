@@ -35,4 +35,7 @@ typedef enum
 } Mode_t;
 
 
+void Modes__toggleStartupMode (void);
+
+
 #endif /* MODES_QLOCKTWO_H_ */

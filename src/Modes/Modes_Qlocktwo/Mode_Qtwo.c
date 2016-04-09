@@ -181,6 +181,10 @@ void Qtwo__init (void)
 	{
 		selectedLang = eeprom_read_byte(&selectedLang_EEPROM);
 	}
+	else
+	{
+		selectedLang = QTWO_LANG_DE_SUED;
+	}
 #endif
 }
 
@@ -1037,16 +1041,16 @@ static void Qtwo__updateMatrix()
 					/* NACH */
 					setNACH = TRUE;
 				}
+			}
 
-				if (selectedLang == QTWO_LANG_FR)
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* ET QUART */
+				for (colIt = 0; colIt <= 7; colIt++)
 				{
-					/* ET QUART */
-					for (colIt = 0; colIt <= 7; colIt++)
+					if (colIt != 2)
 					{
-						if (colIt != 2)
-						{
-							Qtwo__setCellActive(7, colIt);
-						}
+						Qtwo__setCellActive(7, colIt);
 					}
 				}
 			}
@@ -1224,23 +1228,23 @@ static void Qtwo__updateMatrix()
 				}
 
 				matrixHours++;
+			}
 
-				if (selectedLang == QTWO_LANG_FR)
+			if (selectedLang == QTWO_LANG_FR)
+			{
+				/* MOINS LE QUART */
+				for (colIt = 6; colIt <= 7; colIt++)
 				{
-					/* MOINS LE QUART */
-					for (colIt = 6; colIt <= 7; colIt++)
-					{
-						Qtwo__setCellActive(6, colIt);
-					}
-
-					for (colIt = 3; colIt <= 7; colIt++)
-					{
-						Qtwo__setCellActive(7, colIt);
-					}
-
-					setMOINS = TRUE;
-					matrixHours++;
+					Qtwo__setCellActive(6, colIt);
 				}
+
+				for (colIt = 3; colIt <= 7; colIt++)
+				{
+					Qtwo__setCellActive(7, colIt);
+				}
+
+				setMOINS = TRUE;
+				matrixHours++;
 			}
 
 			break;

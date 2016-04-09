@@ -15,16 +15,20 @@
 #include "uC.h"
 
 
-#ifdef WS2801_NB
+#if (LED_TYPE == LED_TYPE_WS2801)
 
-#define CHANNEL_NB		(WS2801_NB * 3)
+#define CHANNEL_NB		(LEDS_NB * 3)
 
 /* public functions */
 
+void WS2801__init (void);
 void WS2801__x10 (void);
 void WS2801__setRGBForLED (RGB_Color_t color, uint16_t led);
 void WS2801__setRGBForAllLEDs (RGB_Color_t color);
 void WS2801__resetAllLEDs (void);
+#if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
+void WS2801__toggleledOrder (void);
+#endif
 
 #endif
 #endif /* WS2801_H_ */

@@ -1,0 +1,4 @@
+In mode OFF:
+- Button 1 pressed 3s: change LED order
+- Button 2 pressed 3s: enable / disable startup mode
+- Button 3 pressed 3s: change language (Qlocktwo)

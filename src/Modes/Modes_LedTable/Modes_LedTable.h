@@ -15,6 +15,7 @@
 #include "Mode_ColorBlending.h"
 #include "Mode_Clock.h"
 #include "Mode_Snake.h"
+#include "Mode_Off.h"
 
 
 typedef enum
@@ -38,5 +39,7 @@ typedef enum
 
 #define MODE__INIT (MODE__OFF + 1)
 
+
+void Modes__toggleStartupMode (void);
 
 #endif /* MODES_LEDTABLE_H_ */

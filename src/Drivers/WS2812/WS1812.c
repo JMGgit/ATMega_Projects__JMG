@@ -9,29 +9,57 @@
 #include "WS2812.h"
 
 
-#ifdef WS2812_NB
+#if (LED_TYPE == LED_TYPE_WS2812)
 
+#if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
+static uint8_t ledOrder;
+static uint8_t ledOrder_EEPROM EEMEM;
+#endif
 
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
-RGB_Color_t GS_Data[WS2812_NB];
+RGB_Color_t GS_Data[LEDS_NB];
 /* remark: cannot be declared as static: ATMega limitation?? */
+#endif
+
+
+uint8_t WS2812__getledOrder (void)
+{
+#if (RGB_LED_ORDER == RGB_LED_ORDER__RED_GREEN_BLUE)
+	return RGB_LED_ORDER__RED_GREEN_BLUE;
+#elif (RGB_LED_ORDER == RGB_LED_ORDER__BLUE_GREEN_RED)
+	return RGB_LED_ORDER__BLUE_GREEN_RED;
+#else
+	return ledOrder;
+#endif
+}
+
+
+#if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
+void WS2812__toggleledOrder (void)
+{
+	if (ledOrder == RGB_LED_ORDER__RED_GREEN_BLUE)
+	{
+		ledOrder = RGB_LED_ORDER__BLUE_GREEN_RED;
+	}
+	else
+	{
+		ledOrder = RGB_LED_ORDER__RED_GREEN_BLUE;
+	}
+
+	eeprom_update_byte(&ledOrder_EEPROM, ledOrder);
+}
 #endif
 
 
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
 static void WS2812__updateAll (void)
 {
-	ws2812_setleds((struct cRGB*)GS_Data, WS2812_NB);
+	ws2812_setleds((struct cRGB*)GS_Data, LEDS_NB);
 
 }
 #endif
 
-void WS2812__init (void)
-{
-#if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
-	WS2812_DigiDotBooster__init();
-#endif
-}
+
 
 
 void WS2812__x10 (void)
@@ -61,7 +89,7 @@ void WS2812__setRGBForAllLEDs (RGB_Color_t color)
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
 	uint16_t idxLed;
 
-	for (idxLed = 0; idxLed < WS2812_NB; idxLed++)
+	for (idxLed = 0; idxLed < LEDS_NB; idxLed++)
 	{
 		GS_Data[idxLed] = color;
 	}
@@ -79,6 +107,26 @@ void WS2812__resetAllLEDs (void)
 #endif
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
 	WS2812_DigiDotBooster__setRGBForAllLEDs(getRGBColorFromComponents(0, 0, 0));
+#endif
+}
+
+
+void WS2812__init (void)
+{
+#if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
+	ledOrder = eeprom_read_byte(&ledOrder_EEPROM);
+
+	if (	(ledOrder != RGB_LED_ORDER__BLUE_GREEN_RED)
+		&& 	(ledOrder != RGB_LED_ORDER__RED_GREEN_BLUE)
+		)
+	{
+		ledOrder = RGB_LED_ORDER__RED_GREEN_BLUE;
+	}
+
+#endif
+
+#if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
+	WS2812_DigiDotBooster__init();
 #endif
 }
 

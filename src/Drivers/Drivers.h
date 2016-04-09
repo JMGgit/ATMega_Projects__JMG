@@ -51,10 +51,11 @@ static inline void Drivers__init (void)
 #if (BUTTONS_IRMP != BUTTONS_IRMP_OFF)
 	IRMP__init();
 #endif
-#ifdef WS2812_NB
-#if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
-	WS2812_DigiDotBooster__init();
+#if (LED_TYPE == LED_TYPE_WS2801)
+	WS2801__init();
 #endif
+#if (LED_TYPE == LED_TYPE_WS2812)
+	WS2812__init();
 #endif
 }
 
@@ -64,7 +65,7 @@ static inline void Drivers__x10 (void)
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
 	DS18B20__x10();
 #endif
-#ifdef WS2801_NB
+#if (LED_TYPE == LED_TYPE_WS2801)
 	WS2801__x10();
 #endif
 }
@@ -72,10 +73,11 @@ static inline void Drivers__x10 (void)
 
 static inline void Drivers__end__x10 (void)
 {
-#ifdef WS2812_NB
+#if (LED_TYPE == LED_TYPE_WS2812)
 	/* has to be called after modes to finish the SPI transfer */
 	WS2812__x10();
 #endif
 }
+
 
 #endif /* DRIVERS_H_ */

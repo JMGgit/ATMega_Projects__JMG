@@ -14,10 +14,10 @@
 void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color)
 {
 	LEDMatrix__applyDotCorrection(&color, line, column);
-#ifdef WS2801_NB
+#if (LED_TYPE == LED_TYPE_WS2801)
 	WS2801__setRGBForLED(color, (LED_MATRIX_SIZE_COL * (line - 1) + (column - 1)));
 #endif
-#ifdef WS2812_NB
+#if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__setRGBForLED(color, (LED_MATRIX_SIZE_COL * (line - 1) + (column - 1)));
 #endif
 }
@@ -25,10 +25,10 @@ void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color)
 
 void LEDMatrix__setRGBColorForMatrix (RGB_Color_t color)
 {
-#ifdef WS2801_NB
+#if (LED_TYPE == LED_TYPE_WS2801)
 	WS2801__setRGBForAllLEDs(color);
 #endif
-#ifdef WS2812_NB
+#if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__setRGBForAllLEDs(color);
 #endif
 }
@@ -36,11 +36,24 @@ void LEDMatrix__setRGBColorForMatrix (RGB_Color_t color)
 
 void LEDMatrix__clearMatrix (void)
 {
-#ifdef WS2801_NB
+#if (LED_TYPE == LED_TYPE_WS2801)
 	WS2801__resetAllLEDs();
 #endif
-#ifdef WS2812_NB
+#if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__resetAllLEDs();
+#endif
+}
+
+
+void LEDMatrix__toggleledOrder (void)
+{
+#if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
+#if (LED_TYPE == LED_TYPE_WS2801)
+	WS2801__toggleledOrder();
+#endif
+#if (LED_TYPE == LED_TYPE_WS2812)
+	WS2812__toggleledOrder();
+#endif
 #endif
 }
 

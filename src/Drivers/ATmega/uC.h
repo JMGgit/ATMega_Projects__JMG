@@ -11,6 +11,7 @@
 
 #include <avr/io.h>
 #include <avr/interrupt.h>
+#include <avr/wdt.h>
 #include "Ports.h"
 #include "SPI.h"
 #include "TWI_Master.h"
@@ -29,6 +30,7 @@
 void uC__init (void);
 uint8_t uC__isTaskTrigger_x10 (void);
 void uC__resetTaskTrigger_x10 (void);
+void uC__triggerSwReset (void);
 
 
 #endif /* UC_H_ */

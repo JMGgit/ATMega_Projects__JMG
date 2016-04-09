@@ -15,6 +15,7 @@
 #include "Mode_AllOn.h"
 #include "Mode_ColorBlending.h"
 #include "Mode_DoubleColor.h"
+#include "Mode_Off.h"
 
 
 typedef enum
@@ -32,5 +33,7 @@ typedef enum
 
 #define MODE__INIT (MODE__OFF + 1)
 
+
+void Modes__toggleStartupMode (void);
 
 #endif /* MODES_LEDMIRROR_H_ */

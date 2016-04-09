@@ -13,6 +13,8 @@ static Mode_t currentMode;
 static uint8_t modeOffTransition = FALSE;
 static uint16_t timerModeChange;
 uint8_t mode_EEPROM EEMEM;
+static uint8_t startupOn;
+static uint8_t startupOn_EEPROM EEMEM;
 
 
 uint16_t timerModeChangeConf[MODE_NB] =
@@ -90,7 +92,7 @@ static void Modes__updateMatrix (void)
 
 		case MODE__DOUBLE_COLOR:
 		{
-			DoubleColor__x10_x10();
+			DoubleColor__x10();
 			break;
 		}
 
@@ -100,10 +102,7 @@ static void Modes__updateMatrix (void)
 
 			if (!modeOffTransition)
 			{
-				if (Buttons__isPressedOnce(&buttonOff))
-				{
-					Modes__Start();
-				}
+				Off__x10();
 			}
 			else
 			{
@@ -127,11 +126,18 @@ static void Modes__updateMatrix (void)
 
 void Modes__init (void)
 {
-#if (MODE_STARTUP == MODE_STARTUP_ON)
-	Modes__setMode(MODE__STARTUP);
-#else
-	Modes__Start();
-#endif
+	LEDMatrix__clearMatrix();
+
+	if (eeprom_read_byte(&startupOn_EEPROM) == TRUE)
+	{
+		Modes__setMode(MODE__STARTUP);
+		startupOn = TRUE;
+	}
+	else
+	{
+		Modes__Start();
+		startupOn = FALSE;
+	}
 }
 
 
@@ -168,4 +174,19 @@ void Modes__x10 (void)
 	}
 
 	Modes__updateMatrix();
+}
+
+
+void Modes__toggleStartupMode (void)
+{
+	if (startupOn)
+	{
+		startupOn = FALSE;
+	}
+	else
+	{
+		startupOn = TRUE;
+	}
+
+	eeprom_update_byte(&startupOn_EEPROM, startupOn);
 }

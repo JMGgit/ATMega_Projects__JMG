@@ -11,6 +11,7 @@
 
 static Mode_t currentMode;
 static uint8_t modeOffTransition = FALSE;
+static uint8_t startupOn;
 static uint8_t startupOn_EEPROM EEMEM;
 
 static void Modes__transition (void)
@@ -134,10 +135,12 @@ void Modes__init (void)
 	if (eeprom_read_byte(&startupOn_EEPROM) == TRUE)
 	{
 		Modes__setMode(MODE__STARTUP);
+		startupOn = TRUE;
 	}
 	else
 	{
 		Modes__Start();
+		startupOn = FALSE;
 	}
 
 	Qtwo__init();
@@ -179,7 +182,16 @@ void Modes__x10 (void)
 }
 
 
-void Modes__setStartup (uint8_t enabled)
+void Modes__toggleStartupMode (void)
 {
-	eeprom_update_byte(&startupOn_EEPROM, enabled);
+	if (startupOn)
+	{
+		startupOn = FALSE;
+	}
+	else
+	{
+		startupOn = TRUE;
+	}
+
+	eeprom_update_byte(&startupOn_EEPROM, startupOn);
 }

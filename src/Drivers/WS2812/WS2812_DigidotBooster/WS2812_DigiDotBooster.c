@@ -8,13 +8,15 @@
 
 #include "WS2812_DigiDotBooster.h"
 
-#ifdef WS2812_NB
+#if (LED_TYPE == LED_TYPE_WS2812)
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
+
+extern uint8_t WS2812__getledOrder (void);
 
 #define TXBUFFERSIZE	10
 
 #define CMD_INIT		0xB1
-#define CMD_COUNT		WS2812_NB
+#define CMD_COUNT		LEDS_NB
 #define CMD_BITS		24
 #define CMD_SHOW		0xB2
 #define CMD_SETRGB		0xA1
@@ -25,7 +27,7 @@ static uint8_t txBuffer[TXBUFFERSIZE];
 static uint8_t txbufferIdx, globalBufferIdx;
 
 /* store color to avoid too many data transmission to RGB register
- * (optimization may work for Qlocktwo but not for big matrix or if cells are independant) */
+ * (optimization works for Qlocktwo but may not work if many LEDs have different colors) */
 static RGB_Color_t lastColor;
 static uint8_t slaveSelected = FALSE;
 
@@ -100,9 +102,19 @@ void WS2812_DigiDotBooster__setRGBForLED (RGB_Color_t color, uint8_t led)
 		)
 	{
 		WS2812_DigiDotBooster__addData(CMD_SETRGB);
-		WS2812_DigiDotBooster__addData(color.red);
-		WS2812_DigiDotBooster__addData(color.green);
-		WS2812_DigiDotBooster__addData(color.blue);
+
+		if (WS2812__getledOrder() == RGB_LED_ORDER__RED_GREEN_BLUE)
+		{
+			WS2812_DigiDotBooster__addData(color.red);
+			WS2812_DigiDotBooster__addData(color.green);
+			WS2812_DigiDotBooster__addData(color.blue);
+		}
+		else
+		{
+			WS2812_DigiDotBooster__addData(color.blue);
+			WS2812_DigiDotBooster__addData(color.green);
+			WS2812_DigiDotBooster__addData(color.red);
+		}
 
 		lastColor.red 	= color.red;
 		lastColor.green = color.green;
@@ -123,9 +135,19 @@ void WS2812_DigiDotBooster__setRGBForAllLEDs (RGB_Color_t color)
 		)
 	{
 		WS2812_DigiDotBooster__addData(CMD_SETRGB);
-		WS2812_DigiDotBooster__addData(color.red);
-		WS2812_DigiDotBooster__addData(color.green);
-		WS2812_DigiDotBooster__addData(color.blue);
+
+		if (WS2812__getledOrder() == RGB_LED_ORDER__RED_GREEN_BLUE)
+		{
+			WS2812_DigiDotBooster__addData(color.red);
+			WS2812_DigiDotBooster__addData(color.green);
+			WS2812_DigiDotBooster__addData(color.blue);
+		}
+		else
+		{
+			WS2812_DigiDotBooster__addData(color.blue);
+			WS2812_DigiDotBooster__addData(color.green);
+			WS2812_DigiDotBooster__addData(color.red);
+		}
 
 		lastColor.red 	= color.red;
 		lastColor.green = color.green;

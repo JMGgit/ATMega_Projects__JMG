@@ -9,11 +9,14 @@
 #include "uC.h"
 
 
-static uint8_t update10ms;
+static volatile uint8_t update10ms;
 
 
 void uC__init (void)
 {
+	/* watchdog */
+	wdt_enable(WDTO_120MS);
+
 	/* control LED */
 	setOutput(UC_LED_DDR, UC_LED_PIN);
 
@@ -28,9 +31,6 @@ void uC__init (void)
 	OCR1A = (F_CPU / 100) / 64 - 1;				/* interrupt every 10ms */
 	TIMSK1 |= (1 << OCIE1A);
 
-	/* enable interrupts */
-	sei();
-
 #if (SPI_SPEED != SPI_DISABLED)
 	SPI__masterInit();
 #endif
@@ -41,6 +41,9 @@ void uC__init (void)
 	USART__init();
 #endif
 	ADC__init();
+
+	/* enable interrupts */
+	sei();
 }
 
 
@@ -84,5 +87,18 @@ uint8_t uC__isTaskTrigger_x10 (void)
 
 void uC__resetTaskTrigger_x10 (void)
 {
-	update10ms = FALSE;
+	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	{
+		update10ms = FALSE;
+		wdt_reset(); /* reset watchdog */
+	}
+}
+
+
+void uC__triggerSwReset (void)
+{
+	while (1)
+	{
+		/* SW reset trigger by watchdog */
+	}
 }
