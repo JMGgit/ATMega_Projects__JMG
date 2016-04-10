@@ -10,6 +10,8 @@
 #include "Modes.h"
 
 
+#define TEST_BRIGHTNESS_LEVEL	60
+
 static uint8_t lineIt = 1;
 static uint8_t colIt = 0;
 static RGB_Color_t color = {TEST_BRIGHTNESS_LEVEL, 0, 0};

@@ -37,11 +37,9 @@
 								<option id="de.innot.avreclipse.compiler.option.def.1170801763" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__LED_TABLE"/>
 									<listOptionValue builtIn="false" value="LED_TYPE=LED_TYPE_WS2801"/>
-									<listOptionValue builtIn="false" value="MODE_SNAKE=MODE_SNAKE_ON"/>
-									<listOptionValue builtIn="false" value="BUTTON_OFF_AVAILABLE=BUTTON_OFF_AVAILABLE_YES"/>
-									<listOptionValue builtIn="false" value="BUTTON_FUNC3_AVAILABLE=BUTTON_FUNC3_AVAILABLE_YES"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.380316832" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Clock}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/ColorTables}&quot;"/>
@@ -78,7 +76,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes/Modes_IRMP|src/Drivers/ATtiny|src/Modes_Qlocktwo|src/Modes_TemperatureLogger|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_Qlocktwo|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -121,6 +119,7 @@
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__TEMPERATURE_LOGGER"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.1488797831" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Clock}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/ColorTables}&quot;"/>
@@ -156,7 +155,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Drivers/ATtiny|src/Modes_Qlocktwo|src/Modes_LedTable|src/LEDMatrix|src/ColorTables|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_Qlocktwo|src/Modes_LedTable|src/LEDMatrix|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes_LedFrame|src/ColorTables|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -197,12 +196,11 @@
 								<option id="de.innot.avreclipse.compiler.option.optimize.1455114508" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
 								<option id="de.innot.avreclipse.compiler.option.def.434011353" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__QLOCKTWO"/>
+									<listOptionValue builtIn="false" value="QLOCKTWO_REVISION=QLOCKTWO_REVISION_2"/>
 									<listOptionValue builtIn="false" value="LED_TYPE=LED_TYPE_WS2801"/>
-									<listOptionValue builtIn="false" value="MODE_SNAKE=MODE_SNAKE_NO"/>
-									<listOptionValue builtIn="false" value="BUTTON_OFF_AVAILABLE=BUTTON_OFF_AVAILABLE_NO"/>
-									<listOptionValue builtIn="false" value="BUTTON_FUNC3_AVAILABLE=BUTTON_FUNC3_AVAILABLE_NO"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.1062562917" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Clock}&quot;"/>
@@ -239,7 +237,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes/Modes_IRMP|src/Drivers/ATtiny|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -280,12 +278,11 @@
 								<option id="de.innot.avreclipse.compiler.option.optimize.1538274378" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
 								<option id="de.innot.avreclipse.compiler.option.def.625391124" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__QLOCKTWO"/>
+									<listOptionValue builtIn="false" value="QLOCKTWO_REVISION=QLOCKTWO_REVISION_3"/>
 									<listOptionValue builtIn="false" value="LED_TYPE=LED_TYPE_WS2801"/>
-									<listOptionValue builtIn="false" value="MODE_SNAKE=MODE_SNAKE_ON"/>
-									<listOptionValue builtIn="false" value="BUTTON_OFF_AVAILABLE=BUTTON_OFF_AVAILABLE_YES"/>
-									<listOptionValue builtIn="false" value="BUTTON_FUNC3_AVAILABLE=BUTTON_FUNC3_AVAILABLE_YES"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.1950505557" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Clock}&quot;"/>
@@ -321,7 +318,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes/Modes_IRMP|src/Drivers/ATtiny|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -363,11 +360,9 @@
 								<option id="de.innot.avreclipse.compiler.option.def.1292782615" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__LED_MIRROR"/>
 									<listOptionValue builtIn="false" value="LED_TYPE=LED_TYPE_WS2801"/>
-									<listOptionValue builtIn="false" value="MODE_SNAKE=MODE_SNAKE_OFF"/>
-									<listOptionValue builtIn="false" value="BUTTON_OFF_AVAILABLE=BUTTON_OFF_AVAILABLE_YES"/>
-									<listOptionValue builtIn="false" value="BUTTON_FUNC3_AVAILABLE=BUTTON_FUNC3_AVAILABLE_YES"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.44505505" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Clock}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/ColorTables}&quot;"/>
@@ -404,7 +399,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes/Modes_IRMP|src/Drivers/ATtiny|src/Modes_Qlocktwo|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_Qlocktwo|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -446,11 +441,9 @@
 								<option id="de.innot.avreclipse.compiler.option.def.2105919210" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__LED_FRAME"/>
 									<listOptionValue builtIn="false" value="LED_TYPE=LED_TYPE_WS2801"/>
-									<listOptionValue builtIn="false" value="MODE_SNAKE=MODE_SNAKE_OFF"/>
-									<listOptionValue builtIn="false" value="BUTTON_OFF_AVAILABLE=BUTTON_OFF_AVAILABLE_YES"/>
-									<listOptionValue builtIn="false" value="BUTTON_FUNC3_AVAILABLE=BUTTON_FUNC3_AVAILABLE_YES"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.804510142" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Clock}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/ColorTables}&quot;"/>
@@ -487,7 +480,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes/Modes_IRMP|src/Drivers/ATtiny|src/Modes_Qlocktwo|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_LedMirror" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_Qlocktwo|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -505,20 +498,16 @@
 				</extensions>
 			</storageModule>
 			<storageModule moduleId="cdtBuildSystem" version="4.0.0">
-				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" description="Qlocktwo 4.0 (ATmega328p, WS2812)" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995" name="PrjQtwo4_WS2812" parent="de.innot.avreclipse.configuration.app.release">
+				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" description="Qlocktwo 4.0 (ATmega328p, WS2812)" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995" name="PrjQtwo4_WS2812" parent="de.innot.avreclipse.configuration.app.release" postbuildStep="">
 					<folderInfo id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995." name="/" resourcePath="">
-						<toolChain id="de.innot.avreclipse.toolchain.winavr.app.release.76942359" name="AVR-GCC Toolchain" superClass="de.innot.avreclipse.toolchain.winavr.app.release">
+						<toolChain id="de.innot.avreclipse.toolchain.winavr.app.release.76942359" name="AVR-GCC Toolchain" nonInternalBuilderId="de.innot.avreclipse.target.builder.winavr.app.release" superClass="de.innot.avreclipse.toolchain.winavr.app.release">
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.567554508" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release"/>
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release.1115722614" name="Generate HEX file for EEPROM" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release"/>
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release.873881378" name="Generate Extended Listing (Source + generated Assembler)" superClass="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release"/>
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.size.app.release.378335739" name="Print Size" superClass="de.innot.avreclipse.toolchain.options.toolchain.size.app.release"/>
 							<option id="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release.978626091" name="AVRDude" superClass="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release" value="true" valueType="boolean"/>
 							<targetPlatform id="de.innot.avreclipse.targetplatform.winavr.app.release.2015337299" name="AVR Cross-Target" superClass="de.innot.avreclipse.targetplatform.winavr.app.release"/>
-							<builder buildPath="${workspace_loc:/TemperatureLogger}/Release" id="de.innot.avreclipse.target.builder.winavr.app.release.1963772551" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.innot.avreclipse.target.builder.winavr.app.release">
-								<outputEntries>
-									<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="outputPath" name="Release"/>
-								</outputEntries>
-							</builder>
+							<builder buildPath="${workspace_loc:/ATMega}/PrjQtwo4_WS2812" id="de.innot.avreclipse.target.builder.winavr.app.release.967107429" keepEnvironmentInBuildfile="false" name="AVR GNU Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.innot.avreclipse.target.builder.winavr.app.release"/>
 							<tool id="de.innot.avreclipse.tool.assembler.winavr.app.release.808637154" name="AVR Assembler" superClass="de.innot.avreclipse.tool.assembler.winavr.app.release">
 								<option id="de.innot.avreclipse.assembler.option.debug.level.1661119731" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" value="de.innot.avreclipse.assembler.option.debug.level.none" valueType="enumerated"/>
 								<inputType id="de.innot.avreclipse.tool.assembler.input.127959728" superClass="de.innot.avreclipse.tool.assembler.input"/>
@@ -528,9 +517,11 @@
 								<option id="de.innot.avreclipse.compiler.option.optimize.817552252" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
 								<option id="de.innot.avreclipse.compiler.option.def.1338828468" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__QLOCKTWO"/>
+									<listOptionValue builtIn="false" value="QLOCKTWO_REVISION=QLOCKTWO_REVISION_4"/>
 									<listOptionValue builtIn="false" value="LED_TYPE=LED_TYPE_WS2812"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.214212796" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Clock}&quot;"/>
@@ -566,7 +557,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes/Modes_IRMP|src/Drivers/ATtiny|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -622,6 +613,7 @@
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__IRMP"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.821389065" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Drivers}&quot;"/>
@@ -650,7 +642,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Drivers/ATtiny|src/Modes_LedTable|src/Drivers/DCF77|src/LEDMatrix|src/Drivers/HC165|src/Temperature|src/Drivers/DS18B20|src/ColorTables|src/Drivers/AtMega|src/Modes/Modes_TemperatureLogger|src/Clock|src/Modes/Modes_LedMirror|src/Modes|src/Modes/Modes_LedFrame|src/Drivers/SPLC780D1|src/Modes_TemperatureLogger|src/Drivers/WS2812|src/Drivers/WS2801|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Drivers/DS1307|src/Lcd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_LedTable|src/Drivers/DCF77|src/LEDMatrix|src/Drivers/HC165|src/Temperature|src/Drivers/DS18B20|src/ColorTables|src/Drivers/AtMega|src/Modes/Modes_TemperatureLogger|src/Clock|src/Modes/Modes_LedMirror|src/Modes|src/Modes/Modes_LedFrame|src/Drivers/SPLC780D1|src/Modes_TemperatureLogger|src/Drivers/WS2812|src/Drivers/WS2801|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Drivers/DS1307|src/Lcd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -691,9 +683,11 @@
 								<option id="de.innot.avreclipse.compiler.option.optimize.1502634910" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
 								<option id="de.innot.avreclipse.compiler.option.def.597651464" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__QLOCKTWO"/>
+									<listOptionValue builtIn="false" value="QLOCKTWO_REVISION=QLOCKTWO_REVISION_4"/>
 									<listOptionValue builtIn="false" value="LED_TYPE=LED_TYPE_WS2801"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.incpath.713270066" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Clock}&quot;"/>
@@ -729,7 +723,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes/Modes_IRMP|src/Drivers/ATtiny|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -746,13 +740,15 @@
 			<resource resourceType="PROJECT" workspacePath="/ATMega"/>
 		</configuration>
 		<configuration configurationName="PrjTemp"/>
-		<configuration configurationName="PrjIRMP85"/>
 		<configuration configurationName="PrjIRMP">
 			<resource resourceType="PROJECT" workspacePath="/ATMega"/>
 		</configuration>
+		<configuration configurationName="PrjIRMP85"/>
 		<configuration configurationName="PrjFrame"/>
 		<configuration configurationName="PrjIRMP328p"/>
 		<configuration configurationName="PrjTable"/>
+		<configuration configurationName="PrjQtwo4_WS2812"/>
+		<configuration configurationName="PrjQtwo4_WS2801"/>
 		<configuration configurationName="Project__Qlocktwo"/>
 		<configuration configurationName="PrjMirror"/>
 		<configuration configurationName="Qlocktwo_3_0">
