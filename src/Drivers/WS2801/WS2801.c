@@ -6,6 +6,8 @@
  */
 
 #include "WS2801.h"
+#include "LEDMatrix.h"
+
 
 #if (LED_TYPE == LED_TYPE_WS2801)
 
