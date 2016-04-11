@@ -31,7 +31,7 @@ void uC__init (void);
 uint8_t uC__isTaskTrigger_x10 (void);
 void uC__resetTaskTrigger_x10 (void);
 void uC__triggerSwReset (void);
-void uC__x10 (void);
+void uC__begin_x10 (void);
 void uC__end_x10 (void);
 
 

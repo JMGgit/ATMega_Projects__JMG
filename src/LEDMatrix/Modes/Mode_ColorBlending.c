@@ -255,7 +255,7 @@ void ColorBlending__x10 (uint8_t blendingMode)
 				else
 				{
 					/* shift colors */
-					l_currentColorB = getRGBColorFromComponents((*l_currentColor).blue,
+					l_currentColorB = LEDMatrix__getRGBColorFromComponents((*l_currentColor).blue,
 																(*l_currentColor).red,
 																(*l_currentColor).green);
 

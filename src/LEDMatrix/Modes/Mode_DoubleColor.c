@@ -214,9 +214,9 @@ static void DoubleColor__updateLeds (void)
 		else
 		{
 			/* shift colorCalc */
-			tempColor = getRGBColorFromComponents(colorCalc.green, colorCalc.blue, colorCalc. red);
-			tempOnOffColor = getRGBColorFromComponents(onOffColorCalc.green, onOffColorCalc.blue, onOffColorCalc. red);
-			tempOffOnColor = getRGBColorFromComponents(offOnColorCalc.green, offOnColorCalc.blue, offOnColorCalc. red);
+			tempColor = LEDMatrix__getRGBColorFromComponents(colorCalc.green, colorCalc.blue, colorCalc. red);
+			tempOnOffColor = LEDMatrix__getRGBColorFromComponents(onOffColorCalc.green, onOffColorCalc.blue, onOffColorCalc. red);
+			tempOffOnColor = LEDMatrix__getRGBColorFromComponents(offOnColorCalc.green, offOnColorCalc.blue, offOnColorCalc. red);
 		}
 
 		for (colIt = 0; colIt < LED_MATRIX_SIZE_COL; colIt++)

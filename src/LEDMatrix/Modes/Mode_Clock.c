@@ -217,7 +217,7 @@ void ModeClock__x10 (uint8_t clockMode)
 	else /* inverted mode */
 	{
 		ColorBlending__calcCurrentColor(UPDATE_TIME, COLOR_STEP);
-		ClockColor = getRGBColorFromComponents(0, 0, 0);
+		ClockColor = LEDMatrix__getRGBColorFromComponents(0, 0, 0);
 	}
 
 	/* no background color */

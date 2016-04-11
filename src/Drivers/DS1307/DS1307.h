@@ -49,7 +49,6 @@ void DS1307__setDate (uint8_t date);
 void DS1307__setMonth (uint8_t month);
 void DS1307__setYear (uint8_t year);
 
-
 #define DS1307_ADDRESS		0x68
 
 #endif

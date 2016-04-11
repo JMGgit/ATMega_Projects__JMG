@@ -15,6 +15,7 @@
 #include "Main_Types.h"
 #include "Drivers_Config.h"
 
+
 #if (TWI_MODE == TWI_MODE_MASTER)
 
 #define TWI_MASTER_READ_BIT		1

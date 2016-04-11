@@ -103,7 +103,7 @@ void WS2812__resetAllLEDs (void)
 	memset(&GS_Data[0], 0, sizeof(GS_Data));
 #endif
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
-	WS2812_DigiDotBooster__setRGBForAllLEDs(getRGBColorFromComponents(0, 0, 0));
+	WS2812_DigiDotBooster__setRGBForAllLEDs(LEDMatrix__getRGBColorFromComponents(0, 0, 0));
 #endif
 }
 

@@ -38,11 +38,4 @@ typedef struct
 } RGB_Color_t;
 
 
-/* ToDO: move functions */
-static inline  RGB_Color_t getRGBColorFromComponents (uint8_t red, uint8_t green, uint8_t blue)
-{
-	return ((RGB_Color_t){red, green, blue});
-}
-
-
 #endif /* MAIN_TYPES_H_ */

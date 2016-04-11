@@ -24,7 +24,7 @@ void Mode__Startup_x10 (void)
 	{
 		case TEST_RED:
 		{
-			color =  getRGBColorFromComponents(TEST_BRIGHTNESS_LEVEL, 0, 0);
+			color =  LEDMatrix__getRGBColorFromComponents(TEST_BRIGHTNESS_LEVEL, 0, 0);
 
 			if (lineIt <= LED_MATRIX_SIZE_LIN)
 			{
@@ -48,7 +48,7 @@ void Mode__Startup_x10 (void)
 
 		case TEST_GREEN:
 		{
-			color =  getRGBColorFromComponents(0, TEST_BRIGHTNESS_LEVEL, 0);
+			color =  LEDMatrix__getRGBColorFromComponents(0, TEST_BRIGHTNESS_LEVEL, 0);
 
 			if (lineIt > 0)
 			{
@@ -72,7 +72,7 @@ void Mode__Startup_x10 (void)
 
 		case TEST_BLUE:
 		{
-			color =  getRGBColorFromComponents(0, 0, TEST_BRIGHTNESS_LEVEL);
+			color =  LEDMatrix__getRGBColorFromComponents(0, 0, TEST_BRIGHTNESS_LEVEL);
 
 			if (lineIt <= LED_MATRIX_SIZE_LIN)
 			{
@@ -96,7 +96,7 @@ void Mode__Startup_x10 (void)
 
 		case TEST_WHITE:
 		{
-			color =  getRGBColorFromComponents(TEST_BRIGHTNESS_LEVEL, TEST_BRIGHTNESS_LEVEL, TEST_BRIGHTNESS_LEVEL);
+			color =  LEDMatrix__getRGBColorFromComponents(TEST_BRIGHTNESS_LEVEL, TEST_BRIGHTNESS_LEVEL, TEST_BRIGHTNESS_LEVEL);
 
 			if (lineIt > 0)
 			{

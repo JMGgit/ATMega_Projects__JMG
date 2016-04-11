@@ -15,6 +15,7 @@
 #include "Main_Types.h"
 #include "Drivers_Config.h"
 
+
 #if (TWI_MODE == TWI_MODE_SLAVE)
 
 void TWI__slaveInit (uint8_t *txData, uint8_t txDataLength);

@@ -1,5 +1,5 @@
 /*
- * 74HC165.c
+  * 74HC165.c
  *
  *  Created on: 02.03.2013
  *      Author: Jean-Martin George

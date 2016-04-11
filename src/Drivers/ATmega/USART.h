@@ -17,11 +17,12 @@
 #include "Drivers_Config.h"
 
 
-
 #if (USART_DATA_LENGTH_READ_MAX != 0)
+
 void USART__init (void);
 uint8_t USART__readData (uint8_t *data, uint8_t dataLength, uint8_t requester);
 void USART__transmitData (uint8_t *data, uint8_t dataLength);
+
 #endif
 
 #endif /* USART_H_ */

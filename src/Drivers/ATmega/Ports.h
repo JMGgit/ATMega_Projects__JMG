@@ -17,13 +17,6 @@
 #define setLow(port, pin)		(port &= ~(1 << pin))
 #define setHigh(port, pin)		(port |= (1 << pin))
 
-#define pulse(port, pin)	\
-	do						\
-	{						\
-		setHigh(port, pin);	\
-		setLow(port, pin);	\
-	} while (0)
-
 #define toggle(port, pin)  (port ^= (1 << pin))
 
 

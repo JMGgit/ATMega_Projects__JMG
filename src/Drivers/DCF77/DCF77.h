@@ -14,6 +14,7 @@
 #include "Drivers_Config.h"
 #include "uC.h"
 
+
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
 
 typedef struct

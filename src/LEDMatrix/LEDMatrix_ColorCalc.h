@@ -17,4 +17,9 @@
 RGB_Color_t LEDMatrix__getColorFromInputs (void);
 
 
+static inline  RGB_Color_t LEDMatrix__getRGBColorFromComponents (uint8_t red, uint8_t green, uint8_t blue)
+{
+	return ((RGB_Color_t){red, green, blue});
+}
+
 #endif /* LEDMATRIX_COLORCALC_H_ */

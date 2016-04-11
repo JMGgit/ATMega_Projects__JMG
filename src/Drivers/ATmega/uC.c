@@ -73,6 +73,7 @@ ISR(TIMER1_COMPA_vect)
 	}
 }
 
+
 uint8_t uC__isTaskTrigger_x10 (void)
 {
 	uint8_t update = FALSE;
@@ -99,7 +100,7 @@ void uC__resetTaskTrigger_x10 (void)
 }
 
 
-void uC__x10 (void)
+void uC__begin_x10 (void)
 {
 #if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 	setHigh(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
@@ -129,6 +130,6 @@ void uC__triggerSwReset (void)
 {
 	while (1)
 	{
-		/* SW reset trigger by watchdog */
+		/* SW reset triggered by watchdog */
 	}
 }

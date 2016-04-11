@@ -28,7 +28,7 @@ int main (void)
 		if (uC__isTaskTrigger_x10())
 		{
 			uC__resetTaskTrigger_x10();
-			Drivers__x10();
+			Drivers__begin_x10();
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
 			Lcd__x10();
 #endif

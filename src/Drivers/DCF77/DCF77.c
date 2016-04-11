@@ -10,7 +10,6 @@
 
 #if (CLOCK_SYNC == CLOCK_SYNC_DCF77)
 
-
 static uint8_t DCF77_signal[DCF77_SAMPLES];
 static DCF77_time time;
 
@@ -248,4 +247,6 @@ uint8_t DCF77__getDay (void)			{return time.day;}
 uint8_t DCF77__getDate (void)			{return time.date;}
 uint8_t DCF77__getMonth (void)			{return time.month;}
 uint8_t DCF77__getYear (void)			{return time.year;}
+
+
 #endif

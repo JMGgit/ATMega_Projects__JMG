@@ -431,7 +431,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 				stateLDR = STATE_1_TO_2;
 			}
 
-			QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+			QtwoColor = LEDMatrix__getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
 			break;
@@ -490,7 +490,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 				stateLDR = STATE_2_TO_1;
 			}
 
-			QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+			QtwoColor = LEDMatrix__getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
 			break;
@@ -550,7 +550,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 				stateLDR = STATE_3_TO_2;
 			}
 
-			QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+			QtwoColor = LEDMatrix__getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
 			break;
@@ -605,7 +605,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 				stateLDR = STATE_4_TO_3;
 			}
 
-			QtwoColor = getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
+			QtwoColor = LEDMatrix__getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
 			break;

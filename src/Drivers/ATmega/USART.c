@@ -8,6 +8,7 @@
 
 #include "USART.h"
 
+
 #if (USART_DATA_LENGTH_READ_MAX != 0)
 
 #define BAUD 57600UL
