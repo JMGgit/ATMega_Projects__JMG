@@ -103,7 +103,7 @@
 
 #elif defined (__AVR_ATmega328P__)
 #  define IRMP_PORT_LETTER                      C
-#  define IRMP_BIT_NUMBER                       1
+#  define IRMP_BIT_NUMBER                       2
 
 #elif defined (__AVR_ATtiny85__)
 #  define IRMP_PORT_LETTER                      B
