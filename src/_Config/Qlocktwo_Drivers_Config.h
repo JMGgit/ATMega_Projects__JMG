@@ -35,9 +35,15 @@
 #endif
 
 /* DCF77 */
+#if (QLOCKTWO_REVISION == QLOCKTWO_REVISION_4)
 #define DCF77_DATA_DDR			DDRC
 #define DCF77_DATA_PORT			PINC
 #define DCF77_DATA_PIN			PC1
+#else
+#define DCF77_DATA_DDR			DDRB
+#define DCF77_DATA_PORT			PINB
+#define DCF77_DATA_PIN			PB0
+#endif
 #define DCF77_TASK_TIME			100
 
 /* CTL LED */
