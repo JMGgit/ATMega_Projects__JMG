@@ -19,7 +19,7 @@
 void Snake__init (void);
 void Snake__x10 (void);
 
-#define SNAKE_TIMER_INIT 		50
+#define SNAKE_TIMER_INIT 		SNAKE_SPEED
 
 #endif
 
