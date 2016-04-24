@@ -47,7 +47,7 @@
 	||	(QLOCKTWO_REVISION == QLOCKTWO_REVISION_4)\
 	)
 #define MODE_SNAKE						MODE_SNAKE_ON
-#define SNAKE_SPEED						50
+#define SNAKE_SPEED						100
 #endif
 
 #define LED_MATRIX_SIZE_LIN				10
