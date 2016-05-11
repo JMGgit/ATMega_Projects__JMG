@@ -17,9 +17,16 @@ static uint8_t startupOn_EEPROM EEMEM;
 static void Modes__transition (void)
 {
 #if (MODE_SNAKE == MODE_SNAKE_ON)
-	Snake__init();
+	if (currentMode == MODE__SNAKE)
+	{
+		Snake__init();
+	}
 #endif
-	Qtwo__modeTransition();
+
+	if (currentMode == MODE__QLOCKTWO)
+	{
+		Qtwo__modeTransition();
+	}
 }
 
 
@@ -40,7 +47,7 @@ void Modes__setMode (Mode_t mode)
 
 void Modes__Start (void)
 {
-	currentMode = MODE__QLOCKTWO;
+	Modes__setMode(MODE__QLOCKTWO);
 }
 
 

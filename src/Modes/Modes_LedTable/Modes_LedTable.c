@@ -61,12 +61,7 @@ void Modes__setMode (Mode_t mode)
 
 void Modes__Start (void)
 {
-	currentMode = eeprom_read_byte(&mode_EEPROM);
-
-	if (currentMode == 0xFF)
-	{
-		currentMode = MODE__INIT;
-	}
+	Modes__setMode(eeprom_read_byte(&mode_EEPROM));
 }
 
 

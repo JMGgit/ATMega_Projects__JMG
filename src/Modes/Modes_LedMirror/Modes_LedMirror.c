@@ -29,6 +29,13 @@ uint16_t timerModeChangeConf[MODE_NB] =
 		60000 	/* MODE__DOUBLE_COLOR*/
 };
 
+
+static void Modes__transition (void)
+{
+	/* nothing for now */
+}
+
+
 void Modes__setMode (Mode_t mode)
 {
 	if (mode < MODE_NB)
@@ -39,17 +46,14 @@ void Modes__setMode (Mode_t mode)
 	{
 		currentMode = MODE__INIT;
 	}
+
+	Modes__transition();
 }
 
 
 void Modes__Start (void)
 {
-	currentMode = eeprom_read_byte(&mode_EEPROM);
-
-	if (currentMode == 0xFF)
-	{
-		currentMode = MODE__INIT;
-	}
+	Modes__setMode(eeprom_read_byte(&mode_EEPROM));
 }
 
 
