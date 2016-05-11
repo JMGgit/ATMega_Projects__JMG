@@ -19,6 +19,11 @@ int main (void)
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
 	Lcd__init();
 #endif
+#ifdef LED_MATRIX_SIZE_LIN
+#ifdef LED_MATRIX_SIZE_COL
+	LEDMatrix__init();
+#endif
+#endif
 #if (PROJECT != PROJECT__IRMP)
 	Modes__init();
 #endif

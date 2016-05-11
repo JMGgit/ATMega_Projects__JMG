@@ -11,7 +11,7 @@
 #if (LED_TYPE == LED_TYPE_WS2812)
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
 
-extern uint8_t WS2812__getledOrder (void);
+extern uint8_t WS2812__getRGBLedOrder (void);
 
 #define TXBUFFERSIZE	10
 
@@ -103,7 +103,7 @@ void WS2812_DigiDotBooster__setRGBForLED (RGB_Color_t color, uint8_t led)
 	{
 		WS2812_DigiDotBooster__addData(CMD_SETRGB);
 
-		if (WS2812__getledOrder() == RGB_LED_ORDER__RED_GREEN_BLUE)
+		if (WS2812__getRGBLedOrder() == RGB_LED_ORDER__RED_GREEN_BLUE)
 		{
 			WS2812_DigiDotBooster__addData(color.red);
 			WS2812_DigiDotBooster__addData(color.green);
@@ -127,6 +127,7 @@ void WS2812_DigiDotBooster__setRGBForLED (RGB_Color_t color, uint8_t led)
 	WS2812_DigiDotBooster__transmitTxBuffer(FALSE);
 }
 
+
 void WS2812_DigiDotBooster__setRGBForAllLEDs (RGB_Color_t color)
 {
 	if (	(color.red 		!= lastColor.red)
@@ -136,7 +137,7 @@ void WS2812_DigiDotBooster__setRGBForAllLEDs (RGB_Color_t color)
 	{
 		WS2812_DigiDotBooster__addData(CMD_SETRGB);
 
-		if (WS2812__getledOrder() == RGB_LED_ORDER__RED_GREEN_BLUE)
+		if (WS2812__getRGBLedOrder() == RGB_LED_ORDER__RED_GREEN_BLUE)
 		{
 			WS2812_DigiDotBooster__addData(color.red);
 			WS2812_DigiDotBooster__addData(color.green);

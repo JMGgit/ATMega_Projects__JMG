@@ -17,6 +17,7 @@ void Off__x10 (void)
 {
 #if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
 	static uint8_t rgbConnectionTimer = 255;
+	static uint8_t ledConnectionTimer = 255;
 	static uint8_t startupTimer = 255;
 #if (PROJECT == PROJECT__QLOCKTWO)
 	static uint8_t langTimer = 255;
@@ -45,7 +46,7 @@ void Off__x10 (void)
 		else
 		{
 			rgbConnectionTimer = 255;
-			LEDMatrix__toggleledOrder();
+			LEDMatrix__toggleRGBLedOrder();
 			uC__triggerSwReset();
 		}
 	}
@@ -55,6 +56,24 @@ void Off__x10 (void)
 	}
 
 	if (Buttons__isPressed(&buttonFunc2))
+	{
+		if (ledConnectionTimer > 0)
+		{
+			ledConnectionTimer--;
+		}
+		else
+		{
+			ledConnectionTimer = 255;
+			LEDMatrix__toggleLedOrder();
+			uC__triggerSwReset();
+		}
+	}
+	else
+	{
+		ledConnectionTimer = 255;
+	}
+
+	if (Buttons__isPressed(&buttonFunc3))
 	{
 		if (startupTimer > 0)
 		{
@@ -73,7 +92,7 @@ void Off__x10 (void)
 	}
 
 #if (PROJECT == PROJECT__QLOCKTWO)
-	if (Buttons__isPressed(&buttonFunc3))
+	if (Buttons__isPressed(&buttonMode))
 	{
 		if (langTimer > 0)
 		{

@@ -11,11 +11,27 @@
 #ifdef LED_MATRIX_SIZE_COL
 
 
+#if (LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
+static uint8_t ledOrder;
+static uint8_t ledOrder_EEPROM EEMEM;
+#endif
+
+
 void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color)
 {
 	uint16_t ledPosition;
 
 	LEDMatrix__applyDotCorrection(&color, line, column);
+
+	if (LEDMatrix__getLedOrder() == LED_ORDER__STRAIGHT_FORWARD)
+	{
+		if (((line % 2) == 0) && (column <= LED_MATRIX_SIZE_COL))
+		{
+			/* column overflow allowed for Qlocktwo -> not considered here */
+			column = (LED_MATRIX_SIZE_COL + 1) - column;
+		}
+	}
+
 	ledPosition = LED_MATRIX_SIZE_COL * (line - 1) + (column - 1);
 
 #if (LED_TYPE == LED_TYPE_WS2801)
@@ -49,18 +65,61 @@ void LEDMatrix__clearMatrix (void)
 }
 
 
-void LEDMatrix__toggleledOrder (void)
+void LEDMatrix__toggleRGBLedOrder (void)
 {
 #if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
 #if (LED_TYPE == LED_TYPE_WS2801)
-	WS2801__toggleledOrder();
+	WS2801__toggleRGBLedOrder();
 #endif
 #if (LED_TYPE == LED_TYPE_WS2812)
-	WS2812__toggleledOrder();
+	WS2812__toggleRGBLedOrder();
 #endif
 #endif
 }
 
+
+void LEDMatrix__toggleLedOrder (void)
+{
+#if (LED_ORDER == LED_ORDER__CONFIGURABLE)
+	if (ledOrder == LED_ORDER__LEFT_2_RIGHT)
+	{
+		ledOrder = LED_ORDER__STRAIGHT_FORWARD;
+	}
+	else
+	{
+		ledOrder = LED_ORDER__LEFT_2_RIGHT;
+	}
+
+	eeprom_update_byte(&ledOrder_EEPROM, ledOrder);
+#endif
+}
+
+
+uint8_t LEDMatrix__getLedOrder (void)
+{
+#if (LED_ORDER == LED_ORDER__LEFT_2_RIGHT)
+	return LED_ORDER__LEFT_2_RIGHT;
+#elif (LED_ORDER == LED_ORDER__STRAIGHT_FORWARD)
+	return LED_ORDER__STRAIGHT_FORWARD;
+#else
+	return ledOrder;
+#endif
+}
+
+
+void LEDMatrix__init (void)
+{
+#if (LED_ORDER == LED_ORDER__CONFIGURABLE)
+	ledOrder = eeprom_read_byte(&ledOrder_EEPROM);
+
+	if (	(ledOrder != LED_ORDER__LEFT_2_RIGHT)
+		&& 	(ledOrder != LED_ORDER__STRAIGHT_FORWARD)
+		)
+	{
+		ledOrder = LED_ORDER__LEFT_2_RIGHT;
+	}
+#endif
+}
 
 #endif
 #endif

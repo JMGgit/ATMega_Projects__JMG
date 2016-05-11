@@ -16,10 +16,18 @@
 #include "LEDMatrix_ColorCalc.h"
 
 
+#ifdef LED_MATRIX_SIZE_LIN
+#ifdef LED_MATRIX_SIZE_COL
+
 void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color);
 void LEDMatrix__setRGBColorForMatrix (RGB_Color_t color);
 void LEDMatrix__clearMatrix (void);
-void LEDMatrix__toggleledOrder (void);
+void LEDMatrix__toggleRGBLedOrder (void);
+void LEDMatrix__toggleLedOrder (void);
+uint8_t LEDMatrix__getLedOrder (void);
+void LEDMatrix__init (void);
 
+#endif
+#endif
 
 #endif /* LEDMATRIX_H_ */

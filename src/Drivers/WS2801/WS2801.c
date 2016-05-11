@@ -12,39 +12,39 @@
 #if (LED_TYPE == LED_TYPE_WS2801)
 
 #if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
-static uint8_t ledOrder;
-static uint8_t ledOrder_EEPROM EEMEM;
+static uint8_t RGBLedOrder;
+static uint8_t RGBLedOrder_EEPROM EEMEM;
 #endif
 
 RGB_Color_t GS_Data[LEDS_NB];
 /* remark: cannot be declared as static: ATMega limitation?? */
 
 
-static inline uint8_t WS2801__getledOrder (void)
+static inline uint8_t WS2801__getRGBLedOrder (void)
 {
 #if (RGB_LED_ORDER == RGB_LED_ORDER__RED_GREEN_BLUE)
 	return RGB_LED_ORDER__RED_GREEN_BLUE;
 #elif (RGB_LED_ORDER == RGB_LED_ORDER__BLUE_GREEN_RED)
 	return RGB_LED_ORDER__BLUE_GREEN_RED;
 #else
-	return ledOrder;
+	return RGBLedOrder;
 #endif
 }
 
 
 #if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
-void WS2801__toggleledOrder (void)
+void WS2801__toggleRGBLedOrder (void)
 {
-	if (ledOrder == RGB_LED_ORDER__RED_GREEN_BLUE)
+	if (RGBLedOrder == RGB_LED_ORDER__RED_GREEN_BLUE)
 	{
-		ledOrder = RGB_LED_ORDER__BLUE_GREEN_RED;
+		RGBLedOrder = RGB_LED_ORDER__BLUE_GREEN_RED;
 	}
 	else
 	{
-		ledOrder = RGB_LED_ORDER__RED_GREEN_BLUE;
+		RGBLedOrder = RGB_LED_ORDER__RED_GREEN_BLUE;
 	}
 
-	eeprom_update_byte(&ledOrder_EEPROM, ledOrder);
+	eeprom_update_byte(&RGBLedOrder_EEPROM, RGBLedOrder);
 }
 #endif
 
@@ -57,7 +57,7 @@ static void WS2801__updateAll (void)
 	for (idxLed = 0; idxLed < LEDS_NB; idxLed++)
 	{
 		/* copy data to register */
-		if (WS2801__getledOrder() == RGB_LED_ORDER__BLUE_GREEN_RED)
+		if (WS2801__getRGBLedOrder() == RGB_LED_ORDER__BLUE_GREEN_RED)
 		{
 			SPDR = GS_Data[idxLed].blue;
 		}
@@ -82,7 +82,7 @@ static void WS2801__updateAll (void)
 		}
 
 		/* copy data to register */
-		if (WS2801__getledOrder() == RGB_LED_ORDER__BLUE_GREEN_RED)
+		if (WS2801__getRGBLedOrder() == RGB_LED_ORDER__BLUE_GREEN_RED)
 		{
 			SPDR = GS_Data[idxLed].red;
 		}
@@ -132,13 +132,13 @@ void WS2801__resetAllLEDs (void)
 void WS2801__init (void)
 {
 #if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
-	ledOrder = eeprom_read_byte(&ledOrder_EEPROM);
+	RGBLedOrder = eeprom_read_byte(&RGBLedOrder_EEPROM);
 
-	if (	(ledOrder != RGB_LED_ORDER__BLUE_GREEN_RED)
-		&& 	(ledOrder != RGB_LED_ORDER__RED_GREEN_BLUE)
+	if (	(RGBLedOrder != RGB_LED_ORDER__BLUE_GREEN_RED)
+		&& 	(RGBLedOrder != RGB_LED_ORDER__RED_GREEN_BLUE)
 		)
 	{
-		ledOrder = RGB_LED_ORDER__RED_GREEN_BLUE;
+		RGBLedOrder = RGB_LED_ORDER__RED_GREEN_BLUE;
 	}
 
 #endif
