@@ -1,4 +1,5 @@
 In mode OFF:
-- Button 1 pressed 3s: change LED order
-- Button 2 pressed 3s: enable / disable startup mode
-- Button 3 pressed 3s: change language (Qlocktwo)
+- Button 1 pressed 3s: change RGB LED order
+- Button 2 pressed 3s: change LED connections order (daisy chain or lines)
+- Button 3 pressed 3s: enable / disable startup mode
+- Button mode pressed 3s: change language (Qlocktwo)
