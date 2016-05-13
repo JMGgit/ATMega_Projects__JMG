@@ -222,7 +222,6 @@ static void Qtwo__decMinutes (void)
 }
 
 
-#if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
 void Qtwo__setNextLang (void)
 {
 	if (selectedLang < (QTWO_LANG_NB - 1))
@@ -242,7 +241,7 @@ void Qtwo__setNextLang (void)
 
 	Qtwo__eepromStorage();
 }
-#endif
+
 
 static void Qtwo__checkButtons (void)
 {
@@ -284,7 +283,6 @@ static void Qtwo__checkButtons (void)
 			timerColorButton = TIMER_COLOR_BUTTON;
 		}
 
-#if (BUTTON_OFF_AVAILABLE != BUTTON_OFF_AVAILABLE_FUNC2)
 		if (Buttons__isPressedOnce(&buttonFunc2))
 		{
 			if (currentBrightnessSetting == QTWO_BRIGHTNESS_LOW)
@@ -300,7 +298,6 @@ static void Qtwo__checkButtons (void)
 
 			Qtwo__eepromStorage();
 		}
-#endif
 
 		if (Buttons__isPressedOnce(&buttonFunc3))
 		{
@@ -349,7 +346,6 @@ static void Qtwo__checkButtonsSetup (void)
 
 static void Qtwo__checkButtonsSeconds (void)
 {
-#if (BUTTON_FUNC3_AVAILABLE !=  BUTTON_FUNC3_AVAILABLE_NO)
 	static uint8_t timerColorButton = TIMER_COLOR_BUTTON;
 
 	if ((Buttons__isPressedOnce(&buttonFunc1)) && (!timeTransition) && (!brightnessTransition))
@@ -405,12 +401,6 @@ static void Qtwo__checkButtonsSeconds (void)
 
 		Qtwo__eepromStorage();
 	}
-#else
-	if (Buttons__isPressedOnce(&buttonFunc2))
-	{
-		Modes__setMode(MODE__TIME_SETUP);
-	}
-#endif
 }
 
 

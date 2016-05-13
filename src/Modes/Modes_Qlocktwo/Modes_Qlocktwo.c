@@ -158,14 +158,10 @@ void Modes__x10 (void)
 {
 	if (Buttons__isPressedOnce(&buttonMode))
 	{
-#if (BUTTON_OFF_AVAILABLE != BUTTON_OFF_AVAILABLE_NO)
 		if (currentMode != MODE__OFF)
 		{
 			Modes__setNextMode();
 		}
-#else
-		Modes__setNextMode();
-#endif
 	}
 
 	if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
@@ -175,14 +171,6 @@ void Modes__x10 (void)
 			Modes__setMode(MODE__OFF);
 			modeOffTransition = TRUE;
 		}
-
-#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
-		if (Buttons__isPressedOnce(&buttonFunc2))
-		{
-			Modes__setMode(MODE__OFF);
-			modeOffTransition = TRUE;
-		}
-#endif
 	}
 
 	Modes__updateMatrix();

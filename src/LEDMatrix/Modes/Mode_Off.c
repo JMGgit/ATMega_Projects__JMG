@@ -15,20 +15,11 @@
 
 void Off__x10 (void)
 {
-#if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
 	static uint8_t rgbConnectionTimer = 255;
 	static uint8_t ledConnectionTimer = 255;
 	static uint8_t startupTimer = 255;
 #if (PROJECT == PROJECT__QLOCKTWO)
 	static uint8_t langTimer = 255;
-#endif
-#endif
-
-#if (BUTTON_OFF_AVAILABLE == BUTTON_OFF_AVAILABLE_FUNC2)
-	if (Buttons__isPressedOnce(&buttonFunc2))
-	{
-		Modes__Start();
-	}
 #endif
 
 	if (Buttons__isPressedOnce(&buttonOff))
@@ -36,7 +27,6 @@ void Off__x10 (void)
 		Modes__Start();
 	}
 
-#if (BUTTON_FUNC3_AVAILABLE == BUTTON_FUNC3_AVAILABLE_YES)
 	if (Buttons__isPressed(&buttonFunc1))
 	{
 		if (rgbConnectionTimer > 0)
@@ -109,6 +99,5 @@ void Off__x10 (void)
 	{
 		langTimer = 255;
 	}
-#endif
 #endif
 }
