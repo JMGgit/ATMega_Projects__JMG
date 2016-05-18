@@ -24,6 +24,8 @@ void WS2812__x10 (void);
 void WS2812__setRGBForLED (RGB_Color_t color, uint16_t led);
 void WS2812__setRGBForAllLEDs (RGB_Color_t color);
 void WS2812__resetAllLEDs (void);
+void WS2812__enableUpdate (uint8_t enable);
+void WS2812__disableUpdate (uint8_t enable);
 #if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
 void WS2812__toggleRGBLedOrder (void);
 #endif

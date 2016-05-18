@@ -10,7 +10,6 @@
 
 
 static Mode_t currentMode;
-static uint8_t modeOffTransition = FALSE;
 static uint16_t timerModeChange;
 uint8_t mode_EEPROM EEMEM;
 static uint8_t startupOn;
@@ -124,16 +123,7 @@ static void Modes__updateMatrix (void)
 
 		case MODE__OFF:
 		{
-			LEDMatrix__clearMatrix();
-
-			if (!modeOffTransition)
-			{
-				Off__x10();
-			}
-			else
-			{
-				modeOffTransition = FALSE;
-			}
+			Off__x10();
 			break;
 		}
 
@@ -176,7 +166,7 @@ void Modes__x10 (void)
 			Modes__setNextMode();
 			timerModeChange = 0;
 		}
-		else
+		else if (timerModeChangeConf[currentMode] != 0xFFFF)
 		{
 			if (timerModeChange < timerModeChangeConf[currentMode])
 			{
@@ -188,14 +178,14 @@ void Modes__x10 (void)
 				timerModeChange = 0;
 			}
 		}
-
-		if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
+		else
 		{
-			if (Buttons__isPressedOnce(&buttonOff))
-			{
-				Modes__setMode(MODE__OFF);
-				modeOffTransition = TRUE;
-			}
+			/* nothing to do */
+		}
+
+		if (Buttons__isPressedOnce(&buttonOff))
+		{
+			Modes__setMode(MODE__OFF);
 		}
 	}
 

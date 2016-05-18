@@ -15,10 +15,11 @@
 static uint8_t RGBLedOrder;
 static uint8_t RGBLedOrder_EEPROM EEMEM;
 #endif
+static uint8_t updateEnabled = TRUE;
 
 RGB_Color_t GS_Data[LEDS_NB];
-/* remark: cannot be declared as static: ATMega limitation?? */
-
+/* - cannot be declared as static: ATMega limitation??
+ * - defined as struct to save run time compared to simple buffer */
 
 static inline uint8_t WS2801__getRGBLedOrder (void)
 {
@@ -56,7 +57,7 @@ static void WS2801__updateAll (void)
 
 	for (idxLed = 0; idxLed < LEDS_NB; idxLed++)
 	{
-		/* copy data to register */
+		/* SPI register directly addressed to save run time */
 		if (WS2801__getRGBLedOrder() == RGB_LED_ORDER__BLUE_GREEN_RED)
 		{
 			SPDR = GS_Data[idxLed].blue;
@@ -66,20 +67,9 @@ static void WS2801__updateAll (void)
 			SPDR = GS_Data[idxLed].red;
 		}
 
-		/* wait for transmission complete */
-		while (!(SPSR & (1 << SPIF)))
-		{
-			;
-		}
-
-		/* copy data to register */
+		while (!(SPSR & (1 << SPIF))) {};
 		SPDR = GS_Data[idxLed].green;
-
-		/* wait for transmission complete */
-		while (!(SPSR & (1 << SPIF)))
-		{
-			;
-		}
+		while (!(SPSR & (1 << SPIF))) {};
 
 		/* copy data to register */
 		if (WS2801__getRGBLedOrder() == RGB_LED_ORDER__BLUE_GREEN_RED)
@@ -92,17 +82,17 @@ static void WS2801__updateAll (void)
 		}
 
 		/* wait for transmission complete */
-		while (!(SPSR & (1 << SPIF)))
-		{
-			;
-		}
+		while (!(SPSR & (1 << SPIF))) {};
 	}
 }
 
 
 void WS2801__x10 (void)
 {
-	WS2801__updateAll();
+	if (updateEnabled)
+	{
+		WS2801__updateAll();
+	}
 }
 
 
@@ -126,6 +116,18 @@ void WS2801__setRGBForAllLEDs (RGB_Color_t color)
 void WS2801__resetAllLEDs (void)
 {
 	memset(&GS_Data[0], 0, sizeof(GS_Data));
+}
+
+
+void WS2801__enableUpdate (uint8_t enable)
+{
+	updateEnabled = TRUE;
+}
+
+
+void WS2801__disableUpdate (uint8_t enable)
+{
+	updateEnabled = FALSE;
 }
 
 

@@ -65,6 +65,28 @@ void LEDMatrix__clearMatrix (void)
 }
 
 
+void LEDMatrix__enableUpdate (void)
+{
+#if (LED_TYPE == LED_TYPE_WS2801)
+	WS2801__enableUpdate(TRUE);
+#endif
+#if (LED_TYPE == LED_TYPE_WS2812)
+	WS2812__enableUpdate(TRUE);
+#endif
+}
+
+
+void LEDMatrix__disableUpdate (void)
+{
+#if (LED_TYPE == LED_TYPE_WS2801)
+	WS2801__enableUpdate(FALSE);
+#endif
+#if (LED_TYPE == LED_TYPE_WS2812)
+	WS2812__enableUpdate(FALSE);
+#endif
+}
+
+
 void LEDMatrix__toggleRGBLedOrder (void)
 {
 #if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)

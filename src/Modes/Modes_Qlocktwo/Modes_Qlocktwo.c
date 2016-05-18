@@ -10,18 +10,15 @@
 
 
 static Mode_t currentMode;
-static uint8_t modeOffTransition = FALSE;
 static uint8_t startupOn;
 static uint8_t startupOn_EEPROM EEMEM;
 
 static void Modes__transition (void)
 {
-#if (MODE_SNAKE == MODE_SNAKE_ON)
 	if (currentMode == MODE__SNAKE)
 	{
 		Snake__init();
 	}
-#endif
 
 	if (currentMode == MODE__QLOCKTWO)
 	{
@@ -80,45 +77,33 @@ static void Modes__updateMatrix (void)
 
 		case MODE__QLOCKTWO:
 		{
-			LEDMatrix__clearMatrix();
 			Qtwo__main_x10();
 			break;
 		}
 
 		case MODE__SECONDS:
 		{
-			LEDMatrix__clearMatrix();
 			Qtwo__seconds_x10();
 			break;
 		}
 
 		case MODE__TIME_SETUP:
 		{
-			LEDMatrix__clearMatrix();
 			Qtwo__timeSetup_x10();
 			break;
 		}
 
-#if (MODE_SNAKE == MODE_SNAKE_ON)
+
 		case MODE__SNAKE:
 		{
 			Snake__x10();
 			break;
 		}
-#endif
+
 
 		case MODE__OFF:
 		{
-			LEDMatrix__clearMatrix();
-
-			if (!modeOffTransition)
-			{
-				Off__x10();
-			}
-			else
-			{
-				modeOffTransition = FALSE;
-			}
+			Off__x10();
 			break;
 		}
 
@@ -156,20 +141,16 @@ void Modes__init (void)
 
 void Modes__x10 (void)
 {
-	if (Buttons__isPressedOnce(&buttonMode))
+	if ((currentMode != MODE__OFF) && (currentMode != MODE__STARTUP))
 	{
-		if (currentMode != MODE__OFF)
+		if (Buttons__isPressedOnce(&buttonMode))
 		{
 			Modes__setNextMode();
 		}
-	}
 
-	if ((currentMode != MODE__OFF) && (modeOffTransition == FALSE))
-	{
 		if (Buttons__isPressedOnce(&buttonOff))
 		{
 			Modes__setMode(MODE__OFF);
-			modeOffTransition = TRUE;
 		}
 	}
 

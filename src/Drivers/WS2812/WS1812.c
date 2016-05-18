@@ -16,6 +16,7 @@
 static uint8_t RGBLedOrder;
 static uint8_t RGBLedOrder_EEPROM EEMEM;
 #endif
+static uint8_t updateEnabled = TRUE;
 
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
 RGB_Color_t GS_Data[LEDS_NB];
@@ -106,6 +107,18 @@ void WS2812__resetAllLEDs (void)
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
 	WS2812_DigiDotBooster__setRGBForAllLEDs(LEDMatrix__getRGBColorFromComponents(0, 0, 0));
 #endif
+}
+
+
+void WS2812__enableUpdate (uint8_t enable)
+{
+	updateEnabled = TRUE;
+}
+
+
+void WS2812__disableUpdate (uint8_t enable)
+{
+	updateEnabled = FALSE;
 }
 
 

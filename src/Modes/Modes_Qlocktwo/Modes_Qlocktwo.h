@@ -23,9 +23,7 @@ typedef enum
 	MODE__TIME_SETUP,
 	MODE__QLOCKTWO,
 	MODE__SECONDS,
-#if (MODE_SNAKE == MODE_SNAKE_ON)
 	MODE__SNAKE,
-#endif
 	MODE_NB
 } Mode_t;
 

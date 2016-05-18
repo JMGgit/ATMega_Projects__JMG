@@ -22,6 +22,8 @@
 void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color);
 void LEDMatrix__setRGBColorForMatrix (RGB_Color_t color);
 void LEDMatrix__clearMatrix (void);
+void LEDMatrix__disableUpdate (void);
+void LEDMatrix__enableUpdate (void);
 void LEDMatrix__toggleRGBLedOrder (void);
 void LEDMatrix__toggleLedOrder (void);
 uint8_t LEDMatrix__getLedOrder (void);

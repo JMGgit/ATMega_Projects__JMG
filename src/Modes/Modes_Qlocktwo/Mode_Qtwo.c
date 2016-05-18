@@ -1739,6 +1739,8 @@ void Qtwo__updateLeds (void)
 {
 	uint8_t linIt, colIt, edgeIt;
 
+	LEDMatrix__clearMatrix();
+
 	for (colIt = 0; colIt < QTWO_COL_NB; colIt++)
 	{
 		for (linIt = 0; linIt < QTWO_LINE_NB; linIt++)
