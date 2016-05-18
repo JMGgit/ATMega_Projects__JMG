@@ -33,6 +33,7 @@
 #define CLOCK_SIZE_BIG			0x01
 
 #define UPDATE_TIME				20
+#define UPDATE_TIME_FAST		1
 #define COLOR_STEP				2
 
 static uint8_t clockSize, lineOffset, colOffset;
@@ -214,14 +215,31 @@ void ModeClock__x10 (uint8_t clockMode)
 		ColorBlending__calcCurrentColor(UPDATE_TIME, COLOR_STEP);
 		ClockColor = ColorBlending__getCurrentColor();
 	}
-	else /* inverted mode */
+	else if (clockMode == CLOCK_MODE_COLOR_BLENDING_FAST)
+	{
+		ColorBlending__calcCurrentColor(UPDATE_TIME_FAST, COLOR_STEP);
+		ClockColor = ColorBlending__getCurrentColor();
+	}
+	else if (clockMode == CLOCK_MODE_COLOR_BLENDING_INVERTED)
 	{
 		ColorBlending__calcCurrentColor(UPDATE_TIME, COLOR_STEP);
 		ClockColor = LEDMatrix__getRGBColorFromComponents(0, 0, 0);
 	}
+	else if (clockMode == CLOCK_MODE_COLOR_BLENDING_INVERTED_FAST)
+	{
+		ColorBlending__calcCurrentColor(UPDATE_TIME_FAST, COLOR_STEP);
+		ClockColor = LEDMatrix__getRGBColorFromComponents(0, 0, 0);
+	}
+	else
+	{
+		/* no other use cases */
+	}
 
 	/* no background color */
-	if ((clockMode == CLOCK_MODE_ONE_COLOR) || (clockMode == CLOCK_MODE_COLOR_BLENDING))
+	if (		(clockMode == CLOCK_MODE_ONE_COLOR)
+			|| (clockMode == CLOCK_MODE_COLOR_BLENDING)
+			|| (clockMode == CLOCK_MODE_COLOR_BLENDING_FAST)
+	)
 	{
 		LEDMatrix__clearMatrix();
 	}

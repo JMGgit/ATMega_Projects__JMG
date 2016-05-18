@@ -147,6 +147,18 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
+		case MODE__BLENDING_CLOCK_FAST:
+		{
+			ModeClock__x10(CLOCK_MODE_COLOR_BLENDING_FAST);
+			break;
+		}
+
+		case MODE__BLENDING_CLOCK_INVERTED_FAST:
+		{
+			ModeClock__x10(CLOCK_MODE_COLOR_BLENDING_INVERTED_FAST);
+			break;
+		}
+
 		case MODE__CLOCK:
 		{
 			//ModeClock__x10(CLOCK_MODE_ONE_COLOR);
