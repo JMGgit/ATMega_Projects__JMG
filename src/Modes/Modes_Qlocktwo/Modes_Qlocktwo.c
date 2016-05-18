@@ -13,6 +13,7 @@ static Mode_t currentMode;
 static uint8_t startupOn;
 static uint8_t startupOn_EEPROM EEMEM;
 
+
 static void Modes__transition (void)
 {
 	if (currentMode == MODE__SNAKE)

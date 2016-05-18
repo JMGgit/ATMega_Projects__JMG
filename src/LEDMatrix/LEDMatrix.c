@@ -79,10 +79,10 @@ void LEDMatrix__enableUpdate (void)
 void LEDMatrix__disableUpdate (void)
 {
 #if (LED_TYPE == LED_TYPE_WS2801)
-	WS2801__enableUpdate(FALSE);
+	WS2801__disableUpdate(FALSE);
 #endif
 #if (LED_TYPE == LED_TYPE_WS2812)
-	WS2812__enableUpdate(FALSE);
+	WS2812__disableUpdate(FALSE);
 #endif
 }
 

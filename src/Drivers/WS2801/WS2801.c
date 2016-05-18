@@ -98,7 +98,10 @@ void WS2801__x10 (void)
 
 void WS2801__setRGBForLED (RGB_Color_t color, uint16_t led)
 {
-	GS_Data[led] = color;
+	if (updateEnabled)
+	{
+		GS_Data[led] = color;
+	}
 }
 
 
@@ -106,16 +109,22 @@ void WS2801__setRGBForAllLEDs (RGB_Color_t color)
 {
 	uint16_t idxLed;
 
-	for (idxLed = 0; idxLed < LEDS_NB; idxLed++)
+	if (updateEnabled)
 	{
-		GS_Data[idxLed] = color;
+		for (idxLed = 0; idxLed < LEDS_NB; idxLed++)
+		{
+			GS_Data[idxLed] = color;
+		}
 	}
 }
 
 
 void WS2801__resetAllLEDs (void)
 {
-	memset(&GS_Data[0], 0, sizeof(GS_Data));
+	if (updateEnabled)
+	{
+		memset(&GS_Data[0], 0, sizeof(GS_Data));
+	}
 }
 
 

@@ -63,50 +63,62 @@ static void WS2812__updateAll (void)
 
 void WS2812__x10 (void)
 {
+	if (updateEnabled)
+	{
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
-	WS2812__updateAll();
+		WS2812__updateAll();
 #endif
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
-	WS2812_DigiDotBooster__x10();
+		WS2812_DigiDotBooster__x10();
 #endif
+	}
 }
 
 
 void WS2812__setRGBForLED (RGB_Color_t color, uint16_t led)
 {
+	if (updateEnabled)
+	{
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
-	GS_Data[led] = color;
+		GS_Data[led] = color;
 #endif
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
-	WS2812_DigiDotBooster__setRGBForLED(color, led);
+		WS2812_DigiDotBooster__setRGBForLED(color, led);
 #endif
+	}
 }
 
 
 void WS2812__setRGBForAllLEDs (RGB_Color_t color)
 {
-#if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
-	uint16_t idxLed;
-
-	for (idxLed = 0; idxLed < LEDS_NB; idxLed++)
+	if (updateEnabled)
 	{
-		GS_Data[idxLed] = color;
-	}
+#if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
+		uint16_t idxLed;
+
+		for (idxLed = 0; idxLed < LEDS_NB; idxLed++)
+		{
+			GS_Data[idxLed] = color;
+		}
 #endif
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
-	WS2812_DigiDotBooster__setRGBForAllLEDs(color);
+		WS2812_DigiDotBooster__setRGBForAllLEDs(color);
 #endif
+	}
 }
 
 
 void WS2812__resetAllLEDs (void)
 {
+	if (updateEnabled)
+	{
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIRECT)
-	memset(&GS_Data[0], 0, sizeof(GS_Data));
+		memset(&GS_Data[0], 0, sizeof(GS_Data));
 #endif
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
-	WS2812_DigiDotBooster__setRGBForAllLEDs(LEDMatrix__getRGBColorFromComponents(0, 0, 0));
+		WS2812_DigiDotBooster__setRGBForAllLEDs(LEDMatrix__getRGBColorFromComponents(0, 0, 0));
 #endif
+	}
 }
 
 
