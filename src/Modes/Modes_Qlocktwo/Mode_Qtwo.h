@@ -22,6 +22,7 @@ void Qtwo__seconds_x10 (void);
 void Qtwo__timeSetup_x10 (void);
 void Qtwo__modeTransition (void);
 void Qtwo__setNextLang (void);
+uint8_t Qtwo__getCurrentBrightness (void);
 
 
 #endif /* MODE_QTWO_H_ */

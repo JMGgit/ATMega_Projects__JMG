@@ -16,18 +16,6 @@
 #define ST_DIRECTION_LEFT		0x04
 #define ST_DIRECTION_RIGHT		0x05
 
-#define SNAKE_COLOR_R			0x00
-#define SNAKE_COLOR_G			SNAKE_BRIGHTNESS_LEVEL
-#define SNAKE_COLOR_B			0x00
-
-#define APPLE_COLOR_R			SNAKE_BRIGHTNESS_LEVEL
-#define APPLE_COLOR_G			0x00
-#define APPLE_COLOR_B			0x00
-
-#define SCORE_COLOR_R			SNAKE_BRIGHTNESS_LEVEL
-#define SCORE_COLOR_G			SNAKE_BRIGHTNESS_LEVEL
-#define SCORE_COLOR_B			SNAKE_BRIGHTNESS_LEVEL
-
 #define DIGIT_SIZE_LIN			7
 #define DIGIT_SIZE_COL			5
 
@@ -120,9 +108,13 @@ void Snake__init (void)
 }
 
 
-void Snake__x10 (void)
+void Snake__x10 (uint8_t brightness)
 {
 	uint16_t linIt, colIt;
+
+	RGB_Color_t snakeColor = {0, brightness, 0};
+	RGB_Color_t appleColor = {brightness, 0 , 0};
+	RGB_Color_t scoreColor = {brightness, brightness, brightness};
 
 	LEDMatrix__clearMatrix();
 
@@ -274,7 +266,7 @@ void Snake__x10 (void)
 
 	if (!gameOver)
 	{
-		LEDMatrix__setRGBColor(apple.pos_line, apple.pos_col, LEDMatrix__getRGBColorFromComponents(APPLE_COLOR_R, APPLE_COLOR_G, APPLE_COLOR_B));
+		LEDMatrix__setRGBColor(apple.pos_line, apple.pos_col, appleColor);
 
 		for (linIt = 1; linIt <= LED_MATRIX_SIZE_LIN; linIt++)
 		{
@@ -282,7 +274,7 @@ void Snake__x10 (void)
 			{
 				if (SnakeMatrix[linIt][colIt] != ST_EMPTY)
 				{
-					LEDMatrix__setRGBColor(linIt, colIt, LEDMatrix__getRGBColorFromComponents(SNAKE_COLOR_R, SNAKE_COLOR_G, SNAKE_COLOR_B));
+					LEDMatrix__setRGBColor(linIt, colIt, snakeColor);
 				}
 			}
 		}
@@ -293,12 +285,12 @@ void Snake__x10 (void)
 		{
 			if (pgm_read_byte(&digitScore[(score / 10) * (DIGIT_SIZE_COL * DIGIT_SIZE_LIN)] + digitIt) == 1)
 			{
-				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL), 1 + digitIt % DIGIT_SIZE_COL, LEDMatrix__getRGBColorFromComponents(SCORE_COLOR_R, SCORE_COLOR_R, SCORE_COLOR_R));
+				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL), 1 + digitIt % DIGIT_SIZE_COL, scoreColor);
 			}
 
 			if (pgm_read_byte(&digitScore[(score % 10) * (DIGIT_SIZE_COL * DIGIT_SIZE_LIN)] + digitIt) == 1)
 			{
-				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL),  7 + (digitIt % DIGIT_SIZE_COL), LEDMatrix__getRGBColorFromComponents(SCORE_COLOR_R, SCORE_COLOR_R, SCORE_COLOR_R));
+				LEDMatrix__setRGBColor(2 + (digitIt / DIGIT_SIZE_COL),  7 + (digitIt % DIGIT_SIZE_COL), scoreColor);
 			}
 		}
 

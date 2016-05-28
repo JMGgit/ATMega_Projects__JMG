@@ -168,7 +168,7 @@ static void Modes__updateMatrix (void)
 
 		case MODE__SNAKE:
 		{
-			Snake__x10();
+			Snake__x10(SNAKE_BRIGHTNESS_LEVEL);
 			break;
 		}
 

@@ -75,7 +75,9 @@ static const uint8_t colors[3 * QTWO_COLOR_NB] =
 
 static const uint8_t brightnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 {
-		{QTWO_BRIGHTNESS_LEVEL_1, QTWO_BRIGHTNESS_LEVEL_2, QTWO_BRIGHTNESS_LEVEL_3, QTWO_BRIGHTNESS_LEVEL_4},
+		/* white */
+		{(uint8_t)(0.75 * QTWO_BRIGHTNESS_LEVEL_1), (uint8_t)(0.75 * QTWO_BRIGHTNESS_LEVEL_2),
+		 (uint8_t)(0.75 * QTWO_BRIGHTNESS_LEVEL_3), (uint8_t)(0.75 * QTWO_BRIGHTNESS_LEVEL_4)},
 		{QTWO_BRIGHTNESS_LEVEL_1, QTWO_BRIGHTNESS_LEVEL_2, QTWO_BRIGHTNESS_LEVEL_3, QTWO_BRIGHTNESS_LEVEL_4},
 		{QTWO_BRIGHTNESS_LEVEL_1, QTWO_BRIGHTNESS_LEVEL_2, QTWO_BRIGHTNESS_LEVEL_3, QTWO_BRIGHTNESS_LEVEL_4},
 		{QTWO_BRIGHTNESS_LEVEL_1, QTWO_BRIGHTNESS_LEVEL_2, QTWO_BRIGHTNESS_LEVEL_3, QTWO_BRIGHTNESS_LEVEL_4},
@@ -305,6 +307,27 @@ static void Qtwo__checkButtons (void)
 			Modes__setMode(MODE__TIME_SETUP);
 		}
 	}
+
+	//TEST
+	if (Buttons__isPressedOnce(&buttonUp))
+	{
+		Qtwo__incHours();
+	}
+
+	if (Buttons__isPressedOnce(&buttonDown))
+	{
+		Qtwo__decHours();
+	}
+
+	if (Buttons__isPressedOnce(&buttonRight))
+	{
+		Qtwo__incMinutes();
+	}
+
+	if (Buttons__isPressedOnce(&buttonLeft))
+	{
+		Qtwo__decMinutes();
+	}
 }
 
 
@@ -397,6 +420,12 @@ static void Qtwo__checkButtonsSeconds (void)
 }
 
 
+uint8_t Qtwo__getCurrentBrightness (void)
+{
+	return (currentBrightnessTable[currentColor][brightnessCurr]);
+}
+
+
 static void Qtwo__setBrightness (uint8_t stateTransition)
 {
 	uint16_t adcOutput = ADC__readValue(LDR_ADC_PIN);
@@ -411,12 +440,16 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
 			{
 				stateLDR = STATE_1_TO_2;
+				brightnessTransition = TRUE;
+			}
+			else
+			{
+				brightnessTransition = FALSE;
 			}
 
 			QtwoColor = LEDMatrix__getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-			brightnessTransition = FALSE;
 			break;
 		}
 
@@ -424,7 +457,6 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 		{
 			if (stateTransition)
 			{
-				brightnessTransition = TRUE;
 				brightnessCurr = 0;
 				brightnessTar = 1;
 
@@ -466,16 +498,22 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
 			{
 				stateLDR = STATE_2_TO_3;
+				brightnessTransition = TRUE;
 			}
 			else if ((adcOutput) < (ldrLevels[brightnessCurr]))
 			{
 				stateLDR = STATE_2_TO_1;
+				brightnessTransition = TRUE;
+			}
+			else
+			{
+				brightnessTransition = FALSE;
 			}
 
 			QtwoColor = LEDMatrix__getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-			brightnessTransition = FALSE;
+
 			break;
 		}
 
@@ -483,7 +521,6 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 		{
 			if (stateTransition)
 			{
-				brightnessTransition = TRUE;
 				brightnessCurr = 1;
 				brightnessTar = 2;
 
@@ -526,16 +563,22 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			if ((adcOutput) > ((ldrLevels[brightnessCurr + 1]) + QTWO_LDR_HYST))
 			{
 				stateLDR = STATE_3_TO_4;
+				brightnessTransition = TRUE;
 			}
 			else if ((adcOutput) < (ldrLevels[brightnessCurr]))
 			{
 				stateLDR = STATE_3_TO_2;
+				brightnessTransition = TRUE;
+			}
+			else
+			{
+				brightnessTransition = FALSE;
 			}
 
 			QtwoColor = LEDMatrix__getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-			brightnessTransition = FALSE;
+
 			break;
 		}
 
@@ -543,7 +586,6 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 		{
 			if (stateTransition)
 			{
-				brightnessTransition = TRUE;
 				brightnessCurr = 2;
 				brightnessTar = 3;
 
@@ -575,6 +617,7 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			{
 				stateLDR = STATE_4;
 			}
+
 			break;
 		}
 
@@ -585,12 +628,17 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 			if ((adcOutput) < (ldrLevels[brightnessCurr]))
 			{
 				stateLDR = STATE_4_TO_3;
+				brightnessTransition = TRUE;
+			}
+			else
+			{
+				brightnessTransition = FALSE;
 			}
 
 			QtwoColor = LEDMatrix__getRGBColorFromComponents(	(currentBrightnessTable[currentColor][brightnessCurr]) * colors[currentColor * 3],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 1],
 					(currentBrightnessTable[currentColor][brightnessCurr]) * colors[(currentColor * 3) + 2]	);
-			brightnessTransition = FALSE;
+
 			break;
 		}
 
@@ -598,7 +646,6 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 		{
 			if (stateTransition)
 			{
-				brightnessTransition = TRUE;
 				brightnessCurr = 3;
 				brightnessTar = 2;
 
@@ -638,7 +685,6 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 		{
 			if (stateTransition)
 			{
-				brightnessTransition = TRUE;
 				brightnessCurr = 2;
 				brightnessTar = 1;
 
@@ -677,7 +723,6 @@ static void Qtwo__setBrightness (uint8_t stateTransition)
 		{
 			if (stateTransition)
 			{
-				brightnessTransition = TRUE;
 				brightnessCurr = 1;
 				brightnessTar = 0;
 
@@ -773,122 +818,119 @@ static void Qtwo__updateVisibility (uint8_t timer)
 {
 	uint8_t linIt, colIt;
 	uint8_t allColorsReady = TRUE;
-	uint8_t colorStep = (currentBrightnessTable[currentColor][brightnessCurr] / timer) | 1;
+	uint8_t colorStep = (Qtwo__getCurrentBrightness() / timer) | 1;
 
 	static uint8_t colorTransTimer = 0;
 
-	if (timeTransition == TRUE)
+	if (colorTransTimer > 0)
 	{
-		if (colorTransTimer > 0)
+		colorTransTimer--;
+		allColorsReady = FALSE;
+	}
+	else
+	{
+		if (QtwoColor.red != 0)
 		{
-			colorTransTimer--;
+			if ((offOnColor.red + colorStep) < QtwoColor.red)
+			{
+				offOnColor.red = offOnColor.red + colorStep;
+				allColorsReady = FALSE;
+			}
+			else
+			{
+				offOnColor.red = QtwoColor.red;
+			}
+		}
+
+		if (QtwoColor.green != 0)
+		{
+			if ((offOnColor.green + colorStep) < QtwoColor.green)
+			{
+				offOnColor.green = offOnColor.green + colorStep;
+				allColorsReady = FALSE;
+			}
+			else
+			{
+				offOnColor.green = QtwoColor.green;
+			}
+		}
+
+		if (QtwoColor.blue != 0)
+		{
+			if ((offOnColor.blue + colorStep) < QtwoColor.blue)
+			{
+				offOnColor.blue = offOnColor.blue + colorStep;
+				allColorsReady = FALSE;
+			}
+			else
+			{
+				offOnColor.blue = QtwoColor.blue;
+			}
+		}
+
+		if (onOffColor.red - colorStep > 0)
+		{
+			onOffColor.red = onOffColor.red - colorStep;
 			allColorsReady = FALSE;
 		}
 		else
 		{
-			if (QtwoColor.red != 0)
-			{
-				if ((offOnColor.red + colorStep) < QtwoColor.red)
-				{
-					offOnColor.red = offOnColor.red + colorStep;
-					allColorsReady = FALSE;
-				}
-				else
-				{
-					offOnColor.red = QtwoColor.red;
-				}
-			}
-
-			if (QtwoColor.green != 0)
-			{
-				if ((offOnColor.green + colorStep) < QtwoColor.green)
-				{
-					offOnColor.green = offOnColor.green + colorStep;
-					allColorsReady = FALSE;
-				}
-				else
-				{
-					offOnColor.green = QtwoColor.green;
-				}
-			}
-
-			if (QtwoColor.blue != 0)
-			{
-				if ((offOnColor.blue + colorStep) < QtwoColor.blue)
-				{
-					offOnColor.blue = offOnColor.blue + colorStep;
-					allColorsReady = FALSE;
-				}
-				else
-				{
-					offOnColor.blue = QtwoColor.blue;
-				}
-			}
-
-			if (onOffColor.red - colorStep > 0)
-			{
-				onOffColor.red = onOffColor.red - colorStep;
-				allColorsReady = FALSE;
-			}
-			else
-			{
-				onOffColor.red = 0;
-			}
-
-			if (onOffColor.green - colorStep > 0)
-			{
-				onOffColor.green = onOffColor.green - colorStep;
-				allColorsReady = FALSE;
-			}
-			else
-			{
-				onOffColor.green = 0;
-			}
-
-			if (onOffColor.blue - colorStep > 0)
-			{
-				onOffColor.blue = onOffColor.blue - colorStep;
-				allColorsReady = FALSE;
-			}
-			else
-			{
-				onOffColor.blue = 0;
-			}
-
-			colorTransTimer = (timer / currentBrightnessTable[currentColor][brightnessCurr]);
+			onOffColor.red = 0;
 		}
 
-		if (allColorsReady == TRUE)
+		if (onOffColor.green - colorStep > 0)
 		{
-			for (linIt = 0; linIt < QTWO_LINE_NB; linIt++)
-			{
-				for (colIt = 0; colIt < QTWO_COL_NB; colIt++)
-				{
-					if (matrix[linIt][colIt] == ON_TO_OFF)
-					{
-						matrix[linIt][colIt] = OFF;
-					}
-					else if (matrix[linIt][colIt] == OFF_TO_ON)
-					{
-						matrix[linIt][colIt] = ON;
-					}
-				}
-			}
-
-			for (linIt = 0; linIt < 4; linIt++)
-			{
-				if (edges[linIt] == ON_TO_OFF)
-				{
-					edges[linIt] = OFF;
-				}
-				else if (edges[linIt] == OFF_TO_ON)
-				{
-					edges[linIt] = ON;
-				}
-			}
-
-			timeTransition = FALSE;
+			onOffColor.green = onOffColor.green - colorStep;
+			allColorsReady = FALSE;
 		}
+		else
+		{
+			onOffColor.green = 0;
+		}
+
+		if (onOffColor.blue - colorStep > 0)
+		{
+			onOffColor.blue = onOffColor.blue - colorStep;
+			allColorsReady = FALSE;
+		}
+		else
+		{
+			onOffColor.blue = 0;
+		}
+
+		colorTransTimer = (timer / Qtwo__getCurrentBrightness());
+	}
+
+	if (allColorsReady == TRUE)
+	{
+		for (linIt = 0; linIt < QTWO_LINE_NB; linIt++)
+		{
+			for (colIt = 0; colIt < QTWO_COL_NB; colIt++)
+			{
+				if (matrix[linIt][colIt] == ON_TO_OFF)
+				{
+					matrix[linIt][colIt] = OFF;
+				}
+				else if (matrix[linIt][colIt] == OFF_TO_ON)
+				{
+					matrix[linIt][colIt] = ON;
+				}
+			}
+		}
+
+		for (linIt = 0; linIt < 4; linIt++)
+		{
+			if (edges[linIt] == ON_TO_OFF)
+			{
+				edges[linIt] = OFF;
+			}
+			else if (edges[linIt] == OFF_TO_ON)
+			{
+				edges[linIt] = ON;
+			}
+		}
+
+		timeTransition = FALSE;
 	}
 }
 
@@ -1771,7 +1813,7 @@ void Qtwo__updateLeds (void)
 			LEDMatrix__setRGBColor(QTWO_LINE_NB, QTWO_COL_NB + edgesConfig[edgeIt], offOnColor);
 		}
 	}
-#if 0
+#if 1
 	/* TEST BRIGHTNESS */
 	for (linIt = 4; linIt < 4 + QTWO_COL_NB; linIt++)
 	{
@@ -1817,27 +1859,69 @@ static void Qtwo__updateColor (void)
 
 void Qtwo__main_x10 (void)
 {
+	static uint8_t brightnessTransitionTimer = 255; /* 2,5s max for transition */
+	static uint8_t timeTransitionTimer = 255; /* 2,5s max for transition */
+
 	Qtwo__checkButtons();
 
 	if (!timeTransition)
 	{
-		Qtwo__setBrightness(TRUE);
+		if (!brightnessTransition)
+		{
+			Qtwo__updateColor(); /* --> currentColor is updated (only color number) */
+		}
+		else
+		{
+			/* Timer: only to avoid problems if conflict still exists between color change
+			 * due to new time and brightness update */
+			if (brightnessTransitionTimer > 0)
+			{
+				brightnessTransitionTimer--;
+			}
+			else
+			{
+				brightnessTransition = FALSE;
+				QtwoColor.red = 0;
+				QtwoColor.green = 0;
+				QtwoColor.blue = 0;
+				brightnessTransitionTimer = 255;
+			}
+		}
+
+		Qtwo__setBrightness(TRUE); /* --> QtwoColor (RGB components) is updated */
 
 		if (		(!brightnessTransition)
 				&&	((clockHoursPrev != Clock__getHours()) || (clockMinPrev != Clock__getMinutes()))
 		)
 		{
-			Qtwo__updateColor();
-			Qtwo__getLastVisibility();
-			Qtwo__updateMatrix();
+			Qtwo__getLastVisibility(); /* --> prepare transition ON -> OFF */
+			Qtwo__updateMatrix(); /* --> all states are defined for cells */
 			clockHoursPrev = Clock__getHours();
 			clockMinPrev = Clock__getMinutes();
-			Qtwo__startTransition();
+			Qtwo__startTransition(); /* --> visibility transition will be done */
+		}
+	}
+	else
+	{
+		Qtwo__updateVisibility(QTWO_TRANSITION_TIMER);
+
+		/* Timer: only to avoid problems if conflict still exists between color change
+		 * due to new time and brightness update */
+		if (timeTransitionTimer > 0)
+		{
+			timeTransitionTimer--;
+		}
+		else
+		{
+			timeTransition = FALSE;
+			QtwoColor.red = 0;
+			QtwoColor.green = 0;
+			QtwoColor.blue = 0;
+			timeTransitionTimer = 255;
 		}
 	}
 
-	Qtwo__updateVisibility(QTWO_TRANSITION_TIMER);
-	Qtwo__updateLeds();
+	Qtwo__updateLeds(); /* --> send LED colors to LED matrix */
 }
 
 
@@ -1847,22 +1931,29 @@ void Qtwo__seconds_x10 (void)
 
 	if (!timeTransition)
 	{
-		Qtwo__setBrightness(FALSE);
+		if (!brightnessTransition)
+		{
+			Qtwo__updateColor(); /* --> currentColor is updated (only color number) */
+		}
+
+		Qtwo__setBrightness(FALSE); /* --> QtwoColor (RGB components) is updated */
 
 		if (		(!brightnessTransition)
 				&&	(clockSecPrev != Clock__getSeconds())
 		)
 		{
-			Qtwo__updateColor();
-			Qtwo__getLastVisibility();
-			Qtwo__updateSeconds();
+			Qtwo__getLastVisibility(); /* --> prepare transition ON -> OFF */
+			Qtwo__updateSeconds(); /* --> all states are defined for cells */
 			clockSecPrev = Clock__getSeconds();
-			Qtwo__startTransition();
+			Qtwo__startTransition(); /* --> visibility transition will be done */
 		}
 	}
+	else
+	{
+		Qtwo__updateVisibility(QTWO_TRANSITION_TIMER_SEC);
+	}
 
-	Qtwo__updateVisibility(QTWO_TRANSITION_TIMER_SEC);
-	Qtwo__updateLeds();
+	Qtwo__updateLeds(); /* --> send LED colors to LED matrix */
 }
 
 
@@ -1875,22 +1966,28 @@ void Qtwo__timeSetup_x10 (void)
 
 	if (!timeTransition)
 	{
-		Qtwo__setBrightness(FALSE);
+		if (!brightnessTransition)
+		{
+			Qtwo__updateColor(); /* --> currentColor is updated (only color number) */
+		}
+
+		Qtwo__setBrightness(FALSE); /* --> QtwoColor (RGB components) is updated */
 
 		if (		(!brightnessTransition)
 				&& 	((clockHoursPrev != Clock__getHours()) || (clockMinPrev != Clock__getMinutes()))
 		)
 		{
-			Qtwo__updateColor();
-			Qtwo__getLastVisibility();
-			Qtwo__updateMatrix();
+			Qtwo__getLastVisibility(); /* --> prepare transition ON -> OFF */
+			Qtwo__updateMatrix(); /* --> all states are defined for cells */
 			clockHoursPrev = Clock__getHours();
 			clockMinPrev = Clock__getMinutes();
-			Qtwo__startTransition();
+			Qtwo__startTransition(); /* --> visibility transition will be done */
 		}
 	}
-
-	Qtwo__updateVisibility(QTWO_TRANSITION_TIMER_SETUP);
+	else
+	{
+		Qtwo__updateVisibility(QTWO_TRANSITION_TIMER_SETUP);
+	}
 
 	if (QtwoSetupTimer > 0)
 	{
@@ -1898,11 +1995,11 @@ void Qtwo__timeSetup_x10 (void)
 
 		if (QtwoSetupDisplayOn == TRUE)
 		{
-			Qtwo__updateLeds();
+			Qtwo__updateLeds(); /* --> send LED colors to LED matrix */
 		}
 		else
 		{
-			LEDMatrix__clearMatrix();
+			LEDMatrix__clearMatrix(); /* --> send LED colors to LED matrix */
 		}
 	}
 	else

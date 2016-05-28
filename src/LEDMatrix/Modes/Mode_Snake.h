@@ -17,7 +17,7 @@
 #if (MODE_SNAKE == MODE_SNAKE_ON)
 
 void Snake__init (void);
-void Snake__x10 (void);
+void Snake__x10 (uint8_t brightness);
 
 #define SNAKE_TIMER_INIT 		SNAKE_SPEED
 
