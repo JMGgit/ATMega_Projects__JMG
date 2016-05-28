@@ -53,23 +53,20 @@ void uC__init (void)
 
 ISR(TIMER1_COMPA_vect)
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	static uint8_t test_led = 0;
+
+	update10ms = TRUE;
+
+	test_led++;
+
+	if (test_led == 100)
 	{
-		static uint8_t test_led = 0;
-
-		update10ms = TRUE;
-
-		test_led++;
-
-		if (test_led == 100)
-		{
-			setHigh(UC_LED_PORT, UC_LED_PIN);
-		}
-		else if (test_led == 120)
-		{
-			setLow(UC_LED_PORT, UC_LED_PIN);
-			test_led = 0;
-		}
+		setHigh(UC_LED_PORT, UC_LED_PIN);
+	}
+	else if (test_led == 120)
+	{
+		setLow(UC_LED_PORT, UC_LED_PIN);
+		test_led = 0;
 	}
 }
 

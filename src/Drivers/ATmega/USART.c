@@ -42,23 +42,20 @@ void USART__init (void)
 
 ISR(USART0_RX_vect)
 {
-	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
+	USART_data[USART_idxData] = UDR0;
+
+	if (USART_idxData == 0)
 	{
-		USART_data[USART_idxData] = UDR0;
+		/* read data size */
+		USART_currentDataSize = USART_data[0] & 0x0F;
+	}
 
-		if (USART_idxData == 0)
-		{
-			/* read data size */
-			USART_currentDataSize = USART_data[0] & 0x0F;
-		}
+	USART_idxData++;
 
-		USART_idxData++;
-
-		if (USART_idxData >= USART_currentDataSize)
-		{
-			USART_idxData = 0;
-			USART_currentDataSize = 0;
-		}
+	if (USART_idxData >= USART_currentDataSize)
+	{
+		USART_idxData = 0;
+		USART_currentDataSize = 0;
 	}
 
 	toggle(TEST1_LED_PORT, TEST1_LED_PIN);
