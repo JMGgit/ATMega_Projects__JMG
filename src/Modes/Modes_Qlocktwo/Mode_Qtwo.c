@@ -1717,7 +1717,8 @@ static void Qtwo__updateLeds (void)
 			/* nothing to do */
 		}
 	}
-#if 1
+
+#if 0
 	/* TEST BRIGHTNESS */
 	for (linIt = 4; linIt < 4 + QTWO_COL_NB; linIt++)
 	{
@@ -1726,7 +1727,10 @@ static void Qtwo__updateLeds (void)
 			LEDMatrix__setRGBColor(linIt, 7, QtwoColor);
 		}
 	}
+#endif
 
+#if 0
+	/* TEST STATE */
 	for (colIt = 0 ; colIt < 11; colIt++)
 	{
 		if (QtwoState >= colIt)
@@ -1734,7 +1738,10 @@ static void Qtwo__updateLeds (void)
 			LEDMatrix__setRGBColor(10, 11 - colIt, QtwoColor);
 		}
 	}
+#endif
 
+#if 0
+	/* TEST TRANSITION */
 	if (testCount >= 5)
 	{
 		LEDMatrix__setRGBColor(9, 1, QtwoColor);
