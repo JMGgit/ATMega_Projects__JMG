@@ -16,10 +16,16 @@
 #include "Buttons.h"
 
 
+typedef enum
+{
+	QTWO_MODE_NORMAL = 0,
+	QTWO_MODE_SECONDS,
+	QTWO_MODE_SETUP
+} QtwoMode_N;
+
+
 void Qtwo__init (void);
-void Qtwo__main_x10 (void);
-void Qtwo__seconds_x10 (void);
-void Qtwo__timeSetup_x10 (void);
+void Qtwo__main_x10 (QtwoMode_N qtwoMode);
 void Qtwo__modeTransition (void);
 void Qtwo__setNextLang (void);
 uint8_t Qtwo__getCurrentBrightness (void);

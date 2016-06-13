@@ -78,19 +78,19 @@ static void Modes__updateMatrix (void)
 
 		case MODE__QLOCKTWO:
 		{
-			Qtwo__main_x10();
+			Qtwo__main_x10(QTWO_MODE_NORMAL);
 			break;
 		}
 
 		case MODE__SECONDS:
 		{
-			Qtwo__seconds_x10();
+			Qtwo__main_x10(QTWO_MODE_SECONDS);
 			break;
 		}
 
 		case MODE__TIME_SETUP:
 		{
-			Qtwo__timeSetup_x10();
+			Qtwo__main_x10(QTWO_MODE_SETUP);
 			break;
 		}
 
