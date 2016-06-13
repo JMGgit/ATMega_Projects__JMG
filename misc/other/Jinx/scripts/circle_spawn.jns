@@ -1,0 +1,100 @@
+# Circle Spawn in Jinx!Script
+# based on code writen by Justin Windle 
+# found here http://codepen.io/soulwire/pen/foktm
+# translated to Jinx!Script by Bob Kojima
+# bob.k.kojima@gmail.com
+
+:init
+
+	config max_particles = 200
+	config max_radius = 10
+
+	r[0] = 105
+	g[0] = 210
+	b[0] = 231
+	r[1] = 167
+	g[1] = 219
+	b[1] = 216
+	r[2] = 224
+	g[2] = 228
+	b[2] = 204
+	r[3] = 243
+	g[3] = 134
+	b[3] = 48
+	r[4] = 250
+	g[4] = 105
+	b[4] = 0
+	r[5] = 255
+	g[5] = 78
+	b[5] = 80
+	r[6] = 249
+	g[6] = 212
+	b[6] = 35
+	
+	for i = 1 to max_particles step 1
+		gosub spawn
+	next
+
+end
+
+:render
+
+	# black out screen 
+	clear
+
+	for i = 1 to max_particles step 1	
+		if alive[i] 
+			circle x[i], y[i], radius[i], r[color[i]], g[color[i]], b[color[i]], 1
+			gosub move
+		else 
+			gosub spawn
+		endif
+	next
+	
+end
+
+:spawn
+		x[i] = rnd(matrix_x)
+		y[i] = rnd(matrix_y)
+		
+		#x[i] = ( matrix_x * .5 ) + rnd( matrix_x * .5 ) - (matrix_x * .25)
+		#y[i] = ( matrix_y * .5 ) + rnd( matrix_x * .5 ) - (matrix_y * .25)
+		
+		alive[i] = 1
+		radius[i] = rnd(max_radius)
+		#wander[i] = random( 0.5, 2.0 )
+		wander[i] = (rnd(15) + 5) / 10	
+		#drag[i] = random( 0.9, 0.99 )
+		#--drag[i] = ((rnd(10) + 1) * 9) / 100
+		drag[i] = .92
+		color[i] = rnd(6)
+
+		#theta = rnd( 6.28318 )
+		theta = rnd( 628318 ) / 10000
+		
+		#force = random( 2, 8 );
+		force = rnd(6) + 2
+		
+		vx[i] = sin( theta ) * force
+		vy[i] = cos( theta ) * force
+return
+
+:move 
+		x[i] = x[i] + vx[i]
+		y[i] = y[i] + vy[i]
+
+		vx[i] = vx[i] * drag[i]
+		vy[i] = vy[i] * drag[i]
+
+		#theta[i] += random( -.5, .5 ) * wander[i]	
+		t = (rnd(1) -.5)	
+		theta[i] = theta[i] + t * wander[i]
+		
+		vx[i] = vx[i] + sin( theta[i] ) * 0.1
+		vy[i] = vy[i] + cos( theta[i] ) * 0.1
+
+		radius[i] = radius[i] * 0.96
+		if radius[i] < .5
+			alive[i] = 0
+		endif
+return

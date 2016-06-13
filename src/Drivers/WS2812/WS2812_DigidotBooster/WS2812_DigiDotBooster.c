@@ -29,7 +29,7 @@ static uint8_t txbufferIdx, globalBufferIdx;
 /* store color to avoid too many data transmission to RGB register
  * (optimization works for Qlocktwo but may not work if many LEDs have different colors) */
 static RGB_Color_t lastColor;
-static uint8_t slaveSelected = FALSE;
+static uint8_t slaveSelected;
 
 
 static inline void WS2812_DigiDotBooster__transmitTxBuffer (uint8_t finishTransmission)
@@ -67,7 +67,7 @@ static inline void WS2812_DigiDotBooster__addData (uint8_t data)
 
 	if (globalBufferIdx == 255)
 	{
-		/* not allowed by DigiDitBooster! */
+		/* not allowed by DigiDitBooster! -> SW reset*/
 		while (1)
 		{
 			;
@@ -79,7 +79,11 @@ static inline void WS2812_DigiDotBooster__addData (uint8_t data)
 void WS2812_DigiDotBooster__init (void)
 {
 	txbufferIdx = 0;
-	slaveSelected = 0;
+	slaveSelected = FALSE;
+
+	lastColor.red = 255;
+	lastColor.green = 255;
+	lastColor.blue = 255;
 
 	WS2812_DigiDotBooster__addData(CMD_INIT);
 	WS2812_DigiDotBooster__addData(CMD_COUNT);
@@ -87,10 +91,6 @@ void WS2812_DigiDotBooster__init (void)
 
 	WS2812_DigiDotBooster__transmitTxBuffer(TRUE);
 	_delay_ms(10);
-
-	lastColor.red = 255;
-	lastColor.green = 255;
-	lastColor.blue = 255;
 }
 
 

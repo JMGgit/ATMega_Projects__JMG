@@ -1,0 +1,140 @@
+# Bouncing Balls iN Jinx!Script
+# (c) 2014 Sven Karschewski
+
+
+# initialize
+:init
+	
+	# size of the balls
+	config radius=2
+
+	# how many balls ?
+	config balls=10
+
+	# acceleration on falling
+	config gravity=0.2
+
+	# bounce factor means how much energy is left after a bounce
+	config bounce=0.7
+
+	# maximal horizontal moving speed
+	config x_velocity_max=1.2
+
+	# vertical moving speed
+	y_velocity=1
+
+	# maximal offset for random start of new balls
+	config max_offset=30
+
+	# only use primary colors for random color ?
+	config primary_color=0
+
+	# use text instead of balls
+	config use_text=0
+
+
+	# pre calculate x velocity factor for random generator
+	x_velocity=(x_velocity_max/2)*10
+
+	# initialize the balls
+	for n=1 to balls
+		
+		# first ball starts immediately, following balls get a random offset
+		if n=1
+			offset=0
+		else
+			offset=rnd(max_offset)
+		endif
+
+		# ball drops in randomly left or right
+		if rnd(10) < 5
+			ball_x[n]=-radius-offset			
+			ball_vx[n]=(rnd(x_velocity)+x_velocity)/10
+		else 
+			ball_x[n]=matrix_x+radius+offset
+			ball_vx[n]=-(rnd(x_velocity)+x_velocity)/10
+		endif
+	
+		# drop height of the ball
+		ball_y[n]=-radius-offset
+		ball_vy[n]=y_velocity
+
+		# set ball color
+		gosub random_color
+	next
+
+end
+
+
+# frame generation
+:render
+
+	# clear the screen	
+	clear
+
+	# loop over pixelstep
+	for ps=1 to pixelstep
+
+		# loop over all balls
+		for n=1 to balls
+			
+			# draw the ball
+			if use_text > 0
+				text ball_x[n], ball_y[n], 1, matrix_y/2, ball_red[n], ball_green[n], ball_blue[n], "Jinx!", "Arial", 5
+			else
+				circle ball_x[n], ball_y[n], radius, ball_red[n], ball_green[n], ball_blue[n], 1
+			endif
+
+			# lets make some movement
+			ball_x[n]=ball_x[n]+ball_vx[n]
+			ball_y[n]=ball_y[n]+ball_vy[n]
+
+			# and add some gravity to the ball
+			ball_vy[n]=ball_vy[n]+gravity
+
+			# bounce if the ball reaches the floor
+			if ball_y[n]+radius >= matrix_y-1
+				ball_y[n]=matrix_y-radius-1
+				ball_vy[n]=ball_vy[n]*(-1*bounce)
+			endif
+
+			# generate a new ball if the ball moved out of the screen
+			if ball_x[n]-radius > matrix_x+2 & ball_vx[n] > 0
+				offset=rnd(max_offset)
+				ball_x[n]=matrix_x+radius+offset
+				ball_y[n]=-radius-offset
+				ball_vx[n]=-(rnd(x_velocity)+x_velocity)/10
+				ball_vy[n]=y_velocity
+				gosub random_color
+			else if ball_x[n]+radius < -1 & ball_vx[n] < 0
+				offset=rnd(max_offset)
+				ball_x[n]=-radius-offset
+				ball_y[n]=-radius-offset
+				ball_vx[n]=(rnd(x_velocity)+x_velocity)/10
+				ball_vy[n]=y_velocity
+				gosub random_color
+			endif
+		next
+
+	next
+end
+
+
+# new random color, only use primary colors if primary_color is set > 0
+:random_color
+
+	if primary_color > 0
+		ball_red[n]=0;
+		ball_green[n]=0;
+		ball_blue[n]=0;
+		while ball_red[n]+ball_green[n]+ball_blue[n] = 0 | ball_red[n]+ball_green[n]+ball_blue[n] = 255*3
+			ball_red[n]=rnd(1)*255
+			ball_green[n]=rnd(1)*255
+			ball_blue[n]=rnd(1)*255
+		wend
+	else
+		ball_red[n]=rnd(255)
+		ball_green[n]=rnd(255)
+		ball_blue[n]=rnd(255)
+	endif
+return

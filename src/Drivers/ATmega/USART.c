@@ -11,7 +11,7 @@
 
 #if (USART_DATA_LENGTH_READ_MAX != 0)
 
-#define BAUD 57600UL
+#define BAUD 250000UL
 #define UBRR_VAL ((F_CPU + BAUD * 4) / (BAUD * 8) - 1)
 #define BAUD_REAL (F_CPU / (8 * (UBRR_VAL + 1)))
 #define BAUD_ERROR ((BAUD_REAL * 1000) / BAUD)
@@ -20,13 +20,15 @@
   #error too high USART error rate!
 #endif
 
-static volatile uint8_t USART_data[USART_DATA_LENGTH_READ_MAX];
-static volatile uint8_t USART_idxData = 0;
-static volatile uint8_t USART_currentDataSize = 0;
+static volatile uint8_t USART0_data[USART_DATA_LENGTH_READ_MAX];
+static volatile uint8_t USART0_idxData = 0;
+static volatile uint8_t USART0_currentDataSize = 0;
 
 
 void USART__init (void)
 {
+	/*** USART 0 ***/
+
 	/* baud rate */
 	UCSR0A = (1 << U2X0);
 	UBRR0L = UBRR_VAL & 0xFF;
@@ -37,25 +39,40 @@ void USART__init (void)
 
 	/* asynchronous transmission, no parity, 1 stop bit, 8 data bits */
 	UCSR0C = (1 << UCSZ01) | (1 << UCSZ00);
+
+	/*** USART 1 ***/
+
+#ifdef __AVR_ATmega644P__
+	/* baud rate */
+	UCSR1A = (1 << U2X1);
+	UBRR1L = UBRR_VAL & 0xFF;
+	UBRR1H = (UBRR_VAL >> 8) & 0xFF;
+
+	/* enable receiver with interrupt and transmitter */
+	UCSR1B = (1 << RXCIE1) | (1 << RXEN1) | (1 << TXEN1);
+
+	/* asynchronous transmission, no parity, 1 stop bit, 8 data bits */
+	UCSR1C = (1 << UCSZ11) | (1 << UCSZ10);
+#endif
 }
 
 
 ISR(USART0_RX_vect)
 {
-	USART_data[USART_idxData] = UDR0;
+	USART0_data[USART0_idxData] = UDR0;
 
-	if (USART_idxData == 0)
+	if (USART0_idxData == 0)
 	{
 		/* read data size */
-		USART_currentDataSize = USART_data[0] & 0x0F;
+		USART0_currentDataSize = USART0_data[0] & 0x0F;
 	}
 
-	USART_idxData++;
+	USART0_idxData++;
 
-	if (USART_idxData >= USART_currentDataSize)
+	if (USART0_idxData >= USART0_currentDataSize)
 	{
-		USART_idxData = 0;
-		USART_currentDataSize = 0;
+		USART0_idxData = 0;
+		USART0_currentDataSize = 0;
 	}
 
 	toggle(TEST1_LED_PORT, TEST1_LED_PIN);
@@ -70,16 +87,16 @@ uint8_t USART__readData (uint8_t *data, uint8_t dataLength, uint8_t requester)
 	/* TODO: add defines */
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
-		if ((requester & (USART_data[0] & 0xF0)) == requester)
+		if ((requester & (USART0_data[0] & 0xF0)) == requester)
 		{
-			dataSize = USART_data[0] & 0x0F;
+			dataSize = USART0_data[0] & 0x0F;
 
 			if (dataLength == dataSize)
 			{
 				for (idxByte = 0; idxByte < dataLength; idxByte++)
 				{
-					data[idxByte] = USART_data[idxByte];
-					USART_data[idxByte] = 0;
+					data[idxByte] = USART0_data[idxByte];
+					USART0_data[idxByte] = 0;
 				}
 
 				retVal = E_OK;

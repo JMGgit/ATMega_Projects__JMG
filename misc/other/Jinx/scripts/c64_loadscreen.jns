@@ -1,0 +1,33 @@
+# c64 tape load screen in Jinx!Script
+# (c) 2014 Sven Karschewski
+
+# initialize
+:init
+
+	# how man new lines per frame ?
+	config lines = 10
+
+	# fade out value ?
+	config fade_step = 30
+end
+
+
+# lets make some frames
+:render
+
+	# fade out last screen 
+	fade fade_step
+
+	# loop for drawing all new lines in a fram
+	for n=1 to lines
+		
+		# choose a random y position
+		pos_y=rnd(matrix_y)
+		
+		# draw line with random color values
+		line 0, pos_y, matrix_x-1, pos_y, rnd(255), rnd(255), rnd(255)
+	
+	next
+
+
+end

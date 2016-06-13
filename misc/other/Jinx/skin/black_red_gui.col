@@ -1,0 +1,61 @@
+# Jinx! Color Scheme File
+# All colors are in R,G,B order (0-255)
+
+
+# Color Scheme Name
+COLOR_SCHEME_NAME Black & Red (Flat Style)
+
+# Window Background Texture (leave empty if you dont want a texture)
+# The file has to be stored inside the skin directory, only uncompressed .BMP files are allowed
+COLOR_WINDOW_TEXTURE 
+
+# Window background color
+COLOR_WINDOW 20,20,20
+
+# border color of all controls
+COLOR_CTRL_BORDER 40,40,40
+
+# background color of controls (buttons, etc.)
+COLOR_CTRL_BACKGROUND 0,0,0
+
+# background color of control when mouse hovers
+COLOR_CTRL_HOT_BACKGROUND 200,0,0
+
+# background color of control if pushed/active
+COLOR_CTRL_PUSHED_BACKGROUND 180,0,0
+
+# background color when control is disabled
+COLOR_CTRL_DISABLED_BACKGROUND 20,20,20
+
+# color of checkbox mark
+COLOR_CHECKBOX_DOT 200,0,0
+
+# color of checkbox mark if the checkbox is disabled
+COLOR_CHECKBOX_DISABLED_DOT 40,0,0
+
+# text color
+COLOR_TEXT 200,200,200
+
+# text color if the control is pushed/active
+COLOR_PUSHED_TEXT 200,200,200
+
+# text color if control is disabled
+COLOR_DISABLED_TEXT 90,90,90
+
+# border color of channel 1 & 2
+COLOR_CHAN_1_2_BORDER 40,40,40
+
+# border color of channel 3 & 4
+COLOR_CHAN_3_4_BORDER 40,40,40
+
+# border color of channel mix section
+COLOR_CHAN_MIX_BORDER 100,0,0
+
+# border color of main mix section
+COLOR_MAIN_MIX_BORDER 100,0,0
+
+# color lightup for 3d effects on buttons (gets added to the control background rgb value)
+COLOR_CTRL_3D_LIGHTUP 0
+
+# color lightup for menus (gets added to the control background rgb value)
+COLOR_CTRL_MENU_LIGHTUP 40

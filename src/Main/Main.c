@@ -9,6 +9,10 @@
 #include "Main.h"
 
 
+#if (PROJECT == PROJECT__LED_TABLE)
+extern volatile uint8_t ledTableUSARTmode;
+#endif
+
 int main (void)
 {
 	Drivers__init();
@@ -30,21 +34,34 @@ int main (void)
 
 	while (1)
 	{
-		if (uC__isTaskTrigger_x10())
+#if (PROJECT == PROJECT__LED_TABLE)
+		if (ledTableUSARTmode)
 		{
-			uC__resetTaskTrigger_x10();
-			Drivers__begin_x10();
+			LEDScreen__loop();
+		}
+		else
+#endif
+		{
+#if (PROJECT == PROJECT__LED_TABLE)
+			LEDScreen__reset();
+#endif
+
+			if (uC__isTaskTrigger_x10())
+			{
+				uC__resetTaskTrigger_x10();
+				Drivers__begin_x10();
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)
-			Lcd__x10();
+				Lcd__x10();
 #endif
 #if (CLOCK_TYPE != CLOCK_TYPE_OFF)
-			Clock__x10();
+				Clock__x10();
 #endif
-			Buttons__x10();
+				Buttons__x10();
 #if (PROJECT != PROJECT__IRMP)
-			Modes__x10();
+				Modes__x10();
 #endif
-			Drivers__end_x10();
+				Drivers__end_x10();
+			}
 		}
 	}
 

@@ -16,6 +16,7 @@
 #include "Mode_Clock.h"
 #include "Mode_Snake.h"
 #include "Mode_Off.h"
+#include "Mode_LEDScreen.h"
 
 
 typedef enum

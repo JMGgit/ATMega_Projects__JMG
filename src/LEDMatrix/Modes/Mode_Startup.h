@@ -13,16 +13,6 @@
 #include "LEDMatrix.h"
 
 
-typedef enum
-{
-	TEST_RED = 0,
-	TEST_GREEN,
-	TEST_BLUE,
-	TEST_WHITE,
-	TEST_DONE
-} testLedStates_N;
-
-
 void Mode__Startup_x10 (void);
 
 

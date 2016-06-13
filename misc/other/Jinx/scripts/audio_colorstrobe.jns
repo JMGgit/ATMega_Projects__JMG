@@ -1,0 +1,27 @@
+# audio triggered color strobe Jinx!Script
+# (c) 2014 Sven Karschewski
+
+# you need to activate the audio trigger inside the Jinx!Script channel config !
+
+:init
+	
+	# store old trigger state
+	trigger_old = 0
+end
+
+:render
+
+	# audio_trigger is only bigger than trigger_old when the trigger state changed from
+	# untriggerd to triggerd, means we only use the trigger attack and ignore the trigger release
+
+	if audio_trigger > trigger_old
+
+		# draw full screen rectangle with random color
+		rect 0, 0, matrix_x-1, matrix_y-1, rnd(255), rnd(255), rnd(255), 1
+
+	endif
+
+	# store trigger state for next frame
+	trigger_old = audio_trigger
+
+end

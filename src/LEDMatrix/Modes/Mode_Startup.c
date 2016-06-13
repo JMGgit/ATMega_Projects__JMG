@@ -12,23 +12,41 @@
 
 #define TEST_BRIGHTNESS_LEVEL	60
 
+typedef enum
+{
+	TEST_INIT = 0,
+	TEST_RED,
+	TEST_GREEN,
+	TEST_BLUE,
+	TEST_WHITE,
+	TEST_DONE
+} testLedStates_N;
+
 static uint8_t lineIt = 1;
 static uint8_t colIt = 0;
 static RGB_Color_t color = {TEST_BRIGHTNESS_LEVEL, 0, 0};
-static testLedStates_N testLedState = TEST_RED;
+static testLedStates_N testLedState = TEST_INIT;
 
 
 void Mode__Startup_x10 (void)
 {
 	switch (testLedState)
 	{
+		case TEST_INIT:
+		{
+			LEDMatrix__clearMatrix();
+			testLedState = TEST_RED;
+
+			break;
+		}
+
 		case TEST_RED:
 		{
 			color =  LEDMatrix__getRGBColorFromComponents(TEST_BRIGHTNESS_LEVEL, 0, 0);
 
 			if (lineIt <= LED_MATRIX_SIZE_LIN)
 			{
-				if (colIt < LED_MATRIX_SIZE_COL)
+				if (colIt <= LED_MATRIX_SIZE_COL)
 				{
 					colIt++;
 				}
