@@ -88,7 +88,7 @@ typedef enum
 	TIME_TRANSITION_STARTED
 } TimeTransition_N;
 
-static const uint16_t adcLdrLevels[QTWO_BRIGHTNESS_NB] = {0, 300, 450, 600};
+static const uint16_t adcLdrLevels[QTWO_BRIGHTNESS_NB] = {0, 200, 350, 600};
 
 typedef enum
 {
@@ -1480,8 +1480,6 @@ static void Qtwo__prepareMatrixForTimeTransition (void)
 	}
 }
 
-uint8_t testCount = 0;
-
 
 static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 {
@@ -1532,15 +1530,10 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 		colorTransTimer = (timer / Qtwo__getCurrentBrightness());
 
 		timeTransition = TIME_TRANSITION_STARTED;
-
-		testCount = 0;
 	}
 
 	if (timeTransition == TIME_TRANSITION_STARTED)
 	{
-		//TEST
-		testCount++;
-
 		if (colorTransTimer > 0)
 		{
 			colorTransTimer--;
@@ -1718,85 +1711,13 @@ static void Qtwo__updateLeds (void)
 		}
 	}
 
-#if 0
-	/* TEST BRIGHTNESS */
+#if 0 /* TEST BRIGHTNESS */
 	for (linIt = 4; linIt < 4 + QTWO_COL_NB; linIt++)
 	{
 		if (currentBrightness >= (linIt - 4))
 		{
 			LEDMatrix__setRGBColor(linIt, 7, QtwoColor);
 		}
-	}
-#endif
-
-#if 0
-	/* TEST STATE */
-	for (colIt = 0 ; colIt < 11; colIt++)
-	{
-		if (QtwoState >= colIt)
-		{
-			LEDMatrix__setRGBColor(10, 11 - colIt, QtwoColor);
-		}
-	}
-#endif
-
-#if 0
-	/* TEST TRANSITION */
-	if (testCount >= 5)
-	{
-		LEDMatrix__setRGBColor(9, 1, QtwoColor);
-	}
-	if (testCount >= 10)
-	{
-		LEDMatrix__setRGBColor(9, 2, QtwoColor);
-	}
-	if (testCount >= 15)
-	{
-		LEDMatrix__setRGBColor(9, 3, QtwoColor);
-	}
-	if (testCount >= 20)
-	{
-		LEDMatrix__setRGBColor(9, 4, QtwoColor);
-	}
-	if (testCount >= 25)
-	{
-		LEDMatrix__setRGBColor(9, 5, QtwoColor);
-	}
-	if (testCount >= 30)
-	{
-		LEDMatrix__setRGBColor(9, 6, QtwoColor);
-	}
-	if (testCount >= 35)
-	{
-		LEDMatrix__setRGBColor(9, 7, QtwoColor);
-	}
-	if (testCount >= 40)
-	{
-		LEDMatrix__setRGBColor(9, 8, QtwoColor);
-	}
-	if (testCount >= 45)
-	{
-		LEDMatrix__setRGBColor(9, 9, QtwoColor);
-	}
-	if (testCount >= 50)
-	{
-		LEDMatrix__setRGBColor(9, 10, QtwoColor);
-	}
-	if (testCount >= 55)
-	{
-		LEDMatrix__setRGBColor(9, 11, QtwoColor);
-	}
-	if (testCount >= 60)
-	{
-		LEDMatrix__setRGBColor(10, 1, QtwoColor);
-	}
-	if (testCount >= 65)
-	{
-		LEDMatrix__setRGBColor(10, 2, QtwoColor);
-	}
-	if (testCount >= 70)
-	{
-		LEDMatrix__setRGBColor(10, 3, QtwoColor);
 	}
 #endif
 }
@@ -1893,28 +1814,6 @@ static ButtonRequest_N Qtwo__checkButtons (QtwoMode_N qtwoMode)
 		/* nothing to do */
 	}
 
-#if 1
-	//TEST
-	if (Buttons__isPressedOnce(&buttonUp))
-	{
-		Qtwo__incHours();
-	}
-
-	if (Buttons__isPressedOnce(&buttonDown))
-	{
-		Qtwo__decHours();
-	}
-
-	if (Buttons__isPressedOnce(&buttonRight))
-	{
-		Qtwo__incMinutes();
-	}
-
-	if (Buttons__isPressedOnce(&buttonLeft))
-	{
-		Qtwo__decMinutes();
-	}
-#endif
 
 	return request;
 }
@@ -2005,7 +1904,6 @@ void Qtwo__main_x10 (QtwoMode_N qtwoMode)
 
 						if (brightnessRequest != BRIGHTNESS_NO_REQUEST)
 						{
-							toggle(TEST2_LED_PORT, TEST2_LED_PIN);
 							QtwoState = QTWO_STATE_BRIGHTNESS_TRANSITION;
 						}
 						else

@@ -125,6 +125,8 @@ void uC__end_x10 (void)
 
 void uC__triggerSwReset (void)
 {
+	wdt_enable(WDTO_15MS); /* enable watchdog if not enabled before */
+
 	while (1)
 	{
 		/* SW reset triggered by watchdog */

@@ -119,7 +119,7 @@ avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.60
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995/avrdude/EEPROMFromConfig=true
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995/avrdude/FlashFile=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995/avrdude/FlashFromConfig=true
-avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995/avrdude/Fuses/ByteValues=255\:222\:5
+avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995/avrdude/Fuses/ByteValues=255\:214\:5
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995/avrdude/Fuses/FileName=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995/avrdude/Fuses/MCUid=atmega328p
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995/avrdude/Fuses/UseFile=false
@@ -145,7 +145,7 @@ avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.60
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555/avrdude/EEPROMFromConfig=true
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555/avrdude/FlashFile=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555/avrdude/FlashFromConfig=true
-avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555/avrdude/Fuses/ByteValues=255\:30\:253
+avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555/avrdude/Fuses/ByteValues=255\:22\:253
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555/avrdude/Fuses/FileName=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555/avrdude/Fuses/MCUid=atmega644p
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555/avrdude/Fuses/UseFile=false
@@ -171,7 +171,7 @@ avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.17
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708/avrdude/EEPROMFromConfig=true
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708/avrdude/FlashFile=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708/avrdude/FlashFromConfig=true
-avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708/avrdude/Fuses/ByteValues=255\:30\:253
+avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708/avrdude/Fuses/ByteValues=255\:22\:253
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708/avrdude/Fuses/FileName=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708/avrdude/Fuses/MCUid=atmega644p
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708/avrdude/Fuses/UseFile=false
@@ -197,7 +197,7 @@ avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.17
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797/avrdude/EEPROMFromConfig=true
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797/avrdude/FlashFile=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797/avrdude/FlashFromConfig=true
-avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797/avrdude/Fuses/ByteValues=255\:30\:253
+avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797/avrdude/Fuses/ByteValues=255\:22\:253
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797/avrdude/Fuses/FileName=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797/avrdude/Fuses/MCUid=atmega644p
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797/avrdude/Fuses/UseFile=false
@@ -223,7 +223,7 @@ avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/av
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/EEPROMFromConfig=true
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/FlashFile=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/FlashFromConfig=true
-avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/Fuses/ByteValues=255\:30\:253
+avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/Fuses/ByteValues=255\:22\:253
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/Fuses/FileName=
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/Fuses/MCUid=atmega644p
 avrtarget/de.innot.avreclipse.configuration.app.release.1446605198.1815058140/avrdude/Fuses/UseFile=false
