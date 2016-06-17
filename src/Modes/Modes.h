@@ -29,7 +29,7 @@
 /* public functions */
 void Modes__init (void);
 void Modes__x10 (void);
-void Modes__setMode (Mode_t mode);
+void Modes__setMode (Mode_t mode, uint8_t transition);
 Mode_t Modes__getMode (void);
 void Modes__Start (void);
 

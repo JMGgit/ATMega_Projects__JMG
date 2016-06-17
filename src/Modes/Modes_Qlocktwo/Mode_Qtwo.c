@@ -166,7 +166,7 @@ static uint8_t matrix[QTWO_LINE_NB][QTWO_COL_NB];
 static uint8_t edges[4];
 static uint8_t currentBrightness, modeAutoColor, modeAutoColorPrev, currentColor, targetColor, brightnessRGBLevel, colorTransTimer;
 
-static RGB_Color_t QtwoColor, offOnColor, onOffColor;
+static RGB_Color_t qtwoColor, offOnColor, onOffColor;
 static uint8_t modeAutoColor_EEPROM EEMEM = 0;
 static uint8_t currentColor_EEPROM EEMEM = 0;
 
@@ -181,6 +181,8 @@ static uint8_t selectedLang_EEPROM EEMEM;
 
 static StateQtwo_N QtwoState;
 static TimeTransition_N timeTransition;
+
+static uint8_t qtwoReInit;
 
 
 void Qtwo__init (void)
@@ -1486,6 +1488,7 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 	uint8_t linIt, colIt;
 	uint8_t allColorsReady = TRUE;
 	uint8_t colorStep, timer;
+	static RGB_Color_t qtwoColorForTransition = {0, 0, 0};
 
 	if ((qtwoMode == QTWO_MODE_NORMAL) || (qtwoMode == QTWO_MODE_SETUP))
 	{
@@ -1507,6 +1510,10 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 	{
 		Qtwo__prepareMatrixForTimeTransition();
 
+		qtwoColorForTransition.red = qtwoColor.red;
+		qtwoColorForTransition.green = qtwoColor.green;
+		qtwoColorForTransition.blue = qtwoColor.blue;
+
 		if ((qtwoMode == QTWO_MODE_NORMAL) || (qtwoMode == QTWO_MODE_SETUP))
 		{
 			Qtwo__updateTimeMatrix();
@@ -1523,9 +1530,9 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 		offOnColor.red = 0;
 		offOnColor.green = 0;
 		offOnColor.blue = 0;
-		onOffColor.red = QtwoColor.red;
-		onOffColor.green = QtwoColor.green;
-		onOffColor.blue = QtwoColor.blue;
+		onOffColor.red = qtwoColorForTransition.red;
+		onOffColor.green = qtwoColorForTransition.green;
+		onOffColor.blue = qtwoColorForTransition.blue;
 
 		colorTransTimer = (timer / Qtwo__getCurrentBrightness());
 
@@ -1541,42 +1548,42 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 		}
 		else
 		{
-			if (QtwoColor.red != 0)
+			if (qtwoColorForTransition.red != 0)
 			{
-				if ((offOnColor.red + colorStep) < QtwoColor.red)
+				if ((offOnColor.red + colorStep) < qtwoColorForTransition.red)
 				{
 					offOnColor.red = offOnColor.red + colorStep;
 					allColorsReady = FALSE;
 				}
 				else
 				{
-					offOnColor.red = QtwoColor.red;
+					offOnColor.red = qtwoColorForTransition.red;
 				}
 			}
 
-			if (QtwoColor.green != 0)
+			if (qtwoColorForTransition.green != 0)
 			{
-				if ((offOnColor.green + colorStep) < QtwoColor.green)
+				if ((offOnColor.green + colorStep) < qtwoColorForTransition.green)
 				{
 					offOnColor.green = offOnColor.green + colorStep;
 					allColorsReady = FALSE;
 				}
 				else
 				{
-					offOnColor.green = QtwoColor.green;
+					offOnColor.green = qtwoColorForTransition.green;
 				}
 			}
 
-			if (QtwoColor.blue != 0)
+			if (qtwoColorForTransition.blue != 0)
 			{
-				if ((offOnColor.blue + colorStep) < QtwoColor.blue)
+				if ((offOnColor.blue + colorStep) < qtwoColorForTransition.blue)
 				{
 					offOnColor.blue = offOnColor.blue + colorStep;
 					allColorsReady = FALSE;
 				}
 				else
 				{
-					offOnColor.blue = QtwoColor.blue;
+					offOnColor.blue = qtwoColorForTransition.blue;
 				}
 			}
 
@@ -1674,7 +1681,7 @@ static void Qtwo__updateLeds (void)
 		{
 			if (matrix[linIt][colIt] == ON)
 			{
-				LEDMatrix__setRGBColor(linIt + 1, colIt + 1, QtwoColor);
+				LEDMatrix__setRGBColor(linIt + 1, colIt + 1, qtwoColor);
 			}
 			else if (matrix[linIt][colIt] == ON_TO_OFF)
 			{
@@ -1695,7 +1702,7 @@ static void Qtwo__updateLeds (void)
 	{
 		if (edges[edgeIt] == ON)
 		{
-			LEDMatrix__setRGBColor(QTWO_LINE_NB, QTWO_COL_NB + edgesConfig[edgeIt], QtwoColor);
+			LEDMatrix__setRGBColor(QTWO_LINE_NB, QTWO_COL_NB + edgesConfig[edgeIt], qtwoColor);
 		}
 		else if (edges[edgeIt] == ON_TO_OFF)
 		{
@@ -1716,7 +1723,7 @@ static void Qtwo__updateLeds (void)
 	{
 		if (currentBrightness >= (linIt - 4))
 		{
-			LEDMatrix__setRGBColor(linIt, 7, QtwoColor);
+			LEDMatrix__setRGBColor(linIt, 7, qtwoColor);
 		}
 	}
 #endif
@@ -1778,7 +1785,7 @@ static ButtonRequest_N Qtwo__checkButtons (QtwoMode_N qtwoMode)
 		{
 			if (Buttons__isPressedOnce(&buttonFunc3))
 			{
-				Modes__setMode(MODE__TIME_SETUP);
+				Modes__setMode(MODE__TIME_SETUP, FALSE);
 			}
 		}
 	}
@@ -1806,7 +1813,7 @@ static ButtonRequest_N Qtwo__checkButtons (QtwoMode_N qtwoMode)
 
 		if (Buttons__isPressedOnce(&buttonFunc3))
 		{
-			Modes__setMode(MODE__QLOCKTWO);
+			Modes__setMode(MODE__QLOCKTWO, FALSE);
 		}
 	}
 	else
@@ -1859,7 +1866,7 @@ void Qtwo__main_x10 (QtwoMode_N qtwoMode)
 	static uint8_t QtwoSetupDisplayOn = FALSE;
 	static uint8_t QtwoSetupTimer = 0;
 
-	QtwoColor =	LEDMatrix__getRGBColorFromComponents(
+	qtwoColor =	LEDMatrix__getRGBColorFromComponents(
 		Qtwo__getCurrentBrightness() * colors[currentColor * 3],
 		Qtwo__getCurrentBrightness() * colors[(currentColor * 3) + 1],
 		Qtwo__getCurrentBrightness() * colors[(currentColor * 3) + 2]);
@@ -1868,7 +1875,14 @@ void Qtwo__main_x10 (QtwoMode_N qtwoMode)
 	{
 		case QTWO_STATE_IDLE:
 		{
-			timeRequest = Qtwo__checkNewTime(qtwoMode);
+			if (!qtwoReInit)
+			{
+				timeRequest = Qtwo__checkNewTime(qtwoMode);
+			}
+			else
+			{
+				timeRequest = TIME_REQUEST_TRANSITION;
+			}
 
 			if (timeRequest == TIME_REQUEST_TRANSITION)
 			{
@@ -2051,16 +2065,18 @@ void Qtwo__main_x10 (QtwoMode_N qtwoMode)
 			}
 		}
 	}
+
+	qtwoReInit = FALSE;
 }
 
 
 static void Qtwo__reInitStateMachine (void)
 {
 	/* reInit time transition */
-	clockHoursPrev = 0xFF;
-	clockMinPrev = 0xFF;
-	clockSecPrev = 0xFF;
-	clockHoursColorPrev = 0xFF;
+	clockHoursPrev = Clock__getHours();
+	clockMinPrev = Clock__getMinutes();
+	clockSecPrev = Clock__getSeconds();
+	clockHoursColorPrev = clockHoursPrev;
 	colorTransTimer = 0;
 	timeTransition = TIME_TRANSITION_FINISHED;
 
@@ -2071,6 +2087,9 @@ static void Qtwo__reInitStateMachine (void)
 
 	/* trigger new time */
 	QtwoState = QTWO_STATE_IDLE;
+
+	/* set reInit flag */
+	qtwoReInit = TRUE;
 }
 
 
