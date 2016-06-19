@@ -1513,7 +1513,12 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 			timer = 0;
 		}
 
-		colorStep = (Qtwo__getCurrentBrightness() / timer) | 1;
+		colorStep = (uint8_t)((((float)Qtwo__getCurrentBrightness() / (float)timer)) + 0.5);
+
+		if (colorStep == 0)
+		{
+			colorStep = 1;
+		}
 
 		Qtwo__prepareMatrixForTimeTransition();
 
