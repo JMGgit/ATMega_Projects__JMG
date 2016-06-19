@@ -19,11 +19,11 @@ typedef enum
 	TEST_GREEN,
 	TEST_BLUE,
 	TEST_WHITE,
-	TEST_DONE
+	TEST_FINISHED
 } testLedStates_N;
 
 static uint8_t lineIt = 1;
-static uint8_t colIt = 0;
+static uint8_t colIt = 1;
 static RGB_Color_t color = {TEST_BRIGHTNESS_LEVEL, 0, 0};
 static testLedStates_N testLedState = TEST_INIT;
 
@@ -34,7 +34,6 @@ void Mode__Startup_x10 (void)
 	{
 		case TEST_INIT:
 		{
-			LEDMatrix__clearMatrix();
 			testLedState = TEST_RED;
 
 			break;
@@ -43,22 +42,23 @@ void Mode__Startup_x10 (void)
 		case TEST_RED:
 		{
 			color =  LEDMatrix__getRGBColorFromComponents(TEST_BRIGHTNESS_LEVEL, 0, 0);
+			LEDMatrix__setRGBColor(lineIt, colIt, color);
 
-			if (lineIt <= LED_MATRIX_SIZE_LIN)
+			if (colIt < LED_MATRIX_SIZE_COL)
 			{
-				if (colIt <= LED_MATRIX_SIZE_COL)
-				{
-					colIt++;
-				}
-				else
-				{
-					colIt = 0;
-					lineIt++;
-				}
+				colIt++;
 			}
 			else
 			{
-				testLedState = TEST_GREEN;
+				if (lineIt < LED_MATRIX_SIZE_LIN)
+				{
+					lineIt++;
+					colIt = 1;
+				}
+				else
+				{
+					testLedState = TEST_GREEN;
+				}
 			}
 
 			break;
@@ -67,22 +67,23 @@ void Mode__Startup_x10 (void)
 		case TEST_GREEN:
 		{
 			color =  LEDMatrix__getRGBColorFromComponents(0, TEST_BRIGHTNESS_LEVEL, 0);
+			LEDMatrix__setRGBColor(lineIt, colIt, color);
 
-			if (lineIt > 0)
+			if (colIt > 1)
 			{
-				if (colIt > 0)
-				{
-					colIt--;
-				}
-				else
-				{
-					colIt = LED_MATRIX_SIZE_COL;
-					lineIt--;
-				}
+				colIt--;
 			}
 			else
 			{
-				testLedState = TEST_BLUE;
+				if (lineIt > 1)
+				{
+					lineIt--;
+					colIt = LED_MATRIX_SIZE_COL;
+				}
+				else
+				{
+					testLedState = TEST_BLUE;
+				}
 			}
 
 			break;
@@ -91,22 +92,23 @@ void Mode__Startup_x10 (void)
 		case TEST_BLUE:
 		{
 			color =  LEDMatrix__getRGBColorFromComponents(0, 0, TEST_BRIGHTNESS_LEVEL);
+			LEDMatrix__setRGBColor(lineIt, colIt, color);
 
-			if (lineIt <= LED_MATRIX_SIZE_LIN)
+			if (colIt < LED_MATRIX_SIZE_COL)
 			{
-				if (colIt < LED_MATRIX_SIZE_COL)
-				{
-					colIt++;
-				}
-				else
-				{
-					colIt = 0;
-					lineIt++;
-				}
+				colIt++;
 			}
 			else
 			{
-				testLedState = TEST_WHITE;
+				if (lineIt < LED_MATRIX_SIZE_LIN)
+				{
+					lineIt++;
+					colIt = 1;
+				}
+				else
+				{
+					testLedState = TEST_WHITE;
+				}
 			}
 
 			break;
@@ -115,23 +117,27 @@ void Mode__Startup_x10 (void)
 		case TEST_WHITE:
 		{
 			color =  LEDMatrix__getRGBColorFromComponents(TEST_BRIGHTNESS_LEVEL, TEST_BRIGHTNESS_LEVEL, TEST_BRIGHTNESS_LEVEL);
+			LEDMatrix__setRGBColor(lineIt, colIt, color);
 
-			if (lineIt > 0)
+			if (colIt > 1)
 			{
-				if (colIt > 0)
-				{
-					colIt--;
-				}
-				else
-				{
-					colIt = LED_MATRIX_SIZE_COL;
-					lineIt--;
-				}
+				colIt--;
 			}
 			else
 			{
-				testLedState = TEST_DONE;
+				colIt = LED_MATRIX_SIZE_COL;
+
+				if (lineIt > 1)
+				{
+					lineIt--;
+					colIt = LED_MATRIX_SIZE_COL;
+				}
+				else
+				{
+					testLedState = TEST_FINISHED;
+				}
 			}
+
 			break;
 		}
 
@@ -141,6 +147,4 @@ void Mode__Startup_x10 (void)
 			break;
 		}
 	}
-
-	LEDMatrix__setRGBColor(lineIt, colIt, color);
 }
