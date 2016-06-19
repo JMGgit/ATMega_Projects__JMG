@@ -1487,27 +1487,34 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 {
 	uint8_t linIt, colIt;
 	uint8_t allColorsReady = TRUE;
-	uint8_t colorStep, timer;
+	static uint8_t colorStep = 0;
+	static uint8_t timer = 0;
 	static RGB_Color_t qtwoColorForTransition = {0, 0, 0};
-
-	if ((qtwoMode == QTWO_MODE_NORMAL) || (qtwoMode == QTWO_MODE_SETUP))
-	{
-		timer = QTWO_TRANSITION_TIMER;
-	}
-	else if (qtwoMode == QTWO_MODE_SECONDS)
-	{
-		timer = QTWO_TRANSITION_TIMER_SEC;
-	}
-	else
-	{
-		/* nothing to do */
-		timer = 0;
-	}
-
-	colorStep = (Qtwo__getCurrentBrightness() / timer) | 1;
+	static QtwoMode_N previousQtwoMode;
 
 	if (timeTransition == TIME_TRANSITION_FINISHED)
 	{
+		if ((qtwoMode == QTWO_MODE_NORMAL) || (qtwoMode == QTWO_MODE_SETUP))
+		{
+			timer = QTWO_TRANSITION_TIMER;
+		}
+		else if (qtwoMode == QTWO_MODE_SECONDS)
+		{
+			if (previousQtwoMode == QTWO_MODE_NORMAL)
+			{
+				Qtwo__clearMatrix();
+			}
+
+			timer = QTWO_TRANSITION_TIMER_SEC;
+		}
+		else
+		{
+			/* nothing to do */
+			timer = 0;
+		}
+
+		colorStep = (Qtwo__getCurrentBrightness() / timer) | 1;
+
 		Qtwo__prepareMatrixForTimeTransition();
 
 		qtwoColorForTransition.red = qtwoColor.red;
@@ -1664,6 +1671,8 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 	{
 		/* not defined */
 	}
+
+	previousQtwoMode = qtwoMode;
 
 	return timeTransition;
 }

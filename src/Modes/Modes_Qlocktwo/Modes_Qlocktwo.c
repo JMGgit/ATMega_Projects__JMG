@@ -125,6 +125,7 @@ static void Modes__updateMatrix (void)
 void Modes__init (void)
 {
 	LEDMatrix__clearMatrix();
+	Qtwo__init();
 
 	if (eeprom_read_byte(&startupOn_EEPROM) == TRUE)
 	{
@@ -136,8 +137,6 @@ void Modes__init (void)
 		Modes__Start();
 		startupOn = FALSE;
 	}
-
-	Qtwo__init();
 }
 
 

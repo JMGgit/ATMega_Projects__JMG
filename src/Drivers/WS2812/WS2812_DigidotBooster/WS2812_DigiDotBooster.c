@@ -62,16 +62,15 @@ static inline void WS2812_DigiDotBooster__transmitTxBuffer (uint8_t finishTransm
 
 static inline void WS2812_DigiDotBooster__addData (uint8_t data)
 {
-	txBuffer[txbufferIdx++] = data;
-	globalBufferIdx++;
-
-	if (globalBufferIdx == 255)
+	if (globalBufferIdx < 255)
+	{
+		txBuffer[txbufferIdx++] = data;
+		globalBufferIdx++;
+	}
+	else
 	{
 		/* not allowed by DigiDitBooster! -> SW reset*/
-		while (1)
-		{
-			;
-		}
+		uC__triggerSwReset();
 	}
 }
 
