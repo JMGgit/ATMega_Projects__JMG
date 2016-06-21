@@ -29,6 +29,14 @@
    * slave mode possible (controlled via UART)
    * see settings in \misc\doc
 
+**PrjLedFrame**: LED Frame (based on ATMega644p and WS2801 LED strips)
+   * 2 LED squares that can be integrated in shelf
+   * see settings in \misc\doc
+
+**PrjLedMirror**: LED mirror Table (based on ATMega644p and WS2801 LED strips)
+   * 2 lines infinite mirror table
+   * see settings in \misc\doc
+
 **PrjTemp**: Temperature Logger (based on ATMega644p, DSB1820 and LCD controller SPLC780D1)
    * log and store temperature data
    * Transfer data with PC via USB
