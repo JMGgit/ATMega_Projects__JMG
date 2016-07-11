@@ -33,6 +33,11 @@
 #define SPI_CLK_DIV_2						3
 #define SPI_DISABLED						255
 
+/* TWI MODE */
+#define TWI_MODE_DISABLED	    	1
+#define TWI_MODE_MASTER	    		2
+#define TWI_MODE_SLAVE			    3
+
 /* IRMP */
 #define IRMP_REMOTE_ADDRESS					0xF708
 #define IRMP_BUTTON_OFF						0x001B
