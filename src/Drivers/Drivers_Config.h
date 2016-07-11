@@ -31,11 +31,6 @@
 #endif
 #endif
 
-/* TWI MODE */
-#define TWI_MODE_DISABLED		1
-#define TWI_MODE_MASTER			2
-#define TWI_MODE_SLAVE			3
-
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 #define TWI_MODE 				TWI_MODE_MASTER
 #elif (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
