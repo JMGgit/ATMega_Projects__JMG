@@ -6,7 +6,7 @@
 # routine for initializing
 :init
 	# size of the puzzle tile
-	config size=8
+	config size=6
 
 
 	# we need an init flag to run the initial puzzle init inside the :render function

@@ -12,3 +12,5 @@
 /PrjIRMP85/
 /PrjQtwo4_WS2801/
 /PrjQtwo4_WS2812/
+/misc/other/avrdude/*.hex
+/misc/other/avrdude/*.bin

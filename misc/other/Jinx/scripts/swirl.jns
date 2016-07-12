@@ -1,0 +1,51 @@
+# Swirl in Jinx!Script
+# (c) 2015 Bob Kojima
+# bob.k.kojima@gmail.com
+
+# you need to activate the autocolor inside the Jinx!Script channel config !
+
+:init
+
+	config dot_radius = 2
+	
+	config dot_count = 100
+	
+	centerx = matrix_x / 2
+	centery = matrix_y / 2
+
+	frame_number = 1
+	
+end
+
+:render
+
+	# black out screen 
+	clear
+
+	angle_incr = (2 + frame_number / 12.0) * 3.14/180
+  
+	outer_rad = matrix_x * .45
+  
+	for i = 1 to dot_count step 1
+		ratio = i / dot_count
+		angle = i * angle_incr
+		spiral_rad = ratio * outer_rad
+		x = centerx + cos(angle) * spiral_rad
+		y = centery + sin(angle) * spiral_rad
+  
+  		circle x, y, dot_radius, autocolor_red, autocolor_green, autocolor_blue, 1
+
+	next
+  
+  	frame_number = frame_number + step
+   
+	if frame_number > 360
+		step = -1
+	endif
+	if frame_number < 2
+		step = 1
+	endif
+		
+end
+
+

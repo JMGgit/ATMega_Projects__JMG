@@ -1,0 +1,70 @@
+# Snow in Jinx!Script
+# (c) 2015 Bob Kojima
+# bob.k.kojima@gmail.com
+
+
+# initialize
+:init
+	config ball_count = 200
+	config hsl_color = 1
+	config pause = 1
+	config solid = 0
+
+	w = matrix_x
+	h = matrix_y
+
+	for i = 0 to ball_count step 1
+		x[i] = rnd(w)
+		y[i] = rnd(h)
+		xVel[i] = rnd(4) - 2
+		yVel[i] = rnd(5) + 1
+		diameter[i] = rnd(2) + 1
+		hue[i] = rnd(360)
+	next
+	
+	time = 0
+end
+
+
+# render frame
+:render
+
+	clear
+	
+	for i = 0 to ball_count step 1
+		if time = pause
+  		x[i] = x[i] + xVel[i]
+    	y[i] = y[i] + yVel[i]
+    endif
+
+  	r = autocolor_red
+		g = autocolor_green
+		b = autocolor_blue
+		
+		if hsl_color = 1
+			hsl2rgb hue[i], 255, 150, r, g, b		
+		endif
+    
+    if diameter[i] = 1
+     pset x[i], y[i], r, g, b
+    else
+    	circle x[i], y[i], diameter[i], r, g, b, solid
+    endif
+    
+		if y[i] > h
+			y[i] = -20
+		endif
+
+    if x[i] > w | x[i] < 0
+			x[i] = rnd(w)
+		endif
+  	
+	next
+	
+	if time = pause				
+		time = 0
+ 	else
+ 		time = time + 1
+  endif
+	
+end

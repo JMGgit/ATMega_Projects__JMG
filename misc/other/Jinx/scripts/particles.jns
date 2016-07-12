@@ -1,0 +1,97 @@
+# Particles in Jinx!Script
+# based on code writen by Antonis Kamamis 
+# found here http://codepen.io/antoniskamamis/pen/ECrKd
+# translated to Jinx!Script by Bob Kojima
+# bob.k.kojima@gmail.com
+
+:init
+
+	config patricles_count = 40
+	config min_distance = 20
+	config outer_ring = 1
+	
+	w = matrix_x
+	h = matrix_y
+	
+	red[0] = 243
+	green[0] = 93
+	blue[0] = 79
+	red[1] = 243
+	green[1] = 104
+	blue[1] = 73
+	red[2] = 192
+	green[2] = 217
+	blue[2] = 136
+	red[3] = 109
+	green[3] = 218
+	blue[3] = 241
+	red[4] = 241
+	green[4] = 232
+	blue[4] = 91
+	
+	for i = 1 to patricles_count step 1
+		#x position
+		x[i] = rnd(w)
+		#y position
+		y[i] = rnd(h)
+		#radius
+		r[i] = rnd(1) + 1
+		#color
+		c[i] = rnd(4)
+		#x step
+		vx[i] = rnd(3) - 1.5
+		#y step
+		vy[i] = rnd(3) - 1.5
+	next
+	
+end
+
+:render
+
+	# black out screen 
+	clear
+
+  	for i = 1 to patricles_count step 1
+		#every time we add a connection the radius increases by this much
+		factor = .5
+    
+		#draw connecting lines 
+		for j = 1 to patricles_count step 1
+			distance = sqr(((x[i] - x[j]) ^ 2) + ((y[i] - y[j]) ^ 2))
+      
+			#if they are the same color and close to each other then draw a conecting line
+			if red[c[i]]=red[c[j]] && green[c[i]]=green[c[j]] && blue[c[i]]=blue[c[j]] && distance < min_distance  
+				line x[i], y[i], x[j], y[j], red[c[i]], green[c[i]], blue[c[i]]        
+				factor = factor + .5
+			endif
+		next
+   
+		#filled circle
+		circle x[i], y[i], r[i] * factor, red[c[i]], green[c[i]], blue[c[i]], 1
+    
+		#outer circle   
+		if outer_ring
+			circle x[i], y[i], (r[i] + 2) * factor, red[c[i]], green[c[i]], blue[c[i]], 0
+		endif
+  	
+		#update every thing	
+		x[i] = x[i] + vx[i]
+		y[i] = y[i] + vy[i]
+    
+		#check limits
+		if x[i] > w
+			x[i] = 0
+		endif
+		if x[i] < 0
+			x[i] = w
+		endif
+		if y[i] > h
+			y[i] = 0
+		endif
+		if y[i] < 0
+			y[i] = h
+		endif
+    
+	next
+
+end
