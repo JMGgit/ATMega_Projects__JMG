@@ -10,7 +10,6 @@
 
 
 static Mode_t currentMode;
-static uint8_t modeOffTransition = FALSE;
 static uint16_t timerModeChange;
 uint8_t mode_EEPROM EEMEM;
 static uint8_t startupOn;
