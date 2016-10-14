@@ -34,5 +34,8 @@ void uC__triggerSwReset (void);
 void uC__begin_x10 (void);
 void uC__end_x10 (void);
 
+void uC__enableWatchdog (void);
+void uC__disableWatchdog (void);
+
 
 #endif /* UC_H_ */

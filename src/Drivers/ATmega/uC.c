@@ -7,7 +7,9 @@
 
 
 #include "uC.h"
-
+#if (DEBUG_MODE == DEBUG_MODE_ON)
+#include "FailureMemory.h"
+#endif
 
 static volatile uint8_t update10ms;
 
@@ -18,9 +20,6 @@ uint8_t runtimeCounter;
 
 void uC__init (void)
 {
-	/* watchdog */
-	wdt_enable(WDTO_120MS);
-
 	/* control LED */
 	setOutput(UC_LED_DDR, UC_LED_PIN);
 
@@ -45,6 +44,8 @@ void uC__init (void)
 	USART__init();
 #endif
 	ADC__init();
+
+	uC__enableWatchdog();
 
 	/* enable interrupts */
 	sei();
@@ -125,10 +126,39 @@ void uC__end_x10 (void)
 
 void uC__triggerSwReset (void)
 {
-	wdt_enable(WDTO_15MS); /* enable watchdog if not enabled before */
+	/* enable watchdog if not enabled before */
 
+	Debug__setWhileState(WHILE_STATE_UC_BEFORE);
 	while (1)
 	{
 		/* SW reset triggered by watchdog */
 	}
+	Debug__setWhileState(WHILE_STATE_UC_AFTER);
+}
+
+
+void uC__enableWatchdog (void)
+{
+	WDTCSR = (1 << WDCE) | (1 << WDIE) | (1 << WDE) | (1 << WDP1) | (1 << WDP0); /* 120ms with interrupt and with reset */
+	/* interrupts have to be enabled! */
+}
+
+
+void uC__disableWatchdog (void)
+{
+	cli(); /* disable interrupts */
+	wdt_reset();
+	MCUSR &= ~(1 << WDRF);
+	WDTCSR = (1 << WDCE) | (1<< WDE);
+	WDTCSR = 0;
+	sei(); /* enable interrupts */
+}
+
+
+ISR(WDT_vect)
+{
+#if (DEBUG_MODE == DEBUG_MODE_ON)
+	FailureMemory__enterFault(FAILURE_ID__WATCHDOG);
+	FailureMemory__disableStorage();
+#endif
 }

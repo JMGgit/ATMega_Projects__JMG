@@ -111,6 +111,7 @@ void USART__transmitData (uint8_t *data, uint8_t dataLength)
 {
 	uint8_t idxByte;
 
+	Debug__setWhileState(WHILE_STATE_USART_BEFORE);
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
 		for (idxByte = 0; idxByte < dataLength; idxByte++)
@@ -124,6 +125,7 @@ void USART__transmitData (uint8_t *data, uint8_t dataLength)
 			UDR0 = data[idxByte];
 		}
 	}
+	Debug__setWhileState(WHILE_STATE_USART_AFTER);
 }
 
 #endif

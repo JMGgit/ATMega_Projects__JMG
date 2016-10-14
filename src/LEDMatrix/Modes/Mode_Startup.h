@@ -13,7 +13,7 @@
 #include "LEDMatrix.h"
 
 
-void Mode__Startup_x10 (void);
+void Startup__x10 (void);
 
 
 #endif /* MODE_STARTUP_H_ */

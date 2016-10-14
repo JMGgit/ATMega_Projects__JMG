@@ -23,28 +23,34 @@ void DS1307__init (void)
 	/* set clock register */
 	data[0] = 0x00;
 
+	Debug__setWhileState(WHILE_STATE_DS13071_BEFORE);
 	while (transmitState != E_OK)
 	{
 	    transmitState = TWI__masterTransmitData(data, 1, DS1307_ADDRESS);
 	}
+	Debug__setWhileState(WHILE_STATE_DS13071_AFTER);
 
 	transmitState = E_NOT_OK;
 
 	/* read first byte */
+	Debug__setWhileState(WHILE_STATE_DS13072_BEFORE);
 	while (receiveState != E_OK)
 	{
 		receiveState = TWI__masterReadData (&data[1], 1, DS1307_ADDRESS);
 	}
+	Debug__setWhileState(WHILE_STATE_DS13072_AFTER);
 
 	receiveState = E_NOT_OK;
 
 	/* enable oscillator */
 	data[1] &= (~(1 << 7));
 
+	Debug__setWhileState(WHILE_STATE_DS13073_BEFORE);
 	while (transmitState != E_OK)
     {
 	    transmitState = TWI__masterTransmitData(data, 2, DS1307_ADDRESS);
     }
+	Debug__setWhileState(WHILE_STATE_DS13073_AFTER);
 
 	transmitState = E_NOT_OK;
 
@@ -52,10 +58,12 @@ void DS1307__init (void)
 	data[0] = 0x07;
 	data[1] = (1 << 4);
 
+	Debug__setWhileState(WHILE_STATE_DS13074_BEFORE);
     while (transmitState != E_OK)
     {
         transmitState = TWI__masterTransmitData(data, 2, DS1307_ADDRESS);
     }
+    Debug__setWhileState(WHILE_STATE_DS13074_AFTER);
 
     transmitState = E_NOT_OK;
 
@@ -78,10 +86,12 @@ void DS1307__sendTimeToRTC (void)
 	data[6] = (((currentTime.month / 10) << 4) & (0x10)) | ((currentTime.month % 10) & 0x0F);
 	data[7] = (((currentTime.year / 10) << 4) & (0xF0)) | ((currentTime.year % 10) & 0x0F);
 
+	Debug__setWhileState(WHILE_STATE_DS13075_BEFORE);
     while (transmitState != E_OK)
     {
         transmitState = TWI__masterTransmitData(data, 8, DS1307_ADDRESS);
     }
+    Debug__setWhileState(WHILE_STATE_DS13075_AFTER);
 
 	transmitState = E_NOT_OK;
 }
@@ -96,17 +106,21 @@ void DS1307__updateTimeFromRTC (void)
 	/* set clock register and read bytes */
 	data[0] = 0x00;
 
+	Debug__setWhileState(WHILE_STATE_DS13076_BEFORE);
 	while (transmitState != E_OK)
 	{
 	    transmitState = TWI__masterTransmitData(data, 1, DS1307_ADDRESS);
 	}
+	Debug__setWhileState(WHILE_STATE_DS13076_AFTER);
 
 	if (transmitState == E_OK)
 	{
+		Debug__setWhileState(WHILE_STATE_DS13077_BEFORE);
 	    while (receiveState != E_OK)
 	    {
 	        receiveState = TWI__masterReadData(&data[1], 7, DS1307_ADDRESS);
 	    }
+	    Debug__setWhileState(WHILE_STATE_DS13077_AFTER);
 
 	    /* copy to buffer */
 	    currentTime.seconds = (((data[1] & 0x70) >> 4) * 10) + (data[1] & 0x0F);

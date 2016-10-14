@@ -312,10 +312,12 @@ void Buttons__x10 (void)
 	uint8_t data[2];
 	uint8_t receiveState = E_NOT_OK;
 
+	Debug__setWhileState(WHILE_STATE_BUTTONS_BEFORE);
 	while (receiveState != E_OK)
 	{
 		receiveState = TWI__masterReadData(&data[0], 2, BUTTONS_TWI_SLAVE_ADDRESS);
 	}
+	Debug__setWhileState(WHILE_STATE_BUTTONS_AFTER);
 
 	receiveState = E_NOT_OK;
 

@@ -22,4 +22,12 @@ static inline  RGB_Color_t LEDMatrix__getRGBColorFromComponents (uint8_t red, ui
 	return ((RGB_Color_t){red, green, blue});
 }
 
+
+static inline void LEDMatrix__setRGBColorFromComponents (RGB_Color_t *color, uint8_t red, uint8_t green, uint8_t blue)
+{
+	color->red = red;
+	color->green = green;
+	color->blue = blue;
+}
+
 #endif /* LEDMATRIX_COLORCALC_H_ */

@@ -45,6 +45,7 @@ void SPI__transmitData (uint8_t *data, uint16_t dataLength)
 	data++;
 	dataLength--;
 
+	Debug__setWhileState(WHILE_STATE_SPI_BEFORE);
  	do
  	{
  		l_data = *data;
@@ -65,6 +66,7 @@ void SPI__transmitData (uint8_t *data, uint16_t dataLength)
 	{
 		;
 	}
+	Debug__setWhileState(WHILE_STATE_SPI_AFTER);
 }
 
 

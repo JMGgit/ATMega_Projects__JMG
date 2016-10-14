@@ -15,6 +15,7 @@
 #include <string.h>
 #include <avr/pgmspace.h>
 #include <avr/eeprom.h>
+#include "Debug_Def.h"
 
 
 #define FALSE	0x00

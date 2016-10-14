@@ -56,6 +56,10 @@
 #define RUNTIME_TEST_OFF				1
 #define RUNTIME_TEST_ON					2
 
+/* debug mode */
+#define DEBUG_MODE_OFF					1
+#define DEBUG_MODE_ON					2
+
 /* qlocktwo language */
 #define QLOCKTWO_LANG_DE				1
 #define QLOCKTWO_LANG_DE_SUED			2

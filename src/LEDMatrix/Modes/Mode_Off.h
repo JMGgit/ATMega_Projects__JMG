@@ -12,6 +12,7 @@
 #include "Main_Types.h"
 #include "Main_Config.h"
 #include "Buttons.h"
+#include "LEDMatrix.h"
 
 void Off__x10 (void);
 

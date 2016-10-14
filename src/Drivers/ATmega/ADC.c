@@ -17,10 +17,12 @@ void ADC__init (void)
 	/* start first conversion */
 	ADCSRA |= (1 << ADSC);
 
+	Debug__setWhileState(WHILE_STATE_ADC1_BEFORE);
 	while (ADCSRA & (1 << ADSC))
 	{
 		/* wait */
 	}
+	Debug__setWhileState(WHILE_STATE_ADC1_AFTER);
 
 	(void)ADCL;
 	(void)ADCH;
@@ -39,10 +41,12 @@ uint16_t ADC__readValue (uint8_t channel)
 		/* start conversion */
 		ADCSRA |= (1 << ADSC);
 
+		Debug__setWhileState(WHILE_STATE_ADC2_BEFORE);
 		while (ADCSRA & (1 << ADSC))
 		{
 			/* wait */
 		}
+		Debug__setWhileState(WHILE_STATE_ADC2_AFTER);
 
 		retVal = ((ADCL) | (ADCH << 8));
 	}

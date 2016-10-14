@@ -7,6 +7,11 @@
 
 
 #include "Modes_Qlocktwo.h"
+#include "Mode_Qtwo.h"
+#include "Mode_Startup.h"
+#include "Mode_Snake.h"
+#include "Mode_Off.h"
+#include "Mode_FailureMemory.h"
 
 
 static Mode_t currentMode;
@@ -47,7 +52,16 @@ void Modes__setMode (Mode_t mode, uint8_t transition)
 
 void Modes__Start (void)
 {
-	Modes__setMode(MODE__QLOCKTWO, TRUE);
+#if (DEBUG_MODE == DEBUG_MODE_ON)
+	if (FailureMemory__getFaultCounter() > 0)
+	{
+		Modes__setMode(MODE__FAILUREMEMORY, FALSE);
+	}
+	else
+#endif
+	{
+		Modes__setMode(MODE__QLOCKTWO, TRUE);
+	}
 }
 
 
@@ -57,7 +71,7 @@ static void Modes__setNextMode (void)
 }
 
 
-uint8_t Modes__getMode (void)
+Mode_t Modes__getMode (void)
 {
 	return currentMode;
 }
@@ -74,7 +88,13 @@ static void Modes__updateMatrix (void)
 	{
 		case MODE__STARTUP:
 		{
-			Mode__Startup_x10();
+			Startup__x10();
+			break;
+		}
+
+		case MODE__FAILUREMEMORY:
+		{
+			FailureMemory__x10();
 			break;
 		}
 
@@ -142,11 +162,20 @@ void Modes__init (void)
 
 void Modes__x10 (void)
 {
-	if ((currentMode != MODE__OFF) && (currentMode != MODE__STARTUP))
+	if (		(currentMode != MODE__OFF)
+			&& 	(currentMode != MODE__STARTUP)
+	)
 	{
 		if (Buttons__isPressedOnce(&buttonMode))
 		{
-			Modes__setNextMode();
+			if (currentMode != MODE__FAILUREMEMORY)
+			{
+				Modes__setNextMode();
+			}
+			else
+			{
+				Modes__setMode(MODE__QLOCKTWO, TRUE);
+			}
 		}
 
 		if (Buttons__isPressedOnce(&buttonOff))

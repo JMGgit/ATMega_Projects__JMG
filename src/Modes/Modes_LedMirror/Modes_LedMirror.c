@@ -62,7 +62,7 @@ static void Modes__setNextMode (void)
 }
 
 
-uint8_t Modes__getMode (void)
+Mode_t Modes__getMode (void)
 {
 	return currentMode;
 }
@@ -80,7 +80,7 @@ static void Modes__updateMatrix (void)
 	{
 		case MODE__STARTUP:
 		{
-			Mode__Startup_x10();
+			Startup__x10();
 			break;
 		}
 

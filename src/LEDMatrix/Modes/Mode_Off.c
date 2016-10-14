@@ -31,7 +31,7 @@ void Off__x10 (void)
 	else
 	{
 		LEDMatrix__disableUpdate();
-	
+
 		if (Buttons__isPressedOnce(&buttonOff))
 		{
 			Modes__Start();
@@ -110,6 +110,13 @@ void Off__x10 (void)
 		else
 		{
 			langTimer = 255;
+		}
+
+		if (Buttons__isPressedOnce(&buttonLeft))
+		{
+			Modes__setMode(MODE__FAILUREMEMORY, FALSE);
+			LEDMatrix__enableUpdate();
+			firstCall = TRUE;
 		}
 #endif
 	}

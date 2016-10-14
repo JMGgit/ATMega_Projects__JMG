@@ -28,7 +28,7 @@ static RGB_Color_t color = {TEST_BRIGHTNESS_LEVEL, 0, 0};
 static testLedStates_N testLedState = TEST_INIT;
 
 
-void Mode__Startup_x10 (void)
+void Startup__x10 (void)
 {
 	switch (testLedState)
 	{

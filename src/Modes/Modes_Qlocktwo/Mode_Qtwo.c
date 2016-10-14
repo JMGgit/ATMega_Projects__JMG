@@ -301,6 +301,12 @@ uint8_t Qtwo__getCurrentBrightness (void)
 }
 
 
+RGB_Color_t Qtwo__getCurrentColor (void)
+{
+	return qtwoColor;
+}
+
+
 static BrightnessRequest_N Qtwo__checkBrightness (void)
 {
 	uint16_t adcOutput = ADC__readValue(LDR_ADC_PIN);
@@ -1879,6 +1885,8 @@ void Qtwo__main_x10 (QtwoMode_N qtwoMode)
 
 	static uint8_t QtwoSetupDisplayOn = FALSE;
 	static uint8_t QtwoSetupTimer = 0;
+
+	Debug__setModeState((uint8_t)QtwoState);
 
 	qtwoColor =	LEDMatrix__getRGBColorFromComponents(
 		Qtwo__getCurrentBrightness() * colors[currentColor * 3],

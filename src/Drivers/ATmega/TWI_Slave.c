@@ -82,10 +82,12 @@ ISR(TWI_vect)
 
 void TWI__slaveUpdateTxData (void)
 {
+	Debug__setWhileState(WHILE_STATE_TWIS_BEFORE);
 	while (twiBusyFlag == 0)
 	{
 		/* wait till current transaction is finished */
 	}
+	Debug__setWhileState(WHILE_STATE_TWIS_AFTER);
 
 	memcpy(twiDataTxBuffer, twiDataTxPtr, twiDataTxLength);
 }

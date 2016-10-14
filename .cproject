@@ -51,6 +51,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FailureMemory}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.2098505273" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.undef.357876573" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
@@ -76,7 +78,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_Qlocktwo|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="b|Debug|src/Modes_Qlocktwo|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -130,6 +132,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FailureMemory}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.1112276852" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.undef.780198403" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
@@ -155,7 +159,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_Qlocktwo|src/Modes_LedTable|src/LEDMatrix|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes_LedFrame|src/ColorTables|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="b|Debug|src/Modes_Qlocktwo|src/Modes_LedTable|src/LEDMatrix|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes_LedFrame|src/ColorTables|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -176,11 +180,11 @@
 				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" description="Qlocktwo 3.0 (ATmega644p, WS2801)" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555" name="PrjQtwo3" parent="de.innot.avreclipse.configuration.app.release">
 					<folderInfo id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555." name="/" resourcePath="">
 						<toolChain id="de.innot.avreclipse.toolchain.winavr.app.release.1519188392" name="AVR-GCC Toolchain" superClass="de.innot.avreclipse.toolchain.winavr.app.release">
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.1596446264" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release"/>
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release.75595441" name="Generate HEX file for EEPROM" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release"/>
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release.187244187" name="Generate Extended Listing (Source + generated Assembler)" superClass="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release"/>
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.size.app.release.1870681406" name="Print Size" superClass="de.innot.avreclipse.toolchain.options.toolchain.size.app.release"/>
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release.1132167087" name="AVRDude" superClass="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release" value="true" valueType="boolean"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.1596446264" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release" useByScannerDiscovery="false"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release.75595441" name="Generate HEX file for EEPROM" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release" useByScannerDiscovery="false"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release.187244187" name="Generate Extended Listing (Source + generated Assembler)" superClass="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release" useByScannerDiscovery="false"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.size.app.release.1870681406" name="Print Size" superClass="de.innot.avreclipse.toolchain.options.toolchain.size.app.release" useByScannerDiscovery="false"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release.1132167087" name="AVRDude" superClass="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform id="de.innot.avreclipse.targetplatform.winavr.app.release.462214676" name="AVR Cross-Target" superClass="de.innot.avreclipse.targetplatform.winavr.app.release"/>
 							<builder buildPath="${workspace_loc:/TemperatureLogger}/Release" id="de.innot.avreclipse.target.builder.winavr.app.release.1326634728" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.innot.avreclipse.target.builder.winavr.app.release">
 								<outputEntries>
@@ -188,18 +192,18 @@
 								</outputEntries>
 							</builder>
 							<tool id="de.innot.avreclipse.tool.assembler.winavr.app.release.184583592" name="AVR Assembler" superClass="de.innot.avreclipse.tool.assembler.winavr.app.release">
-								<option id="de.innot.avreclipse.assembler.option.debug.level.934383025" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" value="de.innot.avreclipse.assembler.option.debug.level.none" valueType="enumerated"/>
+								<option id="de.innot.avreclipse.assembler.option.debug.level.934383025" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" useByScannerDiscovery="false" value="de.innot.avreclipse.assembler.option.debug.level.none" valueType="enumerated"/>
 								<inputType id="de.innot.avreclipse.tool.assembler.input.1485212423" superClass="de.innot.avreclipse.tool.assembler.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.compiler.winavr.app.release.2092674577" name="AVR Compiler" superClass="de.innot.avreclipse.tool.compiler.winavr.app.release">
-								<option id="de.innot.avreclipse.compiler.option.debug.level.962323439" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level" value="de.innot.avreclipse.compiler.option.debug.level.none" valueType="enumerated"/>
-								<option id="de.innot.avreclipse.compiler.option.optimize.1538274378" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
-								<option id="de.innot.avreclipse.compiler.option.def.625391124" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
+								<option id="de.innot.avreclipse.compiler.option.debug.level.962323439" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level" useByScannerDiscovery="false" value="de.innot.avreclipse.compiler.option.debug.level.none" valueType="enumerated"/>
+								<option id="de.innot.avreclipse.compiler.option.optimize.1538274378" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" useByScannerDiscovery="false" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
+								<option id="de.innot.avreclipse.compiler.option.def.625391124" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__QLOCKTWO"/>
 									<listOptionValue builtIn="false" value="QLOCKTWO_REVISION=QLOCKTWO_REVISION_3"/>
 									<listOptionValue builtIn="false" value="LED_TYPE=LED_TYPE_WS2801"/>
 								</option>
-								<option id="de.innot.avreclipse.compiler.option.incpath.1950505557" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+								<option id="de.innot.avreclipse.compiler.option.incpath.1950505557" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
@@ -212,8 +216,10 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FailureMemory}&quot;"/>
 								</option>
-								<option id="de.innot.avreclipse.compiler.option.warnerr.544563005" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.warnerr.544563005" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.929343895" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.745382185" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
@@ -236,7 +242,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="b|Debug|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -292,6 +298,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FailureMemory}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.2107479837" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.undef.1678489552" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
@@ -317,7 +325,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_Qlocktwo|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="b|Debug|src/Modes_Qlocktwo|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -373,6 +381,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FailureMemory}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.221168237" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<option id="de.innot.avreclipse.compiler.option.undef.606479537" name="Undefine Syms (-U)" superClass="de.innot.avreclipse.compiler.option.undef"/>
@@ -398,7 +408,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_Qlocktwo|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="b|Debug|src/Modes_Qlocktwo|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes/Modes_Qlocktwo|src/Modes_LedMirror|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -451,6 +461,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FailureMemory}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.2084161496" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.1907673444" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
@@ -475,7 +487,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="b|Debug|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -496,11 +508,11 @@
 				<configuration artifactName="${ProjName}" buildArtefactType="de.innot.avreclipse.buildArtefactType.app" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=de.innot.avreclipse.buildArtefactType.app,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" description="IR remote (ATmega328p)" id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995.2006069985.1476089380" name="PrjIRMP" parent="de.innot.avreclipse.configuration.app.release">
 					<folderInfo id="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995.2006069985.1476089380." name="/" resourcePath="">
 						<toolChain id="de.innot.avreclipse.toolchain.winavr.app.release.1882361146" name="AVR-GCC Toolchain" superClass="de.innot.avreclipse.toolchain.winavr.app.release">
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.1649476442" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release"/>
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release.1111622631" name="Generate HEX file for EEPROM" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release"/>
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release.603469892" name="Generate Extended Listing (Source + generated Assembler)" superClass="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release"/>
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.size.app.release.188683797" name="Print Size" superClass="de.innot.avreclipse.toolchain.options.toolchain.size.app.release"/>
-							<option id="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release.1540600386" name="AVRDude" superClass="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release" value="true" valueType="boolean"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release.1649476442" name="Generate HEX file for Flash memory" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.flash.app.release" useByScannerDiscovery="false"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release.1111622631" name="Generate HEX file for EEPROM" superClass="de.innot.avreclipse.toolchain.options.toolchain.objcopy.eeprom.app.release" useByScannerDiscovery="false"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release.603469892" name="Generate Extended Listing (Source + generated Assembler)" superClass="de.innot.avreclipse.toolchain.options.toolchain.objdump.app.release" useByScannerDiscovery="false"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.size.app.release.188683797" name="Print Size" superClass="de.innot.avreclipse.toolchain.options.toolchain.size.app.release" useByScannerDiscovery="false"/>
+							<option id="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release.1540600386" name="AVRDude" superClass="de.innot.avreclipse.toolchain.options.toolchain.avrdude.app.release" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 							<targetPlatform id="de.innot.avreclipse.targetplatform.winavr.app.release.1875141716" name="AVR Cross-Target" superClass="de.innot.avreclipse.targetplatform.winavr.app.release"/>
 							<builder buildPath="${workspace_loc:/TemperatureLogger}/Release" id="de.innot.avreclipse.target.builder.winavr.app.release.836820303" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="AVR GNU Make Builder" parallelBuildOn="true" parallelizationNumber="optimal" superClass="de.innot.avreclipse.target.builder.winavr.app.release">
 								<outputEntries>
@@ -515,29 +527,26 @@
 								</outputEntries>
 							</builder>
 							<tool id="de.innot.avreclipse.tool.assembler.winavr.app.release.1049103273" name="AVR Assembler" superClass="de.innot.avreclipse.tool.assembler.winavr.app.release">
-								<option id="de.innot.avreclipse.assembler.option.debug.level.1146581431" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" value="de.innot.avreclipse.assembler.option.debug.level.none" valueType="enumerated"/>
-								<option id="de.innot.avreclipse.asm.option.include.paths.396533496" name="#include paths for preprocessor(-I)" superClass="de.innot.avreclipse.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Drivers}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Drivers/ATmega}&quot;"/>
-								</option>
+								<option id="de.innot.avreclipse.assembler.option.debug.level.1146581431" name="Generate Debugging Info" superClass="de.innot.avreclipse.assembler.option.debug.level" useByScannerDiscovery="false" value="de.innot.avreclipse.assembler.option.debug.level.none" valueType="enumerated"/>
+								<option id="de.innot.avreclipse.asm.option.include.paths.396533496" name="#include paths for preprocessor(-I)" superClass="de.innot.avreclipse.asm.option.include.paths" useByScannerDiscovery="false" valueType="includePath"/>
 								<inputType id="de.innot.avreclipse.tool.assembler.input.1527182850" superClass="de.innot.avreclipse.tool.assembler.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.compiler.winavr.app.release.752365557" name="AVR Compiler" superClass="de.innot.avreclipse.tool.compiler.winavr.app.release">
-								<option id="de.innot.avreclipse.compiler.option.debug.level.1434657507" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level" value="de.innot.avreclipse.compiler.option.debug.level.none" valueType="enumerated"/>
-								<option id="de.innot.avreclipse.compiler.option.optimize.1387469068" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
-								<option id="de.innot.avreclipse.compiler.option.def.1420212058" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" valueType="definedSymbols">
+								<option id="de.innot.avreclipse.compiler.option.debug.level.1434657507" name="Generate Debugging Info" superClass="de.innot.avreclipse.compiler.option.debug.level" useByScannerDiscovery="false" value="de.innot.avreclipse.compiler.option.debug.level.none" valueType="enumerated"/>
+								<option id="de.innot.avreclipse.compiler.option.optimize.1387469068" name="Optimization Level" superClass="de.innot.avreclipse.compiler.option.optimize" useByScannerDiscovery="false" value="de.innot.avreclipse.compiler.optimize.size" valueType="enumerated"/>
+								<option id="de.innot.avreclipse.compiler.option.def.1420212058" name="Define Syms (-D)" superClass="de.innot.avreclipse.compiler.option.def" useByScannerDiscovery="false" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="PROJECT=PROJECT__IRMP"/>
 								</option>
-								<option id="de.innot.avreclipse.compiler.option.incpath.821389065" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" valueType="includePath">
+								<option id="de.innot.avreclipse.compiler.option.incpath.821389065" name="Include Paths (-I)" superClass="de.innot.avreclipse.compiler.option.incpath" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/_Config}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Main}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Buttons}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Drivers}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Drivers/ATmega}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FailureMemory}&quot;"/>
 								</option>
-								<option id="de.innot.avreclipse.compiler.option.warnerr.237045031" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
+								<option id="de.innot.avreclipse.compiler.option.warnerr.237045031" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" useByScannerDiscovery="false" value="true" valueType="boolean"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.461657815" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
 							</tool>
 							<tool id="de.innot.avreclipse.tool.cppcompiler.app.release.740035624" name="AVR C++ Compiler" superClass="de.innot.avreclipse.tool.cppcompiler.app.release">
@@ -560,7 +569,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_LedTable|src/Drivers/DCF77|src/LEDMatrix|src/Drivers/HC165|src/Temperature|src/Drivers/DS18B20|src/ColorTables|src/Drivers/AtMega|src/Modes/Modes_TemperatureLogger|src/Clock|src/Modes/Modes_LedMirror|src/Modes|src/Modes/Modes_LedFrame|src/Drivers/SPLC780D1|src/Modes_TemperatureLogger|src/Drivers/WS2812|src/Drivers/WS2801|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Drivers/DS1307|src/Lcd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="b|Debug|src/Modes_LedTable|src/Drivers/DCF77|src/LEDMatrix|src/Drivers/HC165|src/Temperature|src/Drivers/DS18B20|src/ColorTables|src/Drivers/AtMega|src/Modes/Modes_TemperatureLogger|src/Clock|src/Modes/Modes_LedMirror|src/Modes|src/Modes/Modes_LedFrame|src/Drivers/SPLC780D1|src/Modes_TemperatureLogger|src/Drivers/WS2812|src/Drivers/WS2801|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Drivers/DS1307|src/Lcd" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -617,6 +626,8 @@
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Temperature}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/LEDMatrix/Modes}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Modes}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Debug}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/FailureMemory}&quot;"/>
 								</option>
 								<option id="de.innot.avreclipse.compiler.option.warnerr.463657591" name="Warnings as Errors (-Werror)" superClass="de.innot.avreclipse.compiler.option.warnerr" value="true" valueType="boolean"/>
 								<inputType id="de.innot.avreclipse.compiler.winavr.input.1173775490" name="C Source Files" superClass="de.innot.avreclipse.compiler.winavr.input"/>
@@ -641,7 +652,7 @@
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="b|Debug|src/Modes_LedTable|src/Modes_TemperatureLogger|src/Drivers/ATtiny|src/Modes/Modes_LedTable|src/Modes_LedMirror|src/Modes_LedFrame|src/Modes/Modes_TemperatureLogger|src/Modes/Modes_IRMP|src/Modes/Modes_LedMirror|src/Modes/Modes_LedFrame" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
