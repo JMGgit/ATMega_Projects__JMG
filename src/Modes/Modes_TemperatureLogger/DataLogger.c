@@ -49,6 +49,8 @@ void DataLogger__eepromInit (void)
 	{
 		dataLogIt = 0;
 		measIndex = 0;
+		eeprom_update_word(&dataLogIt_EEPROM, dataLogIt);
+		eeprom_update_byte(&measIndex_EEPROM, measIndex);
 	}
 }
 

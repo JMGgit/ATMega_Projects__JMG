@@ -144,6 +144,7 @@ void WS2812__init (void)
 		)
 	{
 		RGBLedOrder = RGB_LED_ORDER__RED_GREEN_BLUE;
+		eeprom_update_byte(&RGBLedOrder_EEPROM, RGBLedOrder);
 	}
 
 #endif

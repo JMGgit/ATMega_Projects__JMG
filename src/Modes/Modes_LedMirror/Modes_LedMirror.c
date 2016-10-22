@@ -153,6 +153,7 @@ void Modes__init (void)
 	{
 		Modes__Start();
 		startupOn = FALSE;
+		eeprom_update_byte(&startupOn_EEPROM, startupOn);
 	}
 }
 

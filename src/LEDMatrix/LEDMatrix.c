@@ -139,6 +139,7 @@ void LEDMatrix__init (void)
 		)
 	{
 		ledOrder = LED_ORDER__LEFT_2_RIGHT;
+		eeprom_update_byte(&ledOrder_EEPROM, ledOrder);
 	}
 #endif
 }

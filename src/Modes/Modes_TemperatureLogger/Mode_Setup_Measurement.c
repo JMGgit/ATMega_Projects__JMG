@@ -27,11 +27,13 @@ void Mode_SetupMeasurement__eepromInit(void)
 	if (interval == 0xFF)
 	{
 		interval = 1;
+		eeprom_update_byte(&interval_EEPROM, interval);
 	}
 
 	if (unit == 0xFF)
 	{
 		unit = MEASUREMENT_UNIT_SECOND;
+		eeprom_update_byte(&unit_EEPROM, unit);
 	}
 }
 

@@ -60,13 +60,6 @@
 #define DEBUG_MODE_OFF					1
 #define DEBUG_MODE_ON					2
 
-/* qlocktwo language */
-#define QLOCKTWO_LANG_DE				1
-#define QLOCKTWO_LANG_DE_SUED			2
-#define QLOCKTWO_LANG_FR				3
-#define QLOCKTWO_LANG_EN				4
-#define QLOCKTWO_LANG_MULTI				5
-
 /* snake game */
 #define MODE_SNAKE_OFF					1
 #define MODE_SNAKE_ON					2

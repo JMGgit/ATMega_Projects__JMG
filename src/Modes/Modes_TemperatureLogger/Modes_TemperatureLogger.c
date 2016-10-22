@@ -28,6 +28,7 @@ static void Modes__eepromInit (void)
 	if (currentMode == 0xFF)
 	{
 		currentMode = MODE__STANDBY;
+		eeprom_update_byte(&mode_EEPROM, currentMode);
 	}
 }
 

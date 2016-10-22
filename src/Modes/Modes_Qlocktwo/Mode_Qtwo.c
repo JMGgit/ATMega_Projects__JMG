@@ -108,20 +108,18 @@ LDRState_N LDRstate;
 
 static const uint8_t colors[3 * QTWO_COLOR_NB] =
 {
+		1, 1, 1,
 		1, 0, 0,
 		1, 1, 0,
 		0, 1, 0,
 		0, 1, 1,
 		1, 0, 1,
-		0, 0, 1,
-		1, 1, 1
+		0, 0, 1
 };
 
 static const uint8_t brightnessLevels[QTWO_COLOR_NB][QTWO_BRIGHTNESS_NB] =
 {
-		/* white */
-		{(uint8_t)(0.75 * QTWO_BRIGHTNESS_LEVEL_1), (uint8_t)(0.75 * QTWO_BRIGHTNESS_LEVEL_2),
-		 (uint8_t)(0.75 * QTWO_BRIGHTNESS_LEVEL_3), (uint8_t)(0.75 * QTWO_BRIGHTNESS_LEVEL_4)},
+		{QTWO_BRIGHTNESS_LEVEL_1, QTWO_BRIGHTNESS_LEVEL_2, QTWO_BRIGHTNESS_LEVEL_3, QTWO_BRIGHTNESS_LEVEL_4},
 		{QTWO_BRIGHTNESS_LEVEL_1, QTWO_BRIGHTNESS_LEVEL_2, QTWO_BRIGHTNESS_LEVEL_3, QTWO_BRIGHTNESS_LEVEL_4},
 		{QTWO_BRIGHTNESS_LEVEL_1, QTWO_BRIGHTNESS_LEVEL_2, QTWO_BRIGHTNESS_LEVEL_3, QTWO_BRIGHTNESS_LEVEL_4},
 		{QTWO_BRIGHTNESS_LEVEL_1, QTWO_BRIGHTNESS_LEVEL_2, QTWO_BRIGHTNESS_LEVEL_3, QTWO_BRIGHTNESS_LEVEL_4},
@@ -195,6 +193,7 @@ void Qtwo__init (void)
 	{
 		/* automatic color change */
 		modeAutoColor = FALSE;
+		eeprom_update_byte(&modeAutoColor_EEPROM, modeAutoColor);
 	}
 
 	if (eeprom_read_byte(&currentColor_EEPROM) < QTWO_COLOR_NB)
@@ -204,6 +203,7 @@ void Qtwo__init (void)
 	else
 	{
 		currentColor = 0;
+		eeprom_update_byte(&currentColor_EEPROM, currentColor);
 	}
 
 	/* brightness level */
@@ -216,17 +216,10 @@ void Qtwo__init (void)
 	{
 		currentBrightnessSetting = QTWO_BRIGHTNESS_LOW;
 		currentBrightnessTable = brightnessLevels;
+		eeprom_update_byte(&currentBrightnessSetting_EEPROM, currentBrightnessSetting);
 	}
 
-#if (QLOCKTWO_LANG == QLOCKTWO_LANG_DE)
-	selectedLang = QTWO_LANG_DE;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_DE_SUED)
-	selectedLang = QTWO_LANG_DE_SUED;
-#elif (selectedLang == QTWO_LANG_FR)
-	selectedLang = QTWO_LANG_FR;
-#elif (QLOCKTWO_LANG == QLOCKTWO_LANG_EN)
-	selectedLang = QTWO_LANG_EN;
-#else /* multi */
+
 	if ((eeprom_read_byte(&selectedLang_EEPROM)) < QTWO_LANG_NB)
 	{
 		selectedLang = eeprom_read_byte(&selectedLang_EEPROM);
@@ -234,8 +227,8 @@ void Qtwo__init (void)
 	else
 	{
 		selectedLang = QTWO_LANG_DE_SUED;
+		eeprom_update_byte(&selectedLang_EEPROM, selectedLang);
 	}
-#endif
 
 	/* other states initialized in Qtwo__modeTransition() */
 }
@@ -1999,7 +1992,7 @@ void Qtwo__main_x10 (QtwoMode_N qtwoMode)
 			modeAutoColor = TRUE;
 			modeAutoColorPrev = FALSE;
 			clockHoursColorPrev = Clock__getHours();
-			targetColor = QTWO_COLOR_NB - 1; /* set to white */
+			targetColor = 0; /* set to white */
 			QtwoState = QTWO_STATE_NEW_COLOR;
 
 			break;

@@ -80,6 +80,7 @@ void ModeClock__init (void)
 	else
 	{
 		clockSize = CLOCK_SIZE_SMALL;
+		eeprom_update_byte(&clockSize_EEPROM, clockSize);
 	}
 
 	if (eeprom_read_byte(&lineOffset_EEPROM) <= LED_MATRIX_SIZE_LIN)
@@ -89,6 +90,7 @@ void ModeClock__init (void)
 	else
 	{
 		lineOffset = 0;
+		eeprom_update_byte(&lineOffset_EEPROM, lineOffset);
 	}
 
 	if (eeprom_read_byte(&colOffset_EEPROM) <= LED_MATRIX_SIZE_COL)
@@ -98,6 +100,7 @@ void ModeClock__init (void)
 	else
 	{
 		colOffset = 0;
+		eeprom_update_byte(&colOffset_EEPROM, colOffset);
 	}
 }
 
