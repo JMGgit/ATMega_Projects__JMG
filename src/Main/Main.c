@@ -65,8 +65,6 @@ int main (void)
 				Debug__setMainState(MAIN_STATE_X10_DEBUG);
 				Debug__captureData();
 #endif
-				Debug__setMainState(MAIN_STATE_X10_DRIVERS_UC_TASK);
-				uC__resetTaskTrigger_x10();
 				Debug__setMainState(MAIN_STATE_X10_DRIVERS_BEGIN);
 				Drivers__begin_x10();
 #if (LCD_CONTROLLER != LCD_CONTROLLER_OFF)

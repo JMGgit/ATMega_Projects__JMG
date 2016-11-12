@@ -47,7 +47,7 @@ void LEDScreen__reset (void)
 	ledTableUSARTmode = FALSE;
 }
 
-#ifdef __AVR_ATmega644P__
+#if defined (__AVR_ATmega644P__) || defined (__AVR_ATmega1284P__)
 ISR(USART1_RX_vect)
 {
 	if ((USART1_idxData == 0) && (UDR1 == USART1_FIRST_BYTE))

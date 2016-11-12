@@ -42,7 +42,7 @@ void USART__init (void)
 
 	/*** USART 1 ***/
 
-#ifdef __AVR_ATmega644P__
+#if defined (__AVR_ATmega644P__) || defined (__AVR_ATmega1284P__)
 	/* baud rate */
 	UCSR1A = (1 << U2X1);
 	UBRR1L = UBRR_VAL & 0xFF;

@@ -14,6 +14,10 @@
 void LEDMatrix__applyDotCorrection (RGB_Color_t* color, uint8_t line, uint8_t column)
 {
 
+	color->red = PWM_Table_256[color->red];
+	color->green = PWM_Table_256[color->green];
+	color->blue = PWM_Table_256[color->blue];
+
 	if ((color->red == color->blue) && (color->blue == color->green))
 	{
 		/* correction only for white */

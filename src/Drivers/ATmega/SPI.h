@@ -19,7 +19,7 @@
 
 #if (SPI_SPEED != SPI_DISABLED)
 
-#ifdef __AVR_ATmega644P__
+#if defined (__AVR_ATmega644P__) || defined (__AVR_ATmega1284P__)
 #define SPI_DDR			DDRB
 #define SPI_PORT		PORTB
 #define SPI_PIN_SS		PB4

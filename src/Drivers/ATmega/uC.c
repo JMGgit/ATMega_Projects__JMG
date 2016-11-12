@@ -20,6 +20,10 @@ uint8_t runtimeCounter;
 
 void uC__init (void)
 {
+	uC__disableWatchdog();
+
+	cli(); /* disable interrupts */
+
 	/* control LED */
 	setOutput(UC_LED_DDR, UC_LED_PIN);
 
@@ -118,16 +122,17 @@ void uC__begin_x10 (void)
 
 void uC__end_x10 (void)
 {
+
 #if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 	setLow(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
 #endif
+	uC__resetTaskTrigger_x10();
 }
 
 
 void uC__triggerSwReset (void)
 {
-	/* enable watchdog if not enabled before */
-
+	/* watchdog need to be enabled before! */
 	Debug__setWhileState(WHILE_STATE_UC_BEFORE);
 	while (1)
 	{
@@ -139,8 +144,11 @@ void uC__triggerSwReset (void)
 
 void uC__enableWatchdog (void)
 {
-	WDTCSR = (1 << WDCE) | (1 << WDIE) | (1 << WDE) | (1 << WDP1) | (1 << WDP0); /* 120ms with interrupt and with reset */
-	/* interrupts have to be enabled! */
+	cli(); /* disable interrupts */
+	wdt_reset();
+	WDTCSR |= (1 << WDCE) | (1 << WDE);
+	WDTCSR = (1 << WDCE) | (1 << WDIE) | (1 << WDE) | (1 << WDP1) | (1 << WDP0); /* interrupt and reset, 125ms */
+	sei(); /* enable interrupts */
 }
 
 
@@ -149,7 +157,7 @@ void uC__disableWatchdog (void)
 	cli(); /* disable interrupts */
 	wdt_reset();
 	MCUSR &= ~(1 << WDRF);
-	WDTCSR = (1 << WDCE) | (1<< WDE);
+	WDTCSR |= (1 << WDCE) | (1<< WDE);
 	WDTCSR = 0;
 	sei(); /* enable interrupts */
 }

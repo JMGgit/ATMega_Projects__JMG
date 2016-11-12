@@ -97,7 +97,7 @@
  *---------------------------------------------------------------------------------------------------------------------------------------------------
  */
 #if defined (ATMEL_AVR)
-#if defined (__AVR_ATmega644P__)
+#if defined (__AVR_ATmega644P__) || defined (__AVR_ATmega1284P__)
 #  define IRMP_PORT_LETTER                      A
 #  define IRMP_BIT_NUMBER                       1
 

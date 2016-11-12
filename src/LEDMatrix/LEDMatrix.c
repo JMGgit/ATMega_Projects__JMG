@@ -40,6 +40,9 @@ void LEDMatrix__setRGBColor (uint8_t line, uint8_t column, RGB_Color_t color)
 #if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__setRGBForLED(color, ledPosition);
 #endif
+#if (LED_TYPE == LED_TYPE_APA102)
+	APA102__setRGBForLED(color, ledPosition);
+#endif
 }
 
 
@@ -50,6 +53,9 @@ void LEDMatrix__setRGBColorForMatrix (RGB_Color_t color)
 #endif
 #if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__setRGBForAllLEDs(color);
+#endif
+#if (LED_TYPE == LED_TYPE_APA102)
+	APA102__setRGBForAllLEDs(color);
 #endif
 }
 
@@ -62,6 +68,9 @@ void LEDMatrix__clearMatrix (void)
 #if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__resetAllLEDs();
 #endif
+#if (LED_TYPE == LED_TYPE_APA102)
+	APA102__resetAllLEDs();
+#endif
 }
 
 
@@ -72,6 +81,9 @@ void LEDMatrix__enableUpdate (void)
 #endif
 #if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__enableUpdate(TRUE);
+#endif
+#if (LED_TYPE == LED_TYPE_APA102)
+	APA102__enableUpdate(TRUE);
 #endif
 }
 
@@ -84,6 +96,9 @@ void LEDMatrix__disableUpdate (void)
 #if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__disableUpdate(FALSE);
 #endif
+#if (LED_TYPE == LED_TYPE_APA102)
+	APA102__disableUpdate(FALSE);
+#endif
 }
 
 
@@ -95,6 +110,9 @@ void LEDMatrix__toggleRGBLedOrder (void)
 #endif
 #if (LED_TYPE == LED_TYPE_WS2812)
 	WS2812__toggleRGBLedOrder();
+#endif
+#if (LED_TYPE == LED_TYPE_APA102)
+	APA102__toggleRGBLedOrder();
 #endif
 #endif
 }

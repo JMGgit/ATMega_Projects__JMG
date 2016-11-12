@@ -19,9 +19,9 @@
 
 #if (LED_TYPE == LED_TYPE_WS2801)
 #if (LEDS_NB < 100)
-#define SPI_SPEED SPI_CLK_DIV_8
+#define SPI_SPEED 				SPI_CLK_DIV_8
 #else
-#define SPI_SPEED SPI_CLK_DIV_16
+#define SPI_SPEED 				SPI_CLK_DIV_16
 #endif
 #endif
 
@@ -29,6 +29,10 @@
 #if (WS2812_CONNECTION_TYPE == WS2812_CONNECTION_TYPE_DIGIDOT_SPI)
 #define SPI_SPEED				SPI_CLK_DIV_2
 #endif
+#endif
+
+#if (LED_TYPE == LED_TYPE_APA102)
+#define SPI_SPEED 				SPI_CLK_DIV_2
 #endif
 
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)

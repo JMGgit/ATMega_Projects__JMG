@@ -18,9 +18,12 @@
 #define PROJECT__IRMP					6
 
 /* Qlocktwo revsion */
-#define QLOCKTWO_REVISION_2				1
-#define QLOCKTWO_REVISION_3				2
-#define QLOCKTWO_REVISION_4				3
+#define QLOCKTWO_REVISION_3				1
+#define QLOCKTWO_REVISION_4				2
+
+/* LED Table revsion */
+#define LEDTABLE_REVISION_1				1
+#define LEDTABLE_REVISION_2				2
 
 /* clock */
 #define CLOCK_TYPE_OFF					1

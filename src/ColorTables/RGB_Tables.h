@@ -17,4 +17,8 @@
 
 extern const uint8_t RGB_BlendingColors[NUMBER_OF_BLENDING_COLORS_ARRAY_SIZE];
 
+extern const uint8_t PWM_Table_32[32];
+extern const uint8_t PWM_Table_64[64];
+extern const uint8_t PWM_Table_256[256];
+
 #endif /* RGB_TABLES_H_ */

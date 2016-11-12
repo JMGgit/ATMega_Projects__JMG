@@ -15,6 +15,7 @@
 #include "HC165/HC165.h"
 #include "WS2801/WS2801.h"
 #include "WS2812/WS2812.h"
+#include "APA102/APA102.h"
 #include "SPLC780D1/SPLC780D1.h"
 #include "DS18B20/DS18B20.h"
 #include "IRMP/IRMP_Appl.h"
@@ -67,6 +68,10 @@ static inline void Drivers__init (void)
 	Debug__setDriversState(DRIVERS_STATE_INIT_WS2812);
 	WS2812__init();
 #endif
+#if (LED_TYPE == LED_TYPE_APA102)
+	Debug__setDriversState(DRIVERS_STATE_INIT_APA102);
+	APA102__init();
+#endif
 	Debug__setDriversState(DRIVERS_STATE_INIT_END);
 }
 
@@ -83,8 +88,12 @@ static inline void Drivers__begin_x10 (void)
 #if (LED_TYPE == LED_TYPE_WS2801)
 	Debug__setDriversState(DRIVERS_STATE_X10_WS2801);
 	WS2801__x10();
-	Debug__setDriversState(DRIVERS_STATE_X10_END1);
 #endif
+#if (LED_TYPE == LED_TYPE_APA102)
+	Debug__setDriversState(DRIVERS_STATE_X10_APA102);
+	APA102__x10();
+#endif
+	Debug__setDriversState(DRIVERS_STATE_X10_END1);
 }
 
 
@@ -97,7 +106,7 @@ static inline void Drivers__end_x10 (void)
 	WS2812__x10();
 #endif
 	Debug__setDriversState(DRIVERS_STATE_X10_UC_END);
-	uC__end_x10();
+	uC__end_x10(); /* has to be the last function called */
 	Debug__setDriversState(DRIVERS_STATE_X10_END2);
 }
 

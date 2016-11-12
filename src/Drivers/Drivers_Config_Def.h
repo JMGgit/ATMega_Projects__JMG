@@ -14,6 +14,7 @@
 /* type of LEDs */
 #define LED_TYPE_WS2801						1
 #define LED_TYPE_WS2812						2
+#define LED_TYPE_APA102						3
 
 #define RGB_LED_ORDER__RED_GREEN_BLUE		1
 #define RGB_LED_ORDER__BLUE_GREEN_RED		2
@@ -34,9 +35,9 @@
 #define SPI_DISABLED						255
 
 /* TWI MODE */
-#define TWI_MODE_DISABLED	    	1
-#define TWI_MODE_MASTER	    		2
-#define TWI_MODE_SLAVE			    3
+#define TWI_MODE_DISABLED	    			1
+#define TWI_MODE_MASTER	    				2
+#define TWI_MODE_SLAVE			    		3
 
 /* IRMP */
 #define IRMP_REMOTE_ADDRESS					0xF708

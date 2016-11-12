@@ -14,6 +14,7 @@
 #include "Drivers.h"
 #include "LEDMatrix_DotCorrection.h"
 #include "LEDMatrix_ColorCalc.h"
+#include "RGB_Tables.h"
 
 
 #ifdef LED_MATRIX_SIZE_LIN
