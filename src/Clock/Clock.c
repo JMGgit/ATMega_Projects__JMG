@@ -27,9 +27,6 @@ static uint8_t previousDS1307MinutesCheck;
 static void Clock__updateTimeFromRTC (void)
 {
 #if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
-
-	DS1307__updateTimeFromRTC();
-
 	currentTime.seconds = DS1307__getSeconds();
 	currentTime.minutes = DS1307__getMinutes();
 	currentTime.hours   = DS1307__getHours();
@@ -156,7 +153,7 @@ static void Clock__sendCurrentSyncTimeToRTC (void)
 		DS1307__setMonth(currentSyncTime.month);
 		DS1307__setYear(currentSyncTime.year);
 
-        DS1307__sendTimeToRTC();
+        DS1307__triggerUpdateToRTC();
     }
 #endif
 }
@@ -173,10 +170,10 @@ void Clock__incDate (void)
 	}
 	else
 	{
-		DS1307__setDate(0);
+		DS1307__setDate(1);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 
 #endif
 }
@@ -192,10 +189,10 @@ void Clock__incMonth (void)
 	}
 	else
 	{
-		DS1307__setMonth(0);
+		DS1307__setMonth(1);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 
 #endif
 }
@@ -213,7 +210,7 @@ void Clock__incYear (void)
 		DS1307__setYear(0);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -230,7 +227,7 @@ void Clock__incHours (void)
 		DS1307__setHours(0);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -247,7 +244,7 @@ void Clock__incMinutes (void)
 		DS1307__setMinutes(0);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -264,7 +261,7 @@ void Clock__incSeconds (void)
 		DS1307__setSeconds(0);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -281,7 +278,7 @@ void Clock__decDate (void)
 		DS1307__setDate(31);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -298,7 +295,7 @@ void Clock__decMonth (void)
 		DS1307__setMonth(12);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -315,7 +312,7 @@ void Clock__decYear (void)
 		DS1307__setYear(99);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -332,7 +329,7 @@ void Clock__decHours (void)
 		DS1307__setHours(23);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -349,7 +346,7 @@ void Clock__decMinutes (void)
 		DS1307__setMinutes(59);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -366,7 +363,7 @@ void Clock__decSeconds (void)
 		DS1307__setSeconds(59);
 	}
 
-	DS1307__sendTimeToRTC();
+	DS1307__triggerUpdateToRTC();
 #endif
 }
 
@@ -465,7 +462,7 @@ uint8_t Clock__getMonth (void)			{return currentTime.month;}
 uint8_t Clock__getYear (void)			{return currentTime.year;}
 
 
-void CLock__getHourString (char* buffer)
+void Clock__getHourString (char* buffer)
 {
 	uint8_t hours;
 	uint8_t idxBuffer = 0;
@@ -487,7 +484,7 @@ void CLock__getHourString (char* buffer)
 }
 
 
-void CLock__getMinutesString (char* buffer)
+void Clock__getMinutesString (char* buffer)
 {
 	uint8_t minutes;
 	uint8_t idxBuffer = 0;
@@ -509,7 +506,7 @@ void CLock__getMinutesString (char* buffer)
 }
 
 
-void CLock__getTimeString (char* buffer)
+void Clock__getTimeString (char* buffer)
 {
 	uint8_t hours, minutes;
 	uint8_t idxBuffer = 0;
@@ -545,7 +542,7 @@ void CLock__getTimeString (char* buffer)
 }
 
 
-void CLock__convertTimeWithSecondsToString (uint8_t hours, uint8_t minutes, uint8_t seconds, char* buffer)
+void Clock__convertTimeWithSecondsToString (uint8_t hours, uint8_t minutes, uint8_t seconds, char* buffer)
 {
 	uint8_t idxBuffer = 0;
 
@@ -590,13 +587,13 @@ void CLock__convertTimeWithSecondsToString (uint8_t hours, uint8_t minutes, uint
 }
 
 
-void CLock__getTimeWithSecondsString (char* buffer)
+void Clock__getTimeWithSecondsString (char* buffer)
 {
-	CLock__convertTimeWithSecondsToString(Clock__getHours(), Clock__getMinutes(), Clock__getSeconds(), buffer);
+	Clock__convertTimeWithSecondsToString(Clock__getHours(), Clock__getMinutes(), Clock__getSeconds(), buffer);
 }
 
 
-void CLock__getDateString (char* buffer)
+void Clock__getDateString (char* buffer)
 {
 	uint8_t date;
 	uint8_t idxBuffer = 0;
@@ -618,7 +615,7 @@ void CLock__getDateString (char* buffer)
 }
 
 
-void CLock__getMonthString (char* buffer)
+void Clock__getMonthString (char* buffer)
 {
 	uint8_t month;
 	uint8_t idxBuffer = 0;
@@ -640,7 +637,7 @@ void CLock__getMonthString (char* buffer)
 }
 
 
-void CLock__getYearString (char* buffer)
+void Clock__getYearString (char* buffer)
 {
 	uint8_t year;
 	uint8_t idxBuffer = 0;
@@ -662,7 +659,7 @@ void CLock__getYearString (char* buffer)
 }
 
 
-void CLock__convertDateToString (uint8_t date, uint8_t month, char *buffer)
+void Clock__convertDateToString (uint8_t date, uint8_t month, char *buffer)
 {
 	uint8_t idxBuffer = 0;
 
@@ -694,13 +691,13 @@ void CLock__convertDateToString (uint8_t date, uint8_t month, char *buffer)
 }
 
 
-void CLock__getCompleteDateString (char* buffer)
+void Clock__getCompleteDateString (char* buffer)
 {
-	CLock__convertDateToString(Clock__getDate(), Clock__getMonth(), buffer);
+	Clock__convertDateToString(Clock__getDate(), Clock__getMonth(), buffer);
 }
 
 
-void CLock__getCompleteDateWithYearString (char* buffer)
+void Clock__getCompleteDateWithYearString (char* buffer)
 {
 	uint8_t date, month, year;
 	uint8_t idxBuffer = 0;

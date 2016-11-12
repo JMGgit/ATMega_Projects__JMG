@@ -53,16 +53,16 @@ void Clock__decHours (void);
 void Clock__decMinutes (void);
 void Clock__decSeconds (void);
 
-void CLock__getHourString  (char* buffer);
-void CLock__getMinutesString  (char* buffer);
-void CLock__getTimeString  (char* buffer);
-void CLock__convertTimeWithSecondsToString (uint8_t hours, uint8_t minutes, uint8_t seconds, char* buffer);
-void CLock__getTimeWithSecondsString  (char* buffer);
-void CLock__getDateString  (char* buffer);
-void CLock__getMonthString  (char* buffer);
-void CLock__getYearString  (char* buffer);
-void CLock__convertDateToString (uint8_t date, uint8_t month, char *buffer);
-void CLock__getCompleteDateString (char* buffer);
-void CLock__getCompleteDateWithYearString (char* buffer);
+void Clock__getHourString  (char* buffer);
+void Clock__getMinutesString  (char* buffer);
+void Clock__getTimeString  (char* buffer);
+void Clock__convertTimeWithSecondsToString (uint8_t hours, uint8_t minutes, uint8_t seconds, char* buffer);
+void Clock__getTimeWithSecondsString  (char* buffer);
+void Clock__getDateString  (char* buffer);
+void Clock__getMonthString  (char* buffer);
+void Clock__getYearString  (char* buffer);
+void Clock__convertDateToString (uint8_t date, uint8_t month, char *buffer);
+void Clock__getCompleteDateString (char* buffer);
+void Clock__getCompleteDateWithYearString (char* buffer);
 
 #endif /* CLOCK_H_ */

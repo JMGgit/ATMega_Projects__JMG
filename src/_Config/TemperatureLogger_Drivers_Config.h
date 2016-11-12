@@ -14,6 +14,9 @@
 
 #if (PROJECT == PROJECT__TEMPERATURE_LOGGER)
 
+/* DS1307 */
+#define DS1307_MODE					DS1307_MODE_TWI
+
 /*********** CTL LED ***********/
 #define UC_LED_DDR		DDRD
 #define UC_LED_PORT		PORTD

@@ -39,6 +39,11 @@
 #define TWI_MODE_MASTER	    				2
 #define TWI_MODE_SLAVE			    		3
 
+/* DS1307 config */
+/* !! For TWI+SQW mode Pin PC7 has to be used !! */
+#define DS1307_MODE_TWI						1
+#define DS1307_MODE_TWI_SQW					2
+
 /* IRMP */
 #define IRMP_REMOTE_ADDRESS					0xF708
 #define IRMP_BUTTON_OFF						0x001B

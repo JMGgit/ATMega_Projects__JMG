@@ -30,8 +30,8 @@ typedef struct
 
 /* public functions */
 void DS1307__init (void);
-void DS1307__sendTimeToRTC (void);
-void DS1307__updateTimeFromRTC (void);
+void DS1307__x10 (void);
+void DS1307__triggerUpdateToRTC (void);
 
 uint8_t DS1307__getSeconds (void);
 uint8_t DS1307__getMinutes (void);
@@ -50,6 +50,12 @@ void DS1307__setMonth (uint8_t month);
 void DS1307__setYear (uint8_t year);
 
 #define DS1307_ADDRESS		0x68
+
+#if (DS1307_MODE == DS1307_MODE_TWI_SQW)
+#define DS1307_UPDATE_HOUR	4
+#define DS1307_UPDATE_MIN	0
+#define DS1307UPDATE_SEC	0
+#endif
 
 #endif
 

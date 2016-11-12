@@ -23,6 +23,16 @@
 #endif
 #define LED_ORDER					LED_ORDER__LEFT_2_RIGHT
 
+/* DS1307 */
+#if (LEDTABLE_REVISION == LEDTABLE_REVISION_1)
+#define DS1307_MODE					DS1307_MODE_TWI
+#else
+#define DS1307_MODE					DS1307_MODE_TWI_SQW
+#define DS1307_SQW_DDR				DDRC
+#define DS1307_SQW_PORT				PINC
+#define DS1307_SQW_PIN				PC7
+#endif
+
 /* DCF77 */
 #define DCF77_DATA_DDR				DDRB
 #define DCF77_DATA_PORT				PINB

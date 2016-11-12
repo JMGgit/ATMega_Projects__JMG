@@ -81,6 +81,8 @@ static inline void Drivers__begin_x10 (void)
 	Debug__setDriversState(DRIVERS_STATE_X10_BEGIN1);
 	Debug__setDriversState(DRIVERS_STATE_X10_UC);
 	uC__begin_x10();
+	Debug__setDriversState(DRIVERS_STATE_X10_DS1307);
+	DS1307__x10();
 #if (TEMPERATURE_SENSOR == TEMPERATURE_SENSOR_DS18B20)
 	Debug__setDriversState(DRIVERS_STATE_X10_DS18B0);
 	DS18B20__x10();
