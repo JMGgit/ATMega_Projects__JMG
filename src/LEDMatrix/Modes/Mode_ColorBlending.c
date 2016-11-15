@@ -51,7 +51,7 @@ void ColorBlending__calcCurrentColor (uint8_t timerColorChange, uint8_t colorSte
 {
 	uint8_t colorFactor = 255;
 
-	timeCounter++;
+	timeCounter = timeCounter + uC__getTaskIncrement();
 
 	if (timeCounter >= timerColorChange)
 	{

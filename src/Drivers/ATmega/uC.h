@@ -37,5 +37,12 @@ void uC__end_x10 (void);
 void uC__enableWatchdog (void);
 void uC__disableWatchdog (void);
 
+extern uint8_t Modes__getTaskIncrement (void);
+
+static inline uint8_t uC__getTaskIncrement (void)
+{
+	return Modes__getTaskIncrement();
+}
+
 
 #endif /* UC_H_ */

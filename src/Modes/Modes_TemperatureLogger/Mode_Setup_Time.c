@@ -43,14 +43,14 @@ void Mode_SetupTime__x10 (void)
 	strcpy(&lcdLine_1[0], "Jour Mois An   He Mi");
 
 	/* line 2 */
-	CLock__getDateString(&lcdLine_2[0]);
+	Clock__getDateString(&lcdLine_2[0]);
 	strcpy(&lcdLine_2[3], "- ");
-	CLock__getMonthString(&lcdLine_2[5]);
+	Clock__getMonthString(&lcdLine_2[5]);
 	strcpy(&lcdLine_2[8], "- ");
-	CLock__getYearString(&lcdLine_2[10]);
-	CLock__getHourString(&lcdLine_2[15]);
+	Clock__getYearString(&lcdLine_2[10]);
+	Clock__getHourString(&lcdLine_2[15]);
 	strcpy(&lcdLine_2[17], ":");
-	CLock__getMinutesString(&lcdLine_2[18]);
+	Clock__getMinutesString(&lcdLine_2[18]);
 
 	/* line 4 */
 	strcpy(&lcdLine_4[0], " <RETOUR>           ");

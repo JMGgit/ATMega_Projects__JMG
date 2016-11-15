@@ -66,8 +66,8 @@ void Mode_Stats__x10 (void)
 
 	if ((month != 0) && (date != 0))
 	{
-		CLock__convertDateToString(date, month, &lcdLine_1[4]);
-		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_1[10]);
+		Clock__convertDateToString(date, month, &lcdLine_1[4]);
+		Clock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_1[10]);
 	}
 
 	/* line 2 */
@@ -79,8 +79,8 @@ void Mode_Stats__x10 (void)
 
 	if ((month != 0) && (date != 0))
 	{
-		CLock__convertDateToString(date, month, &lcdLine_2[4]);
-		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_2[10]);
+		Clock__convertDateToString(date, month, &lcdLine_2[4]);
+		Clock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_2[10]);
 	}
 
 	/* line 3 */
@@ -91,8 +91,8 @@ void Mode_Stats__x10 (void)
 
 	if ((month != 0) && (date != 0))
 	{
-		CLock__convertDateToString(date, month, &lcdLine_3[4]);
-		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_3[10]);
+		Clock__convertDateToString(date, month, &lcdLine_3[4]);
+		Clock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_3[10]);
 	}
 
 	/* line 4 */

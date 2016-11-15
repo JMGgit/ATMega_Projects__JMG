@@ -144,9 +144,9 @@ void Snake__x10 (uint8_t brightness)
 		}
 	}
 
-	if ((timer > 0) && (gameOver == FALSE))
+	if ((timer - uC__getTaskIncrement() > 0) && (gameOver == FALSE))
 	{
-		timer--;
+		timer = timer - uC__getTaskIncrement();
 	}
 	else
 	{
@@ -294,9 +294,9 @@ void Snake__x10 (uint8_t brightness)
 			}
 		}
 
-		if (timerScore > 0)
+		if (timerScore - uC__getTaskIncrement() > 0)
 		{
-			timerScore--;
+			timerScore = timerScore - uC__getTaskIncrement();
 		}
 		else
 		{

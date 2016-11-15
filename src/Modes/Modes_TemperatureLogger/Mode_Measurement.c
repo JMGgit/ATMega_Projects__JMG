@@ -64,8 +64,8 @@ void Mode_Measurement__x10 (void)
 
 	/* line 3 */
 	DataLogger__getLastValueWithTime(&lastMeasYear, &lastMeasMonth, &lastMeasDate, &lastMeasHour, &lastMeasMin, &lastMeasSec, &lastTempValue);
-	CLock__convertDateToString(lastMeasDate, lastMeasMonth, &lcdLine_3[0]);
-	CLock__convertTimeWithSecondsToString(lastMeasHour, lastMeasMin, lastMeasSec, &lcdLine_3[6]);
+	Clock__convertDateToString(lastMeasDate, lastMeasMonth, &lcdLine_3[0]);
+	Clock__convertTimeWithSecondsToString(lastMeasHour, lastMeasMin, lastMeasSec, &lcdLine_3[6]);
 	Temperature__getValueStringFromRaw(lastTempValue, &lcdLine_3[14]);
 
 	/* line 4 */

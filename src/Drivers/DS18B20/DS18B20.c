@@ -160,7 +160,7 @@ void DS18B20__x10 (void)
 
 	if (!initOver)
 	{
-		initCnt++;
+		initCnt = initCnt + uC__getTaskIncrement();
 
 		if (initCnt > INIT_TIME)
 		{

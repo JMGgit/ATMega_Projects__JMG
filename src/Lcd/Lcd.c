@@ -87,7 +87,14 @@ void Lcd__x10 (void)
 	}
 	else
 	{
-		updateCounter++;
+		if (updateCounter + uC__getTaskIncrement() < 200)
+		{
+			updateCounter = updateCounter + uC__getTaskIncrement();
+		}
+		else
+		{
+			updateCounter = 200;
+		}
 	}
 }
 

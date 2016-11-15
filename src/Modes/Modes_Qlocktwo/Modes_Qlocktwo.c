@@ -19,6 +19,13 @@ static uint8_t startupOn;
 static uint8_t startupOn_EEPROM EEMEM;
 
 
+uint8_t Modes__getTaskIncrement (void)
+{
+	/* task update always every 10ms */
+	return 1;
+}
+
+
 static void Modes__transition (void)
 {
 	if (currentMode == MODE__SNAKE)

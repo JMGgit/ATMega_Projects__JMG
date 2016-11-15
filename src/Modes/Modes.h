@@ -32,6 +32,7 @@ void Modes__x10 (void);
 void Modes__setMode (Mode_t mode, uint8_t transition);
 Mode_t Modes__getMode (void);
 void Modes__Start (void);
+uint8_t Modes__getTaskIncrement (void);
 
 
 #endif /* MODES_H_ */

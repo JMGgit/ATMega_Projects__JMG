@@ -95,9 +95,9 @@ static void DoubleColor__updateVisibility (uint8_t timer)
 
 	static uint8_t colorTransTimer = 0;
 
-	if (colorTransTimer > 0)
+	if (colorTransTimer - uC__getTaskIncrement() > 0)
 	{
-		colorTransTimer--;
+		colorTransTimer = colorTransTimer - uC__getTaskIncrement();
 		allColorsReady = FALSE;
 	}
 	else
@@ -272,7 +272,11 @@ void DoubleColor__x10 (void)
 {
 	if (!timeTransition)
 	{
-		if (timer == 0)
+		if (timer - uC__getTaskIncrement() > 0)
+		{
+			timer = timer - uC__getTaskIncrement();
+		}
+		else
 		{
 			ColorBlending__calcCurrentColor(UPDATE_TIME, COLOR_STEP);
 			colorCalc = ColorBlending__getCurrentColor();
@@ -280,10 +284,6 @@ void DoubleColor__x10 (void)
 			DoubleColor__getLastVisibility();
 			DoubleColor__updateMatrix();
 			timer = UPDATE_TIME;
-		}
-		else
-		{
-			timer--;
 		}
 	}
 

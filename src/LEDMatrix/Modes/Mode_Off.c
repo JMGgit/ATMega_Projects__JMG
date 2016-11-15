@@ -41,9 +41,9 @@ void Off__x10 (void)
 
 		if (Buttons__isPressed(&buttonFunc1))
 		{
-			if (rgbConnectionTimer > 0)
+			if (rgbConnectionTimer - uC__getTaskIncrement() > 0)
 			{
-				rgbConnectionTimer--;
+				rgbConnectionTimer = rgbConnectionTimer - uC__getTaskIncrement();
 			}
 			else
 			{
@@ -59,9 +59,9 @@ void Off__x10 (void)
 
 		if (Buttons__isPressed(&buttonFunc2))
 		{
-			if (ledConnectionTimer > 0)
+			if (ledConnectionTimer - uC__getTaskIncrement() > 0)
 			{
-				ledConnectionTimer--;
+				ledConnectionTimer = ledConnectionTimer - uC__getTaskIncrement();
 			}
 			else
 			{
@@ -77,9 +77,9 @@ void Off__x10 (void)
 
 		if (Buttons__isPressed(&buttonFunc3))
 		{
-			if (startupTimer > 0)
+			if (startupTimer - uC__getTaskIncrement() > 0)
 			{
-				startupTimer--;
+				startupTimer = startupTimer - uC__getTaskIncrement();
 			}
 			else
 			{
@@ -96,9 +96,9 @@ void Off__x10 (void)
 #if (PROJECT == PROJECT__QLOCKTWO)
 		if (Buttons__isPressed(&buttonMode))
 		{
-			if (langTimer > 0)
+			if (langTimer - uC__getTaskIncrement() > 0)
 			{
-				langTimer--;
+				langTimer = langTimer - uC__getTaskIncrement();
 			}
 			else
 			{

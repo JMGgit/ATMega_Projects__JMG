@@ -7,10 +7,10 @@
 
 
 #include "APA102.h"
-#include "LEDMatrix.h"
 
 
 #if (LED_TYPE == LED_TYPE_APA102)
+#include "LEDMatrix.h"
 
 #if (RGB_LED_ORDER == RGB_LED_ORDER__CONFIGURABLE)
 static uint8_t RGBLedOrder;

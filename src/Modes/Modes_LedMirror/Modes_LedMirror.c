@@ -29,6 +29,13 @@ uint16_t timerModeChangeConf[MODE_NB] =
 };
 
 
+uint8_t Modes__getTaskIncrement (void)
+{
+	/* task update always every 10ms */
+	return 1;
+}
+
+
 static void Modes__transition (void)
 {
 	/* nothing for now */
@@ -169,9 +176,9 @@ void Modes__x10 (void)
 		}
 		else if (timerModeChangeConf[currentMode] != 0xFFFF)
 		{
-			if (timerModeChange < timerModeChangeConf[currentMode])
+			if (timerModeChange  + uC__getTaskIncrement() < timerModeChangeConf[currentMode])
 			{
-				timerModeChange++;
+				timerModeChange = timerModeChange + uC__getTaskIncrement();
 			}
 			else
 			{

@@ -52,8 +52,8 @@ void Mode_MeasurementStats__x10 (void)
 
 	if ((month != 0) && (date != 0))
 	{
-		CLock__convertDateToString(date, month, &lcdLine_1[0]);
-		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_1[6]);
+		Clock__convertDateToString(date, month, &lcdLine_1[0]);
+		Clock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_1[6]);
 		Temperature__getValueStringFromRaw(tempValue, &lcdLine_1[14]);
 	}
 
@@ -62,8 +62,8 @@ void Mode_MeasurementStats__x10 (void)
 
 	if ((month != 0) && (date != 0))
 	{
-		CLock__convertDateToString(date, month, &lcdLine_2[0]);
-		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_2[6]);
+		Clock__convertDateToString(date, month, &lcdLine_2[0]);
+		Clock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_2[6]);
 		Temperature__getValueStringFromRaw(tempValue, &lcdLine_2[14]);
 	}
 
@@ -72,8 +72,8 @@ void Mode_MeasurementStats__x10 (void)
 
 	if ((month != 0) && (date != 0))
 	{
-		CLock__convertDateToString(date, month, &lcdLine_3[0]);
-		CLock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_3[6]);
+		Clock__convertDateToString(date, month, &lcdLine_3[0]);
+		Clock__convertTimeWithSecondsToString(hour, min, sec, &lcdLine_3[6]);
 		Temperature__getValueStringFromRaw(tempValue, &lcdLine_3[14]);
 	}
 

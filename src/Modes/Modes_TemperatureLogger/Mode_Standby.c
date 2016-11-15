@@ -37,8 +37,8 @@ void Mode_Standby__x10 (void)
 	Lcd__newLine(lcdLine_4);
 
 	/* line 1 */
-	CLock__getCompleteDateString(&lcdLine_1[0]);
-	CLock__getTimeString(&lcdLine_1[15]);
+	Clock__getCompleteDateString(&lcdLine_1[0]);
+	Clock__getTimeString(&lcdLine_1[15]);
 
 	/* line 2 */
 	strcpy(lcdLine_2, "Temp act:     ");

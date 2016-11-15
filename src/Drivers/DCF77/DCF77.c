@@ -67,7 +67,7 @@ uint8_t DCF77__updateSignal (void)
 		else
 		{
 			/* count the cycles in state high */
-			bitCycles++;
+			bitCycles = bitCycles + uC__getTaskIncrement();
 
 			if (bitCycles > DCF77_TIME_OUT)
 			{
@@ -118,7 +118,7 @@ uint8_t DCF77__updateSignal (void)
 		else
 		{
 			/* count the cycles in state low */
-			bitCycles++;
+			bitCycles = bitCycles + uC__getTaskIncrement();
 
 			if (bitCycles > DCF77_TIME_OUT)
 			{

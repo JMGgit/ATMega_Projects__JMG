@@ -34,6 +34,37 @@ uint16_t timerModeChangeConf[MODE_NB] =
 };
 
 
+#if (LEDTABLE_REVISION == LEDTABLE_REVISION_2)
+uint16_t modeTaskIncrement[MODE_NB] =
+{
+		1,	/* MODE__STARTUP = 0 */
+		1,	/* MODE__OFF */
+		1,	/* MODE__ALL_ON */
+		1,	/* MODE__BLENDING_SLOW */
+		2,	/* MODE__BLENDING_SLOW_2_COLORS */
+		1,	/* MODE__BLENDING_FAST */
+		2,	/* MODE__BLENDING_FAST_2_COLORS */
+		2,	/* MODE__BLENDING_SWEEP */
+		2,	/* MODE__BLENDING_SWEEP_FAST */
+		1,	/* MODE__BLENDING_CLOCK */
+		1,	/* MODE__BLENDING_CLOCK_INVERTED */
+		1,	/* MODE__CLOCK */
+		1,	/* MODE__SNAKE */
+};
+#endif
+
+
+uint8_t Modes__getTaskIncrement (void)
+{
+#if (LEDTABLE_REVISION == LEDTABLE_REVISION_1)
+	/* task update always every 10ms */
+	return 1;
+#else
+	/* task update depends on mode */
+	return modeTaskIncrement[currentMode];
+#endif
+}
+
 static void Modes__transition (void)
 {
 	if (currentMode == MODE__SNAKE)
@@ -92,6 +123,12 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
+		case MODE__OFF:
+		{
+			Off__x10();
+			break;
+		}
+
 		case MODE__ALL_ON:
 		{
 			//AllOn__x10();
@@ -111,6 +148,12 @@ static void Modes__updateMatrix (void)
 			break;
 		}
 
+		case MODE__BLENDING_FAST:
+		{
+			ColorBlending__x10(BLENDING_MODE_FAST);
+			break;
+		}
+
 		case MODE__BLENDING_FAST_2_COLORS:
 		{
 			ColorBlending__x10(BLENDING_MODE_FAST_2_COLORS);
@@ -120,12 +163,6 @@ static void Modes__updateMatrix (void)
 		case MODE__BLENDING_SWEEP:
 		{
 			ColorBlending__x10(BLENDING_MODE_SWEEP);
-			break;
-		}
-
-		case MODE__BLENDING_FAST:
-		{
-			ColorBlending__x10(BLENDING_MODE_FAST);
 			break;
 		}
 
@@ -169,12 +206,6 @@ static void Modes__updateMatrix (void)
 		case MODE__SNAKE:
 		{
 			Snake__x10(SNAKE_BRIGHTNESS_LEVEL);
-			break;
-		}
-
-		case MODE__OFF:
-		{
-			Off__x10();
 			break;
 		}
 
@@ -222,9 +253,9 @@ void Modes__x10 (void)
 		}
 		else if (timerModeChangeConf[currentMode] != 0xFFFF)
 		{
-			if (timerModeChange < timerModeChangeConf[currentMode])
+			if (timerModeChange + uC__getTaskIncrement() < timerModeChangeConf[currentMode])
 			{
-				timerModeChange++;
+				timerModeChange = timerModeChange + uC__getTaskIncrement();
 			}
 			else
 			{

@@ -14,6 +14,13 @@ static uint8_t previousMode;
 uint8_t mode_EEPROM EEMEM;
 
 
+uint8_t Modes__getTaskIncrement (void)
+{
+	/* task update always every 10ms */
+	return 1;
+}
+
+
 void Modes__setMode (Mode_t mode)
 {
 	currentMode = mode;
