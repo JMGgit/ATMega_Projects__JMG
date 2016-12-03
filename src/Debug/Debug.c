@@ -19,7 +19,7 @@ uint8_t modeState;
 uint8_t whileState;
 
 
-void Debug__captureData (void)
+static void Debug__captureData (void)
 {
 #if (CLOCK_TYPE != CLOCK_TYPE_OFF)
 	currentDebugTime.year = Clock__getYear();
@@ -44,6 +44,28 @@ void Debug__getTime (debugTime_t *debugTime)
 void Debug__getMode (Mode_t *mode)
 {
 	*mode = Modes__getMode();
+}
+
+
+void Debug__getModeString (char *buffer)
+{
+	uint8_t mode;
+	uint8_t idxBuffer = 0;
+
+	mode = Modes__getMode();
+
+	if (mode >= 10)
+	{
+		itoa(mode, &buffer[idxBuffer++], 10);
+		idxBuffer++;
+	}
+	else
+	{
+		buffer[idxBuffer++] = '0';
+		itoa(mode, &buffer[idxBuffer++], 10);
+	}
+
+	buffer[idxBuffer++] = ' ';
 }
 #endif
 
@@ -87,5 +109,36 @@ void Debug__getQtwoBrightness (uint8_t *brightness)
 
 
 #endif /* (PROJECT == PROJECT__QLOCKTWO) */
+
+
+void Debug__x10 (void)
+{
+	static uint16_t timer = 100; /* send every 1 second */
+	char buffer[255];
+	uint8_t taskIncrement;
+
+	taskIncrement = uC__getTaskIncrement();
+
+	Debug__captureData();
+
+	if (timer - taskIncrement > 0)
+	{
+		timer = timer - taskIncrement;
+	}
+	else
+	{
+		timer = 100;
+
+		Clock__getCompleteDateWithYearString(&buffer[0]);
+		strcpy(&buffer[8], " ");
+		Clock__getTimeWithSecondsString(&buffer[9]);
+		strcpy(&buffer[17], " ");
+		strcpy(&buffer[18], "Mode: ");
+		Debug__getModeString(&buffer[24]);
+		strcpy(&buffer[26], "\r");
+		USART__sendString(buffer);
+	}
+
+}
 
 #endif /* (DEBUG_MODE == DEBUG_MODE_ON) */

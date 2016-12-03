@@ -147,7 +147,7 @@ void uC__enableWatchdog (void)
 	cli(); /* disable interrupts */
 	wdt_reset();
 	WDTCSR |= (1 << WDCE) | (1 << WDE);
-	WDTCSR = (1 << WDCE) | (1 << WDIE) | (1 << WDE) | (1 << WDP1) | (1 << WDP0); /* interrupt and reset, 125ms */
+	WDTCSR = (1 << WDCE) | (1 << WDIE) | (1 << WDE) | (1 << WDP2); /* interrupt and reset, 250ms */
 	sei(); /* enable interrupts */
 }
 

@@ -19,13 +19,6 @@ static uint8_t RGBLedOrder_EEPROM EEMEM;
 static uint8_t updateEnabled = TRUE;
 static uint8_t globalBrightness;
 
-#define START_FRAME_LENGTH	4
-#if ((LEDS_NB % 16) == 0)
-#define STOP_FRAME_LENGTH	(LEDS_NB / 16)
-#else
-#define STOP_FRAME_LENGTH	((LEDS_NB / 16) + 1)
-#endif
-
 RGB_Color_t GS_Data[LEDS_NB];
 /* - cannot be declared as static: ATMega limitation??
  * - defined as struct to save run time compared to simple buffer */
@@ -59,7 +52,7 @@ void APA102__toggleRGBLedOrder (void)
 #endif
 
 
-static void APA102__updateAll (void)
+static inline void APA102__updateAll (void)
 {
 	/* SPI controlled directly instead of calling SPI functions to save runtime! */
 	uint16_t idxLed, it;

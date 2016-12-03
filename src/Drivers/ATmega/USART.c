@@ -11,7 +11,7 @@
 
 #if (USART_DATA_LENGTH_READ_MAX != 0)
 
-#define BAUD 250000UL
+#define BAUD 1250000UL
 #define UBRR_VAL ((F_CPU + BAUD * 4) / (BAUD * 8) - 1)
 #define BAUD_REAL (F_CPU / (8 * (UBRR_VAL + 1)))
 #define BAUD_ERROR ((BAUD_REAL * 1000) / BAUD)
@@ -107,25 +107,41 @@ uint8_t USART__readData (uint8_t *data, uint8_t dataLength, uint8_t requester)
 }
 
 
-void USART__transmitData (uint8_t *data, uint8_t dataLength)
+static inline void USART__sendByte (uint8_t data)
+{
+	Debug__setWhileState(WHILE_STATE_USART1_BEFORE);
+	while (!(UCSR0A & (1 << UDRE0))) {/* wait for empty transmit buffer */;}
+	Debug__setWhileState(WHILE_STATE_USART2_AFTER);
+
+	UDR0 = data;
+}
+
+
+void USART__sendData (uint8_t *data, uint8_t dataLength)
 {
 	uint8_t idxByte;
 
-	Debug__setWhileState(WHILE_STATE_USART_BEFORE);
 	ATOMIC_BLOCK(ATOMIC_RESTORESTATE)
 	{
 		for (idxByte = 0; idxByte < dataLength; idxByte++)
 		{
-			/* wait for empty transmit buffer */
-			while (!(UCSR0A & (1 << UDRE0)))
-			{
-				;
-			}
-
-			UDR0 = data[idxByte];
+			USART__sendByte(data[idxByte]);
 		}
 	}
-	Debug__setWhileState(WHILE_STATE_USART_AFTER);
 }
+
+
+void USART__sendString (char *string)
+{
+	Debug__setWhileState(WHILE_STATE_USART2_BEFORE);
+	while (*string)
+	{
+		/* send as long as string terminator not present */
+		USART__sendByte(*string);
+		string++;
+	};
+	Debug__setWhileState(WHILE_STATE_USART2_AFTER);
+}
+
 
 #endif

@@ -24,13 +24,53 @@ uint8_t volatile ledTableUSARTmode;
 void LEDScreen__loop (void)
 {
 	uint16_t idx = 0;
+#if (LED_TYPE == LED_TYPE_APA102)
+	uint8_t globalBrightnessIt = 0;
+#endif
 
 	if (USARTdata_ready)
 	{
+		setHigh(TEST3_LED_PORT, TEST2_LED_PIN);
+#if (LED_TYPE == LED_TYPE_WS2801)
 		for (idx = 0; idx < LEDS_NB * 3; idx++)
 		{
-			SPDR = USART1_data[idx]; while (!(SPSR & (1 << SPIF))) {};
+			SPDR = USART1_data[idx];
+			while (!(SPSR & (1 << SPIF))) {};
 		}
+#endif
+
+#if (LED_TYPE == LED_TYPE_APA102)
+		/* START FRAME*/
+		for (idx = 0; idx < START_FRAME_LENGTH; idx++)
+		{
+			SPDR = 0;
+			while (!(SPSR & (1 << SPIF))) {};
+		}
+
+		/* LED FRAMES */
+		for (idx = 0; idx < LEDS_NB * 3; idx++)
+		{
+			/* global brightness */
+			if (globalBrightnessIt == 0)
+			{
+				SPDR = 0xE0 | APA102_GLOBAL_BRIGHNESS__MAX;
+				while (!(SPSR & (1 << SPIF))) {;}
+				globalBrightnessIt = 3;
+			}
+			
+			/* SPI register directly addressed to save run time */
+			SPDR = USART1_data[idx];
+			while (!(SPSR & (1 << SPIF))) {;}
+			globalBrightnessIt--;
+		}
+
+		/* END FRAME */
+		for (idx = 0; idx < 4 + 1; idx++)
+		{
+			SPDR = 0xFF;
+			while (!(SPSR & (1 << SPIF))) {};
+		}
+#endif /* other LEDs not supported */
 
 		USARTdata_ready = FALSE;
 		/* assuming USARTdata_ready is long enough FALSE (depending on LED drivers)
@@ -46,6 +86,7 @@ void LEDScreen__reset (void)
 	USART1_idxData = 0;
 	ledTableUSARTmode = FALSE;
 }
+
 
 #if defined (__AVR_ATmega644P__) || defined (__AVR_ATmega1284P__)
 ISR(USART1_RX_vect)

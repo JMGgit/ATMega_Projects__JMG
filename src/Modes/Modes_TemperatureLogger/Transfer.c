@@ -63,7 +63,7 @@ void Transfer__x10 (void)
 		{
 			/* Byte 1 : number of measurements */
 			usartWriteBuffer[bufIdx++] = numberOfMeas;
-			USART__transmitData(usartWriteBuffer, bufIdx);
+			USART__sendData(usartWriteBuffer, bufIdx);
 			bufIdx = 0;
 			measIt = 1;
 			progress = 20;
@@ -77,7 +77,7 @@ void Transfer__x10 (void)
 			measPoints = DataLogger__getNumberOfStoredValuesOfMeasure(measIt);
 			usartWriteBuffer[bufIdx++] = (uint8_t)((measPoints & 0xFF00) >> 8);
 			usartWriteBuffer[bufIdx++] = measPoints & 0xFF;
-			USART__transmitData(usartWriteBuffer, bufIdx);
+			USART__sendData(usartWriteBuffer, bufIdx);
 			bufIdx = 0;
 			measPointsIt = 0;
 			measPointsCycle = 0;
@@ -101,7 +101,7 @@ void Transfer__x10 (void)
 				usartWriteBuffer[bufIdx++] = sec;
 				usartWriteBuffer[bufIdx++] = t_int;
 				usartWriteBuffer[bufIdx++] = t_frac;
-				USART__transmitData(usartWriteBuffer, bufIdx);
+				USART__sendData(usartWriteBuffer, bufIdx);
 				bufIdx = 0;
 				measPointsIt++;
 				measPointsCycle++;

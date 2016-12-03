@@ -7,6 +7,7 @@
 
 
 #include "Modes_LedTable.h"
+#include "Mode_FailureMemory.h"
 
 
 static Mode_t currentMode;
@@ -19,6 +20,7 @@ static uint8_t startupOn_EEPROM EEMEM;
 uint16_t timerModeChangeConf[MODE_NB] =
 {
 		0xFFFF,	/* MODE__STARTUP = 0 */
+		0xFFFF,	/* MODE__FAILUREMEMORY */
 		0xFFFF,	/* MODE__OFF */
 		0xFFFF,	/* MODE__ALL_ON */
 		0xFFFF,	/* MODE__BLENDING_SLOW */
@@ -29,6 +31,8 @@ uint16_t timerModeChangeConf[MODE_NB] =
 		0xFFFF,	/* MODE__BLENDING_SWEEP_FAST */
 		0xFFFF,	/* MODE__BLENDING_CLOCK */
 		0xFFFF,	/* MODE__BLENDING_CLOCK_INVERTED */
+		0xFFFF,	/* MODE__BLENDING_CLOCK_FAST */
+		0xFFFF,	/* MODE__BLENDING_CLOCK_INVERTED_FAST */
 		0xFFFF,	/* MODE__CLOCK */
 		0xFFFF,	/* MODE__SNAKE */
 };
@@ -38,6 +42,7 @@ uint16_t timerModeChangeConf[MODE_NB] =
 uint16_t modeTaskIncrement[MODE_NB] =
 {
 		1,	/* MODE__STARTUP = 0 */
+		1,	/* MODE__FAILUREMEMORY */
 		1,	/* MODE__OFF */
 		1,	/* MODE__ALL_ON */
 		1,	/* MODE__BLENDING_SLOW */
@@ -48,6 +53,8 @@ uint16_t modeTaskIncrement[MODE_NB] =
 		2,	/* MODE__BLENDING_SWEEP_FAST */
 		1,	/* MODE__BLENDING_CLOCK */
 		1,	/* MODE__BLENDING_CLOCK_INVERTED */
+		1,	/* MODE__BLENDING_CLOCK_FAST */
+		1,	/* MODE__BLENDING_CLOCK_INVERTED_FAST */
 		1,	/* MODE__CLOCK */
 		1,	/* MODE__SNAKE */
 };
@@ -65,7 +72,7 @@ uint8_t Modes__getTaskIncrement (void)
 #endif
 }
 
-static void Modes__transition (void)
+ void Modes__transition (void)
 {
 	if (currentMode == MODE__SNAKE)
 	{
@@ -74,7 +81,7 @@ static void Modes__transition (void)
 }
 
 
-void Modes__setMode (Mode_t mode)
+ void Modes__setMode (Mode_t mode, uint8_t transition)
 {
 	if (mode < MODE_NB)
 	{
@@ -85,19 +92,38 @@ void Modes__setMode (Mode_t mode)
 		currentMode = MODE__INIT;
 	}
 
-	Modes__transition();
+	if (transition)
+	{
+		Modes__transition();
+	}
 }
 
 
 void Modes__Start (void)
 {
-	Modes__setMode(eeprom_read_byte(&mode_EEPROM));
+#if (DEBUG_MODE == DEBUG_MODE_ON)
+	if (FailureMemory__getFaultCounter() > 0)
+	{
+		Modes__setMode(MODE__FAILUREMEMORY, FALSE);
+	}
+	else
+#endif
+	{
+		if (eeprom_read_byte(&mode_EEPROM) == MODE__FAILUREMEMORY)
+		{
+			Modes__setMode(MODE_NB, TRUE);
+		}
+		else
+		{
+			Modes__setMode(eeprom_read_byte(&mode_EEPROM), TRUE);
+		}
+	}
 }
 
 
 static void Modes__setNextMode (void)
 {
-	Modes__setMode(currentMode + 1);
+	Modes__setMode(currentMode + 1, TRUE);
 }
 
 
@@ -120,6 +146,12 @@ static void Modes__updateMatrix (void)
 		case MODE__STARTUP:
 		{
 			Startup__x10();
+			break;
+		}
+
+		case MODE__FAILUREMEMORY:
+		{
+			FailureMemory__x10();
 			break;
 		}
 
@@ -228,7 +260,7 @@ void Modes__init (void)
 
 	if (eeprom_read_byte(&startupOn_EEPROM) == TRUE)
 	{
-		Modes__setMode(MODE__STARTUP);
+		Modes__setMode(MODE__STARTUP, FALSE);
 		startupOn = TRUE;
 	}
 	else
@@ -248,8 +280,15 @@ void Modes__x10 (void)
 	{
 		if (Buttons__isPressedOnce(&buttonMode))
 		{
-			Modes__setNextMode();
-			timerModeChange = 0;
+			if (currentMode != MODE__FAILUREMEMORY)
+			{
+				Modes__setNextMode();
+				timerModeChange = 0;
+			}
+			else
+			{
+				Modes__Start();
+			}
 		}
 		else if (timerModeChangeConf[currentMode] != 0xFFFF)
 		{
@@ -270,7 +309,7 @@ void Modes__x10 (void)
 
 		if (Buttons__isPressedOnce(&buttonOff))
 		{
-			Modes__setMode(MODE__OFF);
+			Modes__setMode(MODE__OFF, FALSE);
 		}
 	}
 

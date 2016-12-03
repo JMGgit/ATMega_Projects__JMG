@@ -29,7 +29,9 @@
 /* public functions */
 void Modes__init (void);
 void Modes__x10 (void);
+#if (PROJECT != PROJECT__TEMPERATURE_LOGGER)
 void Modes__setMode (Mode_t mode, uint8_t transition);
+#endif
 Mode_t Modes__getMode (void);
 void Modes__Start (void);
 uint8_t Modes__getTaskIncrement (void);

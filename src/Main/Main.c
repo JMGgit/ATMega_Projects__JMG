@@ -63,7 +63,7 @@ int main (void)
 				Debug__setMainState(MAIN_STATE_X10_BEGIN);
 #if (DEBUG_MODE == DEBUG_MODE_ON)
 				Debug__setMainState(MAIN_STATE_X10_DEBUG);
-				Debug__captureData();
+				Debug__x10();
 #endif
 				Debug__setMainState(MAIN_STATE_X10_DRIVERS_BEGIN);
 				Drivers__begin_x10();

@@ -39,7 +39,7 @@ static void Modes__transition (void)
 }
 
 
-void Modes__setMode (Mode_t mode)
+void Modes__setMode (Mode_t mode, uint8_t transition)
 {
 	if (mode < MODE_NB)
 	{
@@ -50,19 +50,22 @@ void Modes__setMode (Mode_t mode)
 		currentMode = MODE__INIT;
 	}
 
-	Modes__transition();
+	if (transition)
+	{
+		Modes__transition();
+	}
 }
 
 
 void Modes__Start (void)
 {
-	Modes__setMode(eeprom_read_byte(&mode_EEPROM));
+	Modes__setMode(eeprom_read_byte(&mode_EEPROM), TRUE);
 }
 
 
 static void Modes__setNextMode (void)
 {
-	Modes__setMode(currentMode + 1);
+	Modes__setMode(currentMode + 1, TRUE);
 }
 
 
@@ -131,7 +134,7 @@ void Modes__init (void)
 
 	if (eeprom_read_byte(&startupOn_EEPROM) == TRUE)
 	{
-		Modes__setMode(MODE__STARTUP);
+		Modes__setMode(MODE__STARTUP, TRUE);
 		startupOn = TRUE;
 	}
 	else
@@ -171,7 +174,7 @@ void Modes__x10 (void)
 
 		if (Buttons__isPressedOnce(&buttonOff))
 		{
-			Modes__setMode(MODE__OFF);
+			Modes__setMode(MODE__OFF, TRUE);
 		}
 	}
 

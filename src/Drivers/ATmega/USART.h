@@ -21,7 +21,8 @@
 
 void USART__init (void);
 uint8_t USART__readData (uint8_t *data, uint8_t dataLength, uint8_t requester);
-void USART__transmitData (uint8_t *data, uint8_t dataLength);
+void USART__sendData (uint8_t *data, uint8_t dataLength);
+void USART__sendString (char *string);
 
 #endif
 

@@ -29,7 +29,7 @@ typedef struct
 } debugTime_t;
 
 
-void Debug__captureData (void);
+void Debug__x10 (void);
 void Debug__getTime (debugTime_t *debugTime);
 #if (PROJECT != PROJECT__IRMP)
 void Debug__getMode (Mode_t *mode);

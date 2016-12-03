@@ -93,6 +93,15 @@ void Off__x10 (void)
 			startupTimer = 255;
 		}
 
+#if (DEBUG_MODE == DEBUG_MODE_ON)
+		if (Buttons__isPressedOnce(&buttonLeft))
+		{
+			Modes__setMode(MODE__FAILUREMEMORY, FALSE);
+			LEDMatrix__enableUpdate();
+			firstCall = TRUE;
+		}
+#endif
+
 #if (PROJECT == PROJECT__QLOCKTWO)
 		if (Buttons__isPressed(&buttonMode))
 		{
@@ -110,13 +119,6 @@ void Off__x10 (void)
 		else
 		{
 			langTimer = 255;
-		}
-
-		if (Buttons__isPressedOnce(&buttonLeft))
-		{
-			Modes__setMode(MODE__FAILUREMEMORY, FALSE);
-			LEDMatrix__enableUpdate();
-			firstCall = TRUE;
 		}
 #endif
 	}

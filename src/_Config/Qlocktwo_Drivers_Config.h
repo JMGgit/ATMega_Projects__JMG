@@ -31,7 +31,7 @@
 #endif
 
 /* DS1307 */
-#define DS1307_MODE					DS1307_MODE_TWI
+#define DS1307_MODE				DS1307_MODE_TWI
 
 /* DCF77 */
 #if (QLOCKTWO_REVISION == QLOCKTWO_REVISION_4)
@@ -78,7 +78,7 @@
 #define USART_DATA_LENGTH_READ_MAX	0
 
 /* LDR */
-#define LDR_ADC_PIN		0
+#define LDR_ADC_PIN				0
 
 /* IRMP */
 #define IRMP_REMOTE_ADDRESS		0xF708
