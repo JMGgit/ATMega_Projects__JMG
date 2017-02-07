@@ -43,6 +43,8 @@
 
 #define SNAKE_BRIGHTNESS_LEVEL			255
 
+#define LED_COLORS						LED_COLORS_PWM
+
 #endif
 
 #endif /* LEDTABLE_MAIN_CONFIG_H_ */

@@ -67,5 +67,9 @@
 #define MODE_SNAKE_OFF					1
 #define MODE_SNAKE_ON					2
 
+/* LED colors */
+#define LED_COLORS_PWM					1
+#define LED_COLORS_LINEAR				2
+
 
 #endif /* MAIN_CONFIG_DEF_H_ */
