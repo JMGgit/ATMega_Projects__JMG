@@ -780,7 +780,6 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings">
 	</storageModule>
-	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="scannerConfiguration">
 		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
 		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708;de.innot.avreclipse.configuration.app.release.1446605198.1815058140.1766612797.938794708.;de.innot.avreclipse.tool.compiler.winavr.app.release.1398306168;de.innot.avreclipse.compiler.winavr.input.292536488">
@@ -822,5 +821,25 @@
 		<scannerConfigBuildInfo instanceId="de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995.2006069985;de.innot.avreclipse.configuration.app.release.1446605198.1029823119.601564696.78723555.526597995.2006069985.;de.innot.avreclipse.tool.compiler.winavr.app.release.1387100818;de.innot.avreclipse.compiler.winavr.input.863895687">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="de.innot.avreclipse.core.AVRGCCManagedMakePerProjectProfileC"/>
 		</scannerConfigBuildInfo>
+	</storageModule>
+	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets">
+		<buildTargets>
+			<target name="clean" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-j4</buildArguments>
+				<buildTarget>clean</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>true</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+			<target name="all" path="" targetID="org.eclipse.cdt.build.MakeTargetBuilder">
+				<buildCommand>make</buildCommand>
+				<buildArguments>-j4</buildArguments>
+				<buildTarget>all</buildTarget>
+				<stopOnError>true</stopOnError>
+				<useDefaultCommand>true</useDefaultCommand>
+				<runAllBuilders>true</runAllBuilders>
+			</target>
+		</buildTargets>
 	</storageModule>
 </cproject>

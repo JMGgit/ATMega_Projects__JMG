@@ -24,6 +24,12 @@ uint8_t USART__readData (uint8_t *data, uint8_t dataLength, uint8_t requester);
 void USART__sendData (uint8_t *data, uint8_t dataLength);
 void USART__sendString (char *string);
 
+#if defined (__AVR_ATmega644P__) || defined (__AVR_ATmega1284P__)
+uint8_t USART1__readData (uint8_t *data, uint8_t dataLength, uint8_t requester);
+void USART1__sendData (uint8_t *data, uint8_t dataLength);
+void USART1__sendString (char *string);
+#endif
+
 #endif
 
 #endif /* USART_H_ */

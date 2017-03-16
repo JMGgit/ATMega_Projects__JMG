@@ -16,21 +16,21 @@
 volatile uint8_t USARTdata_ready = FALSE;
 uint16_t USART1_data[USART1_DATA_LENGTH];
 static volatile uint16_t USART1_idxData = 0;
-extern volatile uint8_t USARTdata_ready;
-extern uint16_t USART1_data[((3 * LEDS_NB))];
 uint8_t volatile ledTableUSARTmode;
 
 
 void LEDScreen__loop (void)
 {
+#if ((LED_TYPE == LED_TYPE_APA102) || (LED_TYPE == LED_TYPE_WS2801))
 	uint16_t idx = 0;
+#endif
 #if (LED_TYPE == LED_TYPE_APA102)
 	uint8_t globalBrightnessIt = 0;
 #endif
 
 	if (USARTdata_ready)
 	{
-		setHigh(TEST3_LED_PORT, TEST2_LED_PIN);
+		setHigh(TEST3_LED_PORT, TEST3_LED_PIN);
 #if (LED_TYPE == LED_TYPE_WS2801)
 		for (idx = 0; idx < LEDS_NB * 3; idx++)
 		{

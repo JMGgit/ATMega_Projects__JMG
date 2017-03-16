@@ -99,7 +99,7 @@ static inline void APA102__updateAll (void)
 	}
 
 	/* END FRAME */
-	for (it = 0; it < 4 + 1; it++)
+	for (it = 0; it < STOP_FRAME_LENGTH; it++)
 	{
 		SPDR = 0xFF;
 		while (!(SPSR & (1 << SPIF))) {};
