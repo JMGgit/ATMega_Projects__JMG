@@ -9,15 +9,15 @@
 #include "Buttons.h"
 
 
-Button_t buttonOff	 = {BITMSK_BUTTON_OFF,		0, FALSE, FALSE};
-Button_t buttonMode  = {BITMSK_BUTTON_MODE,		0, FALSE, FALSE};
-Button_t buttonFunc1 = {BITMSK_BUTTON_FUNC1,	0, FALSE, FALSE};
-Button_t buttonFunc2 = {BITMSK_BUTTON_FUNC2,	0, FALSE, FALSE};
-Button_t buttonFunc3 = {BITMSK_BUTTON_FUNC3,	0, FALSE, FALSE};
-Button_t buttonLeft  = {BITMSK_BUTTON_LEFT,		0, FALSE, FALSE};
-Button_t buttonRight = {BITMSK_BUTTON_RIGHT,	0, FALSE, FALSE};
-Button_t buttonUp    = {BITMSK_BUTTON_UP,		0, FALSE, FALSE};
-Button_t buttonDown  = {BITMSK_BUTTON_DOWN,		0, FALSE, FALSE};
+Button_t buttonOff;
+Button_t buttonMode;
+Button_t buttonFunc1;
+Button_t buttonFunc2;
+Button_t buttonFunc3;
+Button_t buttonLeft;
+Button_t buttonRight;
+Button_t buttonUp;
+Button_t buttonDown;
 
 #if (BUTTONS_IRMP == BUTTONS_IRMP_SEND_TO_TWI)
 uint16_t buttonTWI;
@@ -26,6 +26,16 @@ uint8_t twiTxBuffer[2];
 
 void Buttons__init (void)
 {
+    buttonOff.bitMask = BITMSK_BUTTON_OFF;
+    buttonMode.bitMask = BITMSK_BUTTON_MODE;
+    buttonFunc1.bitMask = BITMSK_BUTTON_FUNC1;
+    buttonFunc2.bitMask = BITMSK_BUTTON_FUNC2;
+    buttonFunc3.bitMask = BITMSK_BUTTON_FUNC3;
+    buttonLeft.bitMask = BITMSK_BUTTON_LEFT;
+    buttonRight.bitMask = BITMSK_BUTTON_RIGHT;
+    buttonUp.bitMask = BITMSK_BUTTON_UP;
+    buttonDown.bitMask = BITMSK_BUTTON_DOWN;
+
 #if (BUTTONS_WIRED == BUTTONS_WIRED_PIN)
 	Button__initButton(BUTTON_OFF_DDR, BUTTON_OFF_PORT, BUTTON_OFF_PIN);
 	Button__initButton(BUTTON_MODE_DDR, BUTTON_MODE_PORT, BUTTON_MODE_PIN);

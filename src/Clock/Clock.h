@@ -30,6 +30,7 @@ typedef struct
 /* public functions */
 void Clock__init (void);
 void Clock__x10 (void);
+void Clock__mainFunction (void *param);
 
 uint8_t Clock__getSeconds (void);
 uint8_t Clock__getMinutes (void);

@@ -141,6 +141,7 @@ void ModeClock__x10 (uint8_t clockMode)
 		ModeClock__eepromStorage();
 	}
 
+#if ((PROJECT != PROJECT__LED_TABLE) || ((PROJECT != PROJECT__LED_TABLE) && (LEDTABLE_REVISION == LEDTABLE_REVISION_1)))
 	if (Buttons__isPressedOnce(&buttonFunc2))
 	{
 		Clock__incHours();
@@ -150,6 +151,7 @@ void ModeClock__x10 (uint8_t clockMode)
 	{
 		Clock__incMinutes();
 	}
+#endif
 
 	if (Buttons__isPressedOnce(&buttonUp))
 	{

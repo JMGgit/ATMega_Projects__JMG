@@ -11,6 +11,20 @@
 
 #if (CLOCK_TYPE != CLOCK_TYPE_OFF)
 
+#if (CLOCK_TYPE == CLOCK_TYPE_ESP32)
+
+struct tm currentTime;
+
+uint8_t Clock__getSeconds (void)		{return currentTime.tm_sec;}
+uint8_t Clock__getMinutes (void)		{return currentTime.tm_min;}
+uint8_t Clock__getHours (void)			{return currentTime.tm_hour;}
+uint8_t Clock__getDay (void)			{return currentTime.tm_wday;}
+uint8_t Clock__getDate (void)			{return currentTime.tm_mday;}
+uint8_t Clock__getMonth (void)			{return currentTime.tm_mon + 1;}		/* month is counted from 0 to 11 */
+uint8_t Clock__getYear (void)			{return currentTime.tm_year - 100;}		/* year is counted since 1900 */
+
+#else
+
 static Clock_time currentTime;
 #if (CLOCK_SYNC != CLOCK_SYNC_OFF)
 static Clock_time currentSyncTime;
@@ -397,10 +411,68 @@ static uint8_t Clock__updateSyncSignal (void)
 }
 
 
+uint8_t Clock__getSeconds (void)		{return currentTime.seconds;}
+uint8_t Clock__getMinutes (void)		{return currentTime.minutes;}
+uint8_t Clock__getHours (void)			{return currentTime.hours;}
+uint8_t Clock__getDay (void)			{return currentTime.day;}
+uint8_t Clock__getDate (void)			{return currentTime.date;}
+uint8_t Clock__getMonth (void)			{return currentTime.month;}
+uint8_t Clock__getYear (void)			{return currentTime.year;}
+
+#endif /* (CLOCK_TYPE == CLOCK_TYPE_ESP32) */
+
+
 void Clock__init (void)
 {
+#if ((CLOCK_TYPE == CLOCK_TYPE_ESP32) && (CLOCK_SYNC == CLOCK_SYNC_NTP))
+
+	/* SNTP init */
+	sntp_setoperatingmode(SNTP_OPMODE_POLL);
+	sntp_setservername(0, "pool.ntp.org");
+	sntp_init();
+
+	/* Time zone: Berlin */
+	setenv("TZ", "CET-1CEST,M3.5.0,M10.5.0", 1);
+	tzset();
+
+#else
 	setOutput(CLOCK_LED_DDR, CLOCK_LED_PIN);
 	Clock__x10(); /* update time */
+#endif
+}
+
+
+void Clock__mainFunction (void *param)
+{
+#if (CLOCK_TYPE == CLOCK_SYNC_NTP)
+	time_t currentNTPTime;
+	char buffer1[9];
+	char buffer2[9];
+	uint8_t debugInfoDisabled = FALSE;
+
+	while (1)
+	{
+		time(&currentNTPTime);
+		localtime_r(&currentNTPTime, &currentTime);
+
+		if (!debugInfoDisabled)
+		{
+			if (currentTime.tm_year < (2017 - 1900))
+			{
+				printf("Waiting for system time to be set...\n");
+			}
+			else
+			{
+				Clock__getCompleteDateWithYearString(&buffer1[0]);
+				Clock__getTimeWithSecondsString(&buffer2[0]);
+				printf("Current Time: %s %s\n", buffer2, buffer1);
+				debugInfoDisabled = TRUE;
+			}
+		}
+
+		vTaskDelay(5000 / portTICK_PERIOD_MS);
+	}
+#endif
 }
 
 
@@ -412,11 +484,13 @@ void Clock__x10 (void)
 	static uint8_t test_led = 0;
 	static uint8_t testSeconds = 0;
 
-	/* DS1307 */
+#if (CLOCK_TYPE == CLOCK_TYPE_DS1307)
 	Clock__updateTimeFromRTC();
+#endif
 
-	/* update synchronization signal */
+#if (CLOCK_SYNC != CLOCK_SYNC_NTP)
 	clockSyncStatus = Clock__updateSyncSignal();
+#endif
 
 	if (clockSyncStatus == CLOCK_SYNC_OK)
 	{
@@ -451,15 +525,6 @@ void Clock__x10 (void)
 		testSeconds = Clock__getSeconds();
 	}
 }
-
-
-uint8_t Clock__getSeconds (void)		{return currentTime.seconds;}
-uint8_t Clock__getMinutes (void)		{return currentTime.minutes;}
-uint8_t Clock__getHours (void)			{return currentTime.hours;}
-uint8_t Clock__getDay (void)			{return currentTime.day;}
-uint8_t Clock__getDate (void)			{return currentTime.date;}
-uint8_t Clock__getMonth (void)			{return currentTime.month;}
-uint8_t Clock__getYear (void)			{return currentTime.year;}
 
 
 void Clock__getHourString (char* buffer)

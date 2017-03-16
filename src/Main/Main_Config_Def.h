@@ -28,11 +28,13 @@
 /* clock */
 #define CLOCK_TYPE_OFF					1
 #define CLOCK_TYPE_DS1307				2
+#define CLOCK_TYPE_ESP32				3
 
 /* clock sync */
 #define CLOCK_SYNC_OFF					1
 #define CLOCK_SYNC_DCF77				2
 #define CLOCK_SYNC_USART				3
+#define CLOCK_SYNC_NTP					4
 
 /* buttons */
 #define BUTTONS_WIRED_OFF				1
