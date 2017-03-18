@@ -444,7 +444,7 @@ void Clock__init (void)
 
 void Clock__mainFunction (void *param)
 {
-#if (CLOCK_TYPE == CLOCK_SYNC_NTP)
+#if ((CLOCK_TYPE == CLOCK_TYPE_ESP32) && (CLOCK_SYNC == CLOCK_SYNC_NTP))
 	time_t currentNTPTime;
 	char buffer1[9];
 	char buffer2[9];
