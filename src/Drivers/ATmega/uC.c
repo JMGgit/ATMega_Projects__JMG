@@ -107,7 +107,7 @@ void uC__begin_x10 (void)
 #if (RUNTIME_TEST != RUNTIME_TEST_OFF)
 	setHigh(RUNTIME_OSC_PORT, RUNTIME_OSC_PIN); /* oscilloscope */
 
-	if (runtimeCounter + uC__getTaskIncrement() < 100)
+	if (runtimeCounter + uC__getTaskIncrement() <= 100)
 	{
 		runtimeCounter = runtimeCounter + uC__getTaskIncrement();
 	}

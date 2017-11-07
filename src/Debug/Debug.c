@@ -113,17 +113,18 @@ void Debug__getQtwoBrightness (uint8_t *brightness)
 
 void Debug__x10 (void)
 {
+#if (USART_DATA_LENGTH_READ_MAX != 0)
 	static uint16_t timer = 100; /* send every 1 second */
 	char buffer[255];
 	uint8_t taskIncrement;
-
-	taskIncrement = uC__getTaskIncrement();
+#endif
 
 	Debug__captureData();
 
-	if (timer - taskIncrement > 0)
+#if (USART_DATA_LENGTH_READ_MAX != 0)
+	if (timer - uC__getTaskIncrement() >= 0)
 	{
-		timer = timer - taskIncrement;
+		timer = timer - uC__getTaskIncrement();
 	}
 	else
 	{
@@ -138,7 +139,7 @@ void Debug__x10 (void)
 		strcpy(&buffer[26], "\r");
 		USART__sendString(buffer);
 	}
-
+#endif
 }
 
 #endif /* (DEBUG_MODE == DEBUG_MODE_ON) */

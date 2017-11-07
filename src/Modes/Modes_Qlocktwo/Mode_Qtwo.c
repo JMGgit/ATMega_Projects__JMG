@@ -1552,7 +1552,7 @@ static TimeTransition_N Qtwo__updateTimeTransition (QtwoMode_N qtwoMode)
 
 	if (timeTransition == TIME_TRANSITION_STARTED)
 	{
-		if (colorTransTimer - uC__getTaskIncrement() > 0)
+		if (colorTransTimer - uC__getTaskIncrement() >= 0)
 		{
 			colorTransTimer = colorTransTimer - uC__getTaskIncrement();
 			allColorsReady = FALSE;
@@ -1774,7 +1774,7 @@ static ButtonRequest_N Qtwo__checkButtons (QtwoMode_N qtwoMode)
 
 		if (Buttons__isPressed(&buttonFunc1))
 		{
-			if (timerColorButton - uC__getTaskIncrement() > 0)
+			if (timerColorButton - uC__getTaskIncrement() >= 0)
 			{
 				timerColorButton = timerColorButton - uC__getTaskIncrement();
 			}
@@ -2053,7 +2053,7 @@ void Qtwo__main_x10 (QtwoMode_N qtwoMode)
 	}
 	else
 	{
-		if (QtwoSetupTimer - uC__getTaskIncrement()> 0)
+		if (QtwoSetupTimer - uC__getTaskIncrement() >= 0)
 		{
 			QtwoSetupTimer = QtwoSetupTimer - uC__getTaskIncrement();
 

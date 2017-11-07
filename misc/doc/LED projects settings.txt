@@ -3,3 +3,10 @@ In mode OFF:
 - Button 2 pressed 3s: change LED connections order (daisy chain or lines)
 - Button 3 pressed 3s: enable / disable startup mode
 - Button mode pressed 3s: change language (Qlocktwo)
+- Button down pressed 3s: SW reset
+
+In mode Failure Memory:
+- Set test failure: down pressed 3s
+- Cleear failure memory: up pressed 3s 
+- Watchodg fialure: red
+- Ohter failure: blue

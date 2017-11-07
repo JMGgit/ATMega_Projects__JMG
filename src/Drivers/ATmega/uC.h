@@ -37,7 +37,7 @@ void uC__end_x10 (void);
 void uC__enableWatchdog (void);
 void uC__disableWatchdog (void);
 
-#if (PROJECT != PROJECT__IRMs)
+#if (PROJECT != PROJECT__IRMP)
 extern uint8_t Modes__getTaskIncrement (void);
 #else
 static inline uint8_t Modes__getTaskIncrement (void)

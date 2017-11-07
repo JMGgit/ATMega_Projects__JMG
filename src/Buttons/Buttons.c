@@ -58,7 +58,7 @@ static void Buttons__updateState (uint16_t receiveBuffer, Button_t *button)
 {
 	if (receiveBuffer & (button->bitMask))
 	{
-		if (button->debounceTime + uC__getTaskIncrement() < 0xFF)
+		if (button->debounceTime + uC__getTaskIncrement() <= 0xFF)
 		{
 			button->debounceTime  = button->debounceTime + uC__getTaskIncrement();
 		}
@@ -130,7 +130,7 @@ static void Buttons__updateState_IRMP (uint8_t signalValid, uint16_t receiveBuff
 	}
 	else
 	{
-		if (button->debounceTimeIRMP - uC__getTaskIncrement() > 0)
+		if (button->debounceTimeIRMP - uC__getTaskIncrement() >= 0)
 		{
 			button->debounceTimeIRMP = button->debounceTimeIRMP - uC__getTaskIncrement();
 		}
@@ -152,7 +152,7 @@ static void Buttons__updateState_TWI (uint16_t receiveBuffer, Button_t *button)
 {
 	if (receiveBuffer & (button->bitMask))
 	{
-		if (button->debounceTime + uC__getTaskIncrement() < 0xFF)
+		if (button->debounceTime + uC__getTaskIncrement() <= 0xFF)
 		{
 			button->debounceTime  = button->debounceTime + uC__getTaskIncrement();
 		}

@@ -37,7 +37,7 @@
 #define DCF77_DATA_DDR				DDRB
 #define DCF77_DATA_PORT				PINB
 #define DCF77_DATA_PIN				PB0
-#define DCF77_TASK_TIME				100
+#define DCF77_TASK_TIME			10 /* milliseconds */
 
 /* CTL LED */
 #define UC_LED_DDR					DDRD

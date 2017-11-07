@@ -16,6 +16,7 @@ static uint8_t firstCall = TRUE;
 
 void Off__x10 (void)
 {
+	static uint8_t swResetTimer = 255;
 	static uint8_t rgbConnectionTimer = 255;
 	static uint8_t ledConnectionTimer = 255;
 	static uint8_t startupTimer = 255;
@@ -39,9 +40,26 @@ void Off__x10 (void)
 			firstCall = TRUE;
 		}
 
+		if (Buttons__isPressed(&buttonDown))
+		{
+			if (swResetTimer - uC__getTaskIncrement() >= 0)
+			{
+				swResetTimer = swResetTimer - uC__getTaskIncrement();
+			}
+			else
+			{
+				swResetTimer = 255;
+				uC__triggerSwReset();
+			}
+		}
+		else
+		{
+			swResetTimer = 255;
+		}
+
 		if (Buttons__isPressed(&buttonFunc1))
 		{
-			if (rgbConnectionTimer - uC__getTaskIncrement() > 0)
+			if (rgbConnectionTimer - uC__getTaskIncrement() >= 0)
 			{
 				rgbConnectionTimer = rgbConnectionTimer - uC__getTaskIncrement();
 			}
@@ -59,7 +77,7 @@ void Off__x10 (void)
 
 		if (Buttons__isPressed(&buttonFunc2))
 		{
-			if (ledConnectionTimer - uC__getTaskIncrement() > 0)
+			if (ledConnectionTimer - uC__getTaskIncrement() >= 0)
 			{
 				ledConnectionTimer = ledConnectionTimer - uC__getTaskIncrement();
 			}
@@ -77,7 +95,7 @@ void Off__x10 (void)
 
 		if (Buttons__isPressed(&buttonFunc3))
 		{
-			if (startupTimer - uC__getTaskIncrement() > 0)
+			if (startupTimer - uC__getTaskIncrement() >= 0)
 			{
 				startupTimer = startupTimer - uC__getTaskIncrement();
 			}
@@ -105,7 +123,7 @@ void Off__x10 (void)
 #if (PROJECT == PROJECT__QLOCKTWO)
 		if (Buttons__isPressed(&buttonMode))
 		{
-			if (langTimer - uC__getTaskIncrement() > 0)
+			if (langTimer - uC__getTaskIncrement() >= 0)
 			{
 				langTimer = langTimer - uC__getTaskIncrement();
 			}

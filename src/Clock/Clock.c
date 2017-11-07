@@ -507,7 +507,7 @@ void Clock__x10 (void)
 #endif
 	}
 
-	if (test_led - uC__getTaskIncrement() > 0)
+	if (test_led - uC__getTaskIncrement() >= 0)
 	{
 		test_led = test_led - uC__getTaskIncrement();
 		setHigh(CLOCK_LED_PORT, CLOCK_LED_PIN);

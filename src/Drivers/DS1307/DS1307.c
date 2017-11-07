@@ -100,8 +100,6 @@ void DS1307__init (void)
 
     transmitState = E_NOT_OK;
 
-    DS1307__sendTimeToRTC();
-
 #if (DS1307_MODE == DS1307_MODE_TWI_SQW)
     setInput(DS1307_SQW_DDR, DS1307_SQW_PIN);
 	/* !! For TWI+SQW mode Pin PC7 has to be used !! */
@@ -124,7 +122,7 @@ static uint8_t DS1307__isUpdateFromRTCRequired (void)
 #if (DS1307_MODE == DS1307_MODE_TWI)
 	updateFromRTCDone = FALSE;
 	return TRUE;
-#else
+#elif (DS1307_MODE == DS1307_MODE_TWI_SQW)
 	uint8_t update = FALSE;
 
 	if (triggerUpdateFromRTC == TRUE)
@@ -134,29 +132,25 @@ static uint8_t DS1307__isUpdateFromRTCRequired (void)
 	}
 	else
 	{
-		if (updateFromRTCDone  == TRUE)
+		if (	(DS1307__getHours() == DS1307_UPDATE_HOUR)
+			||	(DS1307__getMinutes() == DS1307_UPDATE_MIN)
+			||	(DS1307__getSeconds() == DS1307UPDATE_SEC)
+		)
 		{
-			if (	(DS1307__getHours() == DS1307_UPDATE_HOUR)
-				||	(DS1307__getMinutes() == DS1307_UPDATE_MIN)
-				||	(DS1307__getSeconds() == DS1307UPDATE_SEC)
-			)
+			if (updateFromRTCDone  == TRUE)
 			{
 				updateFromRTCDone = FALSE;
 			}
-		}
-		else
-		{
-			if (	(DS1307__getHours() == DS1307_UPDATE_HOUR)
-				&&	(DS1307__getMinutes() == DS1307_UPDATE_MIN)
-				&&	(DS1307__getSeconds() == DS1307UPDATE_SEC)
-			)
+			else
 			{
-				update = TRUE;
+				update = TRUE
 			}
 		}
 	}
 
 	return update;
+#else
+	/* no other use case for now */
 #endif
 }
 
@@ -203,17 +197,17 @@ static void DS1307__updateTimeFromRTC (void)
 
 void DS1307__x10 (void)
 {
+	if ((triggerUpdateToRTC) == TRUE)
+	{
+		DS1307__sendTimeToRTC();
+		triggerUpdateToRTC = FALSE;
+		triggerUpdateFromRTC = TRUE; /* get time from RTC to ensure that transmitted time is correct */
+	}
+
 	if ((DS1307__isUpdateFromRTCRequired()) == TRUE)
 	{
 		DS1307__updateTimeFromRTC();
 		updateFromRTCDone = TRUE;
-	}
-
-	if ((triggerUpdateToRTC) == TRUE)
-	{
-		DS1307__sendTimeToRTC();
-		triggerUpdateFromRTC = FALSE;
-		triggerUpdateFromRTC = TRUE; /* get time from RTC to ensure that transmitted time is correct */
 	}
 }
 

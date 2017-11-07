@@ -292,7 +292,7 @@ void Modes__x10 (void)
 		}
 		else if (timerModeChangeConf[currentMode] != 0xFFFF)
 		{
-			if (timerModeChange + uC__getTaskIncrement() < timerModeChangeConf[currentMode])
+			if (timerModeChange + uC__getTaskIncrement() <= timerModeChangeConf[currentMode])
 			{
 				timerModeChange = timerModeChange + uC__getTaskIncrement();
 			}

@@ -95,7 +95,7 @@ static void DoubleColor__updateVisibility (uint8_t timer)
 
 	static uint8_t colorTransTimer = 0;
 
-	if (colorTransTimer - uC__getTaskIncrement() > 0)
+	if (colorTransTimer - uC__getTaskIncrement() >= 0)
 	{
 		colorTransTimer = colorTransTimer - uC__getTaskIncrement();
 		allColorsReady = FALSE;
@@ -272,7 +272,7 @@ void DoubleColor__x10 (void)
 {
 	if (!timeTransition)
 	{
-		if (timer - uC__getTaskIncrement() > 0)
+		if (timer - uC__getTaskIncrement() >= 0)
 		{
 			timer = timer - uC__getTaskIncrement();
 		}
