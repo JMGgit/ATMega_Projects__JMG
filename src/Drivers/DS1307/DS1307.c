@@ -143,7 +143,7 @@ static uint8_t DS1307__isUpdateFromRTCRequired (void)
 			}
 			else
 			{
-				update = TRUE
+				update = TRUE;
 			}
 		}
 	}
